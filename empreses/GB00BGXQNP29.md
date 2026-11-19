@@ -1,0 +1,52 @@
+# Phoenix Group Holdings PLC Registered
+
+- **ISIN:** `GB00BGXQNP29`
+- **Nom al panell:** Phoenix Group Holdings PLC Registered
+- **Anys al panell:** 2019–2025 (7 files)
+- **Font de les dades:** `dades/base_isin_any_v8r2.csv` [V]
+
+## Sector ICB
+
+- **Supersector (aplicat als anys amb sector):** Insurance
+- **Taxonomia:** ICB_2020
+- **Supersector ICB anterior:** Insurance
+- **Supersector ICB 2020:** Insurance
+- **Any de la font:** 2023
+- **Mètode de casament:** nom_exacte
+- **URL de la font:** https://www.stoxx.com/document/Indices/Factsheets_Components/2023/June/SXXP.pdf
+- **Wayback de la font:** — (no consta a la taula sectorial)
+- **Estat a les files del panell:** `amb_sector; pendent_extensio_2024_2025`
+- **2024-2025:** el sector de l'any de la font no s'ha estès; ho decideix Doctorat (pendència).
+
+## Sèrie anual
+
+| Any | CEO | CEO aplicat | FounderCEO | Regla | Certificació | Nivell | Cites |
+|---|---|---|---|---|---|---|---|
+| 2019 | Clive Bannister | — (igual) | P | d | fora_mostra_auditoria | — | — |
+| 2020 | Andy Briggs | — (igual) | P | d | certificada_ceo_pendent | N2 | — |
+| 2021 | Andy Briggs | — (igual) | P | d | certificada_ceo_pendent | N2 | — |
+| 2022 | Andy Briggs | — (igual) | P | d | certificada_ceo_pendent | N2 | — |
+| 2023 | Andy Briggs | — (igual) | P | d | certificada_ceo_pendent | N2 | — |
+| 2024 | Andy Briggs | — (igual) | P | d | certificada_ceo_pendent | N2 | — |
+| 2025 | Andy Briggs | — (igual) | P | d | certificada_ceo_pendent | N2 | — |
+
+## Cites (URL original i Wayback)
+
+No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
+
+## Canvis del registre
+
+Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).
+
+## Pendències d'aquesta empresa
+
+- 2020: `certificada_ceo_pendent` / `N2` — r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=NV (o la cita del CEO no esta verificada)
+- 2021: `certificada_ceo_pendent` / `N2` — r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=NV (o la cita del CEO no esta verificada)
+- 2022: `certificada_ceo_pendent` / `N2` — r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=NV (o la cita del CEO no esta verificada)
+- 2023: `certificada_ceo_pendent` / `N2` — r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=NV (o la cita del CEO no esta verificada)
+- 2024: `certificada_ceo_pendent` / `N2` — r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=NV (o la cita del CEO no esta verificada)
+- 2024: sector `pendent_extensio_2024_2025` — No s'estén el sector de l'any de la font (any_font=2023) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
+- 2025: `certificada_ceo_pendent` / `N2` — r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=NV (o la cita del CEO no esta verificada)
+- 2025: sector `pendent_extensio_2024_2025` — No s'estén el sector de l'any de la font (any_font=2023) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
+
+Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r2.csv](../dades/base_isin_any_v8r2.csv)

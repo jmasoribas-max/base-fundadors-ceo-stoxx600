@@ -1,0 +1,18 @@
+# Comprovació automàtica dels PR. No fusiona i no escriu a main.
+name: valida_pr
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  valida:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validador de PR (sense --live)
+        run: python3 scripts/valida_pr.py
+      - name: Comprova enllaços i cites (sense --live)
+        run: python3 scripts/comprova_enllacos_cites.py

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Secrets i entorns (no s'hi ha de posar mai cap clau)
+.env
+.env.*
+!.env.example
+
+# Editors i sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+.ipynb_checkpoints/
+
+# Sortides locals de scripts
+*.log
+.cache/
