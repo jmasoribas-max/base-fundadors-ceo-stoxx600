@@ -29,6 +29,8 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 
 ### 1.1 Casos clau (inclosos a `no_certificada`, tret d'Anders Dam)
 
+> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminada; Aberdeen 2016: 1 indeterminada; BE Semiconductor: 6 confirmada. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
+
 | ISIN | Empresa | Anys | FounderCEO | Estat | Cas | Fitxa |
 |---|---|---|---|---|---|---|
 | `FR0000121014` | LVMH Moët Henn. L. Vuitton SE Actions Port. | 2016–2025 | F | no_certificada | LVMH_Arnault | [fitxa](empreses/FR0000121014.md) |
@@ -38,6 +40,8 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 ### 1.2 Anders Dam / Jyske Bank (`DK0010307958`) — cas obert
 
 Fitxa: [empreses/DK0010307958.md](empreses/DK0010307958.md).
+
+> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** 7 confirmada. Detall, cites i dubtes a la fitxa i a `docs/REGISTRE_CANVIS.md`, secció «Lot 3».
 
 A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, regla `d`, estat `fora_mostra_auditoria`. [V] Claude ha de buscar una font A/B que sustentil la prova **d** (incorporació tardana) i documentar que les fusions posteriors al 1967 són adquisicions (no una fundació nova ni una fusió entre iguals que reobri la data de fundació rellevant).
 
@@ -218,6 +222,8 @@ A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, re
 | `SE0000869646` | Boliden AB Namn-Aktier SK 2 | 2017 | N1 | r3e certificada_ceo_pendent N1; CEO a 31/10 continua ChatGPT=NV / Claude=si (o la cita del CEO no esta verificada) | [fitxa](empreses/SE0000869646.md) |
 
 #### Llista `no_certificada`
+
+> **Estat (lot 3, 19/11/2026, branca `cas/no-certificada-lot3`, proposta pendent del flux DF → Doctorat → Jordi):** treballades les 241 files `no_certificada`: 209 confirmades (CEO i etiqueta provats amb cita A/B), 0 corregides i 32 indeterminades; 0 canvis de `FounderCEO` aplicats a la base amb prova A/B. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot 3», i a cada fitxa; els dubtes de metodologia són al PR per a Doctorat. Les files continuen `no_certificada` fins que el flux les validi. La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
 
 | ISIN | Empresa | Any | Motiu | Fitxa |
 |---|---|---|---|---|
