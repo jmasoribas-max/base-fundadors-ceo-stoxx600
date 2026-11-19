@@ -4,7 +4,7 @@ Data d'aquest arbre: 19/11/2026 10:12 (CET, Europe/Madrid). Base: `dades/base_is
 
 La v8 r3 **no afegeix canvis d'etiqueta FounderCEO**. El registre que segueix és el de la v8 r1 (cites amb URL original i Wayback). La v8 r3 aplica l'extensió del supersector de juny 2023 als anys 2024-2025 per als ISIN que ja el tenien (`sector_estes_des_2023=1`) i afegeix `supersector_fix`; no canvia cap etiqueta FounderCEO. Qualsevol canvi futur de dades s'ha d'afegir aquí amb cita literal, URL i Wayback, en una branca i via PR.
 
-Proposta posterior, pendent del flux (DF, Doctorat, Jordi): vegeu al final «Lot ND-1 (proposta de Claude Code)».
+Proposta posterior, pendent del flux (DF, Doctorat, Jordi): vegeu més avall «Lot ND-1 (proposta de Claude Code)».
 
 Proposta posterior, pendent del flux (DF, Doctorat, Jordi): vegeu al final «Lot 2 (proposta de Claude Code): cites del CEO a 31/10».
 
@@ -696,7 +696,6 @@ Comptes de `FounderCEO` si s'aprova: F 343, P 5.632 (+8), ND 6 (−8), NA 31. El
 
 21. [`ND1-AT21`] [V] «The advisory board of the Company is not a statutory body under Luxembourg law and has no corporate authority.»
    Nivell A · prova: l'Advisory Board no és un òrgan estatutari ni té autoritat societària · URL: https://www.aroundtown.de/aroundtown.de/Documents/Takeover%20Offer%20TLG%20IMMOBILIEN%20AG/Documents/Aroundtown_SA_-_Securities_Prospectus_20191217.pdf · Wayback: https://web.archive.org/web/20260614094036/https://www.aroundtown.de/aroundtown.de/Documents/Takeover%20Offer%20TLG%20IMMOBILIEN%20AG/Documents/Aroundtown_SA_-_Securities_Prospectus_20191217.pdf (existent; cita no verificada a la captura) · id: `ND1-AT21`
-
 
 ---
 
