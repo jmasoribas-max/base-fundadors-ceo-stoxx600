@@ -389,9 +389,9 @@ Resultat: **8 files passen de ND a P** (B&M 2016-2021, regla d; Steinhoff 2016-2
 
 Mètode: cada cita s'ha verificat literalment per script al document baixat de la URL original (pdftotext per als PDF, text sense etiquetes per a l'HTML; espais i lligadures normalitzats). Les URL de Wayback són captures existents segons l'API de disponibilitat d'archive.org; **no s'han pogut obrir** (web.archive.org tallava la connexió des de la sessió), de manera que la cita no està verificada a la captura (`cita_verificada_a_captura=no`). No s'ha creat cap captura nova.
 
-Columnes modificades a `dades/base_isin_any_v8r3.csv` i `.xlsx` a les 8 files (seguint el que van tocar els 35 canvis de la v8 r1): `FounderCEO` (no_determinat → 0), `a_mostra_principal` (0 → 1), `founderceo_rob_r3_president_exec_com_1`, `founderceo_rob_sense_fundador_transformador` i `sense_fundador_transformador` (no_determinat → 0), `sim_canvi` (0 → 1), `sim_canvi_de` (ND), `sim_canvi_a` (P), `sim_origen_canvi` (`proposta_claude_lot_nd1`). **No s'han tocat**: `regles` (queda `cap`, com als canvis anteriors), `motiu_nd`/`detall_motiu_nd`/`tancament_nd`, els camps `sim_*` de certificació, `founderceo_rob_sense_decisions_doctorat*` ni la resta de robusteses heretades; si la proposta s'aprova, DF les ha de recalcular amb les fórmules pròpies.
+Columna modificada a `dades/base_isin_any_v8r3.csv` a les 8 files: **només `FounderCEO`** (no_determinat → 0). Correcció de DF (19/11/2026): la resta de columnes (`founderceo_rob_*`, `regles`, `motiu_nd`, `detall_motiu_nd`, `sim_*`, `a_mostra_principal`, `sense_fundador_transformador`...) queden amb el valor de `main` i les recalcula DF amb els seus scripts; el `.xlsx` és el de `main` (el regenera DF).
 
-Comptes si s'aprova: FounderCEO F 343, P 5.632 (+8), ND 6 (−8), NA 31; J14 n=5.962 (+8), F=342. La certificació no canvia.
+Comptes de `FounderCEO` si s'aprova: F 343, P 5.632 (+8), ND 6 (−8), NA 31. Els comptes de les mostres i de robustesa (J14 i altres) els recalcula DF. La certificació no canvia.
 
 | # | ISIN | Empresa | Anys (n) | Actual → proposat | Regla | Efecte esperat |
 |---|---|---|---|---|---|---|
