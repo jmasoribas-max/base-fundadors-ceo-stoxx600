@@ -9,7 +9,7 @@ Claude treballa per lots d'empreses **en una branca**, amb cita literal, URL i W
 Segueix aquest ordre, tret que Jordi o un PR ja obert indiquin una altra cosa:
 
 1. **Casos oberts.** Busca fins que trobis la font A/B. Si després d'una cerca exhaustiva i documentada no n'hi ha cap, la fila queda indeterminada i a la fitxa s'explica què s'ha buscat i on. Cap límit d'intents.
-   - Les 14 files ND.
+   - Les 14 files ND (lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`: 8 passen a P i en queden 6 ND, amb la cerca documentada a la fitxa).
    - Les 108 files `ceo_pendent`, després les 241 `no_certificada` (349 en total).
    - Casos clau: LVMH, BE Semiconductor, Aberdeen 2016, i Anders Dam (Jyske Bank; vegeu la tasca específica més avall).
 2. **Les 3890 files sense auditar** (`fora_mostra_auditoria`; recompte comprovat a la base v8 r3: **3890** [V]). Verifica el CEO i l'etiqueta empresa per empresa i afegeix les cites que faltin.
@@ -55,9 +55,9 @@ A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, re
 | 2024 | Lars Mørch | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
 | 2025 | Lars Mørch | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
 
-### 1.3 Files ND del panell (14)
+### 1.3 Files ND del panell (14 a la v8 r3; 6 després del lot ND-1)
 
-> **Estat (19/11/2026, lot ND-1, branca `cas/nd-lot1-14-files`, proposta pendent del flux DF → Doctorat → Jordi):** treballades les 14 files. Proposta ND → P per a B&M 2016-2021 (regla d) i Steinhoff 2016-2017 (regla b), amb cita literal A/B. Es mantenen ND, amb la cerca documentada a la fitxa, Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020. Correccions de DF (19/11/2026) aplicades: a la base només canvia `FounderCEO`; Steinhoff per regla b amb el naixement i la fundació de 1963 (l'operació de 1998 no és fundació nova; còpia d'agbiz marcada `font_copia_no_original`); recerca addicional d'Aroundtown (naixement de Mayo, co-CEO del 2020) i de Drillisch (operació d'octubre de 1998), que es mantenen ND. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot ND-1». La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
+> **Estat (lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`):** treballades les 14 files. B&M 2016-2021 (regla d) i Steinhoff 2016-2017 (regla b) passen de ND a P (`FounderCEO=0`), amb cita literal A/B. Es mantenen ND, amb la cerca documentada a la fitxa, Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020. Correccions de DF (19/11/2026) aplicades al PR #2: a la base només va canviar `FounderCEO`; Steinhoff per regla b amb el naixement i la fundació de 1963 (l'operació de 1998 no és fundació nova; còpia d'agbiz marcada `font_copia_no_original`); recerca addicional d'Aroundtown (naixement de Mayo, co-CEO del 2020) i de Drillisch (operació d'octubre de 1998), que es mantenen ND. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot ND-1». **Recàlcul DF (PR #4, branca `df/robustesa-nd-lot1`):** a les 8 files s'han recalculat les columnes derivades (robusteses v8r1, `a_mostra_principal` / mostra J14 n=5.962, F=342, P=5.620, marques `sim_*` i `fundacio_alternativa_1998` a Steinhoff) i s'ha alineat l'`.xlsx`. SHA del CSV `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V]; SHA de l'xlsx `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]. `regles` i `motiu_nd` es queden com a les altres files ND→P de Doctorat. La certificació no ha canviat (`sim_estat_certificacio=no_certificada`). La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
 
 | ISIN | Empresa | Any | Motiu | Detall | Fitxa |
 |---|---|---|---|---|---|
