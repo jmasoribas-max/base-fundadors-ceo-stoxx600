@@ -16,7 +16,8 @@ No s'han modificat la v8 ni la v8r1 ni la v8r2 (intactes: True).
 ## Comptes principals (han de coincidir amb la v8r2 / v8r1 / v8)
 
 - FounderCEO: F 343, P 5624, ND 14, NA 31.
-- J14: n=5954, F=342.
+- Nota posterior: després del lot ND-1 (fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`), FounderCEO és F 343, P 5632, ND 6, NA 31 i el CSV tenia SHA `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236` [V]. Després del recàlcul de robustesa del PR #4 (branca `df/robustesa-nd-lot1`), el SHA del CSV és `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V] i el de l'`.xlsx` és `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]; la mostra J14 queda n=5.962, F=342, P=5.620. Els comptes d'aquesta QA d'origen no s'han reescrit.
+- J14 (v8 r3 d'origen): n=5954, F=342.
 - Certificació: N1 740, N2 1018, doctorat 15; ceo_pendent 108; no_certificada 241; fora_mostra_auditoria 3890.
 - Discrepàncies vs v8r2: 0. FounderCEO idèntic: True. ceos idèntic: True.
 

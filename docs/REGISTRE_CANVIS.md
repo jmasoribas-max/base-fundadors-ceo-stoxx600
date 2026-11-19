@@ -1,10 +1,10 @@
 # Registre de canvis
 
-Data d'aquest arbre: 19/11/2026 10:12 (CET, Europe/Madrid). Base: `dades/base_isin_any_v8r3.csv` SHA `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V].
+Data d'aquest arbre: 19/11/2026 10:12 (CET, Europe/Madrid). Base: `dades/base_isin_any_v8r3.csv` SHA `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V] (SHA de la v8 r3 d'origen; després del lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236`; després del recàlcul de robustesa del PR #4, branca `df/robustesa-nd-lot1`, la base té SHA `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V] i l'`.xlsx` SHA `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]).
 
 La v8 r3 **no afegeix canvis d'etiqueta FounderCEO**. El registre que segueix és el de la v8 r1 (cites amb URL original i Wayback). La v8 r3 aplica l'extensió del supersector de juny 2023 als anys 2024-2025 per als ISIN que ja el tenien (`sector_estes_des_2023=1`) i afegeix `supersector_fix`; no canvia cap etiqueta FounderCEO. Qualsevol canvi futur de dades s'ha d'afegir aquí amb cita literal, URL i Wayback, en una branca i via PR.
 
-Proposta posterior, pendent del flux (DF, Doctorat, Jordi): vegeu més avall «Lot ND-1 (proposta de Claude Code)».
+Lot ND-1, fusionat a `main` el 19/11/2026 (PR #2, merge `edea674`): vegeu més avall «Lot ND-1 (proposta de Claude Code)».
 
 Proposta posterior, pendent del flux (DF, Doctorat, Jordi): vegeu al final «Lot 2 (proposta de Claude Code): cites del CEO a 31/10».
 
@@ -384,6 +384,8 @@ Notes de verificació: s'ha normalitzat espai, entitats HTML i etiquetes; als PD
 ---
 
 # Lot ND-1 (proposta de Claude Code)
+
+**Estat: fusionat a `main` el 19/11/2026 (PR #2, merge `edea674`).** A la base, `FounderCEO` passa de `no_determinat` a `0` a les 8 files de B&M 2016-2021 i Steinhoff 2016-2017, i les altres 6 es mantenen ND; després de la fusió del PR #2 la base té F 343, P 5.632, ND 6 i NA 31. **Recàlcul DF (PR #4, branca `df/robustesa-nd-lot1`):** a les 8 files s'han recalculat les columnes derivades (robusteses v8r1, `a_mostra_principal` / J14 n=5.962, F=342, P=5.620, marques `sim_*` i `fundacio_alternativa_1998` a Steinhoff) i s'ha alineat l'`.xlsx`. SHA del CSV `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V]; SHA de l'xlsx `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]. `regles` i `motiu_nd` es queden com a les altres files ND→P de Doctorat. La certificació no ha canviat (`sim_estat_certificacio=no_certificada`). El recàlcul es detalla a la secció «Recàlcul de robustesa del lot ND-1» més avall. El text històric de la proposta no s'ha reescrit.
 
 Data: 19/11/2026 (CET, Europe/Madrid). Branca `cas/nd-lot1-14-files`. Tasca: PENDENTS §1.3, les 14 files ND del panell (5 ISIN). **Proposta, no certificació**: no compta com a tercer model a cegues; la certificació queda dins el flux (DF, Doctorat, Jordi).
 
