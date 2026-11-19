@@ -16,6 +16,7 @@ No s'han modificat la v8 ni la v8r1 ni la v8r2 (intactes: True).
 ## Comptes principals (han de coincidir amb la v8r2 / v8r1 / v8)
 
 - FounderCEO: F 343, P 5624, ND 14, NA 31.
+- Nota posterior: després del lot ND-1 (fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`), la base té FounderCEO F 343, P 5632, ND 6, NA 31 i SHA `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236` [V]. Aquesta QA i l'`.xlsx` són de la v8 r3 d'origen i no s'han regenerat.
 - J14: n=5954, F=342.
 - Certificació: N1 740, N2 1018, doctorat 15; ceo_pendent 108; no_certificada 241; fora_mostra_auditoria 3890.
 - Discrepàncies vs v8r2: 0. FounderCEO idèntic: True. ceos idèntic: True.

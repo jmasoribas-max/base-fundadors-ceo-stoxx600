@@ -1,6 +1,6 @@
 # Índex d'empreses (v8 r3)
 
-1.040 ISIN del panell 2016-2025. Font: `dades/base_isin_any_v8r3.csv` SHA `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V].
+1.040 ISIN del panell 2016-2025. Font: `dades/base_isin_any_v8r3.csv` SHA `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V] (SHA de la v8 r3 d'origen; després del lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, la base té SHA `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236` [V]).
 Cada fitxa és `empreses/{ISIN}.md`.
 
 ## Per nom
