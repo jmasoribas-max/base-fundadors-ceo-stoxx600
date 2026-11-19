@@ -102,6 +102,8 @@ A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, re
 
 #### Llista `ceo_pendent`
 
+> **Estat (19/11/2026, lot 2, branca `cas/ceo-pendent-lot2`, proposta pendent del flux DF → Doctorat → Jordi):** treballades les 108 files. A totes s'ha trobat i verificat almenys una cita literal A/B, oberta a la URL original, del CEO a 31/10; el CEO de la base queda confirmat a les 108 i no es canvia cap dada ni cap columna de certificació o de robustesa. Les files continuen `certificada_ceo_pendent` fins que el flux validi les cites. Cites a cada fitxa i a `docs/REGISTRE_CANVIS.md`, secció «Lot 2»; els dubtes de metodologia (prova per interval, webs de filials, premsa sectorial, estructura dual de Bankia) són al PR per a Doctorat. La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
+
 | ISIN | Empresa | Any | Nivell | Motiu | Fitxa |
 |---|---|---|---|---|---|
 | `BE0974259880` | D'Ieteren Group S.A. Parts Sociales au Port. | 2022 | N2 | r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=NV / Claude=si (o la cita del CEO no esta verificada) | [fitxa](empreses/BE0974259880.md) |
