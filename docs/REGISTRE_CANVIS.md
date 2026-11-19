@@ -393,9 +393,43 @@ Correccions de DF (19/11/2026) aplicades en aquesta branca: a la base només can
 
 Mètode: cada cita s'ha verificat literalment per script al document baixat de la URL original (pdftotext per als PDF, text sense etiquetes per a l'HTML; espais i lligadures normalitzats). Les URL de Wayback són captures existents segons l'API de disponibilitat d'archive.org; **no s'han pogut obrir** (web.archive.org tallava la connexió des de la sessió), de manera que la cita no està verificada a la captura (`cita_verificada_a_captura=no`). No s'ha creat cap captura nova.
 
-Columna modificada a `dades/base_isin_any_v8r3.csv` a les 8 files: **només `FounderCEO`** (no_determinat → 0). Correcció de DF (19/11/2026): la resta de columnes (`founderceo_rob_*`, `regles`, `motiu_nd`, `detall_motiu_nd`, `sim_*`, `a_mostra_principal`, `sense_fundador_transformador`...) queden amb el valor de `main` i les recalcula DF amb els seus scripts; el `.xlsx` és el de `main` (el regenera DF).
+Columna modificada a `dades/base_isin_any_v8r3.csv` a les 8 files al PR #2: **només `FounderCEO`** (no_determinat → 0). El recàlcul de les columnes derivades i l'alineació del `.xlsx` és a la branca `df/robustesa-nd-lot1` (secció «Recàlcul de robustesa del lot ND-1» més avall).
 
-Comptes de `FounderCEO` si s'aprova: F 343, P 5.632 (+8), ND 6 (−8), NA 31. Els comptes de les mostres i de robustesa (J14 i altres) els recalcula DF. La certificació no canvia.
+Comptes de `FounderCEO` (ja a main després del PR #2): F 343, P 5.632 (+8), ND 6 (−8), NA 31. La certificació no canvia (`no_certificada`).
+
+
+### Recàlcul de robustesa del lot ND-1 (DF, 19/11/2026)
+
+Branca `df/robustesa-nd-lot1`, a partir de `main` `8bda957d` (PR #2 i PR #3 ja fusionats). Jordi va aprovar el recàlcul el 19/11/2026 a les 15:51 (Europe/Madrid). **La fusió d'aquest recàlcul la decideix Jordi.** No es fusiona des d'aquesta branca.
+
+A les 8 files que el PR #2 va passar de ND a P (B&M 2016-2021, regla d; Steinhoff 2016-2017, regla b), s'apliquen les fórmules de la v8 r1 i el precedent de les files ND→P per decisió de Doctorat (Mandatum, SFR, AB InBev, Orpea, Dechra). `FounderCEO` al CSV ja era 0; al `.xlsx` s'hi alinea (al PR #2 havia quedat pendent). Cap altra fila no canvia.
+
+Columnes actualitzades a les 8 files:
+
+- `founderceo_rob_r3_president_exec_com_1`, `founderceo_rob_sense_fundador_transformador`, `sense_fundador_transformador`, `founderceo_rob_sense_decisions_doctorat`: no_determinat → 0 (fórmula v8r1: no són Richemont 2017; `fundador_transformador=0`; `sim_decisio_doctorat` no és a la llista de reversió).
+- `a_mostra_principal`: 0 → 1 (regla J14: `fora_panel=0`, FounderCEO tancat, sense `dret_temporal`).
+- `sim_canvi=1`, `sim_canvi_de=ND`, `sim_canvi_a=P`, `sim_origen_canvi=decisio_doctorat`.
+- `sim_decisio_doctorat`: `lot_nd1:regla_d` (B&M) i `lot_nd1:regla_b` (Steinhoff). No es reutilitza el codi `3_steinhoff` (és a la llista de reversió de `founderceo_rob_sense_decisions_doctorat`).
+- `sim_nota` i `sim_cert_detall` actualitzats; la certificació es manté `no_certificada`.
+- Steinhoff: s'afegeix la marca `fundacio_alternativa_1998` (Doctorat 19/11/2026 11:20).
+
+No s'han modificat, amb el mateix criteri que les altres files ND→P de Doctorat: la resta de `founderceo_rob_*` (inclòs `founderceo_rob_nd_com_1`, que es queda 1, com a 28 files equivalents), `regles` (`cap`), `motiu_nd`, `detall_motiu_nd`, les instantànies `_v8` i `a_mostra_principal_v*`, i `a_mostra_nomes_certificades` (0, perquè no estan certificades). La prova per interval del lot 2 no s'ha incorporat a cap robustesa.
+
+Recomptes a les 6.012 files (abans → després):
+
+| Columna | Abans | Després |
+|---|---|---|
+| `FounderCEO` (sense canvi en aquest PR) | 0: 5.632 · 1: 343 · no_determinat: 6 · NA_sense_ceo: 31 | igual |
+| `founderceo_rob_r3_president_exec_com_1` | 0: 5.624 · 1: 344 · no_determinat: 14 · NA_sense_ceo: 30 | 0: 5.632 (+8) · 1: 344 · no_determinat: 6 (−8) · NA_sense_ceo: 30 |
+| `founderceo_rob_sense_fundador_transformador` (i `sense_fundador_transformador`, alias) | 0: 5.626 · 1: 339 · no_determinat: 16 · NA_sense_ceo: 31 | 0: 5.634 (+8) · 1: 339 · no_determinat: 8 (−8) · NA_sense_ceo: 31 |
+| `founderceo_rob_sense_decisions_doctorat` | 0: 5.623 · 1: 338 · no_determinat: 20 · NA_sense_ceo: 31 | 0: 5.631 (+8) · 1: 338 · no_determinat: 12 (−8) · NA_sense_ceo: 31 |
+| `a_mostra_principal` (mostra J14) | 1: 5.954 · 0: 58 · J14: n=5.954, F=342, P=5.612 | 1: 5.962 (+8) · 0: 50 · J14: n=5.962, F=342, P=5.620 |
+| `sim_canvi` | 0: 5.977 · 1: 35 | 0: 5.969 · 1: 43 (+8) |
+| `sim_origen_canvi` | (buit): 5.977 · decisio_doctorat: 22 · decisio_doctorat_r4: 13 | (buit): 5.969 · decisio_doctorat: 30 (+8) · decisio_doctorat_r4: 13 |
+| `founderceo_rob_nd_com_1` (sense canvi) | 0: 5.603 · 1: 378 · NA_sense_ceo: 31 | igual |
+| `sim_estat_certificacio` (sense canvi) | certificada: 1.773 · certificada_ceo_pendent: 108 · no_certificada: 241 · fora_mostra_auditoria: 3.890 | igual |
+
+Entrades noves al CSV del registre: `DF-ROB-ND1-BM` i `DF-ROB-ND1-ST` (`tipus=etiqueta`, `marca_veritat=[NV]`, sense cita nova).
 
 | # | ISIN | Empresa | Anys (n) | Actual → proposat | Regla | Efecte esperat |
 |---|---|---|---|---|---|---|
