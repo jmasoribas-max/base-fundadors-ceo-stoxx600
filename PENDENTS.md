@@ -53,6 +53,8 @@ A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, re
 
 ### 1.3 Files ND del panell (14)
 
+> **Estat (19/11/2026, lot ND-1, branca `cas/nd-lot1-14-files`, proposta pendent del flux DF → Doctorat → Jordi):** treballades les 14 files. Proposta ND → P per a B&M 2016-2021 (regla d) i Steinhoff 2016-2017 (regla b), amb cita literal A/B. Es mantenen ND, amb la cerca documentada a la fitxa, Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020. Correccions de DF (19/11/2026) aplicades: a la base només canvia `FounderCEO`; Steinhoff per regla b amb el naixement i la fundació de 1963 (l'operació de 1998 no és fundació nova; còpia d'agbiz marcada `font_copia_no_original`); recerca addicional d'Aroundtown (naixement de Mayo, co-CEO del 2020) i de Drillisch (operació d'octubre de 1998), que es mantenen ND. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot ND-1». La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
+
 | ISIN | Empresa | Any | Motiu | Detall | Fitxa |
 |---|---|---|---|---|---|
 | `DE0005545503` | Drillisch AG Inhaber-Aktien o.N. | 2017 | predecessora_no_documentada_D37d | CV de 1&1: Founded E.I.C. GmbH, integrated in the Drillisch-Group in 1998. D37d exigeix predecessora juridica o economica documentada; la integracio 1998 no esta descrita com fusio. Recomanacio ND; seria 1 si Jordi considera EIC predecessora. | [fitxa](empreses/DE0005545503.md) |
