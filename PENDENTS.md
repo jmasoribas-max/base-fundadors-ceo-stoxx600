@@ -29,7 +29,7 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 
 ### 1.1 Casos clau (inclosos a `no_certificada`, tret d'Anders Dam)
 
-> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminada; Aberdeen 2016: 1 indeterminada; BE Semiconductor: 6 confirmada. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
+> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminades; Aberdeen 2016: 1 indeterminada; BE Semiconductor: 6 confirmades. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
 
 | ISIN | Empresa | Anys | FounderCEO | Estat | Cas | Fitxa |
 |---|---|---|---|---|---|---|
@@ -41,7 +41,7 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 
 Fitxa: [empreses/DK0010307958.md](empreses/DK0010307958.md).
 
-> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** 7 confirmada. Detall, cites i dubtes a la fitxa i a `docs/REGISTRE_CANVIS.md`, secció «Lot 3».
+> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** 7 confirmades. Detall, cites i dubtes a la fitxa i a `docs/REGISTRE_CANVIS.md`, secció «Lot 3».
 
 A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, regla `d`, estat `fora_mostra_auditoria`. [V] Claude ha de buscar una font A/B que sustentil la prova **d** (incorporació tardana) i documentar que les fusions posteriors al 1967 són adquisicions (no una fundació nova ni una fusió entre iguals que reobri la data de fundació rellevant).
 
