@@ -1,86 +1,75 @@
 # Protecció de la branca `main`
 
-Aquest document són **instruccions de configuració**, no una recomanació opcional. La branca `main` ha d'estar protegida abans que el repositori s'usi a GitHub i abans que Claude Code hi treballi amb accés al repositori.
+Aquest document descriu la protecció efectiva del repositori públic `jmasoribas-max/base-fundadors-ceo-stoxx600` (CET, Europe/Madrid).
 
-Regla de govern (decisió de Jordi, 19/11/2026 9:42, CET, Europe/Madrid):
+## Per què no hi ha aprovacions obligatòries
 
-- Claude no pot tocar mai `main` (ni push, ni commit, ni fusió, ni esmena directa).
-- Claude només treballa en branques i obre pull requests.
-- **DF** valida.
-- **Doctorat** revisa la metodologia.
-- **Jordi** aprova i fusiona.
+Claude Code farà servir el compte de Jordi (`jmasoribas-max`). Els pull requests s'obriran, doncs, **en nom de Jordi**. GitHub no deixa que un compte aprovi un PR propi. Si es deixés `enforce_admins=true` amb 1 aprovació obligatòria (o amb CODEOWNERS obligatori), **ningú no podria fusionar res**.
+
+Per això la protecció de `main` (decisió de Jordi, 19/11/2026 10:22) és:
+
+- PR obligatori (no es pot fer push directe a `main`, tampoc els administradors: `enforce_admins=true`)
+- Aprovacions obligatòries: **0**
+- `require_code_owner_reviews` **desactivat** (amb un sol compte no es pot complir)
+- Cap force push i cap esborrat de `main`
+- El fitxer `.github/CODEOWNERS` es **conserva com a documentació** de quins camins no ha de tocar Claude; no s'usa com a requisit de revisió a GitHub
+
+## Quina és la barrera real
+
+Com que Claude i Jordi comparteixen el mateix compte de GitHub, la protecció de branques no pot servir d'aprovació d'un segon revisor. La barrera real és la combinació de:
+
+1. **La protecció contra el push directe a `main`** (`enforce_admins=true`, PR obligatori, sense force push ni esborrat). GitHub ja rebutja qualsevol push directe a `main`, també si ve d'una ordre no emparellada pels permisos. Claude pot empènyer les seves branques i obrir un PR; no pot empènyer ni forçar `main`.
+2. **Els permisos de Claude Code** a `.claude/settings.json` (regles `deny`): bloqueja només el `git push` cap a `main` (p. ex. `origin main` o `:main`) i el force push (`--force` / `-f`); no bloqueja el push de les branques de Claude, necessari per obrir un PR. També bloqueja `gh pr merge` i `gh api` quan l'ordre conté `merge` o `protection`, i les eines d'edició (`Edit`/`Write`) sobre `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*`, `.github/` i `.claude/`.
+3. **`CLAUDE.md`**, que li prohibeix tocar `main`, fusionar i modificar aquests mateixos camins.
+
+**Jordi és qui fusiona**, amb el botó de fusió del PR a GitHub, després que DF validi i Doctorat revisi la metodologia. Claude no ha de fusionar.
 
 ## 1. Qui pot fer què
 
 | Actor | Permès | Prohibit |
 |---|---|---|
-| Claude Code | Crear branques, fer-hi commits, executar scripts en local, obrir un PR amb resum | Qualsevol escriptura a `main`, fusionar un PR, fer push directe, forçar o esborrar `main` |
+| Claude Code | Crear branques, fer-hi commits, empènyer les seves branques, executar scripts en local, obrir un PR amb resum | Push directe a `main`, force push, fusionar un PR, esborrar `main`, editar els camins protegits |
 | DF | Validar el PR (format, comptes, `scripts/valida_pr.py`, coherència) | Fusionar a `main` |
 | Doctorat | Revisar la metodologia del PR | Fusionar a `main` |
-| Jordi | Aprovar el PR i fusionar-lo a `main` | — |
+| Jordi | Fusionar el PR a `main` amb el botó de GitHub | Push directe a `main` (la protecció també s'aplica als administradors) |
 
-Ningú no fa push directe a `main`. L'únic camí d'entrada és un PR aprovat per Jordi.
+## 2. Configuració aplicada a GitHub (protecció clàssica de `main`)
 
-## 2. Configuració a GitHub (ruleset)
+Valors efectius:
 
-Al repositori: **Settings → Rules → Rulesets → New branch ruleset**.
+- Require a pull request before merging: sí
+- Required approvals: **0**
+- Require review from Code Owners: **no**
+- Dismiss stale reviews: sí (resta activat; no hi ha aprovacions obligatòries)
+- Enforce for administrators: **sí**
+- Allow force pushes: **no**
+- Allow deletions: **no**
 
-1. **Ruleset name:** `proteccio-main`.
-2. **Enforcement status:** Active.
-3. **Target branches:** Include `main` (o el patró `refs/heads/main`).
-4. Activeu aquestes regles:
-   - **Restrict deletions** (ningú no pot esborrar `main`).
-   - **Block force pushes**.
-   - **Restrict updates** / impedir push directe a la branca (si el ruleset ho ofereix com a regla a part).
-   - **Require a pull request before merging**:
-     - Required approvals: **1**.
-     - El revisor que compta per a la fusió és el compte GitHub de **Jordi** (no s'hi posa aquí un nom d'usuari inventat: cal el compte real de Jordi).
-     - Dismiss stale pull request approvals when new commits are pushed.
-     - Do not allow bypassing the above settings (cap excepció per a administradors pel que fa al push directe).
-   - **Require status checks to pass**: afegiu la comprovació que executa `scripts/valida_pr.py` (flux `.github/workflows/valida_pr.yml`), un cop el repositori sigui a GitHub i el flux s'hagi executat almenys un cop (GitHub només deixa exigir un check que ja existeixi).
-5. **Bypass list:** buida, tret que Jordi hi posi explícitament el seu compte només per a emergències documentades. Claude, DF i Doctorat no hi han de figurar.
-6. Deseu el ruleset.
+## 3. Permisos de Claude Code (`.claude/settings.json`)
 
-Si el repositori encara usa les **Branch protection rules** clàssiques (Settings → Branches → Add branch protection rule):
+Fitxer de projecte compartit (documentació oficial: [Configure permissions](https://code.claude.com/docs/en/permissions) i [Settings files](https://code.claude.com/docs/en/settings), consultades el 19/11/2026). Sintaxi verificada [V]:
 
-- Branch name pattern: `main`.
-- Require a pull request before merging, 1 aprovació (Jordi).
-- Require status checks to pass (`valida_pr`).
-- Do not allow bypassing the above settings.
-- Restrict who can push to matching branches: cap compte, cap equip, cap integració amb permís de push directe.
-- Allow force pushes: no. Allow deletions: no.
+- Les regles van a `permissions.deny`. Les deny tenen prioritat i un `allow` no les pot anul·lar.
+- No s'usa `Bash(git push *)` (ni `Bash(git * push *)` ni `Bash(*git push *)`): aquestes regles bloquegen també el push de les branques de Claude i l'impedirien obrir un PR. Es bloqueja només el push a `main` i el force push, amb la mateixa sintaxi oficial `Bash(eina arguments*)`:
+  - `Bash(git push origin main*)`
+  - `Bash(git push * main)`
+  - `Bash(git push *:main*)`
+  - `Bash(git push --force*)`
+  - `Bash(git push -f*)`
+  - `Bash(git push * --force*)`
+  - `Bash(git push * -f*)`
+- Per als fitxers s'usa `Edit(/ruta)` i no `Write(/ruta)`: la documentació oficial diu que `Write(path)` no emparella cap crida i que `Edit` regeix també l'eina Write. El patró `/ruta` en un `.claude/settings.json` de projecte s'ancora a l'arrel del repositori.
 
-## 3. Permisos del repositori
+Limitació documentada oficialment [V]: una regla `Bash` emparella el text de l'ordre tal com la escriu Claude, no totes les formes equivalents del mateix programa. Tampoc no és una frontera de seguretat del sistema operatiu: un script que obri fitxers pel seu compte o una invocació no emparellada (p. ex. `git -C . push origin main`) pot saltar-se la regla. Això no obre `main`: GitHub ja rebutja qualsevol push directe a `main`.
 
-- El repositori és **privat**.
-- Claude Code pot tenir accés de redacció **només per crear branques i obrir PR**, no per fusionar a `main`. Si el producte ho permet, desactiveu-li el permís de fusió.
-- DF i Doctorat: accés de lectura (i comentaris / revisió al PR). No han de poder fusionar.
-- Només el compte de Jordi pot fusionar PRs a `main`.
-- No hi ha d'haver cap clau, token ni secret al repositori. Els secrets de GitHub Actions, si calen, van a Settings → Secrets, no al codi.
+## 4. CODEOWNERS (documentació)
 
-## 4. Comprovació un cop configurat
+`.github/CODEOWNERS` llista els camins que Claude no ha de modificar i els assigna a `@jmasoribas-max`. **No és un requisit de revisió a GitHub**, perquè amb un sol compte no es pot complir. Serveix de documentació i de guia, juntament amb les regles `Edit` de `.claude/settings.json`.
 
-Després d'activar la protecció, verifiqueu:
+Camins documentats: `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*.md`, `.github/` i `.claude/`.
 
-1. Un push directe a `main` és rebutjat.
-2. Un PR sense l'aprovació de Jordi no es pot fusionar.
-3. Un PR amb `scripts/valida_pr.py` en fallida no es pot fusionar (un cop el status check sigui obligatori).
-4. Claude no pot fusionar ni empènyer a `main`.
+## 5. Comprovació
 
-Aquestes instruccions s'apliquen al repositori remot públic. La branca `main` ha de quedar protegida (PR obligatori, 1 aprovació, CODEOWNERS, cap push directe ni force push, també per als administradors si GitHub ho permet).
-
-## 5. CODEOWNERS (fitxers que Claude no pot modificar)
-
-El fitxer `.github/CODEOWNERS` reserva aquests camins al compte de Jordi, perquè un PR que els toqui requereixi la seva revisió:
-
-- `scripts/`
-- `docs/METODOLOGIA.md`
-- `CLAUDE.md`
-- les regles (`docs/REGLES*.md`, si s'hi afegeixen)
-- `.github/` (inclou el mateix CODEOWNERS i els fluxos de validació)
-
-El compte GitHub de Jordi és `@jmasoribas-max`. El fitxer `.github/CODEOWNERS` ja l'hi assigna aquests camins. Al ruleset o a la protecció de `main`, cal activar l'opció que exigeixi la revisió dels code owners.
-
-Claude Code no ha de proposar canvis a aquests camins. Si un lot ho necessitès (per exemple, un ajust del validador), cal un encàrrec explícit de Jordi i el seu PR d'aprovació.
-
-La branca `main` continua amb PR obligatori, aprovació de Jordi i cap push directe (seccions 1-4).
+1. Un push directe a `main` (també fet per l'administrador) és rebutjat.
+2. Un canvi entra a `main` només si Jordi el fusiona amb el botó del PR.
+3. Claude pot fer `git push` de les seves branques. No ha d'executar `git push` cap a `main`, ni `git push --force` / `-f`, ni `gh pr merge`, ni crides `gh api` de fusió o de protecció de branques.
