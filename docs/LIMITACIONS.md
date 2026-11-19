@@ -1,6 +1,6 @@
 # Limitacions v8 r3
 
-Data: 19/11/2026 10:14 (CET, Europe/Madrid). Les xifres de FounderCEO, J14 i certificació són les mateixes que a la v8 r2 [V] (v8 r3 d'origen; després, el lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`, ha canviat els recomptes de FounderCEO: vegeu §2). El text de limitacions anterior es conserva més avall; s'hi afegeix l'extensió de sector.
+Data: 19/11/2026 10:14 (CET, Europe/Madrid). Les xifres de FounderCEO, J14 i certificació són les mateixes que a la v8 r2 [V] (v8 r3 d'origen; després, el lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`, ha canviat els recomptes de FounderCEO: vegeu §2; el recàlcul DF del PR #4 actualitza la mostra J14 a n=5.962, F=342, P=5.620). El text de limitacions anterior es conserva més avall; s'hi afegeix l'extensió de sector.
 
 ## Sector ICB estès des de juny 2023 (v8 r3)
 

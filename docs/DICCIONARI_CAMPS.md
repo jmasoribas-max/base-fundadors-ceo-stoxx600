@@ -1,7 +1,7 @@
 # Diccionari de camps v8 r3
 
 Data: 19/11/2026 10:14 (CET, Europe/Madrid). Fitxer de dades: `dades/base_isin_any_v8r3.csv` (i `.xlsx`), 6.012 files ISIN-any del panell, **158 columnes** (156 de la v8 r2 + 2 de robustesa de sector). [V]
-Unitat: ISIN-any. Clau: `isin` + `any`. SHA de la base: `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V] (SHA de la v8 r3 d'origen; després del lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, la base té SHA `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236` [V]). SHA de la taula sectorial: `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V].
+Unitat: ISIN-any. Clau: `isin` + `any`. SHA de la base: `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V] (SHA de la v8 r3 d'origen; després del lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236`; després del recàlcul de robustesa del PR #4, branca `df/robustesa-nd-lot1`, la base té SHA `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V] i l'`.xlsx` SHA `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]). SHA de la taula sectorial: `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V].
 
 Les columnes heretades no canvien de significat respecte a la v8 r2, tret que a les files 2024-2025 amb `sector_estes_des_2023=1` els camps de sector aplicat (`supersector`, `taxonomia_icb`, `supersector_icb_anterior`, `supersector_icb2020`, `any_font`, `url_font`, `estat_sector`) queden omplerts amb el supersector del PDF de juny 2023. La v8 r3 no modifica FounderCEO ni els comptes principals.
 
@@ -54,7 +54,7 @@ Les columnes `sim_*` venen de la simulació r4 v2 (sufix conservat per traçabil
 | Camp | Origen | Descripció |
 |---|---|---|
 | `FounderCEO` | v8 / v2 | Etiqueta de la v8: `1` = F (Founder-CEO), `0` = P (Professional), `no_determinat` = ND, `NA_sense_ceo` = NA. Incorpora els 35 canvis de la v2. |
-| `a_mostra_principal` | v8 / v2 | Mostra principal J14 recalculada a la v2/v8: 1 si la fila és del panell, FounderCEO és 0 o 1, i no és `dret_temporal` (D34); ND i NA queden fora (D31). Font del criteri: Jordi 15/11/2026 11:02. n=5.954, F=342. |
+| `a_mostra_principal` | v8 / v2 | Mostra principal J14 recalculada a la v2/v8: 1 si la fila és del panell, FounderCEO és 0 o 1, i no és `dret_temporal` (D34); ND i NA queden fora (D31). Font del criteri: Jordi 15/11/2026 11:02. n=5.954, F=342 (v8 r3 d'origen; després del recàlcul DF del PR #4: n=5.962, F=342, P=5.620). |
 | `a_mostra_principal_v75r2` | v8 / v2 | Valor de `a_mostra_principal` a la v75r2, conservat per traçabilitat (n=5.928, F=337). |
 | `a_mostra_nomes_certificades` | v8 / v2 | 1 si la fila és a la mostra principal i està certificada (N1, N2 o doctorat). Recalculada a la v2/v8. n=1.755, F=302. |
 | `founderceo_rob_sense_decisions_doctorat` | v8 / v2 | Robustesa: FounderCEO sense aplicar les decisions de Doctorat (recalculada a la v2/v8). Orpea 2016-21 hi entra com a P per la cita de Marian. |
@@ -79,7 +79,7 @@ Les columnes `sim_*` venen de la simulació r4 v2 (sufix conservat per traçabil
 | 3 | `nom_panell` | Nom de l'emissor al panell (heretat; pot contenir sufixos de la sèrie borsària). No s'ha netejat (vegeu typo d'Orpea 2018). |
 | 4 | `pes_pct` | Pes al panell (percentatge), heretat. |
 | 5 | `fora_panel` | 0 a totes les files d'aquesta base (només panell). A la v75r2, 1 identifica les files 2015, excloses de la v8. |
-| 6 | `a_mostra_principal` | Mostra principal J14 recalculada a la v2/v8: 1 si la fila és del panell, FounderCEO és 0 o 1, i no és `dret_temporal` (D34); ND i NA queden fora (D31). Font del criteri: Jordi 15/11/2026 11:02. n=5.954, F=342. |
+| 6 | `a_mostra_principal` | Mostra principal J14 recalculada a la v2/v8: 1 si la fila és del panell, FounderCEO és 0 o 1, i no és `dret_temporal` (D34); ND i NA queden fora (D31). Font del criteri: Jordi 15/11/2026 11:02. n=5.954, F=342 (v8 r3 d'origen; després del recàlcul DF del PR #4: n=5.962, F=342, P=5.620). |
 | 7 | `a_mostra_principal_v5` | Mostra principal de la v5, heretada, no recalculada. |
 | 8 | `a_mostra_nomes_verificats` | Mostra restringida a files amb verificació documental, heretada. |
 | 9 | `verificacio_documental` | Estat de la verificació documental heretada. |
