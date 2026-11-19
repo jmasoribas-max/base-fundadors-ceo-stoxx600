@@ -397,7 +397,7 @@ Mètode: cada cita s'ha verificat literalment per script al document baixat de l
 
 Columna modificada a `dades/base_isin_any_v8r3.csv` a les 8 files: **només `FounderCEO`** (no_determinat → 0). Correcció de DF (19/11/2026): la resta de columnes (`founderceo_rob_*`, `regles`, `motiu_nd`, `detall_motiu_nd`, `sim_*`, `a_mostra_principal`, `sense_fundador_transformador`...) queden amb el valor de `main` i les recalcula DF amb els seus scripts; el `.xlsx` és el de `main` (el regenera DF).
 
-Comptes de `FounderCEO` a la base després de la fusió (comprovats per script): F 343, P 5.632 (+8), ND 6 (−8), NA 31. Els comptes de les mostres i de robustesa (J14 i altres) els recalcula DF. La certificació no canvia.
+Comptes de `FounderCEO` si s'aprova: F 343, P 5.632 (+8), ND 6 (−8), NA 31. Els comptes de les mostres i de robustesa (J14 i altres) els recalcula DF. La certificació no canvia.
 
 | # | ISIN | Empresa | Anys (n) | Actual → proposat | Regla | Efecte esperat |
 |---|---|---|---|---|---|---|

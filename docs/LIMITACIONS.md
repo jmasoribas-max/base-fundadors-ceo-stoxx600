@@ -1,6 +1,6 @@
 # Limitacions v8 r3
 
-Data: 19/11/2026 10:14 (CET, Europe/Madrid). Les xifres de FounderCEO, J14 i certificació són les mateixes que a la v8 r2 [V]. El text de limitacions anterior es conserva més avall; s'hi afegeix l'extensió de sector.
+Data: 19/11/2026 10:14 (CET, Europe/Madrid). Les xifres de FounderCEO, J14 i certificació són les mateixes que a la v8 r2 [V] (v8 r3 d'origen; després, el lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`, ha canviat els recomptes de FounderCEO: vegeu §2). El text de limitacions anterior es conserva més avall; s'hi afegeix l'extensió de sector.
 
 ## Sector ICB estès des de juny 2023 (v8 r3)
 
@@ -48,7 +48,7 @@ Aquest senyal **no afecta cap fila certificada N1/N2 ni cap canvi d'etiqueta**:
 
 La v8 no treu aquests tancaments de l'etiqueta ni de la certificació principal; només els documenta com a limitació i com a robustesa de certificació (`sim_estat_cert_rob_cas_esp`, `sim_nivell_rob_cas_esp`).
 
-## 2. Les 14 ND restants del panell
+## 2. Les ND del panell (14 a la v8 r3; 6 després del lot ND-1)
 
 > **Actualització (lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`):** 8 d'aquestes 14 files passen a P: B&M 2016-2021 (regla d) i Steinhoff 2016-2017 (regla b). En queden 6 ND, amb la cerca documentada a cada fitxa: Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020. Cotes amb les 6: si totes passessin a 0, F = 343 (5,73 % de F+P); si totes passessin a 1, F = 349 (5,84 %) [V]. El text i la taula que segueixen són de la v8 r3 d'origen.
 
