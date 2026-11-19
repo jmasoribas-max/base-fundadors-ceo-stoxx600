@@ -2,7 +2,7 @@
 
 Panell d'empreses del doctorat sobre Founder-CEO, unitat **ISIN-any**. Aquest repositori recull la base v8 r3, el sector ICB per ISIN (amb l'extensió del supersector de juny 2023 als anys 2024-2025 per als ISIN que ja el tenien), una fitxa per empresa i la documentació de treball.
 
-**Esborrany local, pendent que Jordi el vegi abans de pujar-lo.** No s'ha creat cap repositori remot ni s'ha pujat res. Les instruccions de `CLAUDE.md` van ser aprovades per Jordi el 19/11/2026; l'extensió de sector, el mateix dia a les 10:06 (CET, Europe/Madrid).
+Repositori **públic** (decisió de Jordi, 19/11/2026 10:18, CET, Europe/Madrid): tothom el pot veure; ningú de fora no el pot modificar. La branca `main` està protegida (PR obligatori, aprovació de Jordi i CODEOWNERS; cap push directe ni force push). Les instruccions de `CLAUDE.md` van ser aprovades per Jordi el 19/11/2026; l'extensió de sector, el mateix dia a les 10:06.
 
 ## Xifres principals [V]
 

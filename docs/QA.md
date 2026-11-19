@@ -54,3 +54,7 @@ Comprovacions estructurals (1.040 fitxes, índex, enllaços, valors, capçaleres
 | Comptes principals vs v8r2 | 0 discrepàncies [V] |
 
 La branca `main` d'aquest arbre local recull el commit d'instruccions aprovades i de la v8 r3. A GitHub, `main` s'ha de protegir abans d'usar Claude Code (vegeu `docs/PROTECCIO_BRANCA_MAIN.md`). Claude no pot tocar `main`.
+
+## Revisió prèvia a la publicació (19/11/2026 10:18 CET, Europe/Madrid)
+
+S'ha tornat a revisar l'arbre abans del push públic: cap secret ni clau, cap correu personal, cap ruta de PC local, cap PDF ni fitxer de text complet d'una font amb drets. Les cites del registre i de les fitxes són literals curtes amb URL. El camp més llarg de cita a la base (`font_classificacio_cita`) fa 437 caràcters. Les mencions a `IA_S3` als documents només afirmen que no s'ha fet servir cap clau.
