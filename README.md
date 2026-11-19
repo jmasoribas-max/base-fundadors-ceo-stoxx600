@@ -16,6 +16,8 @@ Repositori **públic** (decisió de Jordi, 19/11/2026 10:18, CET, Europe/Madrid)
   - `ceo_pendent` **108**;
   - `no_certificada` **241**.
 
+**Proposta en curs (lot ND-1, 19/11/2026, pendent del flux):** a la branca `cas/nd-lot1-14-files` 8 files passen de ND a P (B&M 2016-2021 i Steinhoff 2016-2017). Si s'aprova, les xifres queden: FounderCEO F 343, P 5.632, ND 6, NA 31; J14 n=5.962, F=342; la certificació no canvia. Les xifres de dalt són les de la v8 r3 d'origen. Detall a `docs/REGISTRE_CANVIS.md`.
+
 La v8 r3 no canvia cap d'aquestes xifres respecte a la v8 r2 / v8 r1: només aplica l'extensió de sector aprovada i afegeix les columnes de robustesa `sector_estes_des_2023` i `supersector_fix`.
 
 Valors de FounderCEO a la base: `1` (F), `0` (P), `no_determinat` (ND), `NA_sense_ceo` (NA).

@@ -4,6 +4,8 @@ Data d'aquest arbre: 19/11/2026 10:12 (CET, Europe/Madrid). Base: `dades/base_is
 
 La v8 r3 **no afegeix canvis d'etiqueta FounderCEO**. El registre que segueix és el de la v8 r1 (cites amb URL original i Wayback). La v8 r3 aplica l'extensió del supersector de juny 2023 als anys 2024-2025 per als ISIN que ja el tenien (`sector_estes_des_2023=1`) i afegeix `supersector_fix`; no canvia cap etiqueta FounderCEO. Qualsevol canvi futur de dades s'ha d'afegir aquí amb cita literal, URL i Wayback, en una branca i via PR.
 
+Proposta posterior, pendent del flux (DF, Doctorat, Jordi): vegeu al final «Lot ND-1 (proposta de Claude Code)».
+
 ---
 
 # Registre de canvis v8 r1
@@ -376,3 +378,168 @@ Detall:
 - idx 45: existent; cita_verificada=si; https://web.archive.org/web/20230315060724/https://www.bellwayplc.co.uk/media/1175/annual-report-nov-2015.pdf — https://www.bellwayplc.co.uk/media/1175/annual-report-nov-2015.pdf
 
 Notes de verificació: s'ha normalitzat espai, entitats HTML i etiquetes; als PDF s'ha fet servir pdftotext (i `-layout` si calia). La cita de Bellway 2015 és un artefacte de lectura horitzontal de tres columnes; la cadena literal del registre apareix amb `pdftotext -layout`. El snapshot XBRL d'Orpea 2021 arriba gzip; s'ha descomprimit abans de verificar. No s'ha llegit ni utilitzat cap clau `IA_S3`.
+
+---
+
+# Lot ND-1 (proposta de Claude Code)
+
+Data: 19/11/2026 (CET, Europe/Madrid). Branca `cas/nd-lot1-14-files`. Tasca: PENDENTS §1.3, les 14 files ND del panell (5 ISIN). **Proposta, no certificació**: no compta com a tercer model a cegues; la certificació queda dins el flux (DF, Doctorat, Jordi).
+
+Resultat: **8 files passen de ND a P** (B&M 2016-2021, regla d; Steinhoff 2016-2017, regla b) i **6 files es mantenen ND** amb la cerca documentada (Drillisch 2017, Sopra Steria 2025, Aroundtown 2017-2020).
+
+Mètode: cada cita s'ha verificat literalment per script al document baixat de la URL original (pdftotext per als PDF, text sense etiquetes per a l'HTML; espais i lligadures normalitzats). Les URL de Wayback són captures existents segons l'API de disponibilitat d'archive.org; **no s'han pogut obrir** (web.archive.org tallava la connexió des de la sessió), de manera que la cita no està verificada a la captura (`cita_verificada_a_captura=no`). No s'ha creat cap captura nova.
+
+Columnes modificades a `dades/base_isin_any_v8r3.csv` i `.xlsx` a les 8 files (seguint el que van tocar els 35 canvis de la v8 r1): `FounderCEO` (no_determinat → 0), `a_mostra_principal` (0 → 1), `founderceo_rob_r3_president_exec_com_1`, `founderceo_rob_sense_fundador_transformador` i `sense_fundador_transformador` (no_determinat → 0), `sim_canvi` (0 → 1), `sim_canvi_de` (ND), `sim_canvi_a` (P), `sim_origen_canvi` (`proposta_claude_lot_nd1`). **No s'han tocat**: `regles` (queda `cap`, com als canvis anteriors), `motiu_nd`/`detall_motiu_nd`/`tancament_nd`, els camps `sim_*` de certificació, `founderceo_rob_sense_decisions_doctorat*` ni la resta de robusteses heretades; si la proposta s'aprova, DF les ha de recalcular amb les fórmules pròpies.
+
+Comptes si s'aprova: FounderCEO F 343, P 5.632 (+8), ND 6 (−8), NA 31; J14 n=5.962 (+8), F=342. La certificació no canvia.
+
+| # | ISIN | Empresa | Anys (n) | Actual → proposat | Regla | Efecte esperat |
+|---|---|---|---|---|---|---|
+| 12 | `LU1072616219` | B & M Europ.Value Retail S.A. Actions | 2016-2021 (6) | ND → P | d | no_certificada, dins el flux |
+| 13 | `NL0011375019` | Steinhoff Internatl Hldgs N.V. Aandelen op | 2016-2017 (2) | ND → P | b | no_certificada, dins el flux |
+| 14 | `DE0005545503` | Drillisch AG Inhaber-Aktien o.N. | 2017 (1) | ND → ND (sense canvi) | cap | sense efecte |
+| 15 | `FR0000050809` | Sopra Steria Group S.A. Actions Port. EO 1 | 2025 (1) | ND → ND (sense canvi) | cap | sense efecte |
+| 16 | `LU1673108939` | Aroundtown SA | 2017-2020 (4) | ND → ND (sense canvi) | cap | sense efecte |
+
+### B & M Europ.Value Retail S.A. Actions (`LU1072616219`)
+
+- isin i anys: `LU1072616219`, 2016-2021 (n=6). CEO: Simon Arora.
+- FounderCEO actual → proposat: **no_determinat (ND) → 0 (P)**.
+- Regla aplicada: d.
+- Justificació: Regla d (incorporació tardana): l'emissor situa la fundació del negoci el 1978 [`ND1-BM1`] i l'entrada de Simon Arora el desembre de 2004, per compra de l'empresa [`ND1-BM2`, `ND1-BM3`], amb ocupadors anteriors citats [`ND1-BM4`]. Una compra no és una fundació nova (METODOLOGIA §2, prova d). No s'ha trobat cap cita de l'emissor que l'anomeni fundador de B&M (D37) als documents oberts (pàgina d'història, informes anuals 2022 i 2023, convocatòries de junta 2016-2021; el fullet de la sortida a borsa de 2014 no s'ha localitzat a la web de l'emissor): l'única menció «co-founder» es refereix a Orient Sourcing Services, una altra entitat [`ND1-BM4`]. La via FT ja va ser descartada per Jordi (14/11/2026 18:33) i no es reobre.
+- Efecte esperat sobre la certificació: no_certificada (sense canvi d'estat): la proposta no és un tercer model; la certificació queda dins el flux (DF, Doctorat, Jordi).
+- Cites:
+
+1. [`ND1-BM1`] [V] «The business was founded in 1978 with the first store opening in Blackpool.»
+   Nivell A · prova: fundació rellevant (1978) · URL: https://www.bandmretail.com/about-us/our-history · Wayback: https://web.archive.org/web/20251206084922/https://www.bandmretail.com/about-us/our-history (existent; cita no verificada a la captura) · id: `ND1-BM1`
+
+2. [`ND1-BM2`] [V] «B&M was acquired by Simon and Bobby Arora in December 2004 from Phildrew Investments»
+   Nivell A · prova: entrada per compra (desembre 2004) · URL: https://www.bandmretail.com/about-us/our-history · Wayback: https://web.archive.org/web/20251206084922/https://www.bandmretail.com/about-us/our-history (existent; cita no verificada a la captura) · id: `ND1-BM2`
+
+3. [`ND1-BM3`] [V] «Simon was Chief Executive Officer of the B&M Group from 1 December 2004 until the appointment of Alex Russo to that role on 26 September 2022.»
+   Nivell A · prova: CEO 2016-2021 (mandat 1/12/2004-26/9/2022) · URL: https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/annual-report-2023.pdf · Wayback: https://web.archive.org/web/20260310214905/https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/annual-report-2023.pdf (existent; cita no verificada a la captura) · id: `ND1-BM3`
+
+4. [`ND1-BM4`] [V] «Simon was a co-founder and Managing Director of the wholesale homeware business, Orient Sourcing Services, before acquiring B&M jointly with his family. Prior to the acquisition of B&M, Simon held various positions with McKinsey & Co., 3i Group plc and Barclays Bank plc.»
+   Nivell A · prova: ocupador anterior · URL: https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/annual-report-2023.pdf · Wayback: https://web.archive.org/web/20260310214905/https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/annual-report-2023.pdf (existent; cita no verificada a la captura) · id: `ND1-BM4`
+
+5. [`ND1-BM5`] [V] «Simon has been Chief Executive Officer of the B&M Group since 1 December 2004.»
+   Nivell A · prova: CEO (document contemporani, 2019) · URL: https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/2019/notice-of-agm-2019.pdf · Wayback: https://web.archive.org/web/20260310220456/https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/2019/notice-of-agm-2019.pdf (existent; cita no verificada a la captura) · id: `ND1-BM5`
+
+6. [`ND1-BM6`] [V] «Simon has been Chief Executive Officer of the B&M Group since 1 December 2004.»
+   Nivell A · prova: CEO (document contemporani, 2020) · URL: https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/2020/notice-of-agm-2020.pdf · Wayback: https://web.archive.org/web/20260310213333/https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/2020/notice-of-agm-2020.pdf (existent; cita no verificada a la captura) · id: `ND1-BM6`
+
+7. [`ND1-BM7`] [V] «Simon has been Chief Executive Officer of the B&M Group since 1 December 2004.»
+   Nivell A · prova: CEO (document contemporani, 2021) · URL: https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/2021/360930-b-and-m-notice-of-agm-web.pdf · Wayback: https://web.archive.org/web/20260310221611/https://www.bandmretail.com/~/media/Files/B/Bmstores-Corp/documents/investors/company-meetings/agm/2021/360930-b-and-m-notice-of-agm-web.pdf (existent; cita no verificada a la captura) · id: `ND1-BM7`
+
+
+### Steinhoff Internatl Hldgs N.V. Aandelen op (`NL0011375019`)
+
+- isin i anys: `NL0011375019`, 2016-2017 (n=2). CEO: Markus Jooste.
+- FounderCEO actual → proposat: **no_determinat (ND) → 0 (P)**.
+- Regla aplicada: b.
+- Justificació: Regla b (edat): Markus Jooste va néixer el gener de 1961 [`ND1-ST1`] i la font situa l'origen del negoci del fundador Bruno Steinhoff el 1963 [`ND1-ST2`]; la diferència és inferior a 18 anys (també amb l'any 1964 que consta a la base). La cita de l'operació que faltava (Doctorat 3) és [`ND1-ST3`] i [`ND1-ST4`]: el 1997 Bruno Steinhoff compra el 35% de Gommagomma i el 1998 Steinhoff Europe i Steinhoff Africa (abans Gommagomma) consoliden operacions i el grup surt a borsa; la font no la descriu com una fundació nova. A més, la mateixa font afirma directament que Jooste no era el fundador [`ND1-ST5`]. Si Doctorat considerés rellevant l'operació de 1998 com a fundació nova, la regla b no s'aplicaria i caldria decidir amb [`ND1-ST5`]; per això es deixa a la seva revisió.
+- Efecte esperat sobre la certificació: no_certificada (sense canvi d'estat); aporta la cita de l'operació de 1997-1998 que la nota «Doctorat 3 no aplicada» declarava pendent. La certificació queda dins el flux.
+- Cites:
+
+1. [`ND1-ST1`] [V] «Date of birth January 1961»
+   Nivell A · prova: naixement de Markus Jooste (gener 1961) · URL: https://find-and-update.company-information.service.gov.uk/officers/MRjrIvkfM8rqVRz5xVuOkLXYQ-8/appointments · Wayback: https://web.archive.org/web/20260105045936/https://find-and-update.company-information.service.gov.uk/officers/MRjrIvkfM8rqVRz5xVuOkLXYQ-8/appointments (existent; cita no verificada a la captura) · id: `ND1-ST1`
+
+2. [`ND1-ST2`] [V] «Steinhoff first became involved in sourcing and selling household goods in 1963 when its founder, an enterprising West German by the name of Bruno Steinhoff,»
+   Nivell B · prova: fundació i fundador (Bruno Steinhoff, 1963) · URL: https://agbiz.co.za/uploads/AgbizNews18/180803_Steinhoff-Saga.pdf · Wayback: https://web.archive.org/web/20261012052927/https://agbiz.co.za/uploads/AgbizNews18/180803_Steinhoff-Saga.pdf (existent; cita no verificada a la captura) · id: `ND1-ST2`
+
+3. [`ND1-ST3`] [V] «Not long afterwards, in 1997, Bruno Steinhoff acquired a 35 percent stake in Gommagomma from Daun & Cie.»
+   Nivell B · prova: operació 1997: Steinhoff compra el 35% de Gommagomma · URL: https://agbiz.co.za/uploads/AgbizNews18/180803_Steinhoff-Saga.pdf · Wayback: https://web.archive.org/web/20261012052927/https://agbiz.co.za/uploads/AgbizNews18/180803_Steinhoff-Saga.pdf (existent; cita no verificada a la captura) · id: `ND1-ST3`
+
+4. [`ND1-ST4`] [V] «by 1998 Steinhoff Europe and Steinhoff Africa (formerly Gommagomma) had consolidated their operations. Steinhoff International Holdings listed on the JSE in 1998.»
+   Nivell B · prova: operació 1998: consolidació i sortida a borsa · URL: https://www.businessday.co.za/rdm/business/2018-06-15-the-steinhoff-saga-part-one-the-making-of-a-corporate-giant/ · Wayback: https://web.archive.org/web/20261006080717/https://www.businessday.co.za/rdm/business/2018-06-15-the-steinhoff-saga-part-one-the-making-of-a-corporate-giant/ (existent; cita no verificada a la captura) · id: `ND1-ST4`
+
+5. [`ND1-ST5`] [V] «Although Jooste was not the founder of the company, he behaved as if Steinhoff and its assets belonged to him personally.»
+   Nivell B · prova: afirmació directa de no fundador · URL: https://agbiz.co.za/uploads/AgbizNews18/180803_Steinhoff-Saga.pdf · Wayback: https://web.archive.org/web/20261012052927/https://agbiz.co.za/uploads/AgbizNews18/180803_Steinhoff-Saga.pdf (existent; cita no verificada a la captura) · id: `ND1-ST5`
+
+6. [`ND1-ST6`] [V] «Bruno and Daun had been acquaintances in Germany and Jooste was Daun’s CEO.»
+   Nivell B · prova: Jooste, directiu de Daun (Gommagomma) abans de l'operació · URL: https://www.businessday.co.za/rdm/business/2018-06-15-the-steinhoff-saga-part-one-the-making-of-a-corporate-giant/ · Wayback: https://web.archive.org/web/20261006080717/https://www.businessday.co.za/rdm/business/2018-06-15-the-steinhoff-saga-part-one-the-making-of-a-corporate-giant/ (existent; cita no verificada a la captura) · id: `ND1-ST6`
+
+
+### Drillisch AG Inhaber-Aktien o.N. (`DE0005545503`)
+
+- isin i anys: `DE0005545503`, 2017 (n=1). CEO: Vlasios Choulidis.
+- FounderCEO actual → proposat: **no_determinat (ND) → no_determinat (sense canvi)**.
+- Regla aplicada: cap (indeterminat).
+- Justificació: Es manté ND. CEO del 31/10/2017 confirmat [`ND1-DR1`, `ND1-DR2`]. Cap prova de «no» s'aplica: b no (naixement 1958 al mateix CV); d no, perquè la cronologia de l'emissor situa la fundació de Drillisch AG el 1997 [`ND1-DR5`] i la integració del grup Alphatel l'octubre de 1998 [`ND1-DR7`], menys de 3 anys després; a i e no. Tampoc hi ha prova de «sí»: el CV diu que va fundar E.I.C. GmbH (incl. grup Alphatel), integrada al grup Drillisch el 1998 [`ND1-DR3`], després de la sortida a borsa [`ND1-DR6`]; cap document obert descriu E.I.C./Alphatel com a predecessora jurídica o econòmica de la cotitzada ni l'anomena fundador de Drillisch (D37).
+- Cerca feta: Oberts i llegits: CV oficial en alemany i en anglès (imagepool.1und1.ag), informe anual 2003 de Drillisch (cronologia «Unternehmenshistorie»), comptes anuals 2016 de Drillisch AG, informe anual 2017 en anglès. Cerca web (pista, no evidència): «Drillisch AG Geschichte 1997 Alphatel Choulidis», perfils d'agregadors (font C, descartats). No s'ha trobat el fullet de la sortida a borsa de 1998 ni cap document del registre mercantil sobre l'operació d'octubre de 1998 (aportació, compra o fusió); és el document que podria reobrir el cas.
+- Cites:
+
+1. [`ND1-DR1`] [V] «Mitglied des Vorstands und bis zum 31.12.2017 Vorstandssprecher der Drillisch Aktiengesellschaft, Maintal»
+   Nivell A · prova: CEO el 31/10/2017 (portaveu del consell fins al 31/12/2017) · URL: https://imagepool.1und1.ag/v2/download/HV/2018/2018-03-05-Lebenslauf_Vlasios-Choulidis_Drillisch-DEU.pdf · Wayback: https://web.archive.org/web/20240615184021/https://imagepool.1und1.ag/v2/download/HV/2018/2018-03-05-Lebenslauf_Vlasios-Choulidis_Drillisch-DEU.pdf (existent; cita no verificada a la captura) · id: `ND1-DR1`
+
+2. [`ND1-DR2`] [V] «Mr Ralph Dommermuth was appointed as CEO, effective per 1 January 2018.»
+   Nivell A · prova: el successor comença l'1/1/2018 · URL: https://imagepool.1und1.ag/v2/download/berichte/2018-03-22_Drillisch_GB_2017_ENGLISH.pdf · Wayback: https://web.archive.org/web/20250908144015/https://imagepool.1und1.ag/v2/download/berichte/2018-03-22_Drillisch_GB_2017_ENGLISH.pdf (existent; cita no verificada a la captura) · id: `ND1-DR2`
+
+3. [`ND1-DR3`] [V] «Gründung und Leitung der E.I.C. GmbH (inkl. Alphatel-Gruppe), die im Jahr 1998 in den Drillisch-Konzern integriert wurde»
+   Nivell A · prova: fundador d'E.I.C./Alphatel, integrada a Drillisch el 1998 · URL: https://imagepool.1und1.ag/v2/download/HV/2018/2018-03-05-Lebenslauf_Vlasios-Choulidis_Drillisch-DEU.pdf · Wayback: https://web.archive.org/web/20240615184021/https://imagepool.1und1.ag/v2/download/HV/2018/2018-03-05-Lebenslauf_Vlasios-Choulidis_Drillisch-DEU.pdf (existent; cita no verificada a la captura) · id: `ND1-DR3`
+
+4. [`ND1-DR4`] [V] «Honeywell Deutschland GmbH (Vertriebsingenieur für Gebäudeleitsysteme)»
+   Nivell A · prova: ocupador anterior (1987-1991) · URL: https://imagepool.1und1.ag/v2/download/HV/2018/2018-03-05-Lebenslauf_Vlasios-Choulidis_Drillisch-DEU.pdf · Wayback: https://web.archive.org/web/20240615184021/https://imagepool.1und1.ag/v2/download/HV/2018/2018-03-05-Lebenslauf_Vlasios-Choulidis_Drillisch-DEU.pdf (existent; cita no verificada a la captura) · id: `ND1-DR4`
+
+5. [`ND1-DR5`] [V] «Gründung der Drillisch AG»
+   Nivell A · prova: cronologia de l'emissor: 1997, fundació de Drillisch AG · URL: https://imagepool.1und1.ag/download/berichte/2003-GB-Konzern220304.pdf · Wayback: https://web.archive.org/web/20240615190827/https://imagepool.1und1.ag/download/berichte/2003-GB-Konzern220304.pdf (existent; cita no verificada a la captura) · id: `ND1-DR5`
+
+6. [`ND1-DR6`] [V] «Börsengang am 22.04.1998»
+   Nivell A · prova: cronologia de l'emissor: sortida a borsa · URL: https://imagepool.1und1.ag/download/berichte/2003-GB-Konzern220304.pdf · Wayback: https://web.archive.org/web/20240615190827/https://imagepool.1und1.ag/download/berichte/2003-GB-Konzern220304.pdf (existent; cita no verificada a la captura) · id: `ND1-DR6`
+
+7. [`ND1-DR7`] [V] «Integration der AlphatelGruppe»
+   Nivell A · prova: cronologia de l'emissor: 10/98, integració del grup Alphatel · URL: https://imagepool.1und1.ag/download/berichte/2003-GB-Konzern220304.pdf · Wayback: https://web.archive.org/web/20240615190827/https://imagepool.1und1.ag/download/berichte/2003-GB-Konzern220304.pdf (existent; cita no verificada a la captura) · id: `ND1-DR7`
+
+
+### Sopra Steria Group S.A. Actions Port. EO 1 (`FR0000050809`)
+
+- isin i anys: `FR0000050809`, 2025 (n=1). CEO: Xavier Pecquet.
+- FounderCEO actual → proposat: **no_determinat (ND) → no_determinat (sense canvi)**.
+- Regla aplicada: cap (indeterminat).
+- Justificació: Es manté ND. CEO del 31/10/2025 confirmat: Xavier Pecquet, nomenat Directeur Général el 8/10/2025 fins a l'arribada del successor, que comença el 2/2/2026 [`ND1-SS1`, `ND1-SS2`, `ND1-SS3`, `ND1-SS6`] (un CEO interí compta, R2). Cap prova de «no» s'aplica: b no (naixement 1950 a la base; Sopra 1968 [`ND1-SS4`] i Steria 1969 [`ND1-SS5`]); a no, perquè l'emissor parla de «He and his associates» i de «co-founded» sense donar una llista tancada; d no, perquè no s'ha trobat cap document A/B amb la data d'incorporació de Pecquet a Sopra ni el seu ocupador anterior. Tampoc hi ha cap cita que l'anomeni fundador.
+- Cerca feta: Oberts i llegits: Document d'enregistrement universel 2025 (versió anglesa, soprasteria.com i còpia a live.euronext.com), comunicat de governança del 8/10/2025, comunicat de nomenament del 12/12/2025, pàgina de governança de soprasteria.com, fitxa personal a soprasteria.fr (sense biografia), La Lettre des Masters núm. 55 (març 2017; presenta Aeroline, sense dates de carrera de Pecquet). Cerca web (pista): «Xavier Pecquet Sopra joined / a rejoint / entré chez Sopra»; només agregadors i registres (font C). Falta: un document de l'emissor (document de référence antic o comunicat) amb l'any d'entrada a Sopra i l'ocupador anterior.
+- Cites:
+
+1. [`ND1-SS1`] [V] «appointed Xavier Pecquet as Chief Executive Officer until the arrival of a new Chief Executive Officer recruited from outside the Group.»
+   Nivell A · prova: CEO el 31/10/2025 · URL: https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf · Wayback: https://web.archive.org/web/20260321043614/https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf (existent; cita no verificada a la captura) · id: `ND1-SS1`
+
+2. [`ND1-SS2`] [V] «Xavier Pecquet was appointed Chief Executive Officer with effect from 8 October 2025.»
+   Nivell A · prova: inici del mandat (8/10/2025) · URL: https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf · Wayback: https://web.archive.org/web/20260321043614/https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf (existent; cita no verificada a la captura) · id: `ND1-SS2`
+
+3. [`ND1-SS3`] [V] «Sopra Steria’s Board of Directors duly noted Cyril Malargé’s decision to pursue a new opportunity and to step down as Chief Executive Officer.»
+   Nivell A · prova: sortida del CEO anterior (8/10/2025) · URL: https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/cp-fi/sopra-steria_governance_08102025_en_def2.pdf?sfvrsn=670a37db_6 · Wayback: https://web.archive.org/web/20260122230142/https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/cp-fi/sopra-steria_governance_08102025_en_def2.pdf?sfvrsn=670a37db_6 (existent; cita no verificada a la captura) · id: `ND1-SS3`
+
+4. [`ND1-SS4`] [V] «He and his associates founded Sopra Group in 1968, and he chairs the Board of Directors.»
+   Nivell A · prova: fundació de Sopra (Pierre Pasquier i socis, 1968; llista no tancada) · URL: https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf · Wayback: https://web.archive.org/web/20260321043614/https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf (existent; cita no verificada a la captura) · id: `ND1-SS4`
+
+5. [`ND1-SS5`] [V] «Éric Hayat co-founded Groupe Steria in 1969 and served as its Deputy Chief Executive Officer.»
+   Nivell A · prova: fundació de Steria (1969; llista no tancada) · URL: https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf · Wayback: https://web.archive.org/web/20260321043614/https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/rapports-financiers/sopra_steria_urd_2025_en_assemblage_opti.pdf (existent; cita no verificada a la captura) · id: `ND1-SS5`
+
+6. [`ND1-SS6`] [V] «He will take up his new role on 2 February 2026.»
+   Nivell A · prova: el successor (Rajesh Krishnamurthy) comença el 2/2/2026 · URL: https://www.soprasteria.com/docs/librariesprovider2/sopra-steria-corporate/finance/cp-fi/sopra-steria_-ceo-announcement_eng.pdf · Wayback: `pendent_verificacio_externa` · id: `ND1-SS6`
+
+
+### Aroundtown SA (`LU1673108939`)
+
+- isin i anys: `LU1673108939`, 2017-2020 (n=4). CEO: Shmuel Mayo.
+- FounderCEO actual → proposat: **no_determinat (ND) → no_determinat (sense canvi)**.
+- Regla aplicada: cap (indeterminat).
+- Justificació: Es manté ND. CEO confirmat fins al 25/11/2020 [`ND1-AT5`]. Cap prova de «no» s'aplica amb les regles vigents: d no, perquè Mayo és a la direcció des del 2006 [`ND1-AT1`], només 2 anys després de la constitució del 2004 [`ND1-AT3`], encara que l'emissor cita l'ocupador anterior [`ND1-AT2`]; a no, perquè l'emissor anomena Yakir Gabay «Founder of the Group in 2004» [`ND1-AT4`] però no presenta cap llista de fundadors com a completa; b, c i e no. Tampoc hi ha cap cita que anomeni Mayo fundador. Es deixa a Doctorat la qüestió de si un fundador únic anomenat per l'emissor equival a una llista tancada (prova a); aquí no s'ha forçat.
+- Cerca feta: Oberts i llegits: informes anuals 2016, 2017, 2018, 2019 i 2020 d'Aroundtown, informe de remuneracions 2020, presentacions de resultats Q1 2017, Q3 2017, FY 2017, FY 2018 i FY 2019. Cerca web (pista): fullet d'admissió i biografies; només agregadors (font C). No s'ha trobat el fullet d'admissió a Prime Standard (2017) a la web de l'emissor (la pàgina de fullets retorna 404).
+- Cites:
+
+1. [`ND1-AT1`] [V] «Mr. Mayo is since 2006 in the management of Aroundtown and its subsidiaries»
+   Nivell A · prova: incorporació de Shmuel Mayo (2006) · URL: https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/Q1%202017%20Financials/q1_2017-financials-presentation.pdf · Wayback: https://web.archive.org/web/20250208224250/https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/Q1%202017%20Financials/q1_2017-financials-presentation.pdf (existent; cita no verificada a la captura) · id: `ND1-AT1`
+
+2. [`ND1-AT2`] [V] «Previously, Mr. Mayo was the CEO of the Dankner Group»
+   Nivell A · prova: ocupador anterior · URL: https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/Q1%202017%20Financials/q1_2017-financials-presentation.pdf · Wayback: https://web.archive.org/web/20250208224250/https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/Q1%202017%20Financials/q1_2017-financials-presentation.pdf (existent; cita no verificada a la captura) · id: `ND1-AT2`
+
+3. [`ND1-AT3`] [V] «Aroundtown Property Holdings PLC (“the Company”) was incorporated on May 7, 2004 as a private limited liability company under the Cyprus Companies Law, Cap. 113.»
+   Nivell A · prova: constitució (7/5/2004) · URL: https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/FY%202016%20Financials/at_fy_2016.pdf · Wayback: https://web.archive.org/web/20251209043547/https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/FY%202016%20Financials/at_fy_2016.pdf (existent; cita no verificada a la captura) · id: `ND1-AT3`
+
+4. [`ND1-AT4`] [V] «Advisory Board Deputy Chairman. Founder of the Group in 2004.»
+   Nivell A · prova: l'emissor anomena Yakir Gabay fundador del grup (2004); no és una llista declarada completa · URL: https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/FY%202018%20Financials/AT_FY_2018_financial_presentation.pdf · Wayback: https://web.archive.org/web/20250208220734/https://www.aroundtown.de/aroundtown.de/Data_Objects/Downloads/Financial_Reports/FY%202018%20Financials/AT_FY_2018_financial_presentation.pdf (existent; cita no verificada a la captura) · id: `ND1-AT4`
+
+5. [`ND1-AT5`] [V] «Mr. Shmuel Mayo stepped down from his position as CEO on November 25, 2020.»
+   Nivell A · prova: fi del mandat (25/11/2020): CEO el 31/10/2020 · URL: https://www.aroundtown.de/aroundtown.de/Data_Objects/General%20Meetings/AGM%202021/2020_AT_Remuneration_Report.pdf · Wayback: https://web.archive.org/web/20251110192339/https://www.aroundtown.de/aroundtown.de/Data_Objects/General%20Meetings/AGM%202021/2020_AT_Remuneration_Report.pdf (existent; cita no verificada a la captura) · id: `ND1-AT5`
+
