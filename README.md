@@ -9,16 +9,16 @@ Repositori **públic** (decisió de Jordi, 19/11/2026 10:18, CET, Europe/Madrid)
 - **6.012** files ISIN-any del panell (`fora_panel=0`).
 - **1.040** ISIN.
 - Anys **2016-2025**.
-- FounderCEO: **F 343**, **P 5.624**, **ND 14**, **NA 31** (F és el 5,75 % de F+P).
-- Mostra principal J14 (panell, FounderCEO 0 o 1, no `dret_temporal`): **n=5.954**, **F=342**.
+- FounderCEO (base actual, després del lot ND-1): **F 343**, **P 5.632**, **ND 6**, **NA 31** (F és el 5,74 % de F+P). A la v8 r3 d'origen: P 5.624 i ND 14 (F 5,75 %).
+- Mostra principal J14 (panell, FounderCEO 0 o 1, no `dret_temporal`): **n=5.954**, **F=342** (v8 r3 d'origen; DF l'ha de recalcular després del lot ND-1).
 - Certificació (àmbit de l'auditoria, 2.122 files; la resta del panell, **3.890**, és `fora_mostra_auditoria`):
   - certificades: **N1 740**, **N2 1.018**, **doctorat 15** (total **1.773**);
   - `ceo_pendent` **108**;
   - `no_certificada` **241**.
 
-**Proposta en curs (lot ND-1, 19/11/2026, pendent del flux):** a la branca `cas/nd-lot1-14-files` 8 files passen de ND a P (B&M 2016-2021 i Steinhoff 2016-2017). Si s'aprova, `FounderCEO` queda: F 343, P 5.632, ND 6, NA 31 (només canvia aquesta columna; les mostres i robusteses les recalcula DF); la certificació no canvia. Les xifres de dalt són les de la v8 r3 d'origen. Detall a `docs/REGISTRE_CANVIS.md`.
+**Lot ND-1, fusionat a `main` el 19/11/2026 (PR #2, merge `edea674`):** 8 files passen de ND a P (B&M 2016-2021 i Steinhoff 2016-2017); a la base només ha canviat `FounderCEO`, i en queden 6 ND (Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020) amb la cerca documentada a la fitxa. **Pendent de DF** (no ho fa Claude): a les 8 files que han passat a P, `regles`, `motiu_nd`, `detall_motiu_nd`, `founderceo_rob_*` i `sim_*` encara tenen els valors de la v8 r3 (p. ex. `regles=cap`, `motiu_nd` ple i `founderceo_rob_na_com_0=no_determinat`); cal recalcular-les amb els scripts de DF, com les mostres (J14) i les robusteses, i regenerar l'`.xlsx`, que encara té les 14 ND de la v8 r3 [V]. La certificació d'aquestes files no ha canviat (`sim_estat_certificacio=no_certificada`). Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot ND-1».
 
-La v8 r3 no canvia cap d'aquestes xifres respecte a la v8 r2 / v8 r1: només aplica l'extensió de sector aprovada i afegeix les columnes de robustesa `sector_estes_des_2023` i `supersector_fix`.
+La v8 r3 d'origen no canvia cap d'aquestes xifres respecte a la v8 r2 / v8 r1 (després, el lot ND-1 ha canviat els recomptes de FounderCEO): només aplica l'extensió de sector aprovada i afegeix les columnes de robustesa `sector_estes_des_2023` i `supersector_fix`.
 
 Valors de FounderCEO a la base: `1` (F), `0` (P), `no_determinat` (ND), `NA_sense_ceo` (NA).
 

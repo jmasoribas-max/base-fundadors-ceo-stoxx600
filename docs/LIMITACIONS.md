@@ -50,6 +50,8 @@ La v8 no treu aquests tancaments de l'etiqueta ni de la certificació principal;
 
 ## 2. Les 14 ND restants del panell
 
+> **Actualització (lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`):** 8 d'aquestes 14 files passen a P: B&M 2016-2021 (regla d) i Steinhoff 2016-2017 (regla b). En queden 6 ND, amb la cerca documentada a cada fitxa: Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020. Cotes amb les 6: si totes passessin a 0, F = 343 (5,73 % de F+P); si totes passessin a 1, F = 349 (5,84 %) [V]. El text i la taula que segueixen són de la v8 r3 d'origen.
+
 El panell té 14 files `no_determinat`. Cotes: si totes passessin a 0, F = 343 (5,73 % de F+P); si totes passessin a 1, F = 357 (5,97 %). [V]
 
 | ISIN | Empresa | Any | Motiu |

@@ -1,7 +1,7 @@
 # Diccionari de camps v8 r3
 
 Data: 19/11/2026 10:14 (CET, Europe/Madrid). Fitxer de dades: `dades/base_isin_any_v8r3.csv` (i `.xlsx`), 6.012 files ISIN-any del panell, **158 columnes** (156 de la v8 r2 + 2 de robustesa de sector). [V]
-Unitat: ISIN-any. Clau: `isin` + `any`. SHA de la base: `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V]. SHA de la taula sectorial: `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V].
+Unitat: ISIN-any. Clau: `isin` + `any`. SHA de la base: `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V] (SHA de la v8 r3 d'origen; després del lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, la base té SHA `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236` [V]). SHA de la taula sectorial: `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V].
 
 Les columnes heretades no canvien de significat respecte a la v8 r2, tret que a les files 2024-2025 amb `sector_estes_des_2023=1` els camps de sector aplicat (`supersector`, `taxonomia_icb`, `supersector_icb_anterior`, `supersector_icb2020`, `any_font`, `url_font`, `estat_sector`) queden omplerts amb el supersector del PDF de juny 2023. La v8 r3 no modifica FounderCEO ni els comptes principals.
 
@@ -224,7 +224,7 @@ Les columnes `sim_*` venen de la simulació r4 v2 (sufix conservat per traçabil
 
 ## Cotes de les ND (estadística, no són un camp)
 
-No hi ha una columna de cotes. Les cotes es publiquen a `STATS_v8.json` i a la QA: 14 ND al panell; totes a 0 → F 343; totes a 1 → F 357.
+No hi ha una columna de cotes. Les cotes es publiquen a `STATS_v8.json` i a la QA: 14 ND al panell; totes a 0 → F 343; totes a 1 → F 357 (v8 r3 d'origen). Després del lot ND-1 (fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`) en queden 6: totes a 0 → F 343 (5,73 % de F+P); totes a 1 → F 349 (5,84 %) [V]. `STATS_v8.json` i la QA no s'han regenerat.
 
 
 ## Addenda v8 r1 (19/11/2026 09:31 (CET, Europe/Madrid))
