@@ -1,24 +1,33 @@
 # Pendents (feina per a Claude Code)
 
-Data: 19/11/2026 09:48 (CET, Europe/Madrid). Extret de `dades/base_isin_any_v8r2.csv`, `docs/REGISTRE_CANVIS.csv` i `dades/sector_icb_v8r2.csv` [V]. No s'hi inventa cap cas. El que no s'ha trobat nominativament als fitxers es marca [NV].
+Data: 19/11/2026 10:13 (CET, Europe/Madrid). Extret de `dades/base_isin_any_v8r3.csv`, `docs/REGISTRE_CANVIS.csv` i `dades/sector_icb_v8r3.csv` [V]. No s'hi inventa cap cas. El que no s'ha trobat nominativament als fitxers es marca [NV].
 
-Claude treballa aquestes tasques **en una branca**, amb cita literal, URL i Wayback a la fitxa i al registre, passa `scripts/valida_pr.py` i obre un PR. **No toca `main` i no fusiona.** DF valida, Doctorat revisa la metodologia, Jordi aprova i fusiona.
+Claude treballa per lots d'empreses **en una branca**, amb cita literal, URL i Wayback a la fitxa i al registre, passa `scripts/valida_pr.py` i obre un PR per lot. **No toca `main`, `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, les regles ni `.github/`, i no fusiona.** DF valida, Doctorat revisa la metodologia, Jordi aprova.
 
 ## Ordre de treball
 
 Segueix aquest ordre, tret que Jordi o un PR ja obert indiquin una altra cosa:
 
-1. Casos clau no certificats: LVMH, BE Semiconductor i Aberdeen 2016.
-2. Les 14 files ND del panell.
-3. Les 6 cites amb Wayback `pendent_verificacio_externa`.
-4. Les 108 files `ceo_pendent`, després les 241 `no_certificada` (349 en total), agrupades pels motius de `sim_cert_detall`.
-5. Sector: primer les 25 empreses a `revisar` (via indirecta); després les 72 sense sector (prioritàriament les 24 no casades, marcades [NV] a la font; les 48 només presents el 2024-2025 depenen també de la decisió de Doctorat sobre l'extensió).
-6. Schulenberg (CTS Eventim) i Anders Dam (Jyske Bank), tal com consten a la base i a l'informe r4.
-7. Les 13 parelles sense documents i els «3 casos E4», **només amb el que hi ha als fitxers** (vegeu més avall; les llistes nominatives completes no s'han trobat i queden [NV]).
+1. **Casos oberts.** Busca fins que trobis la font A/B. Si després d'una cerca exhaustiva i documentada no n'hi ha cap, la fila queda indeterminada i a la fitxa s'explica què s'ha buscat i on. Cap límit d'intents.
+   - Les 14 files ND.
+   - Les 108 files `ceo_pendent`, després les 241 `no_certificada` (349 en total).
+   - Casos clau: LVMH, BE Semiconductor, Aberdeen 2016, i Anders Dam (Jyske Bank; vegeu la tasca específica més avall).
+2. **Les 3890 files sense auditar** (`fora_mostra_auditoria`; recompte comprovat a la base v8 r3: **3890** [V]). Verifica el CEO i l'etiqueta empresa per empresa i afegeix les cites que faltin.
+3. **Fitxes completes:** el CEO de cada any amb cita, la prova de fundador o de no fundador, el sector i les fonts amb Wayback.
+4. **Errors:** si una dada contradiu la base, encara que estigui certificada, proposa'n la correcció amb la cita.
 
-L'extensió del sector 2023 → 2024-2025 **no** forma part d'aquesta cua: la decideix Doctorat.
+Tasques complementàries (no alteren l'ordre anterior, es poden encaixar en el lot de l'empresa corresponent):
 
-## 1. Casos clau no certificats
+- **Schulenberg / CTS Eventim:** tasca de forma (vegeu més avall). L'etiqueta no canvia.
+- **Sector pendent per a Claude:** les 48 empreses només presents el 2024-2025 i les 24 no casades (font A, per exemple un informe anual amb la classificació ICB). Les 25 de via indirecta queden a `revisar`. Les 33 ISIN amb sector d'una font anterior a juny 2023 no s'han estès.
+- Les 6 cites amb Wayback `pendent_verificacio_externa`.
+- Les 13 parelles sense documents ([NV] la llista; si no apareix, es regenerarà per script) i les 15 files / 7 ISIN amb E4.
+
+L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a la v8 r3 per als 561 ISIN que tenien aquesta font. No s'estén cap sector que no tingui aquesta font.
+
+## 1. Casos oberts
+
+### 1.1 Casos clau (inclosos a `no_certificada`, tret d'Anders Dam)
 
 | ISIN | Empresa | Anys | FounderCEO | Estat | Cas | Fitxa |
 |---|---|---|---|---|---|---|
@@ -26,7 +35,23 @@ L'extensió del sector 2023 → 2024-2025 **no** forma part d'aquesta cua: la de
 | `GB0000031285` | Aberdeen Asset Management PLC Registered | 2016–2016 | F | no_certificada | Aberdeen_Gilbert_2016 | [fitxa](empreses/GB0000031285.md) |
 | `NL0012866412` | BE Semiconductor Inds N.V. Aandelen op | 2020–2025 | F | no_certificada | BE_Semiconductor_Blickman | [fitxa](empreses/NL0012866412.md) |
 
-## 2. Files ND del panell (14)
+### 1.2 Anders Dam / Jyske Bank (`DK0010307958`) — cas obert
+
+Fitxa: [empreses/DK0010307958.md](empreses/DK0010307958.md).
+
+A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, regla `d`, estat `fora_mostra_auditoria`. [V] Claude ha de buscar una font A/B que sustentil la prova **d** (incorporació tardana) i documentar que les fusions posteriors al 1967 són adquisicions (no una fundació nova ni una fusió entre iguals que reobri la data de fundació rellevant).
+
+| Any | CEO | FounderCEO | Regla | Certificació | Fitxa |
+|---|---|---|---|---|---|
+| 2016 | Anders Dam | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+| 2017 | Anders Dam | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+| 2018 | Anders Dam | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+| 2022 | Anders Dam | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+| 2023 | Anders Dam | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+| 2024 | Lars Mørch | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+| 2025 | Lars Mørch | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
+
+### 1.3 Files ND del panell (14)
 
 | ISIN | Empresa | Any | Motiu | Detall | Fitxa |
 |---|---|---|---|---|---|
@@ -45,24 +70,9 @@ L'extensió del sector 2023 → 2024-2025 **no** forma part d'aquesta cua: la de
 | `NL0011375019` | Steinhoff Internatl Hldgs N.V. Aandelen op | 2016 | fusio_D1_sense_prova_concloent | Sense ocupador anterior ni any de fundacio suficient (Markus Jooste entra a Gommagomma el 1988; Steinhoff 1964). Estructura: D1 no decidida a l'X11; fusio o JV original amb Bruno Steinhoff sense any exacte ni percentatges; any de fundacio de Gommagomma i de constitucio de la NV pendents. | [fitxa](empreses/NL0011375019.md) |
 | `NL0011375019` | Steinhoff Internatl Hldgs N.V. Aandelen op | 2017 | fusio_D1_sense_prova_concloent | Sense ocupador anterior ni any de fundacio suficient (Markus Jooste entra a Gommagomma el 1988; Steinhoff 1964). Estructura: D1 no decidida a l'X11; fusio o JV original amb Bruno Steinhoff sense any exacte ni percentatges; any de fundacio de Gommagomma i de constitucio de la NV pendents. | [fitxa](empreses/NL0011375019.md) |
 
-## 3. Cites amb Wayback pendent (6)
+### 1.4 Files `ceo_pendent` (108) i `no_certificada` (241)
 
-Provenen del registre v8 r1. [V]
-
-| ISIN | Empresa | Anys | Cita | URL | Fitxa |
-|---|---|---|---|---|---|
-| `FI4000552526` | Mandatum OYJ Registered Shares o.N. | 2025 | «Life Insurance Sales Manager 1995–1999» | https://www.mandatum.fi/4a5b46/globalassets/konserni/mandatum/johto/johto---cvt/cv_petri_niemisvirta_en.pdf | [fitxa](empreses/FI4000552526.md) |
-| `FI4000552526` | Mandatum OYJ Registered Shares o.N. | 2025 | «Born 1970» | https://www.mandatum.fi/4a5b46/globalassets/konserni/mandatum/johto/johto---cvt/cv_petri_niemisvirta_en.pdf | [fitxa](empreses/FI4000552526.md) |
-| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «Co-fondateur du Groupe ORPEA» | https://www.emeis.com/sites/site_corporate/files/medias/documents/orpeaborchuredeconvocationag250614_0.pdf | [fitxa](empreses/FR0000184798.md) |
-| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «Créé en 1989, ORPEA» | https://www.emeis.com/sites/site_corporate/files/medias/documents/cporpea30janvier2022fb5f8.pdf | [fitxa](empreses/FR0000184798.md) |
-| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «Jean-Claude Marian, médecin neuropsychiatre, co-fondateur du Groupe ORPEA» | https://www.emeis.com/sites/default/files/medias/documents/orpeadocderef2013_0.pdf | [fitxa](empreses/FR0000184798.md) |
-| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «1989 : création du Groupe ORPEA par le Docteur Jean-Claude Marian» | https://www.emeis.com/sites/default/files/medias/documents/orpeaddr2014vf_0.pdf | [fitxa](empreses/FR0000184798.md) |
-
-## 4. Files no certificades (349 = 108 ceo_pendent + 241 no_certificada)
-
-### 4.1 Motius (`sim_cert_detall`)
-
-#### certificada_ceo_pendent
+#### Motius `ceo_pendent` (`sim_cert_detall`)
 
 | Motiu | Files |
 |---|---:|
@@ -76,7 +86,7 @@ Provenen del registre v8 r1. [V]
 | N2 r4 d'etiqueta (P, Claude tanca, ChatGPT indeterminat), pero CEO [NV] als dos models. | 4 |
 | r3e certificada_ceo_pendent N2; CEO a 31/10 continua ChatGPT=si / Claude=NV (o la cita del CEO no esta verificada) | 3 |
 
-#### no_certificada
+#### Motius `no_certificada`
 
 | Motiu | Files |
 |---|---:|
@@ -90,7 +100,7 @@ Provenen del registre v8 r1. [V]
 | Doctorat tanca l'etiqueta, pero r3e tenia incidences greus (E4); no puja a N1/N2 | 1 |
 | Doctorat 9 aplicada (Ayres, FounderCEO=0), pero nomes Claude s'hi pronuncia. No es certifica. El canvi va al registre. | 1 |
 
-### 4.2 Llista `ceo_pendent`
+#### Llista `ceo_pendent`
 
 | ISIN | Empresa | Any | Nivell | Motiu | Fitxa |
 |---|---|---|---|---|---|
@@ -203,7 +213,7 @@ Provenen del registre v8 r1. [V]
 | `SE0000869646` | Boliden AB Namn-Aktier SK 2 | 2016 | N1 | r3e certificada_ceo_pendent N1; CEO a 31/10 continua ChatGPT=NV / Claude=si (o la cita del CEO no esta verificada) | [fitxa](empreses/SE0000869646.md) |
 | `SE0000869646` | Boliden AB Namn-Aktier SK 2 | 2017 | N1 | r3e certificada_ceo_pendent N1; CEO a 31/10 continua ChatGPT=NV / Claude=si (o la cita del CEO no esta verificada) | [fitxa](empreses/SE0000869646.md) |
 
-### 4.3 Llista `no_certificada`
+#### Llista `no_certificada`
 
 | ISIN | Empresa | Any | Motiu | Fitxa |
 |---|---|---|---|---|
@@ -449,45 +459,59 @@ Provenen del registre v8 r1. [V]
 | `SE0015961909` | Hexagon AB Namn-Aktier B (fria) o.N. | 2023 | continua sense certificar (ChatGPT: indeterminat, Claude efectiu: indeterminat) | [fitxa](empreses/SE0015961909.md) |
 | `SE0015961909` | Hexagon AB Namn-Aktier B (fria) o.N. | 2024 | continua sense certificar (ChatGPT: indeterminat, Claude efectiu: indeterminat) | [fitxa](empreses/SE0015961909.md) |
 
-## 5. Sector: 72 empreses sense sector i 25 a revisar
+## 2. Files sense auditar (3890)
 
-### 5.1 Sense sector (72)
+Recompte a la base v8 r3: **3890** files amb `sim_estat_certificacio=fora_mostra_auditoria` [V], d'un panell de 6.012. Verifica el CEO i l'etiqueta empresa per empresa i afegeix les cites que faltin. L'índex de totes les empreses és a [INDEX.md](INDEX.md).
+
+## 3. Fitxes completes
+
+Per a cada ISIN, la fitxa ha d'acabar tenint: el CEO de cada any amb cita, la prova de fundador o de no fundador, el sector i les fonts amb Wayback.
+
+## 4. Errors, també si la fila és certificada
+
+Si una dada contradiu la base, encara que estigui certificada, proposa'n la correcció amb la cita literal, l'URL i el Wayback, en una branca i un PR.
+
+## Schulenberg / CTS Eventim — tasca de forma
+
+Fitxa: [empreses/DE0005470306.md](empreses/DE0005470306.md). ISIN `DE0005470306`, CEO Klaus-Peter Schulenberg, 2019-2025, FounderCEO=`1`, certificada N1. A la base la regla aplicada és `FT` (`regla_aplicada_v3=FT`; `regles=d;FT`) i `fundador_transformador=0`. [V]
+
+Tasca de forma (l'**etiqueta no canvia**): importar la cita B **D1256** del paquet r3e, amb URL i Wayback, i canviar la regla de `FT` a `directa`.
+
+- Cita literal recollida a les afirmacions r3e (id_document `D1256`): «Klaus-Peter Schulenberg ... Founder and CEO, CTS EVENTIM» [V] com a text del camp `cita_literal` d'aquell paquet (els punts suspensius són al camp d'origen).
+- URL oficial: https://www.iqmagazine.com/wp-content/uploads/2025/04/IQ96_ISSUU_Preview.pdf [V]
+- URL arxivada al paquet r3e: buida. El Wayback queda pendent d'afegir; no s'inventa. [V] com a absència al camp `url_arxivada`.
+- `text_al_paquet` d'aquest document: `no`. Cal obrir la font i confirmar la cita literal abans de proposar el canvi de regla.
+
+## Sector pendent
+
+L'extensió del supersector del juny 2023 a 2024-2025 ja està feta a la v8 r3 per als ISIN que tenien `any_font=2023` (1.076 files, 561 ISIN, `sector_estes_des_2023=1`). No s'estén cap altre sector.
+
+### 48 empreses només 2024-2025 (sense font pública després de juny 2023)
+
+Pendent per a Claude: una font A (per exemple un informe anual amb la classificació ICB).
 
 | ISIN | Empresa | Anys al panell | Motiu | Fitxa |
 |---|---|---|---|---|
 | `BE0003823409` | Financière de Tubize S.A. Actions au Port. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/BE0003823409.md) |
 | `BE0003867844` | KBC Ancora Actions au Port. o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/BE0003867844.md) |
-| `BE0974400328` | Azelis Group N.V. Actions Nominatives o.N. | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/BE0974400328.md) |
 | `BE0974464977` | Syensqo S.A. Actions au Porteur o.N. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/BE0974464977.md) |
-| `CH0002178181` | Stadler Rail AG Namens-Aktien SF 0,20 | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0002178181.md) |
 | `CH0010675863` | Swissquote Grp Holding S.A. Namens-Aktien | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH0010675863.md) |
 | `CH0011029946` | Inficon Holding AG Nam.-Aktien SF 5 | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH0011029946.md) |
 | `CH0011108872` | Mobimo Holding AG Nam.-Aktien SF 3,40 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH0011108872.md) |
-| `CH0239229302` | SFS Group AG Nam.-Aktien SF -,10 | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0239229302.md) |
 | `CH0360826991` | Comet Holding AG Nam.-Akt. SF 1 | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH0360826991.md) |
-| `CH0496451508` | SoftwareONE Holding AG Namens-Aktien SF | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0496451508.md) |
 | `CH0528751586` | VZ Holding AG Nam.-Aktien SF -,05 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH0528751586.md) |
-| `CH0565630669` | Sunrise Communications Gr. AG Nam.- | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0565630669.md) |
-| `CH1169360919` | Accelleron Industries Ltd. Namens-Aktien SF | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH1169360919.md) |
-| `CH1243598427` | Sandoz Group AG Namens-Aktien SF -,05 | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH1243598427.md) |
 | `CH1335392721` | Galderma Group AG Registered Shares o.N. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH1335392721.md) |
 | `CH1386220409` | Sunrise Communications AG Nam.-Aktien | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH1386220409.md) |
 | `CH1430134226` | Amrize AG Namens-Aktien DL 1000 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/CH1430134226.md) |
 | `DE000A0D6554` | Nordex SE Inhaber-Aktien o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/DE000A0D6554.md) |
-| `DE000A0TGJ55` | VARTA AG Inhaber-Aktien o.N. | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/DE000A0TGJ55.md) |
 | `DE000AUM0V10` | AUMOVIO SE Namens-Aktien o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/DE000AUM0V10.md) |
 | `DE000FTG1111` | flatexDEGIRO AG Namens-Aktien o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/DE000FTG1111.md) |
 | `DE000HAG0005` | HENSOLDT AG Inhaber-Aktien o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/DE000HAG0005.md) |
 | `DE000RENK730` | RENK Group AG Inhaber-Aktien o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/DE000RENK730.md) |
-| `DK0010287663` | NKT A/​S Navne-Aktier DK 20 | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/DK0010287663.md) |
 | `DK0060257814` | Zealand Pharma A/​S Navne-Aktier DK 1 | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/DK0060257814.md) |
-| `ES0105066023` | Cellnex Telecom S.A. Acciones Port. Em.10/​ | 2019 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES0105066023.md) |
 | `ES0105777017` | Puig Brands S.A. Acciones EO 0,06 | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/ES0105777017.md) |
 | `ES0118594417` | Indra Sistemas S.A. Acciones Port. EO 0,20 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/ES0118594417.md) |
 | `ES0180907000` | Unicaja Banco S.A. Acciones Nom. EO 0,25 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/ES0180907000.md) |
-| `ES0618900981` | Ferrovial S.A. Anrechte | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES0618900981.md) |
-| `ES06189009A2` | Ferrovial S.A. Anrechte | 2017 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES06189009A2.md) |
-| `ES06837469B2` | Vidrala S.A. Anrechte | 2023 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES06837469B2.md) |
 | `ES06837469D8` | Vidrala S.A. Anrechte | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/ES06837469D8.md) |
 | `FI0009004824` | Kemira Oy Registered Shares o.N. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/FI0009004824.md) |
 | `FI4000552526` | Mandatum OYJ Registered Shares o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/FI4000552526.md) |
@@ -496,25 +520,16 @@ Provenen del registre v8 r1. [V]
 | `FR0011675362` | NEOEN S.A. Actions Port. EO 2 | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/FR0011675362.md) |
 | `FR0012333284` | Abivax S.A. Actions au Porteur EO -,01 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/FR0012333284.md) |
 | `FR0013258662` | Ayvens S.A. Actions Nom. EO 1,50 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/FR0013258662.md) |
-| `GB00BDFB6Q69` | Rolls Royce Holdings PLC Reg.Entitl.Shs.C | 2017 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BDFB6Q69.md) |
 | `GB00BF4HYT85` | Lion Finance Group PLC Registered Shares | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/GB00BF4HYT85.md) |
-| `GB00BFCMW356` | Rolls Royce Holdings PLC Reg.Entitl.C 01/​19 | 2018 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BFCMW356.md) |
-| `GB00BKT6BP09` | Rolls Royce Holdings PLC Reg.Entitl.C 01/​20 | 2019 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BKT6BP09.md) |
 | `GB00BVGBY890` | Zegona Communications PLC Registered | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/GB00BVGBY890.md) |
 | `GB00BYT18307` | TBC Bank Group PLC Registered Shares LS | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/GB00BYT18307.md) |
-| `GB00BZC0LD27` | Rolls Royce Holdings PLC Reg.Entitl.Shs.C | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BZC0LD27.md) |
-| `IE00BYSZ9G33` | Allied Irish Banks PLC Registered Shares EO | 2017 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/IE00BYSZ9G33.md) |
 | `IL0011284465` | Plus500 Ltd. Registered Shares LS -,01 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/IL0011284465.md) |
 | `IT0001031084` | Banca Generali S.p.A. Azioni nom. B EO 1 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/IT0001031084.md) |
-| `IT0001347308` | BUZZI S.p.A. Azioni nom. o.N. | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/IT0001347308.md) |
 | `IT0004776628` | Banca Mediolanum S.p.A. Azioni nom. o.N. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/IT0004776628.md) |
-| `IT0005217408` | EXOR S.p.A. Anrechte (technisch) | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/IT0005217408.md) |
 | `IT0005508921` | Bca Monte dei Paschi di Siena Azioni nom. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/IT0005508921.md) |
 | `IT0005541336` | Lottomatica Group S.p.A. Azioni nom. o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/IT0005541336.md) |
 | `IT0005619678` | Reply S.p.A. Anrechte | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/IT0005619678.md) |
 | `JE00BRX98089` | CVC Capital Partners PLC Registered Shares | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/JE00BRX98089.md) |
-| `KYG7091M1740` | Phoenix Group Holdings Anrechte | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/KYG7091M1740.md) |
-| `LU1250154413` | ADLER Group S.A. Actions Nominatives o.N. | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/LU1250154413.md) |
 | `NL00150003E1` | Fugro N.V. Aand.op naam DR EO 0,05 | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/NL00150003E1.md) |
 | `NL0015000LU4` | Iveco Group N.V. Aandelen op naam EUR 1 | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/NL0015000LU4.md) |
 | `NO0010631567` | SpareBank 1 Sor-Norge ASA | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/NO0010631567.md) |
@@ -522,13 +537,42 @@ Provenen del registre v8 r1. [V]
 | `PLBRE0000012` | mBank S.A. Inhaber-Aktien ZY 4 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/PLBRE0000012.md) |
 | `SE0000375115` | Mycronic AB Namn-Aktier SK 1 | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/SE0000375115.md) |
 | `SE0007692850` | Camurus AB Namn-Aktier o.N. | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/SE0007692850.md) |
-| `SE0009242266` | Tele2 AB Anrechte B | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/SE0009242266.md) |
 | `SE0009806607` | Munters Group AB Namn-Aktier B o.N. | 2024 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/SE0009806607.md) |
 | `SE0015671995` | Hemnet Group AB Namn-Aktier o.N. | 2024;2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/SE0015671995.md) |
 | `SE0025158629` | Mycronic AB Namn-Aktier SK 0,50 | 2025 | cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font) | [fitxa](empreses/SE0025158629.md) |
+
+### 24 empreses no casades [NV a la font]
+
+Pendent per a Claude: una font A (per exemple un informe anual amb la classificació ICB).
+
+| ISIN | Empresa | Anys al panell | Motiu | Fitxa |
+|---|---|---|---|---|
+| `BE0974400328` | Azelis Group N.V. Actions Nominatives o.N. | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/BE0974400328.md) |
+| `CH0002178181` | Stadler Rail AG Namens-Aktien SF 0,20 | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0002178181.md) |
+| `CH0239229302` | SFS Group AG Nam.-Aktien SF -,10 | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0239229302.md) |
+| `CH0496451508` | SoftwareONE Holding AG Namens-Aktien SF | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0496451508.md) |
+| `CH0565630669` | Sunrise Communications Gr. AG Nam.- | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH0565630669.md) |
+| `CH1169360919` | Accelleron Industries Ltd. Namens-Aktien SF | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH1169360919.md) |
+| `CH1243598427` | Sandoz Group AG Namens-Aktien SF -,05 | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/CH1243598427.md) |
+| `DE000A0TGJ55` | VARTA AG Inhaber-Aktien o.N. | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/DE000A0TGJ55.md) |
+| `DK0010287663` | NKT A/​S Navne-Aktier DK 20 | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/DK0010287663.md) |
+| `ES0105066023` | Cellnex Telecom S.A. Acciones Port. Em.10/​ | 2019 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES0105066023.md) |
+| `ES0618900981` | Ferrovial S.A. Anrechte | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES0618900981.md) |
+| `ES06189009A2` | Ferrovial S.A. Anrechte | 2017 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES06189009A2.md) |
+| `ES06837469B2` | Vidrala S.A. Anrechte | 2023 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ES06837469B2.md) |
+| `GB00BDFB6Q69` | Rolls Royce Holdings PLC Reg.Entitl.Shs.C | 2017 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BDFB6Q69.md) |
+| `GB00BFCMW356` | Rolls Royce Holdings PLC Reg.Entitl.C 01/​19 | 2018 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BFCMW356.md) |
+| `GB00BKT6BP09` | Rolls Royce Holdings PLC Reg.Entitl.C 01/​20 | 2019 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BKT6BP09.md) |
+| `GB00BZC0LD27` | Rolls Royce Holdings PLC Reg.Entitl.Shs.C | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/GB00BZC0LD27.md) |
+| `IE00BYSZ9G33` | Allied Irish Banks PLC Registered Shares EO | 2017 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/IE00BYSZ9G33.md) |
+| `IT0001347308` | BUZZI S.p.A. Azioni nom. o.N. | 2023;2024;2025 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/IT0001347308.md) |
+| `IT0005217408` | EXOR S.p.A. Anrechte (technisch) | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/IT0005217408.md) |
+| `KYG7091M1740` | Phoenix Group Holdings Anrechte | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/KYG7091M1740.md) |
+| `LU1250154413` | ADLER Group S.A. Actions Nominatives o.N. | 2020 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/LU1250154413.md) |
+| `SE0009242266` | Tele2 AB Anrechte B | 2016 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/SE0009242266.md) |
 | `ZAE000004875` | Nedbank Group Ltd. Registered Shares RC 1 | 2018 | ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV] | [fitxa](empreses/ZAE000004875.md) |
 
-### 5.2 A revisar, via indirecta (25)
+### 25 empreses a revisar (via indirecta)
 
 | ISIN | Empresa | Supersector | Mètode | Fitxa |
 |---|---|---|---|---|
@@ -558,51 +602,66 @@ Provenen del registre v8 r1. [V]
 | `SE0022060521` | Kinnevik AB Namn-Aktier B o.N. | Financial Services | nom_stoxx_via_llista_seleccio (al PDF casa amb SE0015810247) | [fitxa](empreses/SE0022060521.md) |
 | `SE0022419784` | Sectra AB Namn-Aktier Ser.B o.N. | Health Care | nom_stoxx_via_llista_seleccio (al PDF casa amb SE0018245953) | [fitxa](empreses/SE0022419784.md) |
 
-## 6. Schulenberg i Anders Dam
+### 33 ISIN no estesos (tenen sector, però no font de juny 2023)
 
-Tal com consten a la base v8 r2 [V]. L'informe intern de comparació r4 (18/11/2026) encara els esmenta com a «resta obert, com abans». No s'ha trobat als fitxers localitzats un text que tanqui aquesta divergència entre l'informe i l'estat actual de la base: el matís queda [NV]. No s'altera cap etiqueta.
+33 ISIN, 52 files 2024-2025, amb `any_font` anterior a 2023. No s'ha posat `any_font=2023` perquè no hi ha aquest PDF per a aquests ISIN. Queden `pendent_extensio_2024_2025` o `revisar_pendent_extensio_2024_2025`. El `supersector_fix` sí que recull el sector d'empresa.
 
-### Schulenberg / CTS Eventim (`DE0005470306`)
+| ISIN | Empresa | Anys | any_font | Estat | Fitxa |
+|---|---|---|---|---|---|
+| `AT0000606306` | Raiffeisen Bank Intl AG Inhaber-Aktien o.N. | 2024–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/AT0000606306.md) |
+| `CH0038388911` | Sulzer AG Namens-Aktien SF -,01 | 2024–2025 | 2015 | pendent_extensio_2024_2025 | [fitxa](empreses/CH0038388911.md) |
+| `DE0005773303` | Fraport AG Ffm.Airport.Ser.AG Inhaber- | 2025–2025 | 2019 | pendent_extensio_2024_2025 | [fitxa](empreses/DE0005773303.md) |
+| `DE0005909006` | Bilfinger SE Inhaber-Aktien o.N. | 2025–2025 | 2016 | pendent_extensio_2024_2025 | [fitxa](empreses/DE0005909006.md) |
+| `DE0006070006` | HOCHTIEF AG Inhaber-Aktien o.N. | 2024–2025 | 2019 | pendent_extensio_2024_2025 | [fitxa](empreses/DE0006070006.md) |
+| `DE0008303504` | TAG Immobilien AG Inhaber-Aktien o.N. | 2024–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/DE0008303504.md) |
+| `DE000A2LQ884` | AUTO1 Group SE Inhaber-Aktien o.N. | 2025–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/DE000A2LQ884.md) |
+| `DK0010234467` | FLSmidth & Co. AS Navne-Aktier B DK 20 | 2024–2025 | 2018 | pendent_extensio_2024_2025 | [fitxa](empreses/DK0010234467.md) |
+| `DK0015998017` | Bavarian Nordic Navne-Aktier DK 10 | 2024–2025 | 2022 | pendent_extensio_2024_2025 | [fitxa](empreses/DK0015998017.md) |
+| `DK0061802139` | ALK-Abelló AS Navne-Aktier DK -,50 | 2024–2025 | 2022 | pendent_extensio_2024_2025 | [fitxa](empreses/DK0061802139.md) |
+| `ES0124244E34` | Mapfre S.A. Acciones Nom. EO -,10 | 2025–2025 | 2019 | pendent_extensio_2024_2025 | [fitxa](empreses/ES0124244E34.md) |
+| `FI0009005870` | Konecranes Oyj Registered Shares o.N. | 2024–2025 | 2019 | pendent_extensio_2024_2025 | [fitxa](empreses/FI0009005870.md) |
+| `FR0013506730` | Vallourec S.A. Actions Port. EO 0,02 | 2024–2025 | 2015 | revisar_pendent_extensio_2024_2025 | [fitxa](empreses/FR0013506730.md) |
+| `GB0002318888` | Cranswick PLC Registered Shares LS -,10 | 2024–2025 | 2020 | pendent_extensio_2024_2025 | [fitxa](empreses/GB0002318888.md) |
+| `GB0009697037` | Babcock International Grp PLC Registered | 2025–2025 | 2018 | pendent_extensio_2024_2025 | [fitxa](empreses/GB0009697037.md) |
+| `GB0031215220` | Carnival PLC Registered Shares DL 1,66 | 2025–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/GB0031215220.md) |
+| `GB00B2QPKJ12` | Fresnillo PLC Registered Shares DL -,50 | 2025–2025 | 2017 | pendent_extensio_2024_2025 | [fitxa](empreses/GB00B2QPKJ12.md) |
+| `GB00B62G9D36` | Shaftesbury Capital PLC Registered Shares | 2024–2025 | 2017 | pendent_extensio_2024_2025 | [fitxa](empreses/GB00B62G9D36.md) |
+| `GB00B7KR2P84` | EasyJet PLC Registered Shares | 2024–2025 | 2019 | pendent_extensio_2024_2025 | [fitxa](empreses/GB00B7KR2P84.md) |
+| `GB00BND88V85` | Bridgepoint Advisers Group PLC Registered | 2025–2025 | 2022 | pendent_extensio_2024_2025 | [fitxa](empreses/GB00BND88V85.md) |
+| `GB00BYRJ5J14` | Primary Health Properties PLC Registered | 2025–2025 | 2022 | pendent_extensio_2024_2025 | [fitxa](empreses/GB00BYRJ5J14.md) |
+| `IT0000784196` | Bca Pop. di Sondrio S.p.A. Azioni nom. EO 3 | 2024–2024 | 2015 | pendent_extensio_2024_2025 | [fitxa](empreses/IT0000784196.md) |
+| `IT0004810054` | Unipol Gruppo S.p.A. Azioni nom. o. N. | 2024–2025 | 2016 | pendent_extensio_2024_2025 | [fitxa](empreses/IT0004810054.md) |
+| `IT0005495657` | Saipem S.p.A. Azioni nom. o.N. | 2024–2025 | 2019 | revisar_pendent_extensio_2024_2025 | [fitxa](empreses/IT0005495657.md) |
+| `JE00BMDZN391` | TP ICAP Group PLC Registered Shares LS | 2025–2025 | 2020 | revisar_pendent_extensio_2024_2025 | [fitxa](empreses/JE00BMDZN391.md) |
+| `LU2290522684` | InPost S.A. Actions au Nomin. EO -,01 | 2024–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/LU2290522684.md) |
+| `NL0000360618` | SBM Offshore N.V. Aandelen op naam EO | 2025–2025 | 2020 | pendent_extensio_2024_2025 | [fitxa](empreses/NL0000360618.md) |
+| `NL0009432491` | Koninklijke Vopak N.V. Aandelen aan | 2025–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/NL0009432491.md) |
+| `PLBZ00000044` | Santander Bank Polska S.A. Inhaber-Aktien | 2024–2025 | 2019 | pendent_extensio_2024_2025 | [fitxa](empreses/PLBZ00000044.md) |
+| `PLOPTTC00011` | CD Projekt S.A. Inhaber-Aktien C ZY 1 | 2024–2025 | 2021 | pendent_extensio_2024_2025 | [fitxa](empreses/PLOPTTC00011.md) |
+| `PTBCP0AM0015` | Banco Com. Português SA (BCP) Acç. Nom. | 2024–2025 | 2018 | pendent_extensio_2024_2025 | [fitxa](empreses/PTBCP0AM0015.md) |
+| `SE0014504817` | Loomis AB Namn-Aktier Series o.N. | 2025–2025 | 2020 | pendent_extensio_2024_2025 | [fitxa](empreses/SE0014504817.md) |
+| `SE0017780133` | Wallenstam AB Namn-Akt. Ser.B o.N. | 2024–2025 | 2022 | pendent_extensio_2024_2025 | [fitxa](empreses/SE0017780133.md) |
 
-Fitxa: [empreses/DE0005470306.md](empreses/DE0005470306.md).
+## Cites amb Wayback pendent (6)
 
-| Any | CEO | FounderCEO | Certificació | Nivell | fundador_transformador | Detall |
-|---|---|---|---|---|---|---|
-| 2019 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; Claude confirma el CEO a 31/10 amb cita A/B verificada |
-| 2020 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; ChatGPT i Claude confirma el CEO a 31/10 amb cita A/B verificada |
-| 2021 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; Claude confirma el CEO a 31/10 amb cita A/B verificada |
-| 2022 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; Claude confirma el CEO a 31/10 amb cita A/B verificada |
-| 2023 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; Claude confirma el CEO a 31/10 amb cita A/B verificada |
-| 2024 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; Claude confirma el CEO a 31/10 amb cita A/B verificada |
-| 2025 | Klaus-Peter Schulenberg | F | certificada | N1 | 0 | r3e era certificada_ceo_pendent N1; Claude confirma el CEO a 31/10 amb cita A/B verificada |
+| ISIN | Empresa | Anys | Cita | URL | Fitxa |
+|---|---|---|---|---|---|
+| `FI4000552526` | Mandatum OYJ Registered Shares o.N. | 2025 | «Life Insurance Sales Manager 1995–1999» | https://www.mandatum.fi/4a5b46/globalassets/konserni/mandatum/johto/johto---cvt/cv_petri_niemisvirta_en.pdf | [fitxa](empreses/FI4000552526.md) |
+| `FI4000552526` | Mandatum OYJ Registered Shares o.N. | 2025 | «Born 1970» | https://www.mandatum.fi/4a5b46/globalassets/konserni/mandatum/johto/johto---cvt/cv_petri_niemisvirta_en.pdf | [fitxa](empreses/FI4000552526.md) |
+| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «Co-fondateur du Groupe ORPEA» | https://www.emeis.com/sites/site_corporate/files/medias/documents/orpeaborchuredeconvocationag250614_0.pdf | [fitxa](empreses/FR0000184798.md) |
+| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «Créé en 1989, ORPEA» | https://www.emeis.com/sites/site_corporate/files/medias/documents/cporpea30janvier2022fb5f8.pdf | [fitxa](empreses/FR0000184798.md) |
+| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «Jean-Claude Marian, médecin neuropsychiatre, co-fondateur du Groupe ORPEA» | https://www.emeis.com/sites/default/files/medias/documents/orpeadocderef2013_0.pdf | [fitxa](empreses/FR0000184798.md) |
+| `FR0000184798` | Orpea Actions Port. EO 1,25 | 2016-2021 | «1989 : création du Groupe ORPEA par le Docteur Jean-Claude Marian» | https://www.emeis.com/sites/default/files/medias/documents/orpeaddr2014vf_0.pdf | [fitxa](empreses/FR0000184798.md) |
 
-### Anders Dam / Jyske Bank (`DK0010307958`)
+## Tretze parelles sense documents i files E4
 
-Fitxa: [empreses/DK0010307958.md](empreses/DK0010307958.md).
-
-| Any | CEO | FounderCEO | Certificació | Nivell | fundador_transformador | Detall |
-|---|---|---|---|---|---|---|
-| 2016 | Anders Dam | P | fora_mostra_auditoria |  | 0 |  |
-| 2017 | Anders Dam | P | fora_mostra_auditoria |  | 0 |  |
-| 2018 | Anders Dam | P | fora_mostra_auditoria |  | 0 |  |
-| 2022 | Anders Dam | P | fora_mostra_auditoria |  | 0 |  |
-| 2023 | Anders Dam | P | fora_mostra_auditoria |  | 0 |  |
-| 2024 | Lars Mørch | P | fora_mostra_auditoria |  | 0 |  |
-| 2025 | Lars Mørch | P | fora_mostra_auditoria |  | 0 |  |
-
-## 7. Tretze parelles sense documents i casos E4
-
-### 7.1 Tretze parelles sense documents
+### Tretze parelles sense documents
 
 L'informe de recuperació dels 440 documents (17/11/2026 22:07) recull: 179/195 parells tancats; **no es poden tancar 13 parells sense documents**. El recompte intern per classe d'aquella recuperació desagrega aquests 13 en **10 P + 3 NA**. [V] per al recompte.
 
-La llista nominativa de les 13 parelles **no s'ha trobat** als fitxers localitzats. [NV]
+La llista nominativa de les 13 parelles **no s'ha trobat** als fitxers localitzats. [NV] Si la llista no apareix, es regenerarà per script.
 
-### 7.2 «Els 3 casos E4»
-
-L'informe intern de comparació r4 (secció de decisions pendents de Doctorat, punt 14) diu: «Resta obert, com abans: […] els 3 casos E4 […]». L'enumeració d'aquests 3 casos **no s'ha trobat** als fitxers localitzats. [NV]
-
-A la base v8 r2 sí que hi ha files amb incidència E4 a `sim_cert_detall`: **15 files, 7 ISIN**. [V] Llista:
+### Files amb incidència E4 a `sim_cert_detall` (15 files, 7 ISIN)
 
 | ISIN | Empresa | Anys | Estat | Detall | Fitxa |
 |---|---|---|---|---|---|
@@ -613,5 +672,3 @@ A la base v8 r2 sí que hi ha files amb incidència E4 a `sim_cert_detall`: **15
 | `FR0011594233` | SFR Group S.A. Actions Nom. EO 1 | 2016–2016 | no_certificada | Doctorat tanca l'etiqueta, pero r3e tenia incidences greus (E4); no puja a N1/N2 | [fitxa](empreses/FR0011594233.md) |
 | `GB0005758098` | Meggitt PLC Registered Shares LS -,052) | 2016, 2018 | no_certificada | incidencia greu r3e (E4): no puja a N1/N2 | [fitxa](empreses/GB0005758098.md) |
 | `NL0000008977` | Heineken Holding N.V. Aandelen aan toonder | 2016, 2018, 2021, 2022, 2023, 2024, 2025 | no_certificada | incidencia greu r3e (E4): no puja a N1/N2 | [fitxa](empreses/NL0000008977.md) |
-
-No s'identifica aquí quins 3 d'aquests casos són els de l'informe r4. [NV]

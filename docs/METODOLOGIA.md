@@ -73,21 +73,24 @@ Definicions de la tipologia d'errors, en la part que el criteri cita [V]:
 - **E4** (major): la font no diu el que se n'afirma.
 - **E6** (menor, a la tipologia): dates de mandat, naixement o fundació errònies, sense efecte en l'estat.
 
-El criteri de Doctorat exclou E2, E4 i E6 de l'N1, i demana «sense incidència greu» per a l'N2. L'script de certificació r4 tracta E2, E4 i E6 com a incidències que impedeixen pujar de nivell. [V] com a comportament documentat de l'script i del criteri. La tipologia, però, classifica E6 com a menor. No s'ha trobat un text que reconcilïi explícitament l'adjectiu «greu» amb la inclusió d'E6: aquest matís queda **[NV]**.
+**Decisió de Doctorat (19/11/2026):** E2, E4 i E6 impedeixen certificar a N1 i a N2. [V] Aquesta decisió tanca el matís entre l'adjectiu «greu» del criteri i la classificació d'E6 com a menor a la tipologia: als efectes de la certificació N1/N2, E2, E4 i E6 impedeixen certificar.
+
+A la base v8 r3, les files amb incidència E4 a `sim_cert_detall` són **15 files / 7 ISIN** [V]: Covestro (`DE0006062144`), TAG Immobilien (`DE0008303504`), A.P. Møller-Mærsk (`DK0010244508`), Mandatum (`FI4000552526`), SFR Group (`FR0011594233`), Meggitt (`GB0005758098`) i Heineken Holding (`NL0000008977`). La llista detallada és a `PENDENTS.md`.
 
 El detall operatiu de cada etiqueta `sim_cert_detall` (redacció exacta per fila) es llegeix a la base; no es reinterpreta aquí. [V] com a camp; no se'n fa una casuística nova.
 
-## 5. Sector ICB a la v8 r2
+## 5. Sector ICB a la v8 r3
 
-El sector s'afegeix **per ISIN**, a partir de la taula `dades/sector_icb_v8r2.csv` (SHA `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V]), construïda amb els PDF públics de components 2015-juny 2023.
+El sector s'afegeix **per ISIN**, a partir de la taula `dades/sector_icb_v8r3.csv` (SHA `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V], idèntica a la font v75r2), construïda amb els PDF públics de components 2015-juny 2023.
 
-No s'estén el sector d'una font de 2023 (ni de cap `any_font` ≤ 2023) als anys 2024-2025. Aquesta extensió la decideix Doctorat i queda com a pendència. [V] com a decisió de govern d'aquesta versió; el criteri d'extensió en si no està tancat metodològicament **[NV]**.
+**Decisió de Jordi (19/11/2026 10:06):** s'estén el supersector del PDF de juny 2023 als anys 2024-2025, **només** per als ISIN que ja tenen aquesta font (`any_font=2023`). Les files esteses porten `sector_estes_des_2023=1` i `any_font=2023`. Per a una robustesa que les exclogui, es filtra `sector_estes_des_2023!=1`. El sector fix per empresa és la columna `supersector_fix` (el mateix valor a totes les files de l'ISIN que tenen sector a la taula font). [V]
 
-Les 25 empreses casades per la via `nom_stoxx_via_llista_seleccio` queden marcades `revisar`. Les 72 sense sector conserven el motiu de la font. [V]
+Supòsit, **[NV]**: no hi ha hagut cap reclassificació ICB entre el 2023 i el 2025 (declarat a `docs/LIMITACIONS.md`).
+
+No s'estén el sector quan l'ISIN no té font de juny 2023 (33 ISIN, 52 files 2024-2025: queden `pendent_extensio_2024_2025` o `revisar_pendent_extensio_2024_2025`). Les 72 empreses sense sector (48 només presents el 2024-2025 i 24 no casades) queden pendents per a Claude, amb una font A (per exemple un informe anual amb la classificació ICB). Les 25 empreses casades per la via `nom_stoxx_via_llista_seleccio` queden marcades `revisar`. [V]
 
 ## 6. El que no s'ha documentat aquí [NV]
 
 - Qualsevol regla, excepció o criteri que no figuri a les fonts citades més amunt. [NV]
-- La llista nominativa dels «3 casos E4» esmentats a l'informe r4 com a pendents («resta obert, com abans»): no s'ha trobat l'enumeració d'aquests 3 casos als fitxers localitzats. [NV] La base v8 r2 sí que documenta les files amb incidència E4 a `sim_cert_detall` (vegeu `PENDENTS.md`). [V]
-- La llista nominativa de les 13 parelles sense documents (el recompte 10 P + 3 NA figura a l'informe de recuperació de 440 documents, 17/11/2026). [NV] per als noms; [V] per al recompte.
-- L'extensió del sector a 2024-2025. [NV] (pendent de Doctorat).
+- La llista nominativa de les 13 parelles sense documents (el recompte 10 P + 3 NA figura a l'informe de recuperació de 440 documents, 17/11/2026). [NV] per als noms; [V] per al recompte. Si la llista no apareix als fitxers, es regenerarà per script.
+- El supòsit de no reclassificació ICB entre 2023 i 2025. [NV] (vegeu `docs/LIMITACIONS.md`).

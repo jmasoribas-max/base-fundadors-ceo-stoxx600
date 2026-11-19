@@ -25,7 +25,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE = ROOT / "dades" / "base_isin_any_v8r2.csv"
+BASE = ROOT / "dades" / "base_isin_any_v8r3.csv"
 INDEX_CSV = ROOT / "index.csv"
 INDEX_MD = ROOT / "INDEX.md"
 FITXES = ROOT / "empreses"
@@ -111,7 +111,7 @@ def main() -> int:
         add(problems, f"la base té {len(isins)} ISIN, n'esperava 1.040")
 
     for i, r in enumerate(base_rows, start=2):
-        ident = f"dades/base_isin_any_v8r2.csv:{i} {r.get('isin')} {r.get('any')}"
+        ident = f"dades/base_isin_any_v8r3.csv:{i} {r.get('isin')} {r.get('any')}"
         if r.get("FounderCEO") not in FOUNDERCEO_OK:
             add(problems, f"{ident}: FounderCEO no permès: {r.get('FounderCEO')!r}")
         if r.get("estat_sector") not in ESTAT_SECTOR_OK:

@@ -3,7 +3,7 @@
 - **ISIN:** `GB00BFZZM640`
 - **Nom al panell:** S4 Capital PLC Registered Shares LS-,25
 - **Anys al panell:** 2021–2021 (1 files)
-- **Font de les dades:** `dades/base_isin_any_v8r2.csv` [V]
+- **Font de les dades:** `dades/base_isin_any_v8r3.csv` [V]
 
 ## Sector ICB
 
@@ -16,6 +16,7 @@
 - **URL de la font:** https://www.stoxx.com/document/Indices/Factsheets_Components/2021/December/SXXP.pdf
 - **Wayback de la font:** — (no consta a la taula sectorial)
 - **Estat a les files del panell:** `amb_sector`
+- **Sector fix (`supersector_fix`):** Media
 
 ## Sèrie anual
 
@@ -35,4 +36,4 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
-Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r2.csv](../dades/base_isin_any_v8r2.csv)
+Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)

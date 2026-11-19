@@ -3,7 +3,7 @@
 - **ISIN:** `JE00BMDZN391`
 - **Nom al panell:** TP ICAP Group PLC Registered Shares LS
 - **Anys al panell:** 2025–2025 (1 files)
-- **Font de les dades:** `dades/base_isin_any_v8r2.csv` [V]
+- **Font de les dades:** `dades/base_isin_any_v8r3.csv` [V]
 
 ## Sector ICB
 
@@ -16,7 +16,8 @@
 - **URL de la font:** https://www.stoxx.com/document/Indices/Factsheets_Components/2020/November/SXXP.pdf
 - **Wayback de la font:** — (no consta a la taula sectorial)
 - **Estat a les files del panell:** `revisar; pendent_extensio_2024_2025`
-- **2024-2025:** el sector de l'any de la font no s'ha estès; ho decideix Doctorat (pendència).
+- **Sector fix (`supersector_fix`):** Financial Services
+- **2024-2025:** no hi ha font de juny 2023 per a aquest ISIN; el sector no s'ha estès i queda pendent.
 - **Revisió:** empresa casada per via indirecta (`nom_stoxx_via_llista_seleccio`).
 
 ## Sèrie anual
@@ -39,4 +40,4 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 
 - 2025: sector `revisar_pendent_extensio_2024_2025` — Empresa casada per via indirecta (nom_stoxx_via_llista_seleccio (al PDF casa amb GB00B1H0DZ51)); el sector queda marcat per revisar. No s'estén el sector de l'any de la font (any_font=2020) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
 
-Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r2.csv](../dades/base_isin_any_v8r2.csv)
+Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)

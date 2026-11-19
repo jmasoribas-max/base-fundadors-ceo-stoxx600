@@ -1,8 +1,8 @@
 # Registre de canvis
 
-Data d'aquest arbre: 19/11/2026 09:48 (CET, Europe/Madrid). Base: `dades/base_isin_any_v8r2.csv` SHA `1eb35dd77b410eb486e5ce534c9a852357517090b9a7759d25f8de90ee31c68f` [V].
+Data d'aquest arbre: 19/11/2026 10:12 (CET, Europe/Madrid). Base: `dades/base_isin_any_v8r3.csv` SHA `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V].
 
-La v8 r2 **no afegeix canvis d'etiqueta FounderCEO**. El registre que segueix és el de la v8 r1 (cites amb URL original i Wayback). L'únic canvi de versió és l'addició del sector ICB per ISIN, sense estendre el sector de 2023 a 2024-2025 (pendència de Doctorat) i amb les 25 empreses de via indirecta marcades `revisar`. Qualsevol canvi futur de dades s'ha d'afegir aquí amb cita literal, URL i Wayback, en una branca i via PR.
+La v8 r3 **no afegeix canvis d'etiqueta FounderCEO**. El registre que segueix és el de la v8 r1 (cites amb URL original i Wayback). La v8 r3 aplica l'extensió del supersector de juny 2023 als anys 2024-2025 per als ISIN que ja el tenien (`sector_estes_des_2023=1`) i afegeix `supersector_fix`; no canvia cap etiqueta FounderCEO. Qualsevol canvi futur de dades s'ha d'afegir aquí amb cita literal, URL i Wayback, en una branca i via PR.
 
 ---
 

@@ -1,3 +1,21 @@
+# Diccionari de camps v8 r3
+
+Data: 19/11/2026 10:14 (CET, Europe/Madrid). Fitxer de dades: `dades/base_isin_any_v8r3.csv` (i `.xlsx`), 6.012 files ISIN-any del panell, **158 columnes** (156 de la v8 r2 + 2 de robustesa de sector). [V]
+Unitat: ISIN-any. Clau: `isin` + `any`. SHA de la base: `1b7df913b31300857cbc77332a9aa03626edc0013f3bbb1e8625aa456ee38d4c` [V]. SHA de la taula sectorial: `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V].
+
+Les columnes heretades no canvien de significat respecte a la v8 r2, tret que a les files 2024-2025 amb `sector_estes_des_2023=1` els camps de sector aplicat (`supersector`, `taxonomia_icb`, `supersector_icb_anterior`, `supersector_icb2020`, `any_font`, `url_font`, `estat_sector`) queden omplerts amb el supersector del PDF de juny 2023. La v8 r3 no modifica FounderCEO ni els comptes principals.
+
+## Columnes noves a la v8 r3 (robustesa de sector)
+
+| # | Camp | Descripció |
+|---|---|---|
+| 157 | `sector_estes_des_2023` | `1` si la fila és un any 2024 o 2025 el sector de la qual s'ha estès des del PDF de components de juny 2023; `0` en cas contrari. Per excloure aquestes files en una robustesa: `sector_estes_des_2023!=1`. [V] |
+| 158 | `supersector_fix` | Supersector fix per empresa (ISIN), copiat de la taula sectorial a totes les files de l'ISIN que hi tenen sector. Buit a les 98 files de les 72 empreses `sense_sector`. No depèn de si la fila 2024-2025 s'ha estès o no. [V] |
+
+---
+
+## Diccionari heretat de la v8 r2 (columnes 1-156)
+
 # Diccionari de camps v8 r2
 
 Data: 19/11/2026 09:48 (CET, Europe/Madrid). Fitxer de dades: `dades/base_isin_any_v8r2.csv` (i `.xlsx`), 6.012 files ISIN-any del panell, **156 columnes** (146 heretades de la v8 r1 + 10 de sector). [V]

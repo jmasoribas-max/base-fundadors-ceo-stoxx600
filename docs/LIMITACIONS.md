@@ -1,3 +1,17 @@
+# Limitacions v8 r3
+
+Data: 19/11/2026 10:14 (CET, Europe/Madrid). Les xifres de FounderCEO, J14 i certificació són les mateixes que a la v8 r2 [V]. El text de limitacions anterior es conserva més avall; s'hi afegeix l'extensió de sector.
+
+## Sector ICB estès des de juny 2023 (v8 r3)
+
+- S'ha estès el supersector del PDF de components de juny 2023 als anys 2024-2025 **només** per als 561 ISIN que ja tenien aquesta font (`any_font=2023`): 1.076 files, amb `sector_estes_des_2023=1` i `any_font=2023`. [V]
+- **Supòsit, [NV]: no hi ha hagut cap reclassificació ICB entre el 2023 i el 2025.** No s'ha comprovat fila a fila si l'emissor ha canviat de supersector després del juny del 2023. Una robustesa que vulgui evitar aquest supòsit ha d'excloure les files amb `sector_estes_des_2023=1`. El sector fix per empresa, independent de l'extensió, és `supersector_fix`.
+- No s'ha posat `any_font=2023` a 33 ISIN (52 files 2024-2025) que tenen un sector a la taula però no una font de juny 2023; queden `pendent_extensio_2024_2025` o `revisar_pendent_extensio_2024_2025`.
+- 72 empreses (98 files) queden `sense_sector` i pendents per a Claude, amb una font A (per exemple un informe anual amb la classificació ICB): 48 només presents el 2024-2025 i 24 no casades als PDF 2015-2023 ([NV] ja a la font sectorial).
+- 25 empreses casades per via indirecta queden `revisar` o `revisar_pendent_extensio_2024_2025`.
+
+---
+
 # Limitacions v8 r2
 
 Data: 19/11/2026 09:48 (CET, Europe/Madrid). Les xifres de FounderCEO, J14 i certificació són les mateixes que a la v8 r1 [V]. El text de limitacions de la v8 r1 es conserva més avall; s'hi afegeix el sector.

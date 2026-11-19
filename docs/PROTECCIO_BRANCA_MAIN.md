@@ -68,3 +68,19 @@ Després d'activar la protecció, verifiqueu:
 4. Claude no pot fusionar ni empènyer a `main`.
 
 Aquestes instruccions s'han d'aplicar en el moment de crear el repositori remot. Aquest arbre és encara un repositori **git local**; no s'ha creat cap remot ni s'ha fet cap push.
+
+## 5. CODEOWNERS (fitxers que Claude no pot modificar)
+
+El fitxer `.github/CODEOWNERS` reserva aquests camins al compte de Jordi, perquè un PR que els toqui requereixi la seva revisió:
+
+- `scripts/`
+- `docs/METODOLOGIA.md`
+- `CLAUDE.md`
+- les regles (`docs/REGLES*.md`, si s'hi afegeixen)
+- `.github/` (inclou el mateix CODEOWNERS i els fluxos de validació)
+
+**[NV] L'usuari de GitHub de Jordi no figura als fitxers d'aquest repositori.** Al CODEOWNERS hi ha el placeholder `@PLACEHOLDER_GITHUB_JORDI` [NV]. Abans de publicar el repositori, substituïu-lo pel compte real de Jordi i activeu, al ruleset o a la protecció de `main`, l'opció que exigeixi la revisió dels code owners.
+
+Claude Code no ha de proposar canvis a aquests camins. Si un lot ho necessitès (per exemple, un ajust del validador), cal un encàrrec explícit de Jordi i el seu PR d'aprovació.
+
+La branca `main` continua amb PR obligatori, aprovació de Jordi i cap push directe (seccions 1-4).

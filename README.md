@@ -1,8 +1,8 @@
-# Dashboard Fundadors — base v8 r2
+# Dashboard Fundadors — base v8 r3
 
-Panell d'empreses del doctorat sobre Founder-CEO, unitat **ISIN-any**. Aquest repositori recull la base v8 r2, el sector ICB per ISIN, una fitxa per empresa i la documentació de treball.
+Panell d'empreses del doctorat sobre Founder-CEO, unitat **ISIN-any**. Aquest repositori recull la base v8 r3, el sector ICB per ISIN (amb l'extensió del supersector de juny 2023 als anys 2024-2025 per als ISIN que ja el tenien), una fitxa per empresa i la documentació de treball.
 
-**Esborrany local, pendent que Jordi el vegi.** No s'ha creat cap repositori remot ni s'ha pujat res.
+**Esborrany local, pendent que Jordi el vegi abans de pujar-lo.** No s'ha creat cap repositori remot ni s'ha pujat res. Les instruccions de `CLAUDE.md` van ser aprovades per Jordi el 19/11/2026; l'extensió de sector, el mateix dia a les 10:06 (CET, Europe/Madrid).
 
 ## Xifres principals [V]
 
@@ -11,18 +11,18 @@ Panell d'empreses del doctorat sobre Founder-CEO, unitat **ISIN-any**. Aquest re
 - Anys **2016-2025**.
 - FounderCEO: **F 343**, **P 5.624**, **ND 14**, **NA 31** (F és el 5,75 % de F+P).
 - Mostra principal J14 (panell, FounderCEO 0 o 1, no `dret_temporal`): **n=5.954**, **F=342**.
-- Certificació (àmbit de l'auditoria, 2.122 files; la resta del panell, 3.890, és `fora_mostra_auditoria`):
+- Certificació (àmbit de l'auditoria, 2.122 files; la resta del panell, **3.890**, és `fora_mostra_auditoria`):
   - certificades: **N1 740**, **N2 1.018**, **doctorat 15** (total **1.773**);
   - `ceo_pendent` **108**;
   - `no_certificada` **241**.
 
-La v8 r2 no canvia cap d'aquestes xifres respecte a la v8 r1: només afegeix el sector ICB per ISIN. No s'ha estès el sector d'una font de 2023 (ni de cap any de font ≤ 2023) als anys 2024-2025; això ho decideix Doctorat i queda com a pendència.
+La v8 r3 no canvia cap d'aquestes xifres respecte a la v8 r2 / v8 r1: només aplica l'extensió de sector aprovada i afegeix les columnes de robustesa `sector_estes_des_2023` i `supersector_fix`.
 
 Valors de FounderCEO a la base: `1` (F), `0` (P), `no_determinat` (ND), `NA_sense_ceo` (NA).
 
 ## Protecció de `main` i flux de canvis
 
-La branca `main` ha d'estar protegida i **Claude no la pot tocar mai** (ni push, ni commit, ni fusió, ni esmena directa). Claude Code només treballa en branques i obre pull requests.
+La branca `main` ha d'estar protegida i **Claude no la pot tocar mai** (ni push, ni commit, ni fusió, ni esmena directa). Tampoc no toca `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, les regles ni `.github/`. Claude Code només treballa en branques, per lots d'empreses, i obre un pull request per lot.
 
 El flux és:
 
@@ -30,9 +30,9 @@ El flux és:
 2. Obre un PR amb un resum. **No fusiona a `main`.**
 3. **DF** valida.
 4. **Doctorat** revisa la metodologia.
-5. **Jordi** aprova i fusiona.
+5. **Jordi** aprova.
 
-Les instruccions per configurar la protecció de `main` a GitHub (PR obligatori, aprovació de Jordi i cap push directe) són a [`docs/PROTECCIO_BRANCA_MAIN.md`](docs/PROTECCIO_BRANCA_MAIN.md). Les instruccions de treball per a Claude Code són a [`CLAUDE.md`](CLAUDE.md) (esborrany pendent de la revisió de Doctorat).
+Les instruccions per configurar la protecció de `main` a GitHub (PR obligatori, aprovació de Jordi, cap push directe i CODEOWNERS) són a [`docs/PROTECCIO_BRANCA_MAIN.md`](docs/PROTECCIO_BRANCA_MAIN.md). Les instruccions de treball per a Claude Code, aprovades per Jordi el 19/11/2026, són a [`CLAUDE.md`](CLAUDE.md).
 
 ## Com navegar-hi
 
@@ -40,26 +40,30 @@ Les instruccions per configurar la protecció de `main` a GitHub (PR obligatori,
 |---|---|
 | [`INDEX.md`](INDEX.md) i [`index.csv`](index.csv) | Índex de les 1.040 empreses per nom i per ISIN, amb el sector i l'estat |
 | [`empreses/`](empreses/) | Una fitxa `empreses/{ISIN}.md` per cada ISIN |
-| [`dades/`](dades/) | Base `base_isin_any_v8r2.csv` / `.xlsx` i `sector_icb_v8r2.csv` |
+| [`dades/`](dades/) | Base `base_isin_any_v8r3.csv` / `.xlsx` i `sector_icb_v8r3.csv` |
 | [`docs/DICCIONARI_CAMPS.md`](docs/DICCIONARI_CAMPS.md) | Diccionari de camps |
 | [`docs/METODOLOGIA.md`](docs/METODOLOGIA.md) | Resum de les regles R1-R3 i dels criteris N1/N2 (el que no està documentat es marca [NV]) |
 | [`docs/REGISTRE_CANVIS.md`](docs/REGISTRE_CANVIS.md) | Registre de canvis i cites |
 | [`docs/LIMITACIONS.md`](docs/LIMITACIONS.md) | Limitacions de la base |
 | [`docs/QA.md`](docs/QA.md) | Control de qualitat |
-| [`PENDENTS.md`](PENDENTS.md) | Feina pendent, amb l'ordre de prioritats |
+| [`PENDENTS.md`](PENDENTS.md) | Feina pendent, amb l'ordre de treball |
 | [`scripts/`](scripts/) | `comprova_enllacos_cites.py` i `valida_pr.py` (executar sense `--live` en local) |
 | [`MANIFEST_SHA256.csv`](MANIFEST_SHA256.csv) | SHA-256 dels fitxers del repositori |
 
-## Sector ICB (v8 r2)
+## Sector ICB (v8 r3)
 
 Font: PDF públics de components amb supersector, 2015-juny 2023. SHA de la taula sectorial: `ddc3d037d796c4053700ce374148f134b09e071579875befe89e664e816899af` [V].
 
+Decisió de Jordi (19/11/2026 10:06, CET, Europe/Madrid): s'estén el supersector del PDF de juny 2023 als anys 2024-2025, només per als ISIN que ja el tenien. Aquestes files porten `sector_estes_des_2023=1` i `any_font=2023` (1.076 files, 561 ISIN). Per excloure-les en una robustesa: `sector_estes_des_2023!=1`. El sector fix per empresa és `supersector_fix`.
+
+Supòsit, [NV]: no hi ha hagut cap reclassificació ICB entre el 2023 i el 2025 (vegeu `docs/LIMITACIONS.md`).
+
 A la base, per fila:
 
-- `amb_sector` 4.777
-- `pendent_extensio_2024_2025` 1.095
-- `sense_sector` 98 (72 empreses, amb el motiu)
-- `revisar` 9
-- `revisar_pendent_extensio_2024_2025` 33
+- `amb_sector` 5.825
+- `revisar` 37
+- `pendent_extensio_2024_2025` 47
+- `revisar_pendent_extensio_2024_2025` 5
+- `sense_sector` 98 (72 empreses: 48 només 2024-2025 i 24 no casades, pendents per a Claude amb una font A)
 
-Les 25 empreses casades per via indirecta (`nom_stoxx_via_llista_seleccio`) queden marcades `revisar` o `revisar_pendent_extensio_2024_2025`.
+Les 25 empreses casades per via indirecta (`nom_stoxx_via_llista_seleccio`) queden marcades `revisar` o `revisar_pendent_extensio_2024_2025`. 33 ISIN tenen un sector d'una font anterior a juny 2023 i no s'han estès (52 files).

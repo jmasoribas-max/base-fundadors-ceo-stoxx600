@@ -1,0 +1,15 @@
+# Protecció de fitxers de govern i de metodologia.
+#
+# [NV] L'usuari de GitHub de Jordi no figura als fitxers d'aquest repositori.
+# Abans de publicar el repositori a GitHub, substituïu
+# @PLACEHOLDER_GITHUB_JORDI [NV] pel compte real de Jordi.
+# Mentrestant aquest placeholder queda explícitament no verificat.
+#
+# Aquests camins no els pot modificar Claude: només un PR revisat i
+# aprovat per Jordi (vegeu docs/PROTECCIO_BRANCA_MAIN.md).
+
+scripts/ @PLACEHOLDER_GITHUB_JORDI
+docs/METODOLOGIA.md @PLACEHOLDER_GITHUB_JORDI
+CLAUDE.md @PLACEHOLDER_GITHUB_JORDI
+docs/REGLES*.md @PLACEHOLDER_GITHUB_JORDI
+.github/ @PLACEHOLDER_GITHUB_JORDI
