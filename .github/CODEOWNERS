@@ -1,13 +1,15 @@
 # Protecció de fitxers de govern i de metodologia (documentació).
 #
 # El compte GitHub de Jordi és @jmasoribas-max.
-# Aquests camins no els ha de modificar Claude. CODEOWNERS no és un
-# requisit de revisió a GitHub (un sol compte no pot aprovar un PR propi);
+# Aquests camins no els ha de modificar l'agent (ni Claude Code ni Codex
+# ni cap altre). CODEOWNERS no és un requisit de revisió a GitHub
+# (un sol compte no pot aprovar un PR propi);
 # vegeu docs/PROTECCIO_BRANCA_MAIN.md. Jordi fusiona amb el botó del PR.
 
 scripts/ @jmasoribas-max
 docs/METODOLOGIA.md @jmasoribas-max
 CLAUDE.md @jmasoribas-max
+AGENTS.md @jmasoribas-max
 docs/REGLES*.md @jmasoribas-max
 .github/ @jmasoribas-max
 .claude/ @jmasoribas-max
