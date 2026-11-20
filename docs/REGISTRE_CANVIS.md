@@ -12955,3 +12955,139 @@ Fora d'aquest PR (documentat, no fet):
 - Les altres robusteses heretades de les 11 files del PR #6 (`founderceo_rob_na_com_0`, `_nd_com_0`, `_nd_com_1`, `_c_com_nd`, etc.) no es toquen, com al recàlcul del PR #4. A B&M, per exemple, `founderceo_rob_nd_com_0` continua a 0.
 - ITV 2017: `font_classificacio_*` ja resolt en aquest mateix PR (grup DF-PR6-08).
 
+
+## Lot 4 · auditoria de files fora de mostra
+
+L’abast és la [llista de 298 parelles ISIN-any](../lots/lot4.csv). Les cites i marques són al [registre CSV](REGISTRE_CANVIS.csv).
+
+Codex ha reauditat les **298 files de 53 empreses** del lot. Hi ha **298 files amb el CEO acreditat al 31/10** i **294 files amb prova positiva de FounderCEO**. Totes dues proves coincideixen en **294 files**. La proposta conté 0 correccions de valors a FounderCEO i 0 propostes de canvi a ceos.
+
+Clariant 2018 queda revisat amb els dos comunicats de l’emissor. Occhiello va assumir el càrrec el 16/10/2018 procedent de SABIC (prova d). Per a ABB s’han incorporat les cites del CEO als 20-F dels exercicis 2022 i 2023.
+
+Els recomptes de la taula són parelles ISIN-any úniques dins de cada fila. Una parella pot aparèixer en més d’un tipus d’incidència, o constar en les dues columnes si té diverses cites.
+
+| ISIN i fitxa | Files | CEO al 31/10 | Etiqueta provada | Indeterminades |
+|---|---:|---:|---:|---|
+| [AT0000606306](../empreses/AT0000606306.md) | 8 | 8 | 8 | — |
+| [AT0000652011](../empreses/AT0000652011.md) | 10 | 10 | 10 | — |
+| [AT0000730007](../empreses/AT0000730007.md) | 6 | 6 | 6 | — |
+| [AT0000743059](../empreses/AT0000743059.md) | 10 | 10 | 10 | — |
+| [AT0000746409](../empreses/AT0000746409.md) | 7 | 7 | 7 | — |
+| [AT0000937503](../empreses/AT0000937503.md) | 3 | 3 | 3 | — |
+| [AT0000A18XM4](../empreses/AT0000A18XM4.md) | 1 | 1 | 1 | — |
+| [AT0000A21KS2](../empreses/AT0000A21KS2.md) | 1 | 1 | 1 | — |
+| [AT0000BAWAG2](../empreses/AT0000BAWAG2.md) | 6 | 6 | 6 | — |
+| [AT00BUWOG001](../empreses/AT00BUWOG001.md) | 1 | 1 | 1 | — |
+| [BE0003470755](../empreses/BE0003470755.md) | 8 | 8 | 8 | — |
+| [BE0003593044](../empreses/BE0003593044.md) | 10 | 10 | 10 | — |
+| [BE0003604155](../empreses/BE0003604155.md) | 4 | 4 | 4 | — |
+| [BE0003717312](../empreses/BE0003717312.md) | 8 | 8 | 8 | — |
+| [BE0003763779](../empreses/BE0003763779.md) | 1 | 1 | 1 | — |
+| [BE0003764785](../empreses/BE0003764785.md) | 10 | 10 | 10 | — |
+| [BE0003797140](../empreses/BE0003797140.md) | 10 | 10 | 10 | — |
+| [BE0003810273](../empreses/BE0003810273.md) | 7 | 7 | 7 | — |
+| [BE0003822393](../empreses/BE0003822393.md) | 6 | 6 | 4 | 2023–2024 |
+| [BE0003823409](../empreses/BE0003823409.md) | 2 | 2 | 0 | 2024–2025 |
+| [BE0003826436](../empreses/BE0003826436.md) | 4 | 4 | 4 | — |
+| [BE0003867844](../empreses/BE0003867844.md) | 1 | 1 | 1 | — |
+| [BE0003884047](../empreses/BE0003884047.md) | 1 | 1 | 1 | — |
+| [BE0974264930](../empreses/BE0974264930.md) | 6 | 6 | 6 | — |
+| [BE0974268972](../empreses/BE0974268972.md) | 2 | 2 | 2 | — |
+| [BE0974276082](../empreses/BE0974276082.md) | 2 | 2 | 2 | — |
+| [BE0974349814](../empreses/BE0974349814.md) | 6 | 6 | 6 | — |
+| [BE0974464977](../empreses/BE0974464977.md) | 2 | 2 | 2 | — |
+| [BMG0112X1056](../empreses/BMG0112X1056.md) | 3 | 3 | 3 | — |
+| [BMG4593F1389](../empreses/BMG4593F1389.md) | 10 | 10 | 10 | — |
+| [CH0000587979](../empreses/CH0000587979.md) | 2 | 2 | 2 | — |
+| [CH0000816824](../empreses/CH0000816824.md) | 4 | 4 | 4 | — |
+| [CH0001503199](../empreses/CH0001503199.md) | 2 | 2 | 2 | — |
+| [CH0001752309](../empreses/CH0001752309.md) | 6 | 6 | 6 | — |
+| [CH0002178181](../empreses/CH0002178181.md) | 1 | 1 | 1 | — |
+| [CH0002497458](../empreses/CH0002497458.md) | 7 | 7 | 7 | — |
+| [CH0008038389](../empreses/CH0008038389.md) | 10 | 10 | 10 | — |
+| [CH0008742519](../empreses/CH0008742519.md) | 10 | 10 | 10 | — |
+| [CH0008837566](../empreses/CH0008837566.md) | 3 | 3 | 3 | — |
+| [CH0009002962](../empreses/CH0009002962.md) | 10 | 10 | 10 | — |
+| [CH0010570767](../empreses/CH0010570767.md) | 4 | 4 | 4 | — |
+| [CH0011029946](../empreses/CH0011029946.md) | 1 | 1 | 1 | — |
+| [CH0011037469](../empreses/CH0011037469.md) | 1 | 1 | 1 | — |
+| [CH0011075394](../empreses/CH0011075394.md) | 10 | 10 | 10 | — |
+| [CH0011108872](../empreses/CH0011108872.md) | 1 | 1 | 1 | — |
+| [CH0011795959](../empreses/CH0011795959.md) | 2 | 2 | 2 | — |
+| [CH0012005267](../empreses/CH0012005267.md) | 10 | 10 | 10 | — |
+| [CH0012032048](../empreses/CH0012032048.md) | 10 | 10 | 10 | — |
+| [CH0012100191](../empreses/CH0012100191.md) | 8 | 8 | 8 | — |
+| [CH0012138605](../empreses/CH0012138605.md) | 10 | 10 | 10 | — |
+| [CH0012142631](../empreses/CH0012142631.md) | 10 | 10 | 10 | — |
+| [CH0012214059](../empreses/CH0012214059.md) | 10 | 10 | 10 | — |
+| [CH0012221716](../empreses/CH0012221716.md) | 10 | 10 | 10 | — |
+
+### Files indeterminades
+
+- **Elia 2023 i 2024.** El fullet de l’emissor fa constar «Although the Company was only incorporated in 2001, its activities started in 1937». El comunicat original d’Elia del 04/09/2013 s’ha reobert a Wayback. L’etiqueta queda pendent de la regla 26 que decidiran DF i Doctorat.
+
+- **Financière de Tubize 2024 i 2025.** Els estatuts i el nomenament sustenten el criteri de reserva c. Les cerques no han donat un any de naixement o un ocupador anterior que acrediti b o d. Les dues files queden fora del recompte de proves positives.
+
+### Incidències de la passada
+
+| Tipus d’incidència | Files corregides o amb prova reforçada | Files pendents |
+|---|---:|---:|
+| Fonts C retirades de la prova (Aegon, Ageas i biografia MWC de Proximus) | 12 | 0 |
+| Cita i cobertura del CEO al 31/10, inclosos Clariant 2018 i ABB 2022–2023 | 78 | 0 |
+| Reserva c amb una prova positiva alternativa en aquesta revisió | 0 | 2 |
+| Còpies d’informes en agregadors amb original substituït o corroboració de l’emissor en lloc de la còpia | 50 | 1 |
+| Cites comprovades en noves captures de Wayback | 277 | 230 |
+
+Wayback té **301 de 533 entrades amb la cita literal comprovada en una captura**, 270 verificacions noves respecte al PR inicial. Hi ha **217 entrades pendents** i 15 entrades de revisió que es conserven sense valor probatori. De les 437 entrades inicialment pendents, se n’han verificat 229, 193 continuen pendents i 15 es conserven només com a revisió de fonts. El registre explica el motiu de cada pendent (p. ex. reproducció incompleta, cita absent a la captura, limitació HTTP o desada sense captura confirmada). Per als URLs que encara servien de prova i sense captura localitzada s’ha demanat la desada. L’API i la resposta de Save són pistes fins que la cita s’ha pogut rellegir al document.
+
+Hi ha 46 cites d’agregador substituïdes per l’original o per una prova equivalent de l’emissor. Les 1 cites en còpia que es mantenen queden marcades `agregador=true`, amb el motiu i les rutes provades.
+
+### Nou entrades de fonts antigues amb limitacions
+
+| Cas | Font antiga i límit |
+|---|---|
+| Erste Group 2022–2023 | Informe anual d’Erste 2018. L’edat és aprofitable. El document no prova el càrrec de CEO el 2022 o el 2023. [Font](https://www.erstegroup.com/content/dam/at/eh/www_erstegroup_com/en/Investor_Relations/2018/Reports/AR2018_FINAL_en.pdf) |
+| Ackermans & van Haaren 2016–2021 | L’URL antiga d’Update 3Q16 redirigeix a l’índex. El PDF migrat cobreix la dada del 2016 i no la resta del mandat per si sol. [Font](https://www.avh.be/sites/avh/files/investorpresentations/2016/Update%203Q16.pdf) |
+| Ackermans & van Haaren 2022–2025 | La mateixa URL antiga es citava per a John-Eric Bertrand. El PDF original del 2016 no acredita els mandats del 2022–2025. [Font](https://www.avh.be/sites/avh/files/investorpresentations/2016/Update%203Q16.pdf) |
+| Ackermans & van Haaren 2022–2025 | El PDF migrat d’Update 3Q16 només serveix de prova biogràfica per a b en aquests anys. [Font](https://www.avh.be/~/media/Files/A/avh/corp/results-and-presentations/archive/Update-3Q16.pdf) |
+| Hiscox 2016–2021 | L’informe 2018 al regulador dona l’edat de Bronek Masojada. L’abast temporal dels mandats es comprova als informes de cada exercici. [Font](https://cdn.bma.bm/documents/2019-07-25-11-16-41-Hiscox-Ltd.---2018-Financial-Statements.pdf) |
+| Hiscox 2022–2025 | L’informe 2018 dona l’edat d’Aki Hussain i l’identifica com a director financer. El càrrec de CEO es prova amb els informes posteriors aplicables. [Font](https://cdn.bma.bm/documents/2019-07-25-11-16-41-Hiscox-Ltd.---2018-Financial-Statements.pdf) |
+| INFICON 2024 | L’enllaç antic demana JavaScript i no lliura el PDF. La còpia oficial alternativa de Govern Corporatiu 2024 conté la cita. [Font](https://www.inficon.com/media/11986/download/Annual-%2B-Sustainability-%28ESG%29-Report-2024.pdf?inline=true&language=en&v=1) |
+| Holcim 2016 | L’URL antiga del perfil d’Eric Olsen donava 403. La referència es conserva com a antecedent i s’identifiquen les fonts de substitució. [Font](https://www.lafarge.com.ng/eric-olsen-lafargeholcim-group-chief-executive-officer-visits-nigeria) |
+| Holcim 2024–2025 | L’URL antiga de Miljan Gutovic donava 403. El registre identifica els informes o captures utilitzats per acreditar el mandat. [Font](https://www.holcim.com/who-we-are/governance/leadership-team/miljan-gutovic) |
+
+### Diferències metodològiques respecte de regles (131 files)
+
+Les propostes són per a DF. En els casos de co-CEO es mostren les dues proves quan en cal una per a cada persona.
+
+| ISIN | Anys | `regles` a la base | Prova proposada |
+|---|---|---|---|
+| `AT0000606306` | 2016–2021, 2024–2025 | d | e |
+| `AT0000937503` | 2016–2018 | b | e |
+| `AT0000BAWAG2` | 2020–2025 | b | d |
+| `BE0003470755` | 2016–2023 | c_AAF64_reserva | b |
+| `BE0003593044` | 2018–2025 | d | b |
+| `BE0003763779` | 2019 | b\|d | b + a |
+| `BE0003797140` | 2016–2018 | b | b + d |
+| `BE0003797140` | 2025 | b | d |
+| `BE0003822393` | 2019–2022 | e | d |
+| `BE0003867844` | 2025 | c_AAF64_reserva | d |
+| `BE0003884047` | 2016 | c_AAF64_reserva | d |
+| `BE0974264930` | 2020–2025 | b | e |
+| `BE0974349814` | 2020–2023 | b\|d | b + a |
+| `BE0974349814` | 2024–2025 | d | b |
+| `BE0974464977` | 2024–2025 | a | e |
+| `BMG0112X1056` | 2023–2025 | d | e |
+| `CH0000587979` | 2016–2017 | c_AAF64_reserva | b |
+| `CH0001752309` | 2016–2021 | c_AAF64_reserva | b |
+| `CH0002497458` | 2016–2022 | c_AAF64_reserva | b |
+| `CH0008742519` | 2022–2025 | d | e |
+| `CH0008837566` | 2023–2025 | b | d |
+| `CH0009002962` | 2016–2025 | c_AAF64_reserva | d |
+| `CH0010570767` | 2022–2025 | b | d |
+| `CH0011029946` | 2024 | b | d |
+| `CH0011075394` | 2016–2025 | d | b |
+| `CH0011108872` | 2025 | d | a |
+| `CH0011795959` | 2016–2017 | c_AAF64_reserva | e |
+| `CH0012138605` | 2016–2025 | a | d |
+| `CH0012214059` | 2016–2025 | b | e |
