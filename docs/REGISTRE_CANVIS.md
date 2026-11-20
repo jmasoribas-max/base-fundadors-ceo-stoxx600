@@ -2116,3 +2116,75 @@ Marques per fila (108 files): `informe_exercici` 62, `prova_interval` 37, `prova
 6. [`L2|SE0000869646|C6`] [V] «take over the leadership of Boliden. I will miss you all. Lennart Evrell President & CEO»
    Anys: 2017 · funció: `ceo` · allotjament: `emissor` · nivell A · prova: Evrell signa com a President & CEO la carta de l'informe anual de l'exercici 2017 (inclou el 31/10/2017) · URL: https://investors.boliden.com/sites/boliden-ir/files/pr/201803060710-1.pdf · Wayback: https://web.archive.org/web/20241208132648/https://investors.boliden.com/sites/boliden-ir/files/pr/201803060710-1.pdf (existent; cita no verificada a la captura)
 
+## Lot 4 · auditoria de files fora de mostra
+
+Codex ha revisat **298 files de 53 empreses**. L’abast és la [llista de parelles ISIN-any](../lots/lot4.csv) filtrada per `fora_mostra_auditoria` a la base de `main` (`cdd1cca`).
+
+Hi ha **295 files amb totes dues proves**, 297 amb prova del CEO al 31/10 i 295 amb prova positiva de l’etiqueta. Les cites verificades coincideixen amb el contingut de la base. El lot conté zero correccions de `FounderCEO` i zero propostes de canvi de `ceos`.
+
+Les cites literals, els URLs, la funció de cada cita i la revisió de les fonts antigues consten al [registre CSV](REGISTRE_CANVIS.csv) i a les fitxes. Una cita d’edat o d’un càrrec anterior s’ha conservat com a prova biogràfica quan correspon. Quan l’enllaç antic ha fallat o el document no cobreix el càrrec i l’any, el registre n’explica el motiu i enllaça l’alternativa quan s’ha trobat.
+
+El registre inclou 31 entrades amb la cita comprovada en una captura de Wayback. Les altres porten `pendent_verificacio_externa` quan la captura no s’ha pogut comprovar. Els originals i els documents de l’emissor consultats en còpia queden identificats a les fitxes.
+
+| ISIN i fitxa | Files | CEO al 31/10 | Etiqueta provada | Anys indeterminats en aquesta auditoria |
+|---|---:|---:|---:|---|
+| [AT0000606306](../empreses/AT0000606306.md) | 8 | 8 | 8 | — |
+| [AT0000652011](../empreses/AT0000652011.md) | 10 | 10 | 10 | — |
+| [AT0000730007](../empreses/AT0000730007.md) | 6 | 6 | 6 | — |
+| [AT0000743059](../empreses/AT0000743059.md) | 10 | 10 | 10 | — |
+| [AT0000746409](../empreses/AT0000746409.md) | 7 | 7 | 7 | — |
+| [AT0000937503](../empreses/AT0000937503.md) | 3 | 3 | 3 | — |
+| [AT0000A18XM4](../empreses/AT0000A18XM4.md) | 1 | 1 | 1 | — |
+| [AT0000A21KS2](../empreses/AT0000A21KS2.md) | 1 | 1 | 1 | — |
+| [AT0000BAWAG2](../empreses/AT0000BAWAG2.md) | 6 | 6 | 6 | — |
+| [AT00BUWOG001](../empreses/AT00BUWOG001.md) | 1 | 1 | 1 | — |
+| [BE0003470755](../empreses/BE0003470755.md) | 8 | 8 | 8 | — |
+| [BE0003593044](../empreses/BE0003593044.md) | 10 | 10 | 10 | — |
+| [BE0003604155](../empreses/BE0003604155.md) | 4 | 4 | 4 | — |
+| [BE0003717312](../empreses/BE0003717312.md) | 8 | 8 | 8 | — |
+| [BE0003763779](../empreses/BE0003763779.md) | 1 | 1 | 1 | — |
+| [BE0003764785](../empreses/BE0003764785.md) | 10 | 10 | 10 | — |
+| [BE0003797140](../empreses/BE0003797140.md) | 10 | 10 | 10 | — |
+| [BE0003810273](../empreses/BE0003810273.md) | 7 | 7 | 7 | — |
+| [BE0003822393](../empreses/BE0003822393.md) | 6 | 6 | 4 | 2023, 2024 |
+| [BE0003823409](../empreses/BE0003823409.md) | 2 | 2 | 2 | — |
+| [BE0003826436](../empreses/BE0003826436.md) | 4 | 4 | 4 | — |
+| [BE0003867844](../empreses/BE0003867844.md) | 1 | 1 | 1 | — |
+| [BE0003884047](../empreses/BE0003884047.md) | 1 | 1 | 1 | — |
+| [BE0974264930](../empreses/BE0974264930.md) | 6 | 6 | 6 | — |
+| [BE0974268972](../empreses/BE0974268972.md) | 2 | 2 | 2 | — |
+| [BE0974276082](../empreses/BE0974276082.md) | 2 | 2 | 2 | — |
+| [BE0974349814](../empreses/BE0974349814.md) | 6 | 6 | 6 | — |
+| [BE0974464977](../empreses/BE0974464977.md) | 2 | 2 | 2 | — |
+| [BMG0112X1056](../empreses/BMG0112X1056.md) | 3 | 3 | 3 | — |
+| [BMG4593F1389](../empreses/BMG4593F1389.md) | 10 | 10 | 10 | — |
+| [CH0000587979](../empreses/CH0000587979.md) | 2 | 2 | 2 | — |
+| [CH0000816824](../empreses/CH0000816824.md) | 4 | 4 | 4 | — |
+| [CH0001503199](../empreses/CH0001503199.md) | 2 | 2 | 2 | — |
+| [CH0001752309](../empreses/CH0001752309.md) | 6 | 6 | 6 | — |
+| [CH0002178181](../empreses/CH0002178181.md) | 1 | 1 | 1 | — |
+| [CH0002497458](../empreses/CH0002497458.md) | 7 | 7 | 7 | — |
+| [CH0008038389](../empreses/CH0008038389.md) | 10 | 10 | 10 | — |
+| [CH0008742519](../empreses/CH0008742519.md) | 10 | 10 | 10 | — |
+| [CH0008837566](../empreses/CH0008837566.md) | 3 | 3 | 3 | — |
+| [CH0009002962](../empreses/CH0009002962.md) | 10 | 10 | 10 | — |
+| [CH0010570767](../empreses/CH0010570767.md) | 4 | 4 | 4 | — |
+| [CH0011029946](../empreses/CH0011029946.md) | 1 | 1 | 1 | — |
+| [CH0011037469](../empreses/CH0011037469.md) | 1 | 1 | 1 | — |
+| [CH0011075394](../empreses/CH0011075394.md) | 10 | 10 | 10 | — |
+| [CH0011108872](../empreses/CH0011108872.md) | 1 | 1 | 1 | — |
+| [CH0011795959](../empreses/CH0011795959.md) | 2 | 2 | 2 | — |
+| [CH0012005267](../empreses/CH0012005267.md) | 10 | 10 | 10 | — |
+| [CH0012032048](../empreses/CH0012032048.md) | 10 | 10 | 10 | — |
+| [CH0012100191](../empreses/CH0012100191.md) | 8 | 8 | 8 | — |
+| [CH0012138605](../empreses/CH0012138605.md) | 10 | 10 | 10 | — |
+| [CH0012142631](../empreses/CH0012142631.md) | 10 | 9 | 9 | 2018 |
+| [CH0012214059](../empreses/CH0012214059.md) | 10 | 10 | 10 | — |
+| [CH0012221716](../empreses/CH0012221716.md) | 10 | 10 | 10 | — |
+
+**3 files indeterminades en aquesta auditoria.** Les fitxes indiquen quines fonts s’han consultat i quina prova falta.
+
+- [Elia 2023 i 2024](../empreses/BE0003822393.md). El CEO interí està documentat. La prova d de Catherine Vandenborre depèn de si la constitució el 2001 va ser una fundació nova segons D1 o continuïtat de l’activitat operativa anterior. Va entrar a Elia el 2001.
+- [Clariant 2018](../empreses/CH0012142631.md). Les fonts identifiquen el successor i documenten el darrer dia del predecessor, però falta el dia efectiu d’entrada d’Ernesto Occhiello dins la finestra de 90 dies.
+
+Els resultats es presenten a DF per validar-los, a Doctorat per revisar-ne la metodologia i a Jordi per aprovar-los.
