@@ -12926,3 +12926,32 @@ Durant la segona passada (verificació adversarial) es va esgotar el pressupost 
 [56] [`L3|DK0010307958|DK0010307958_c55`] [V] «He held this position until 1990, when he was appointed Assistant Managing Director of Jyske Bank, with responsibility for Development and Planning over the years 1990-1992.»
    Anys: 2016-2018, 2022-2023 · funció: `context` · allotjament: `regulador` · nivell A · prova: Afegida per la verificació per documentar la discrepància menor (tipus E6) amb c40: el fullet data el nomenament d'Assistant Managing Director el 1990 i el CA 15/2023 el 1989. Sense efecte en l'etiqueta. · URL: https://attachment.news.eu.nasdaq.com/a4c3a737250e1a8e1c2c36c8e87f1fab1 · Wayback: `pendent_verificacio_externa`
 
+## Ajustos de DF després del PR #6 (20/11/2026)
+
+Branca `df/ajustos-pr6`, creada des de `main` després de la fusió del PR #6 (merge `5b21049b442dc7c26fedfc49ce2ac7c9f47c4f98`). Autorització de Jordi (20/11/2026 14:41): «Fusiona el PR #6 tal com està i aplica tu els canvis en un PR teu». Decisions aplicades: Jordi, 20/11/2026 14:25 (regla 27 de la METODOLOGIA v0.10.9). Proposta de DF, pendent de Doctorat i Jordi. Cap canvi de FounderCEO. Files al CSV `docs/REGISTRE_CANVIS.csv`, grups `DF-PR6-01` a `DF-PR6-07`.
+
+| Grup | ISIN | Anys | Què canvia | Cites |
+|---|---|---|---|---|
+| DF-PR6-01 | `LU1072616219` (B&M) | 2016-2021 | F es queda. D37a: `founderceo_rob_cita_contemporania`=0. D37b: `fundador_transformador`=1, `founderceo_rob_pre_d37`=0 i robustesa sense transformador 0. `regles`=D37, `marques` +D37, `d37_data_cita`=2024-06-04, `d37_cita_contemporania`=no; robusteses v8r1, `sim_*`, `motiu_nd` buidat. | D37 de l'informe anual 2024 (PB-BM14). Cerca contemporània negativa: informes anuals 2016-2021 i fullet IPO 2014 [V]. |
+| DF-PR6-02 | `LU1673108939` (Aroundtown) | 2017-2020 | Recàlcul de columnes derivades del 0 del PR #6: `regles`=a, `a_mostra_principal`=1, robusteses v8r1, `sim_*`, `motiu_nd` buidat. | Cites del lot 3 (L3-E08 a L3-E11). |
+| DF-PR6-03 | `DE0005545503` (Drillisch) | 2017 | Ídem, `regles`=d. Substitueix J5. | Cites del lot 3 (L3-E01). |
+| DF-PR6-04/05 | `GB0033986497` (ITV) | 2017 | CEO Ian Griffiths → Peter Bazalgette (R3). `regles` R-SC;b → R3;d; `marques` +`ceo_president_exec`, −`interi`; `founderceo_rob_sense_r3`=NA_sense_ceo; `sim_canvi_ceo`=1. FounderCEO 0 (prova d). | AR 2017 p. 61 i p. 93, verificades a la captura Wayback `id_` [V]. |
+| DF-PR6-08 | `GB0033986497` (ITV) | 2017 | `font_classificacio_*`: la cita de Griffiths (2008) se substitueix per la prova d de Bazalgette (AR 2017, p. 62), amb SHA de l'extracte `62a0058807d02ef0ea1a0c652e4b650861d33ec05ec79fa3ec4ad8b7e9d60da3` calculat per script; `font_classificacio_pack` X8→DF-PR6-ITV. La cita antiga es conserva en una fila del grup. Jordi, 20/11/2026 14:55. | «3 Sir Peter Bazalgette Chairman G Appointed: June 2013», verificada a la captura Wayback `id_` [V]. |
+| DF-PR6-06 | `FR0000050809` (Sopra Steria) | 2025 | Es manté ND; `marques` +`dubte_D1`. b i d no tanquen contra Sopra (1968). | URD 2025 p. 103 [V]; Companies House (7/7/2005) [V]. |
+| DF-PR6-07 | `FR0000121014` (LVMH) | 2016-2025 | Base sense canvis. Es tanca la fitxa com a F per FT tipus c (X9-3) i es retira la proposta 1→0. `founderceo_rob_cita_contemporania`=1 és coherent amb les 27 files FT. | URD 2024 (FR) [V, còpia local]. |
+
+Recomptes (CSV, panell de 6.012 files):
+
+- Abans del PR #6 (`main` `cdd1cca`): F 343, P 5.632, ND 6, NA 31; J14 n=5.962, F=342, P=5.620.
+- Després del PR #6 i abans d'aquests ajustos: F 349, P 5631, ND 1, NA 31; J14 n=5962, F=348, P=5614.
+- Després d'aquests ajustos: F 349, P 5631, ND 1, NA 31; J14 n=5967, F=348, P=5619 (entren Aroundtown 2017-2020 i Drillisch 2017).
+- Certificació sense canvis: certificada 1.773 (N1+N2+doctorat), ceo_pendent 108, no_certificada 241, fora_mostra_auditoria 3.890.
+
+L'`.xlsx` s'ha alineat cel·la a cel·la amb el CSV, incloent-hi els 11 FounderCEO del PR #6 que encara no hi eren.
+
+Fora d'aquest PR (documentat, no fet):
+
+- No existeix cap columna `founderceo_rob_regla25_nd` ni les específiques per criteri (`_fundacio_no_nova_nd`, `_e_matriu_nd`, `_escissio_nd`, `_si_font_b_nd`, `_data_fundacio_nd`, `_a_implicita_nd`), ni una de valor alternatiu per a `conflicte_fonts`. No es creen aquí. Es calcularan a la passada de la regla 25 sobre tota la base, a partir de `marques_fundador` (182 files del lot 3 hi tenen marques).
+- Les altres robusteses heretades de les 11 files del PR #6 (`founderceo_rob_na_com_0`, `_nd_com_0`, `_nd_com_1`, `_c_com_nd`, etc.) no es toquen, com al recàlcul del PR #4. A B&M, per exemple, `founderceo_rob_nd_com_0` continua a 0.
+- ITV 2017: `font_classificacio_*` ja resolt en aquest mateix PR (grup DF-PR6-08).
+
