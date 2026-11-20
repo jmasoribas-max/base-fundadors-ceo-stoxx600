@@ -17,6 +17,7 @@ No s'han modificat la v8 ni la v8r1 ni la v8r2 (intactes: True).
 
 - FounderCEO: F 343, P 5624, ND 14, NA 31.
 - Nota posterior: després del lot ND-1 (fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`), FounderCEO és F 343, P 5632, ND 6, NA 31 i el CSV tenia SHA `4b46c7697456c0af86abcbe084b141d0c2b46df2687f45f715d91e5f3b302236` [V]. Després del recàlcul de robustesa del PR #4 (branca `df/robustesa-nd-lot1`), el SHA del CSV és `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V] i el de l'`.xlsx` és `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]; la mostra J14 queda n=5.962, F=342, P=5.620. Els comptes d'aquesta QA d'origen no s'han reescrit.
+- Nota posterior (20/11/2026): després del PR #6 (merge `5b21049`) i dels ajustos de DF (branca `df/ajustos-pr6`), FounderCEO és F 349, P 5631, ND 1, NA 31; J14 n=5967, F=348, P=5619; certificació sense canvis. SHA del CSV `6fa804d33f3c5797aa4dfe1d94cf4f59f234b454d416de023be1a62370567864` [V]; SHA de l'`.xlsx` `698149028faa876102809d81563e4b6e64c10b3e36754c5e6640713913af7013` [V] (alineat cel·la a cel·la amb el CSV).
 - J14 (v8 r3 d'origen): n=5954, F=342.
 - Certificació: N1 740, N2 1018, doctorat 15; ceo_pendent 108; no_certificada 241; fora_mostra_auditoria 3890.
 - Discrepàncies vs v8r2: 0. FounderCEO idèntic: True. ceos idèntic: True.

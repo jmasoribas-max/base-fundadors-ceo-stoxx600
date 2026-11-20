@@ -9,14 +9,16 @@ Repositori **públic** (decisió de Jordi, 19/11/2026 10:18, CET, Europe/Madrid)
 - **6.012** files ISIN-any del panell (`fora_panel=0`).
 - **1.040** ISIN.
 - Anys **2016-2025**.
-- FounderCEO (base actual, després del lot ND-1): **F 343**, **P 5.632**, **ND 6**, **NA 31** (F és el 5,74 % de F+P). A la v8 r3 d'origen: P 5.624 i ND 14 (F 5,75 %).
-- Mostra principal J14 (panell, FounderCEO 0 o 1, no `dret_temporal`): **n=5.962**, **F=342**, **P=5.620** (després del recàlcul DF del PR #4). A la v8 r3 d'origen, i encara a `main` després del PR #2: n=5.954, F=342.
+- FounderCEO (base actual, després del PR #6 i dels ajustos de DF de la branca `df/ajustos-pr6`): **F 349**, **P 5.631**, **ND 1**, **NA 31**. Després del lot ND-1 i abans del PR #6: F 343, P 5.632, ND 6, NA 31 (F era el 5,74 % de F+P). A la v8 r3 d'origen: P 5.624 i ND 14 (F 5,75 %).
+- Mostra principal J14 (panell, FounderCEO 0 o 1, no `dret_temporal`): **n=5.967**, **F=348**, **P=5.619** (després dels ajustos de DF al PR #6; entren Aroundtown 2017-2020 i Drillisch 2017). Després del recàlcul DF del PR #4: n=5.962, F=342, P=5.620. A la v8 r3 d'origen, i encara a `main` després del PR #2: n=5.954, F=342.
 - Certificació (àmbit de l'auditoria, 2.122 files; la resta del panell, **3.890**, és `fora_mostra_auditoria`):
   - certificades: **N1 740**, **N2 1.018**, **doctorat 15** (total **1.773**);
   - `ceo_pendent` **108**;
   - `no_certificada` **241**.
 
 **Lot ND-1, fusionat a `main` el 19/11/2026 (PR #2, merge `edea674`):** 8 files passen de ND a P (B&M 2016-2021 i Steinhoff 2016-2017); en queden 6 ND (Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020) amb la cerca documentada a la fitxa. **Recàlcul DF (PR #4, branca `df/robustesa-nd-lot1`):** a les 8 files s'han recalculat les columnes derivades (robusteses v8r1, `a_mostra_principal` / J14, marques `sim_*` i `fundacio_alternativa_1998` a Steinhoff) i s'ha alineat l'`.xlsx`. SHA del CSV `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V]; SHA de l'xlsx `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]. `regles` i `motiu_nd` es queden com a les altres files ND→P de Doctorat. La certificació no ha canviat (`sim_estat_certificacio=no_certificada`). Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot ND-1».
+
+**Lot 3 (PR #6, fusionat a `main` el 20/11/2026, merge `5b21049`) i ajustos de DF (branca `df/ajustos-pr6`):** B&M 2016-2021 passa a F per D37 (amb D37a i D37b), Aroundtown 2017-2020 i Drillisch 2017 passen de ND a P, ITV 2017 té com a CEO Peter Bazalgette (R3) i Sopra Steria 2025 es manté ND amb `dubte_D1`. DF ha recalculat les columnes derivades i ha alineat l'`.xlsx`. SHA del CSV `6fa804d33f3c5797aa4dfe1d94cf4f59f234b454d416de023be1a62370567864` [V]; SHA de l'xlsx `698149028faa876102809d81563e4b6e64c10b3e36754c5e6640713913af7013` [V]. Detall a `docs/REGISTRE_CANVIS.md`, seccions «Lot 3» i «Ajustos de DF després del PR #6».
 
 La v8 r3 d'origen no canvia cap d'aquestes xifres respecte a la v8 r2 / v8 r1 (després, el lot ND-1 ha canviat els recomptes de FounderCEO): només aplica l'extensió de sector aprovada i afegeix les columnes de robustesa `sector_estes_des_2023` i `supersector_fix`.
 
