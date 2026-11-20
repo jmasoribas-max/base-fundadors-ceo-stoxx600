@@ -12936,6 +12936,7 @@ Branca `df/ajustos-pr6`, creada des de `main` després de la fusió del PR #6 (m
 | DF-PR6-02 | `LU1673108939` (Aroundtown) | 2017-2020 | Recàlcul de columnes derivades del 0 del PR #6: `regles`=a, `a_mostra_principal`=1, robusteses v8r1, `sim_*`, `motiu_nd` buidat. | Cites del lot 3 (L3-E08 a L3-E11). |
 | DF-PR6-03 | `DE0005545503` (Drillisch) | 2017 | Ídem, `regles`=d. Substitueix J5. | Cites del lot 3 (L3-E01). |
 | DF-PR6-04/05 | `GB0033986497` (ITV) | 2017 | CEO Ian Griffiths → Peter Bazalgette (R3). `regles` R-SC;b → R3;d; `marques` +`ceo_president_exec`, −`interi`; `founderceo_rob_sense_r3`=NA_sense_ceo; `sim_canvi_ceo`=1. FounderCEO 0 (prova d). | AR 2017 p. 61 i p. 93, verificades a la captura Wayback `id_` [V]. |
+| DF-PR6-08 | `GB0033986497` (ITV) | 2017 | `font_classificacio_*`: la cita de Griffiths (2008) se substitueix per la prova d de Bazalgette (AR 2017, p. 62), amb SHA de l'extracte `62a0058807d02ef0ea1a0c652e4b650861d33ec05ec79fa3ec4ad8b7e9d60da3` calculat per script; `font_classificacio_pack` X8→DF-PR6-ITV. La cita antiga es conserva en una fila del grup. Jordi, 20/11/2026 14:55. | «3 Sir Peter Bazalgette Chairman G Appointed: June 2013», verificada a la captura Wayback `id_` [V]. |
 | DF-PR6-06 | `FR0000050809` (Sopra Steria) | 2025 | Es manté ND; `marques` +`dubte_D1`. b i d no tanquen contra Sopra (1968). | URD 2025 p. 103 [V]; Companies House (7/7/2005) [V]. |
 | DF-PR6-07 | `FR0000121014` (LVMH) | 2016-2025 | Base sense canvis. Es tanca la fitxa com a F per FT tipus c (X9-3) i es retira la proposta 1→0. `founderceo_rob_cita_contemporania`=1 és coherent amb les 27 files FT. | URD 2024 (FR) [V, còpia local]. |
 
@@ -12952,5 +12953,5 @@ Fora d'aquest PR (documentat, no fet):
 
 - No existeix cap columna `founderceo_rob_regla25_nd` ni les específiques per criteri (`_fundacio_no_nova_nd`, `_e_matriu_nd`, `_escissio_nd`, `_si_font_b_nd`, `_data_fundacio_nd`, `_a_implicita_nd`), ni una de valor alternatiu per a `conflicte_fonts`. No es creen aquí. Es calcularan a la passada de la regla 25 sobre tota la base, a partir de `marques_fundador` (182 files del lot 3 hi tenen marques).
 - Les altres robusteses heretades de les 11 files del PR #6 (`founderceo_rob_na_com_0`, `_nd_com_0`, `_nd_com_1`, `_c_com_nd`, etc.) no es toquen, com al recàlcul del PR #4. A B&M, per exemple, `founderceo_rob_nd_com_0` continua a 0.
-- ITV 2017: `font_classificacio_*` encara és la cita de Griffiths (2008). S'ha de substituir per la prova d de Bazalgette amb l'SHA de l'extracte calculat per script.
+- ITV 2017: `font_classificacio_*` ja resolt en aquest mateix PR (grup DF-PR6-08).
 
