@@ -50,4 +50,33 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
+## Auditoria de les files fora de mostra · lot 5
+
+| Any | CEO al 31/10 | FounderCEO i prova | Resultat de la revisió |
+|---|---|---|---|
+| 2016 | Steven Holland (C04) | 0 · b (F01, F02) | Prova del CEO i de l’etiqueta |
+| 2017 | Steven Holland (C04) | 0 · b (F01, F02) | Prova del CEO i de l’etiqueta |
+| 2018 | Steven Holland (C04) | 0 · b (F01, F02) | Prova del CEO i de l’etiqueta |
+| 2019 | Steven Holland (C04, C05, C07) | 0 · b (F01, F02) | Prova del CEO i de l’etiqueta |
+| 2020 | Christian Kohlpaintner (C05, C06) | 0 · b (F01, F03) | Prova del CEO i de l’etiqueta |
+| 2021 | Christian Kohlpaintner (C05, C06) | 0 · b (F01, F03) | Prova del CEO i de l’etiqueta |
+| 2022 | Christian Kohlpaintner (C05, C06) | 0 · b (F01, F03) | Prova del CEO i de l’etiqueta |
+| 2023 | Christian Kohlpaintner (C05, C06) | 0 · b (F01, F03) | Prova del CEO i de l’etiqueta |
+| 2024 | Christian Kohlpaintner (C05, C06) | 0 · b (F01, F03) | Prova del CEO i de l’etiqueta |
+
+### Fonts originals reobertes
+
+- `F01` · 2016–2024 · fundador · nivell A · «Since its founding in 1874, Brenntag has successfully expanded». Història de l’emissor amb fundació operativa el 1874. URL original https://corporate.brenntag.com/en/about/history/ · Wayback pendent_verificacio_externa (API available: HTTP Error 503: Service Unavailable Desada sol·licitada a Wayback: HTTP Error 503: Service Unavailable.)
+- `F02` · 2016–2019 · fundador · nivell A · «Steven Holland (61), Chief Executive Officer of Brenntag AG». Edat declarada al comunicat del 05/03/2019. Naixement entre el 1957 i el 1958, molt posterior a la fundació. Data del document 2019-03-05. URL original https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html · Wayback https://web.archive.org/web/20260715155729id_/https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html (Cita rellegida al document capturat amb id_.)
+- `F03` · 2020–2024 · fundador · nivell A · «Christian Kohlpaintner, born in 1963». Cita del comunicat corporatiu del 2022. Naixement posterior a la fundació. URL original https://corporate.brenntag.com/en/media/news/brenntag-se-extends-contract-with-christian-kohlpaintner-ahead-of-schedule.html · Wayback https://web.archive.org/web/20251127231205id_/https://corporate.brenntag.com/en/media/news/brenntag-se-extends-contract-with-christian-kohlpaintner-ahead-of-schedule.html (Cita literal no localitzada al document capturat.)
+- `C04` · 2016–2019 · ceo · nivell A · «Since Steven Holland’s appointment as CEO in June 2011». L’emissor documenta el mandat en curs des del juny de 2011 al comunicat de 2019. Data del document 2019-03-05. URL original https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html · Wayback https://web.archive.org/web/20260715155729id_/https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html (Cita rellegida al document capturat amb id_.)
+- `C05` · 2019–2024 · ceo · nivell A · «He was initially appointed Chairman of the Brenntag Board of Management in September 2019, effective January 1, 2020.». El text identifica Christian Kohlpaintner i situa l’inici efectiu l’01/01/2020, en suport del tancament del mandat anterior. URL original https://corporate.brenntag.com/en/media/news/brenntag-se-extends-contract-with-christian-kohlpaintner-ahead-of-schedule.html · Wayback https://web.archive.org/web/20251127231205id_/https://corporate.brenntag.com/en/media/news/brenntag-se-extends-contract-with-christian-kohlpaintner-ahead-of-schedule.html (Cita literal no localitzada al document capturat.)
+- `C06` · 2020–2024 · ceo · nivell A · «Jens Birgersson succeeds Dr Christian Kohlpaintner». El comunicat documenta la continuïtat del càrrec i situa el cessament de Kohlpaintner el 31/08/2025. URL original https://corporate.brenntag.com/en/media/news/jens-birgersson-to-become-new-ceo-of-brenntag-se.html · Wayback pendent_verificacio_externa (API available: HTTP Error 503: Service Unavailable Desada sol·licitada a Wayback: HTTP Error 503: Service Unavailable.)
+- `C07` · 2019 · ceo · nivell A · «he has decided he will retire after nine years as CEO». El comunicat de març remarca que Holland continuarà fins al relleu. La data efectiva del nou CEO és l’01/01/2020. URL original https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html · Wayback https://web.archive.org/web/20260715155729id_/https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html (Cita rellegida al document capturat amb id_.)
+
+### Revisió de fonts anteriors
+
+- 2016–2019 · `reoberta`. Es comprova la cita i l’edat al perfil de la notícia original del grup. La cita d’edat sustenta b. URL original https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html · Wayback https://web.archive.org/web/20260715155729id_/https://www.brenntag.com/en-nl/media/news/steven-holland-to-retire-as-ceo-by-february-2020-at-the-end-of-his-contract.html (Cita rellegida al document capturat amb id_.)
+- 2020–2024 · `reoberta`. Es comprova la cita i l’any de naixement al comunicat original del grup. URL original https://corporate.brenntag.com/en/media/news/brenntag-se-extends-contract-with-christian-kohlpaintner-ahead-of-schedule.html · Wayback https://web.archive.org/web/20251127231205id_/https://corporate.brenntag.com/en/media/news/brenntag-se-extends-contract-with-christian-kohlpaintner-ahead-of-schedule.html (Cita literal no localitzada al document capturat.)
+
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
