@@ -29,7 +29,7 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 
 ### 1.1 Casos clau (inclosos a `no_certificada`, tret d'Anders Dam)
 
-> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminades; Aberdeen 2016: 1 confirmada; BE Semiconductor: 6 confirmades. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
+> **Estat (lot 3, 19/11/2026, revisat el 20/11/2026 amb els criteris aprovats per Jordi; proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminades; Aberdeen 2016: 1 confirmada; BE Semiconductor: 6 confirmades. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
 
 | ISIN | Empresa | Anys | FounderCEO | Estat | Cas | Fitxa |
 |---|---|---|---|---|---|---|
@@ -41,7 +41,7 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 
 Fitxa: [empreses/DK0010307958.md](empreses/DK0010307958.md).
 
-> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** 7 confirmades. Detall, cites i dubtes a la fitxa i a `docs/REGISTRE_CANVIS.md`, secció «Lot 3».
+> **Estat (lot 3, 19/11/2026, revisat el 20/11/2026 amb els criteris aprovats per Jordi; proposta pendent del flux DF → Doctorat → Jordi):** 7 confirmades. Detall, cites i dubtes a la fitxa i a `docs/REGISTRE_CANVIS.md`, secció «Lot 3».
 
 A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, regla `d`, estat `fora_mostra_auditoria`. [V] Claude ha de buscar una font A/B que sustentil la prova **d** (incorporació tardana) i documentar que les fusions posteriors al 1967 són adquisicions (no una fundació nova ni una fusió entre iguals que reobri la data de fundació rellevant).
 
@@ -56,6 +56,8 @@ A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, re
 | 2025 | Lars Mørch | P | d | fora_mostra_auditoria | [fitxa](empreses/DK0010307958.md) |
 
 ### 1.3 Files ND del panell (14 a la v8 r3; 6 després del lot ND-1)
+
+> **Estat (lot 3, 19/11/2026, revisat el 20/11/2026 amb els criteris aprovats per Jordi; branca `cas/no-certificada-lot3`, proposta pendent del flux DF → Doctorat → Jordi):** canvis de `FounderCEO` aplicats amb cita A/B: `DE0005545503` 2017 ND → P; `LU1673108939` 2017-2020 ND → P. Sopra Steria 2025 continua ND, amb una proposta ND → 0 no aplicada (depèn de la «D1 estricta»). B&M 2016-2021 passa de 0 a 1 per D37. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot 3», i a les fitxes.
 
 > **Estat (lot ND-1, fusionat a `main` el 19/11/2026 amb el PR #2, merge `edea674`):** treballades les 14 files. B&M 2016-2021 (regla d) i Steinhoff 2016-2017 (regla b) passen de ND a P (`FounderCEO=0`), amb cita literal A/B. Es mantenen ND, amb la cerca documentada a la fitxa, Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020. Correccions de DF (19/11/2026) aplicades al PR #2: a la base només va canviar `FounderCEO`; Steinhoff per regla b amb el naixement i la fundació de 1963 (l'operació de 1998 no és fundació nova; còpia d'agbiz marcada `font_copia_no_original`); recerca addicional d'Aroundtown (naixement de Mayo, co-CEO del 2020) i de Drillisch (operació d'octubre de 1998), que es mantenen ND. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot ND-1». **Recàlcul DF (PR #4, branca `df/robustesa-nd-lot1`):** a les 8 files s'han recalculat les columnes derivades (robusteses v8r1, `a_mostra_principal` / mostra J14 n=5.962, F=342, P=5.620, marques `sim_*` i `fundacio_alternativa_1998` a Steinhoff) i s'ha alineat l'`.xlsx`. SHA del CSV `bb9cb759471ef8aa1d912b907ad8213a906405419ae54379e700ef3c46572735` [V]; SHA de l'xlsx `7000e7bce0dcd54e2eac542158148516de852834c965f7b14ed644f49b4ccd5c` [V]. `regles` i `motiu_nd` es queden com a les altres files ND→P de Doctorat. La certificació no ha canviat (`sim_estat_certificacio=no_certificada`). La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
 
