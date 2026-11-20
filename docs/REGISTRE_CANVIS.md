@@ -13038,9 +13038,13 @@ Els recomptes de la taula són parelles ISIN-any úniques dins de cada fila. Una
 | Còpies d’informes en agregadors amb original substituït o corroboració de l’emissor en lloc de la còpia | 50 | 1 |
 | Cites comprovades en noves captures de Wayback | 277 | 230 |
 
+> Nota DF-PR9 (20/11/2026): aquesta taula compta **files** del lot (isin-any), no entrades del registre. Definició reproduïda per DF: 277 = files amb almenys una entrada verificada a captura que no ho era al PR inicial; 230 = files amb almenys una entrada pendent, sense comptar les 15 fonts descartades. El paràgraf següent compta **entrades** (301 verificades; 232 no verificades = 217 pendents + 15 descartades). Després dels ajustos de DF (secció «Ajustos de DF després del PR #9»): 303 entrades verificades, 230 no verificades (215 pendents + 15 descartades), 229 files amb almenys una entrada pendent, i 0 còpies d'agregador com a evidència (Holcim 2017 substituïda per l'original).
+
 Wayback té **301 de 533 entrades amb la cita literal comprovada en una captura**, 270 verificacions noves respecte al PR inicial. Hi ha **217 entrades pendents** i 15 entrades de revisió que es conserven sense valor probatori. De les 437 entrades inicialment pendents, se n’han verificat 229, 193 continuen pendents i 15 es conserven només com a revisió de fonts. El registre explica el motiu de cada pendent (p. ex. reproducció incompleta, cita absent a la captura, limitació HTTP o desada sense captura confirmada). Per als URLs que encara servien de prova i sense captura localitzada s’ha demanat la desada. L’API i la resposta de Save són pistes fins que la cita s’ha pogut rellegir al document.
 
 Hi ha 46 cites d’agregador substituïdes per l’original o per una prova equivalent de l’emissor. Les 1 cites en còpia que es mantenen queden marcades `agregador=true`, amb el motiu i les rutes provades.
+
+> Nota DF-PR9 (20/11/2026): l'única còpia que quedava (Holcim CH0012214059 2017, annualreports.com) s'ha substituït per l'original de l'emissor a Wayback `id_`. Vegeu la secció «Ajustos de DF després del PR #9».
 
 ### Nou entrades de fonts antigues amb limitacions
 
@@ -13091,3 +13095,26 @@ Les propostes són per a DF. En els casos de co-CEO es mostren les dues proves q
 | `CH0011795959` | 2016–2017 | c_AAF64_reserva | e |
 | `CH0012138605` | 2016–2025 | a | d |
 | `CH0012214059` | 2016–2025 | b | e |
+
+## Ajustos de DF després del PR #9 (20/11/2026)
+
+Branca `df/ajustos-pr9`, creada des de `main` després de la fusió del PR #9 (merge `c352314e70ab51b4e4bab9d28fb3f5fe1cd1e8e2`). Autorització de Jordi (20/11/2026 16:26): «Fusiona el PR #9 i arregla tu Holcim i el format en un PR teu». Origen: punts 1-6 de la correcció final de l'informe de validació DF v2 del PR #9. Cap canvi a `dades/` ni a FounderCEO. Les files del registre es modifiquen al seu lloc i cada fila canviada porta a `notes` el valor anterior de cada camp («valor anterior → valor nou»), de manera que no es perd res.
+
+| Punt | Entrada (`id_document_o_font`) | ISIN | Anys | Què canvia | Verificació DF |
+|---|---|---|---|---|---|
+| 1 | `L4\|CH0012214059\|2` | CH0012214059 (Holcim) | 2017 | `url_font` annualreports.com → original de l'emissor (https://www.lafargeholcim.com/sites/lafargeholcim.com/files/atoms/files/03022018-finance-lafargeholcim_2017_annual_report-en.pdf); `url_wayback` → `https://web.archive.org/web/20180416021008id_/…`; `allotjament` agregador → emissor; `cita_verificada_a_captura` no → si. | «Effective September 1, 2017, Jan Jenisch has been appointed Chief Executive Officer of the Group succeeding Eric Olsen» literal a la captura `id_` (HTTP 200, SHA-256 del PDF `b2021f3b081a0dc306dbefc45d3e08daea8ceff2f0e6ee29879b8cef6b36808c`) [V] |
+| 2 | `L4\|BE0003763779\|6` | BE0003763779 (WDP) | 2019 | `revisio_font` → `fundador` (tipus `evidencia_fundador`) | «Born, year: 1969» reobert a catena.se [V] |
+| 2 | `L4\|BE0003810273\|10` | BE0003810273 (Proximus) | 2019 | `revisio_font` → `fundador` | «Date of birth: 1966» reobert a ucb.com [V] |
+| 2 | `L4\|BE0974268972\|4` | BE0974268972 (bpost) | 2016-2017 | `revisio_font` → `fundador` | «Koen Van Gerven, 55, has been working for bpost since July 2006» reobert [V] |
+| 2 | `L4\|BE0974349814\|9` | BE0974349814 (WDP) | 2020-2023 | `revisio_font` → `fundador` | «Born, year: 1969» reobert a catena.se [V] |
+| 2 | `L4\|BMG4593F1389\|7` | BMG4593F1389 (Hiscox) | 2016-2021 | `revisio_font` → `fundador` | «Chief Executive (Aged 57)» reobert al PDF de la BMA [V] |
+| 2 | `L4\|CH0001503199\|4` | CH0001503199 (Belimo) | 2019 | `revisio_font` → `fundador`; Wayback `id_` 20240629074839 afegit (l'original retorna 403) | «Lars van der Haegen (1968, Swiss)» literal a la captura `id_` [V] |
+| 2 | `L4\|BMG4593F1389\|12` | BMG4593F1389 (Hiscox) | 2022-2025 | Cap canvi de camps: es manté `revisio_font` i [NV]; no s'usa com a prova (Hussain queda provat per d, Prudential). Nota afegida. | El literal «Chief Financial Officer (Aged 46)» hi és, però es manté [NV] |
+| 3 | `L4\|BMG4593F1389\|4` | BMG4593F1389 (Hiscox) | 2016-2021 | `marca_prova` b → d (McKinsey, entrada el 1993) | — |
+| 4 | `L4\|CH0012214059\|10` | CH0012214059 (Holcim) | 2016-2025 | `allotjament` agregador → emissor (lafargeholcim.com) | — |
+| 5 | `L4\|BE0003810273\|4` | BE0003810273 (Proximus) | 2016-2018 | Cap canvi de camps. Aclariment afegit: «1930 − 1962 = −32» és l'edat a la fundació; el càlcul era correcte (l'informe DF v2 el va marcar per error). | — |
+| 6 | — | — | — | Nota a la taula d'incidències del lot 4: la taula compta files i el text compta entrades; tots dos recomptes són correctes i reproduïbles. Recomptes actualitzats després d'aquests ajustos. | — |
+
+Recomptes del lot 4 al registre després dels ajustos: 533 entrades (ceo 244, fundador 111, datacio 74, context 68, revisio_font 36); Wayback verificat 303, no verificat 230 (215 pendents + 15 descartades); còpies d'agregador com a evidència de CEO o fundador: 0.
+
+Recomptes de la base (sense canvis): F 349, P 5631, ND 1, NA 31.
