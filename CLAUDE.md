@@ -1,6 +1,6 @@
 # Instruccions per a Claude Code
 
-**Aprovat per Jordi el 19/11/2026.** Actualitzat el 20/11/2026 a les 11:56 Europe/Madrid (regla 25 de la METODOLOGIA v0.10.8, 6 ND i Wayback amb `id_`) i el 20/11/2026 a les 13:10 Europe/Madrid (revisió de les fonts antigues del lot), amb l'aprovació de Jordi.
+**Aprovat per Jordi el 19/11/2026.** Actualitzat el 20/11/2026 a les 11:56 Europe/Madrid (regla 25 de la METODOLOGIA v0.10.8, 6 ND i Wayback amb `id_`) el 20/11/2026 a les 13:10 Europe/Madrid (revisió de les fonts antigues del lot) i el 20/11/2026 a les 17:18 Europe/Madrid (regles 26 i 27 de la METODOLOGIA v0.10.9 i metodologia vigent), amb l'aprovació de Jordi.
 
 ## Missió
 
@@ -90,6 +90,31 @@ Font: `METODOLOGIA_3_Articles_v0.10.8.md` (secció 2.3, regla 25), SHA-256 `e8df
 - **Steinhoff 2016-2017 (Jooste):** FounderCEO=0 a l'anàlisi principal per la regla b del lot ND-1, amb marca `conflicte_fonts` (TimesLIVE, font B, «the company he founded») i robustesa a 1. Es fa una cerca exhaustiva de «founder» als informes anuals de l'emissor del 2015-2017 i al fullet de llistat a Frankfurt del 2015; si l'emissor l'anomena fundador, o una font A acredita que el 1998 compleix la D1 estricta i Jooste n'era fundador de la seva part, passa a 1 per D37.
 
 Aquest text no autoritza a canviar `dades/` ni les robusteses en el mateix PR que només documenta les instruccions. Qualsevol aplicació a la base va en un lot a part, amb cita, registre i el flux DF → Doctorat → Jordi.
+
+## Regles 26 i 27 (METODOLOGIA v0.10.9)
+
+Font: `METODOLOGIA_3_Articles_v0.10.9.md` (secció 2.3, regles 26 i 27), SHA-256 `ce4188360905deca13508fc0df45dd249c4090fa5051b3993da555f86ab68991`, comprovat el 20/11/2026. Incorporades a aquestes instruccions amb l'aprovació de Jordi del 20/11/2026 a les 17:18 Europe/Madrid (segons DF).
+
+### Regla 26. D1 estricta [PROTOCOL v1.2.9, Jordi, 11/11/2026 12:43; incorporada a la metodologia per Jordi el 20/11/2026 14:25, segons DF]
+
+Text literal: «Només són fusions entre iguals (AAF 2009) si la font les descriu com a "merger of equals", fusió o combinació (no adquisició), o si cap de les parts no té més del 60% del capital de l'entitat resultant. Una adquisició, o la compra d'una start-up, no fa fundadors els seus fundadors. Si no queda clar, no s'aplica la D1 (`dubte_D1`). Robustesa amb la definició ampla per als casos marcats.» Lectura: si la descripció i l'estructura de l'operació es contradiuen (p. ex. «between equals» però OPE i comptabilització com a adquisició), hi ha `dubte_D1`, no s'aplica la D1 i la fundació rellevant és la de la part absorbent o la de la part on era la persona (J1). Si s'aplica la D1, una persona que no era a cap de les parts no n'esdevé fundadora per la D1.
+
+### Regla 27. Decisions del PR #6, segona ronda [Jordi, 20/11/2026 14:25, segons DF]
+
+- B&M LU1072616219 2016-2021 (Arora): FounderCEO=1 per D37, després d'una cerca de cita contemporània de l'emissor (informes 2016-2021 i fullet IPO 2014). Cita A de l'informe anual 2024 («an entrepreneurial founder»), amb la persona identificada al mateix document com a predecessor de Russo (p. 88 i 95). D37b: `fundador_transformador`=1 (no era a la fundació del 1978). D37a: si no hi ha cita contemporània, les files queden a 0 a `founderceo_rob_cita_contemporania`.
+- Aroundtown LU1673108939 2017-2020: de ND a 0 per la prova a. L'aposició A «Founder of the Group in 2004» (Gabay) val com a atribució de fundador únic (P6, P8); la redomiciliació del 2017 no és fundació nova (P1). Marques `llista_exhaustiva=implicita`, `a_fundador_unic` i `fundacio_no_nova`; robustesa com a ND.
+- 1&1 Drillisch DE0005545503 2017 (Choulidis): de ND a 0, substitueix la decisió J5 del 15/11/2026. Dues proves independents: a) l'emissor enumera els fundadors de l'entitat del 1997 sense Choulidis (`llista_exhaustiva=implicita`); d) entrada el 1998/1999 respecte del negoci operatiu del 1983 (P1), amb ocupador anterior documentat (Honeywell 1987-1991). Alphatel i E.I.C. no són predecessores (adquisició, no D1 estricta; D37d). Marca `data_fundacio_conflicte` sense robustesa com a ND, perquè la classificació no canvia amb cap de les dues dates.
+- ITV GB0033986497 2017: el CEO a 31/10/2017 és Peter Bazalgette per R3 (càrrec de CEO vacant del 30/6/2017 al 8/1/2018; l'emissor declara que no es va respectar la separació Chairman/CEO i l'inclou a la taula de remuneració del Chief Executive). No s'aplica R2 (una sola font B, Variety). Ian Griffiths no era CEO. Marca `ceo_president_exec`, robustesa sense R3. FounderCEO=0 (prova d).
+- Richemont CH0210483332 2017: no es reobre la decisió del 12/11/2026. NA per R-SC a l'anàlisi principal; Rupert=1 només a la robustesa R3.
+- Abast de les marques de la regla 25: cada marca va a les files on la classificació depèn d'aquell criteri, a la columna multivalor `marques_fundador`, i s'aplica a tota la base. Robusteses calculades per script a partir de les marques: `founderceo_rob_regla25_nd` (totes les files marcades per la regla 25 com a ND, la principal per al tribunal) i, on hi hagi prou files, les separades per criteri (P1/P2, P3, P4, P6, P7, P8). `conflicte_fonts`: robustesa amb el valor alternatiu de la font en conflicte. D37a, D37b i R2b: columnes existents (`founderceo_rob_cita_contemporania`, sense `fundador_transformador`, `founderceo_rob_r2b_com_na`).
+- Arkema FR0010313833: es manté a 1 (cas de referència de la D10b, 14/11/2026); la P4 hi és coherent. Només es comprova a la passada de la regla 25 que la cita A està arxivada; porta `fundador_escissio`.
+- LVMH FR0000121014 2016-2025 i Sopra Steria FR0000050809 2025 (a la v0.10.9 constaven com a «pendents de comprovació de DF»): **resolts al PR #10** (merge `410b9a4bd16b2efe3f6df702524593d8d847c6b9`). LVMH: FounderCEO=1 per FT tipus c (decisió de Jordi X9-3); l'1 no ve de la D37, i per tant no s'hi aplica la regla 26. Sopra Steria 2025: es manté ND amb la marca `dubte_D1`, perquè ni la b ni la d tanquen contra la part on era el CEO.
+
+Aquest text no autoritza a canviar `dades/` ni les robusteses en el mateix PR que només documenta les instruccions. Qualsevol aplicació a la base va en un lot a part, amb cita, registre i el flux DF → Doctorat → Jordi.
+
+## Metodologia vigent
+
+La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
 
 ## Nota sobre la certificació
 
