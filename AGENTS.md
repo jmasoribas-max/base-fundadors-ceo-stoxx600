@@ -1,6 +1,6 @@
 # Instruccions per a l'agent
 
-El contingut normatiu d'aquest fitxer procedeix de `CLAUDE.md` (aprovat per Jordi el 19/11/2026), adaptat a qualsevol agent (Codex, Claude Code o un altre). S'hi afegeixen els criteris de la regla 25 de la METODOLOGIA v0.10.8 (aprovats per Jordi el 20/11/2026 a les 09:29 Europe/Madrid) i la regla de Wayback amb `id_` per als PDF.
+El contingut normatiu d'aquest fitxer coincideix amb el de `CLAUDE.md` (aprovat per Jordi el 19/11/2026 i actualitzat el 20/11/2026 a les 11:56 Europe/Madrid amb la regla 25 de la METODOLOGIA v0.10.8, els 6 ND i la regla de Wayback amb `id_`), adaptat a qualsevol agent (Codex, Claude Code o un altre).
 
 **Si `AGENTS.md` i `CLAUDE.md` discrepen, mana `CLAUDE.md`. L'agent ho ha d'anotar al PR.**
 
