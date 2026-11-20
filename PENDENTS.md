@@ -29,7 +29,7 @@ L'extensió del supersector del juny 2023 als anys 2024-2025 ja està aplicada a
 
 ### 1.1 Casos clau (inclosos a `no_certificada`, tret d'Anders Dam)
 
-> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminades; Aberdeen 2016: 1 indeterminada; BE Semiconductor: 6 confirmades. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
+> **Estat (lot 3, 19/11/2026, proposta pendent del flux DF → Doctorat → Jordi):** LVMH: 10 indeterminades; Aberdeen 2016: 1 confirmada; BE Semiconductor: 6 confirmades. Detall i dubtes a les fitxes, a `docs/REGISTRE_CANVIS.md` (secció «Lot 3») i al PR.
 
 | ISIN | Empresa | Anys | FounderCEO | Estat | Cas | Fitxa |
 |---|---|---|---|---|---|---|
@@ -223,7 +223,7 @@ A la base, Anders Dam és CEO els anys 2016-2018 i 2022-2023, FounderCEO=`0`, re
 
 #### Llista `no_certificada`
 
-> **Estat (lot 3, 19/11/2026, branca `cas/no-certificada-lot3`, proposta pendent del flux DF → Doctorat → Jordi):** treballades les 241 files `no_certificada`: 209 confirmades (CEO i etiqueta provats amb cita A/B), 0 corregides i 32 indeterminades; 0 canvis de `FounderCEO` aplicats a la base amb prova A/B. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot 3», i a cada fitxa; els dubtes de metodologia són al PR per a Doctorat. Les files continuen `no_certificada` fins que el flux les validi. La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
+> **Estat (lot 3, 19/11/2026, revisat el 20/11/2026 amb els criteris aprovats per Jordi; branca `cas/no-certificada-lot3`, proposta pendent del flux DF → Doctorat → Jordi):** treballades les 241 files `no_certificada`: 211 confirmades (CEO i etiqueta provats amb cita A/B), 11 corregides (canvi de `FounderCEO` aplicat), 8 amb proposta de CEO per a DF i 11 indeterminades; 11 canvis de `FounderCEO` aplicats a la base amb prova A/B. Detall a `docs/REGISTRE_CANVIS.md`, secció «Lot 3», i a cada fitxa; els dubtes que queden són al PR. Les files continuen `no_certificada` fins que el flux les validi. La taula següent és l'estat d'origen (v8 r3) i no s'ha reescrit.
 
 | ISIN | Empresa | Any | Motiu | Fitxa |
 |---|---|---|---|---|
