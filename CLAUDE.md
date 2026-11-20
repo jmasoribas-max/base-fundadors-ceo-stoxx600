@@ -1,6 +1,6 @@
 # Instruccions per a Claude Code
 
-**Aprovat per Jordi el 19/11/2026.** Actualitzat el 20/11/2026 a les 11:56 Europe/Madrid (regla 25 de la METODOLOGIA v0.10.8, 6 ND i Wayback amb `id_`), amb l'aprovació de Jordi.
+**Aprovat per Jordi el 19/11/2026.** Actualitzat el 20/11/2026 a les 11:56 Europe/Madrid (regla 25 de la METODOLOGIA v0.10.8, 6 ND i Wayback amb `id_`) i el 20/11/2026 a les 13:10 Europe/Madrid (revisió de les fonts antigues del lot), amb l'aprovació de Jordi.
 
 ## Missió
 
@@ -24,6 +24,7 @@ Segueix aquest ordre (detall a `PENDENTS.md`):
 - Un `0` (no fundador) necessita una **prova positiva amb cita**. Si no hi ha proves que sigui fundador, és **indeterminat**, no `0`. No forcis un 0 ni un 1.
 - Cada evidència porta una **cita literal**, l'**URL original** i el **Wayback**. Si no hi ha Wayback, declara-ho (`pendent_verificacio_externa` o equivalent) i no l'inventis.
 - Per verificar una cita en un **PDF** arxivat a Wayback Machine, cal obrir el document de la captura, no l'embolcall HTML. Si la URL de la forma `https://web.archive.org/web/{timestamp}/{url}` retorna una pàgina HTML (barra de Wayback) i no el PDF, s'ha d'usar el modificador públic `id_`: `https://web.archive.org/web/{timestamp}id_/{url}`, que serveix els bytes originals de la captura. Això no és un bypass d'accés: és la forma de recuperar el fitxer arxivat. La cita s'ha de rellegir al document (per exemple amb `pdftotext`). Si, també amb `id_`, la captura no és el document, es declara `pendent_verificacio_externa` i no s'inventa. No s'usa `curl -k` ni s'omet la verificació del certificat TLS.
+- Les fonts i cites que ja hi ha a la fitxa o al registre per a les files del lot no es donen per bones: s'han d'obrir i comprovar que la cita hi és literalment, que la font és A/B i que cobreix l'any. Si una no és vàlida (enllaç mort, font C, cita que no hi surt o d'un altre any), es marca com a no vàlida al registre, s'explica per què i se'n busca una alternativa A/B. No s'esborra mai la font antiga: es deixa marcada.
 - No inventis dades, hashes, dates, càrrecs ni classificacions.
 - La data de referència del CEO és el **31/10 de cada any** i no es pot canviar.
 - Un 403, un temps d'espera esgotat, un captcha o una pàgina de bloqueig no són evidència. La cita ha de ser al document obert, no a un resum ni de memòria.
