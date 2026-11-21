@@ -36,6 +36,14 @@
 
 Les cites no s'han reescrit; són literals de les fonts d'origen d'aquest repositori.
 
+### Lot 7
+
+- `L7-GB00BYRJ5J14-C01` [V] (2025, `ceo`, `R1`, Nivell A). «Mark Davies Chief Executive Officer» Pàg. impresa 68, PDF 70, Board of Directors de l’exercici tancat el 31/12/2025. L’informe situa el nomenament a la junta del 24/04/2024 i el mandat cobreix el 31/10/2025. <https://www.phpgroup.co.uk/media/4xin3uke/primary-health-properties-plc-annual-report-2025.pdf>
+- `L7-GB00BYRJ5J14-F01` [V] (2025, `fundador`, `d`, Nivell A). «He was CFO of NewRiver for over twelve years» Paràgraf biogràfic del nomenament de Mark Davies. Acredita el càrrec anterior a NewRiver, que va cofundar el 2009, i l’entrada a PHP amb efecte de la junta del 24/04/2024. L’emissor situa la fundació de PHP el 1996 per Harry Hyman. <https://www.investegate.co.uk/announcement/rns/primary-health-properties--php/chief-executive-officer-appointment/7732872>
+- `L7-GB00BYRJ5J14-X01` [V] (2025, `context`, Nivell A). «Harry Hyman founded the Company in 1996» Pàg. impresa 68, PDF 70, Board of Directors, perfil de Harry Hyman. L’emissor documenta l’origen de la banda PHP, on es va incorporar Davies (J1). <https://www.phpgroup.co.uk/media/4xin3uke/primary-health-properties-plc-annual-report-2025.pdf>
+- `L7-GB00BYRJ5J14-X02` [V] (2025, `context`, Nivell A). «Assura Shareholders would hold approximately 48 per cent. of the Combined Group's issued share capital.» Secció Increased PHP Offer, comunicat conjunt de PHP i Assura del 23/06/2025. Identifica la participació prevista d’Assura en el capital després de la combinació, si l’oferta s’acceptava íntegrament. <https://www.lse.co.uk/rns/recommended-combination-of-assura-and-php-z2n4hhfenlc5euj.html>
+- `L7-GB00BYRJ5J14-X03` [V] (2025, `context`, Nivell A). «The Group has accounted for the acquisition as an asset acquisition» Pàg. impresa 112, PDF 114, informe independent, apartat 5.1. Dubte D1 entre la presentació com a combinació amb capital previst 52/48 i l’oferta de compra amb efectiu i accions, comptabilitzada com a adquisició d’actius. L’adquisició íntegra es completa el 20/10/2025. J1 manté l’origen operatiu de PHP del 1996 i la prova d de Davies. <https://www.phpgroup.co.uk/media/4xin3uke/primary-health-properties-plc-annual-report-2025.pdf>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).
