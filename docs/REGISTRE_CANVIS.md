@@ -13118,3 +13118,495 @@ Branca `df/ajustos-pr9`, creada des de `main` després de la fusió del PR #9 (m
 Recomptes del lot 4 al registre després dels ajustos: 533 entrades (ceo 244, fundador 111, datacio 74, context 68, revisio_font 36); Wayback verificat 303, no verificat 230 (215 pendents + 15 descartades); còpies d'agregador com a evidència de CEO o fundador: 0.
 
 Recomptes de la base (sense canvis): F 349, P 5631, ND 1, NA 31.
+
+## Lot 5 · auditoria de files fora de mostra
+
+L’abast és de **704 files de 139 empreses**. El fitxer [lot5.csv](../lots/lot5.csv) conté les parelles ISIN-any. Les cites i les revisions de fonts consten al [registre CSV](REGISTRE_CANVIS.csv).
+
+S’han aplicat els criteris P1–P9 i el text de les regles 26 i 27 de la METODOLOGIA v0.10.9 facilitat per Jordi. Per a la D1 també s’ha consultat PROTOCOL_v1.2.9.md (v1.2.9). Per a J1 s’ha consultat METODOLOGIA_3_Articles_v0.10.7.md (v0.10.7), d’acord amb la prelació indicada per Jordi.
+
+Codex ha acreditat la direcció al 31/10 en **701 files**, incloses **2 amb direcció col·legiada**. Ha documentat **684 proves d’etiqueta**. Hi ha **684 files amb totes dues proves**, **20 indeterminades** i **0 pendents de completar la cerca**.
+
+| Fitxa | Abast | CEO acreditat | Etiqueta acreditada | Prova completa | Indeterminades | Cerca pendent |
+|---|---:|---:|---:|---:|---:|---:|
+| [CH0012255151](../empreses/CH0012255151.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0012271687](../empreses/CH0012271687.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CH0012280076](../empreses/CH0012280076.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [CH0012410517](../empreses/CH0012410517.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0012453913](../empreses/CH0012453913.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [CH0012530207](../empreses/CH0012530207.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0012549785](../empreses/CH0012549785.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0013841017](../empreses/CH0013841017.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0014284498](../empreses/CH0014284498.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0014852781](../empreses/CH0014852781.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [CH0016440353](../empreses/CH0016440353.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0018294154](../empreses/CH0018294154.md) | 10 | 10 | 9 | 9 | 1 | 0 |
+| [CH0021783391](../empreses/CH0021783391.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [CH0023405456](../empreses/CH0023405456.md) | 9 | 9 | 9 | 9 | 0 | 0 |
+| [CH0024608827](../empreses/CH0024608827.md) | 8 | 8 | 8 | 8 | 0 | 0 |
+| [CH0024638196](../empreses/CH0024638196.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0025238863](../empreses/CH0025238863.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0025751329](../empreses/CH0025751329.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0038388911](../empreses/CH0038388911.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [CH0038863350](../empreses/CH0038863350.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0043238366](../empreses/CH0043238366.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [CH0102484968](../empreses/CH0102484968.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0102659627](../empreses/CH0102659627.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0126673539](../empreses/CH0126673539.md) | 7 | 7 | 7 | 7 | 0 | 0 |
+| [CH0198251305](../empreses/CH0198251305.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0210483332](../empreses/CH0210483332.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CH0225173167](../empreses/CH0225173167.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [CH0244767585](../empreses/CH0244767585.md) | 8 | 8 | 8 | 8 | 0 | 0 |
+| [CH0311864901](../empreses/CH0311864901.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [CH0319416936](../empreses/CH0319416936.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [CH0360674466](../empreses/CH0360674466.md) | 8 | 8 | 6 | 6 | 2 | 0 |
+| [CH0360826991](../empreses/CH0360826991.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0364749348](../empreses/CH0364749348.md) | 5 | 2 | 2 | 2 | 3 | 0 |
+| [CH0418792922](../empreses/CH0418792922.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CH0432492467](../empreses/CH0432492467.md) | 7 | 7 | 7 | 7 | 0 | 0 |
+| [CH0435377954](../empreses/CH0435377954.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [CH0466642201](../empreses/CH0466642201.md) | 7 | 7 | 7 | 7 | 0 | 0 |
+| [CH0496451508](../empreses/CH0496451508.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0528751586](../empreses/CH0528751586.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH0531751755](../empreses/CH0531751755.md) | 5 | 5 | 5 | 5 | 0 | 0 |
+| [CH0565630669](../empreses/CH0565630669.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH1101098163](../empreses/CH1101098163.md) | 5 | 5 | 5 | 5 | 0 | 0 |
+| [CH1169151003](../empreses/CH1169151003.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [CH1169360919](../empreses/CH1169360919.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CH1175448666](../empreses/CH1175448666.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [CH1216478797](../empreses/CH1216478797.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CH1256740924](../empreses/CH1256740924.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CH1335392721](../empreses/CH1335392721.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [CH1386220409](../empreses/CH1386220409.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH1429326825](../empreses/CH1429326825.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CH1430134226](../empreses/CH1430134226.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [CY0200352116](../empreses/CY0200352116.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [CZ0005112300](../empreses/CZ0005112300.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [CZ0008019106](../empreses/CZ0008019106.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0003304002](../empreses/DE0003304002.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE0005140008](../empreses/DE0005140008.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0005190003](../empreses/DE0005190003.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0005200000](../empreses/DE0005200000.md) | 5 | 5 | 5 | 5 | 0 | 0 |
+| [DE0005313704](../empreses/DE0005313704.md) | 7 | 7 | 7 | 7 | 0 | 0 |
+| [DE0005419105](../empreses/DE0005419105.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE0005439004](../empreses/DE0005439004.md) | 5 | 5 | 5 | 5 | 0 | 0 |
+| [DE0005501357](../empreses/DE0005501357.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE0005545503](../empreses/DE0005545503.md) | 1 | 1 | 0 | 0 | 1 | 0 |
+| [DE0005552004](../empreses/DE0005552004.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0005557508](../empreses/DE0005557508.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0005565204](../empreses/DE0005565204.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0005785604](../empreses/DE0005785604.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE0005785802](../empreses/DE0005785802.md) | 9 | 9 | 3 | 3 | 6 | 0 |
+| [DE0005810055](../empreses/DE0005810055.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE0005909006](../empreses/DE0005909006.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE0005937007](../empreses/DE0005937007.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE0006047004](../empreses/DE0006047004.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0006048432](../empreses/DE0006048432.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0006062144](../empreses/DE0006062144.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0006070006](../empreses/DE0006070006.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [DE0006095003](../empreses/DE0006095003.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0006231004](../empreses/DE0006231004.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [DE0006483001](../empreses/DE0006483001.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0006599905](../empreses/DE0006599905.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0006602006](../empreses/DE0006602006.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0006632003](../empreses/DE0006632003.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0006766504](../empreses/DE0006766504.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [DE0006969603](../empreses/DE0006969603.md) | 8 | 8 | 8 | 8 | 0 | 0 |
+| [DE0007010803](../empreses/DE0007010803.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE0007030009](../empreses/DE0007030009.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0007037129](../empreses/DE0007037129.md) | 5 | 5 | 5 | 5 | 0 | 0 |
+| [DE0007100000](../empreses/DE0007100000.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE0007164600](../empreses/DE0007164600.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [DE0007165631](../empreses/DE0007165631.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0007236101](../empreses/DE0007236101.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0007251803](../empreses/DE0007251803.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0007257503](../empreses/DE0007257503.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE0007472060](../empreses/DE0007472060.md) | 4 | 4 | 0 | 0 | 4 | 0 |
+| [DE0007500001](../empreses/DE0007500001.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE0007664039](../empreses/DE0007664039.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE0008303504](../empreses/DE0008303504.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE0008402215](../empreses/DE0008402215.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE0008404005](../empreses/DE0008404005.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000A0D6554](../empreses/DE000A0D6554.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000A0D9PT0](../empreses/DE000A0D9PT0.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000A0HN5C6](../empreses/DE000A0HN5C6.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE000A0LD6E6](../empreses/DE000A0LD6E6.md) | 8 | 8 | 8 | 8 | 0 | 0 |
+| [DE000A0TGJ55](../empreses/DE000A0TGJ55.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000A0WMPJ6](../empreses/DE000A0WMPJ6.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000A0Z2ZZ5](../empreses/DE000A0Z2ZZ5.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000A12DM80](../empreses/DE000A12DM80.md) | 3 | 3 | 2 | 2 | 1 | 0 |
+| [DE000A161N30](../empreses/DE000A161N30.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE000A1DAHH0](../empreses/DE000A1DAHH0.md) | 9 | 9 | 9 | 9 | 0 | 0 |
+| [DE000A1EWWW0](../empreses/DE000A1EWWW0.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000A1J5RX9](../empreses/DE000A1J5RX9.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE000A1PHFF7](../empreses/DE000A1PHFF7.md) | 7 | 7 | 7 | 7 | 0 | 0 |
+| [DE000A2AA253](../empreses/DE000A2AA253.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000A2AADD2](../empreses/DE000A2AADD2.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE000A2GS401](../empreses/DE000A2GS401.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000A2YN900](../empreses/DE000A2YN900.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000A3E5D64](../empreses/DE000A3E5D64.md) | 5 | 5 | 5 | 5 | 0 | 0 |
+| [DE000AUM0V10](../empreses/DE000AUM0V10.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000BASF111](../empreses/DE000BASF111.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000BAY0017](../empreses/DE000BAY0017.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000BFB0019](../empreses/DE000BFB0019.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000CBK1001](../empreses/DE000CBK1001.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000DTR0CK8](../empreses/DE000DTR0CK8.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE000ENER6Y0](../empreses/DE000ENER6Y0.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+| [DE000EVNK013](../empreses/DE000EVNK013.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000FTG1111](../empreses/DE000FTG1111.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000HAG0005](../empreses/DE000HAG0005.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000KBX1006](../empreses/DE000KBX1006.md) | 4 | 4 | 2 | 2 | 2 | 0 |
+| [DE000KGX8881](../empreses/DE000KGX8881.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000KSAG888](../empreses/DE000KSAG888.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000LEG1110](../empreses/DE000LEG1110.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000PAG9113](../empreses/DE000PAG9113.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000PAH0038](../empreses/DE000PAH0038.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000PSM7770](../empreses/DE000PSM7770.md) | 4 | 4 | 4 | 4 | 0 | 0 |
+| [DE000RENK730](../empreses/DE000RENK730.md) | 1 | 1 | 1 | 1 | 0 | 0 |
+| [DE000SHA0159](../empreses/DE000SHA0159.md) | 2 | 2 | 2 | 2 | 0 | 0 |
+| [DE000SHL1006](../empreses/DE000SHL1006.md) | 8 | 8 | 8 | 8 | 0 | 0 |
+| [DE000SYM9999](../empreses/DE000SYM9999.md) | 10 | 10 | 10 | 10 | 0 | 0 |
+| [DE000TLX1005](../empreses/DE000TLX1005.md) | 3 | 3 | 3 | 3 | 0 | 0 |
+| [DE000TUAG000](../empreses/DE000TUAG000.md) | 6 | 6 | 6 | 6 | 0 | 0 |
+
+S’han marcat **15 entrades de fonts antigues** com a no vàlides. Hi ha **0 entrades antigues amb revisió pendent**. Wayback té **67 entrades verificades** i **1108 pendents**, amb el motiu al CSV.
+
+### Fonts antigues marcades com a no vàlides
+
+| ISIN | Anys | Motiu | URL original |
+|---|---|---|---|
+| CH0012255151 | 2016–2025 | La filiació i el naixement són literals, però és una font periodística i l’edat de 29 anys el 1983 no acredita la prova b que s’atribuïa a aquesta font. La data d’entrada (1994) també discrepa de la biografia de l’emissor (1992). | https://www.srf.ch/news/wirtschaft/swatch-chef-im-interview-hayek-der-starke-franken-macht-mir-mehr-sorgen-als-der-krieg |
+| CH0012410517 | 2016–2025 | FundingUniverse és un agregador d’històries corporatives i no és un document original de l’emissor. | https://www.fundinguniverse.com/company-histories/b%C3%A2loise-holding-history/ |
+| CH0013841017 | 2020, 2023 | L’enllaç d’Investis respon HTTP 404. Any de naixement verificat al perfil de Baehny de Lonza. | https://www.investisgroup.com/fileadmin/user_upload/Dateien/CV/2024_2025/INV_CV_Albert_Baehny_2025.pdf |
+| CH0013841017 | 2024–2025 | L’URL del document a la borsa no va obrir (HTTP 502); substituït pel govern corporatiu original al domini Lonza. | https://links.sgx.com/1.0.0/corporate-announcements/LJE7WPRJD5EBVAED/881490_Lonza%20Annual%20Report%202025.pdf |
+| CH0018294154 | 2016 | El comunicat d’Orkla descriu la creació de Feldschlösschen-Hürlimann Holding i el canvi de nom a REG Real Estate Group, però no documenta la incorporació de Gabriel ni la fusió posterior de la part amb PSP. | https://www.orkla.com/media/press-releases/2000/carlsberg-kjoper-sveitsisk-bryggeri/ |
+| CH0024608827 | 2021 | Informe semestral 2026, sense prova del càrrec el 2021 ni dada de naixement en un extracte que només conté el nom. | https://www.partnersgroup.com/~/media/files/p/partnersgroup/universal/shareholders/reports-and-presentations/2026/pghn-interim-report-2026.pdf |
+| CH0024638196 | 2025 | La data efectiva de l’1/04/2025 anunciada inicialment fou substituïda per l’1/02/2025. | https://group.schindler.com/en/media/press-releases/changes-to-the-group-executive-committee-and-board-of-directors.html |
+| CH0435377954 | 2020–2024 | La pàgina actual preserva l’apartat de cofundadors però no conté la frase literal citada. | https://www.sig.biz/en-us/about-sig/history |
+| CH0435377954 | 2025 | El PDF de Bilfinger retorna HTTP 503. La cita no s’ha pogut rellegir en aquest original. | https://www.bilfinger.com/fileadmin/One_Global_Website/Investors/IRgemListe/Hauptversammlung/2026/EN/Bilfinger_Invitation_AGM_2026.pdf |
+| CH0531751755 | 2020, 2022–2025 | El fragment antic «Pascal Kiener,» només indica el nom. La biografia de l’informe permet recuperar l’any de naixement, però es proposa d perquè la fusió de 1995 pot alterar b. | https://www.bcv.ch/content/dam/bcv/fichiers/publications/publications-institutionnelles/rapports/ra-et-rse/rapports-annuels-et-intermediaires/2020/EN_BCV_Rapport_annuel_2020.pdf |
+| DE0005190003 | 2019–2025 | En obrir l’enllaç, redirigeix a la portada actual de BMW Group Newsroom i no conté el comunicat. L’informe anual original dona el naixement explícitament. | https://www.press.bmwgroup.com/global/article/detail/T0207782EN/bmw-group:-oliver-zipse-to-become-new-board-of-management-member-for-production?language=en |
+| DE0007472060 | 2016–2019 | L’accés directe mostra una pantalla de consentiment. S’ha pogut reobrir l’original a través del cercador i confirmar literalment el fragment. Der Standard no és un document de l’emissor, del regulador o del registre. El text tampoc distingeix amb fonts primàries l’entrada al negoci previ de l’entrada al Vorstand de la cotitzada. | https://www.derstandard.at/story/2000118180462/wirecard-aktienkurs-bricht-nach-bilanzungereimtheiten-weiter-ein |
+| DE000A0LD6E6 | 2017 | La fira Glasstec reprodueix la cita literal. S’ha substituït pel comunicat original de Gerresheimer. | https://www.glasstec.de/de/Media_News/Dr._Christian_Fischer_wird_Vorstandsvorsitzender_der_Gerresheimer_AG |
+| DE000A0LD6E6 | 2018 | La còpia de Hauptversammlung no és l’allotjament original i la cita no fixa el dia. S’ha substituït per l’informe anual original que confirma la mitjanit del 31/10 i el comunicat del relleu de l’01/11. | https://archiv.hauptversammlung.de/assets/files/Gerresheimer/2019/20190214_gerresheimer_geschaeftsbericht_2018_de_g.pdf |
+| DE000TUAG000 | 2016–2019, 2021 | L'URL del currículum obre una pàgina general de TUI sense el PDF ni la cita. | https://www.tuigroup.com/damfiles/default/tuigroup-15/en/about-us/management/lebenslauefe-en/vorstand-exco-en/eb-cv-joussen.pdf-6c9b88a5e1874c644f625d82fd98562f.pdf |
+
+### Diferències respecte de `regles`
+
+| ISIN | Any | Regla a la base | Prova proposada |
+|---|---|---|---|
+| CH0012255151 | 2016 | b | a |
+| CH0012255151 | 2017 | b | a |
+| CH0012255151 | 2018 | b | a |
+| CH0012255151 | 2019 | b | a |
+| CH0012255151 | 2020 | b | a |
+| CH0012255151 | 2021 | b | a |
+| CH0012255151 | 2022 | b | a |
+| CH0012255151 | 2023 | b | a |
+| CH0012255151 | 2024 | b | a |
+| CH0012255151 | 2025 | b | a |
+| CH0012280076 | 2020 | c_AAF64_reserva | b |
+| CH0012280076 | 2021 | c_AAF64_reserva | b |
+| CH0012410517 | 2016 | c_AAF64_reserva | b |
+| CH0012410517 | 2017 | c_AAF64_reserva | b |
+| CH0012410517 | 2018 | c_AAF64_reserva | b |
+| CH0012410517 | 2019 | c_AAF64_reserva | b |
+| CH0012410517 | 2020 | c_AAF64_reserva | b |
+| CH0012410517 | 2021 | c_AAF64_reserva | b |
+| CH0012410517 | 2022 | c_AAF64_reserva | b |
+| CH0023405456 | 2016 | c_AAF64_reserva | d |
+| CH0023405456 | 2017 | c_AAF64_reserva | d |
+| CH0023405456 | 2018 | c_AAF64_reserva | d |
+| CH0023405456 | 2019 | c_AAF64_reserva | d |
+| CH0023405456 | 2021 | c_AAF64_reserva | d |
+| CH0023405456 | 2022 | c_AAF64_reserva | d |
+| CH0023405456 | 2023 | c_AAF64_reserva | d |
+| CH0023405456 | 2024 | c_AAF64_reserva | d |
+| CH0023405456 | 2025 | c_AAF64_reserva | d |
+| CH0038388911 | 2024 | c_AAF64_reserva | d |
+| CH0038388911 | 2025 | c_AAF64_reserva | d |
+| CH0198251305 | 2016 | e | d |
+| CH0198251305 | 2017 | e | d |
+| CH0198251305 | 2018 | e | b |
+| CH0198251305 | 2019 | e | b |
+| CH0198251305 | 2020 | e | b |
+| CH0198251305 | 2021 | e | b |
+| CH0198251305 | 2022 | e | b |
+| CH0198251305 | 2023 | e | b |
+| CH0198251305 | 2024 | e | b |
+| CH0198251305 | 2025 | e | b |
+| CH0210483332 | 2024 | a | b |
+| CH0210483332 | 2025 | a | b |
+| CH0225173167 | 2017 | d | b |
+| CH0225173167 | 2018 | d | b |
+| CH0225173167 | 2019 | d | b |
+| CH0225173167 | 2020 | d | b |
+| CH0244767585 | 2016 | c_AAF64_reserva | d |
+| CH0244767585 | 2017 | c_AAF64_reserva | d |
+| CH0244767585 | 2018 | c_AAF64_reserva | d |
+| CH0244767585 | 2019 | c_AAF64_reserva | d |
+| CH0244767585 | 2020 | c_AAF64_reserva | d |
+| CH0244767585 | 2023 | c_AAF64_reserva | d |
+| CH0244767585 | 2024 | c_AAF64_reserva | d |
+| CH0244767585 | 2025 | c_AAF64_reserva | d |
+| CH0319416936 | 2023 | b | d |
+| CH0319416936 | 2024 | b | d |
+| CH0319416936 | 2025 | b | d |
+| CH0360674466 | 2020 | c_AAF64_reserva | b |
+| CH0360674466 | 2021 | c_AAF64_reserva | b |
+| CH0360674466 | 2022 | c_AAF64_reserva | b |
+| CH0360674466 | 2023 | c_AAF64_reserva | b |
+| CH0360674466 | 2024 | c_AAF64_reserva | b |
+| CH0360674466 | 2025 | c_AAF64_reserva | b |
+| CH0360826991 | 2024 | c_AAF64_reserva | b |
+| CH0364749348 | 2020 | c_AAF64_reserva | d |
+| CH0364749348 | 2021 | c_AAF64_reserva | b |
+| CH0418792922 | 2018 | c_AAF64_reserva | b |
+| CH0418792922 | 2019 | c_AAF64_reserva | b |
+| CH0418792922 | 2020 | c_AAF64_reserva | b |
+| CH0432492467 | 2019 | c_AAF64_reserva | a |
+| CH0432492467 | 2020 | c_AAF64_reserva | a |
+| CH0432492467 | 2021 | c_AAF64_reserva | a |
+| CH0432492467 | 2022 | c_AAF64_reserva | a |
+| CH0432492467 | 2023 | c_AAF64_reserva | a |
+| CH0432492467 | 2024 | c_AAF64_reserva | a |
+| CH0432492467 | 2025 | c_AAF64_reserva | a |
+| CH0435377954 | 2025 | b | a |
+| CH0496451508 | 2020 | d | a |
+| CH0531751755 | 2020 | b | d |
+| CH0531751755 | 2022 | b | d |
+| CH0531751755 | 2023 | b | d |
+| CH0531751755 | 2024 | b | d |
+| CH0531751755 | 2025 | b | d |
+| CH0565630669 | 2020 | e | d |
+| CH1169151003 | 2022 | c_AAF64_reserva | b |
+| CH1169151003 | 2023 | c_AAF64_reserva | b |
+| CH1169151003 | 2024 | c_AAF64_reserva | b |
+| CH1169151003 | 2025 | c_AAF64_reserva | b |
+| CH1175448666 | 2022 | c_AAF64_reserva | d |
+| CH1175448666 | 2023 | c_AAF64_reserva | d |
+| CH1175448666 | 2024 | c_AAF64_reserva | d |
+| CH1175448666 | 2025 | c_AAF64_reserva | d |
+| CH1256740924 | 2023 | c_AAF64_reserva | b |
+| CH1256740924 | 2024 | c_AAF64_reserva | d |
+| CH1256740924 | 2025 | c_AAF64_reserva | d |
+| CH1386220409 | 2025 | d;holding_interposada | d |
+| CH1430134226 | 2025 | a | e |
+| CZ0008019106 | 2016 | d | e |
+| DE0005190003 | 2016 | cap;b | b |
+| DE0005190003 | 2017 | cap;b | b |
+| DE0005190003 | 2018 | cap;b | b |
+| DE0005313704 | 2018 | e | b |
+| DE0005313704 | 2019 | e | b |
+| DE0005313704 | 2020 | e | b |
+| DE0005313704 | 2021 | e | b |
+| DE0005313704 | 2022 | e | b |
+| DE0005313704 | 2023 | e | b |
+| DE0005313704 | 2024 | e | b |
+| DE0005552004 | 2016 | d | e |
+| DE0005552004 | 2017 | d | e |
+| DE0005552004 | 2018 | d | e |
+| DE0005552004 | 2019 | d | e |
+| DE0005552004 | 2020 | d | e |
+| DE0005552004 | 2021 | d | e |
+| DE0005552004 | 2022 | d | e |
+| DE0005552004 | 2023 | c_AAF64_reserva | e |
+| DE0005552004 | 2024 | c_AAF64_reserva | e |
+| DE0005552004 | 2025 | c_AAF64_reserva | e |
+| DE0005785802 | 2023 | b | d |
+| DE0005785802 | 2024 | b | d |
+| DE0005785802 | 2025 | b | d |
+| DE0005909006 | 2016 | c_AAF64_reserva | d |
+| DE0006062144 | 2016 | a | e |
+| DE0006062144 | 2017 | a | e |
+| DE0006231004 | 2022 | a | e |
+| DE0006231004 | 2023 | a | e |
+| DE0006231004 | 2024 | a | e |
+| DE0006231004 | 2025 | a | e |
+| DE0006599905 | 2016 | c_AAF64_reserva | b |
+| DE0006599905 | 2017 | c_AAF64_reserva | b |
+| DE0006599905 | 2018 | c_AAF64_reserva | b |
+| DE0006599905 | 2019 | c_AAF64_reserva | b |
+| DE0006599905 | 2020 | c_AAF64_reserva | b |
+| DE0006599905 | 2021 | c_AAF64_reserva | b |
+| DE0006599905 | 2022 | c_AAF64_reserva | b |
+| DE0006599905 | 2023 | c_AAF64_reserva | b |
+| DE0006599905 | 2024 | c_AAF64_reserva | b |
+| DE0006599905 | 2025 | c_AAF64_reserva | b |
+| DE0006602006 | 2016 | c_AAF64_reserva | b |
+| DE0006602006 | 2017 | c_AAF64_reserva | b |
+| DE0006602006 | 2018 | c_AAF64_reserva | b |
+| DE0006602006 | 2019 | c_AAF64_reserva | b |
+| DE0006602006 | 2020 | c_AAF64_reserva | b |
+| DE0006602006 | 2021 | c_AAF64_reserva | b |
+| DE0006602006 | 2022 | c_AAF64_reserva | b |
+| DE0006602006 | 2023 | c_AAF64_reserva | b |
+| DE0006602006 | 2024 | c_AAF64_reserva | b |
+| DE0006602006 | 2025 | c_AAF64_reserva | b |
+| DE0006969603 | 2018 | c_AAF64_reserva | a |
+| DE0006969603 | 2019 | c_AAF64_reserva | a |
+| DE0006969603 | 2020 | c_AAF64_reserva | a |
+| DE0006969603 | 2021 | c_AAF64_reserva | a |
+| DE0006969603 | 2022 | c_AAF64_reserva | a |
+| DE0006969603 | 2023 | c_AAF64_reserva | a |
+| DE0006969603 | 2024 | c_AAF64_reserva | a |
+| DE0006969603 | 2025 | c_AAF64_reserva | a |
+| DE0007037129 | 2021 | b | d |
+| DE0007037129 | 2022 | b | d |
+| DE0007037129 | 2023 | b | d |
+| DE0007037129 | 2024 | b | d |
+| DE0007037129 | 2025 | b | d |
+| DE0007100000 | 2016 | cap;b | b |
+| DE0007100000 | 2017 | cap;b | b |
+| DE0007100000 | 2018 | cap;b | b |
+| DE0007251803 | 2017 | b | d |
+| DE0008303504 | 2024 | b | d |
+| DE0008303504 | 2025 | b | d |
+| DE000A0D6554 | 2025 | b | d |
+| DE000A0HN5C6 | 2016 | e | d |
+| DE000A0HN5C6 | 2017 | e | d |
+| DE000A0HN5C6 | 2018 | e | d |
+| DE000A0HN5C6 | 2019 | e | d |
+| DE000A0HN5C6 | 2020 | e | d |
+| DE000A0HN5C6 | 2021 | e | d |
+| DE000A0LD6E6 | 2018 | R-SC;b | b |
+| DE000A0TGJ55 | 2020 | c_AAF64_reserva | a |
+| DE000A12DM80 | 2017 | e | d |
+| DE000A12DM80 | 2018 | e | d |
+| DE000A2AADD2 | 2017 | b | e |
+| DE000A2AADD2 | 2018 | b | e |
+| DE000AUM0V10 | 2025 | b | e |
+| DE000BAY0017 | 2016 | c_AAF64_reserva | b |
+| DE000BAY0017 | 2017 | c_AAF64_reserva | b |
+| DE000BAY0017 | 2018 | c_AAF64_reserva | b |
+| DE000BAY0017 | 2019 | c_AAF64_reserva | b |
+| DE000BAY0017 | 2020 | c_AAF64_reserva | b |
+| DE000BAY0017 | 2021 | c_AAF64_reserva | b |
+| DE000BAY0017 | 2022 | c_AAF64_reserva | b |
+| DE000DTR0CK8 | 2022 | a | e |
+| DE000DTR0CK8 | 2023 | a | e |
+| DE000ENER6Y0 | 2020 | a | e |
+| DE000ENER6Y0 | 2021 | a | e |
+| DE000ENER6Y0 | 2022 | a | e |
+| DE000ENER6Y0 | 2023 | a | e |
+| DE000ENER6Y0 | 2024 | a | e |
+| DE000ENER6Y0 | 2025 | a | e |
+| DE000KBX1006 | 2021 | c_AAF64_reserva | d |
+| DE000KBX1006 | 2022 | c_AAF64_reserva | d |
+| DE000KGX8881 | 2022 | d | b |
+| DE000KGX8881 | 2023 | d | b |
+| DE000KGX8881 | 2024 | d | b |
+| DE000KGX8881 | 2025 | d | b |
+| DE000SYM9999 | 2016 | a | b |
+| DE000SYM9999 | 2017 | a | b |
+| DE000SYM9999 | 2018 | a | b |
+| DE000SYM9999 | 2019 | a | b |
+| DE000SYM9999 | 2020 | a | b |
+| DE000SYM9999 | 2021 | a | b |
+| DE000SYM9999 | 2022 | a | b |
+| DE000SYM9999 | 2023 | a | b |
+| DE000SYM9999 | 2024 | a | d |
+| DE000SYM9999 | 2025 | a | d |
+
+### Dubtes metodològics per revisar
+
+| ISIN | Any | Dubte |
+|---|---|---|
+| CH0018294154 | 2016 | dubte_D1: l’emissor descriu la transacció amb REG el 2004 com una adquisició per via de fusió. No s’ha pogut acreditar una altra predecessora pertinent ni confirmar tres anys complets entre la constitució de PSP i l’entrada de Gabriel. La prova d_per_part de la base necessita revisió. |
+| CH0360674466 | 2018 | P4/P6. Determinar si l’expressió «established the Galenica Group as an independent company» és una atribució D37 o la descripció del procés posterior a la sortida a borsa. La data operativa de 1927 i la biografia de Clémençon donen b si D37 no s’aplica. |
+| CH0360674466 | 2019 | P4/P6. Determinar si l’expressió «established the Galenica Group as an independent company» és una atribució D37 o la descripció del procés posterior a la sortida a borsa. La data operativa de 1927 i la biografia de Clémençon donen b si D37 no s’aplica. |
+| CH0364749348 | 2017 | P5/R3. L’organigrama i els comunicats donen a Jornod el càrrec de president executiu i a Schulze la presidència del comitè executiu i la responsabilitat d’executar l’estratègia. Es demana decisió sobre qui compleix R3 o si s’aplica R-SC. |
+| CH0364749348 | 2018 | P5/R3. L’organigrama i els comunicats donen a Jornod el càrrec de president executiu i a Schulze la presidència del comitè executiu i la responsabilitat d’executar l’estratègia. Es demana decisió sobre qui compleix R3 o si s’aplica R-SC. |
+| CH0364749348 | 2019 | P5/R3. L’organigrama i els comunicats donen a Jornod el càrrec de president executiu i a Schulze la presidència del comitè executiu i la responsabilitat d’executar l’estratègia. Es demana decisió sobre qui compleix R3 o si s’aplica R-SC. |
+| DE0005545503 | 2018 | dubte_D1. La decisió de la regla 27 es refereix a Choulidis el 2017; el CEO del 2018 és Dommermuth. L’emissor anomena «merger» la combinació amb 1&1 Telecommunication, però l’informe la comptabilitza com a adquisició inversa. Per la regla 26 no s’aplica D1. Drillisch fou l’adquirent jurídic i 1&1 Telecommunication l’adquirent comptable. Dommermuth fundà 1&1 EDV-Marketing, nucli posterior d’United Internet. Cal decidir la relació d’aquesta operativa amb la part pròpia de Dommermuth i l’abast de D37/D37d sobre l’ISIN del 2018. Queda pendent de DF i Doctorat. |
+| DE0005785802 | 2016 | dubte_D1. L’emissor denomina «Merger» la combinació de 1996 i el 20-F documenta l’adquisició d’accions de W.R. Grace. Per la regla 26 no s’aplica D1 davant la contradicció. Powell arriba el 1997 des d’empreses externes; el període 1978–1996 no acredita que fos en cap de les parts. La d no es compleix contra el 1996 i falta tancar quina operativa de la part absorbent és la rellevant si se n’exclou la combinació. Queda pendent de DF i Doctorat. |
+| DE0005785802 | 2017 | dubte_D1. L’emissor denomina «Merger» la combinació de 1996 i el 20-F documenta l’adquisició d’accions de W.R. Grace. Per la regla 26 no s’aplica D1 davant la contradicció. Powell arriba el 1997 des d’empreses externes; el període 1978–1996 no acredita que fos en cap de les parts. La d no es compleix contra el 1996 i falta tancar quina operativa de la part absorbent és la rellevant si se n’exclou la combinació. Queda pendent de DF i Doctorat. |
+| DE0005785802 | 2018 | dubte_D1. L’emissor denomina «Merger» la combinació de 1996 i el 20-F documenta l’adquisició d’accions de W.R. Grace. Per la regla 26 no s’aplica D1 davant la contradicció. Powell arriba el 1997 des d’empreses externes; el període 1978–1996 no acredita que fos en cap de les parts. La d no es compleix contra el 1996 i falta tancar quina operativa de la part absorbent és la rellevant si se n’exclou la combinació. Queda pendent de DF i Doctorat. |
+| DE0005785802 | 2019 | dubte_D1. L’emissor denomina «Merger» la combinació de 1996 i el 20-F documenta l’adquisició d’accions de W.R. Grace. Per la regla 26 no s’aplica D1 davant la contradicció. Powell arriba el 1997 des d’empreses externes; el període 1978–1996 no acredita que fos en cap de les parts. La d no es compleix contra el 1996 i falta tancar quina operativa de la part absorbent és la rellevant si se n’exclou la combinació. Queda pendent de DF i Doctorat. |
+| DE0005785802 | 2020 | dubte_D1. L’emissor denomina «Merger» la combinació de 1996 i el 20-F documenta l’adquisició d’accions de W.R. Grace. Per la regla 26 no s’aplica D1 davant la contradicció. Powell arriba el 1997 des d’empreses externes; el període 1978–1996 no acredita que fos en cap de les parts. La d no es compleix contra el 1996 i falta tancar quina operativa de la part absorbent és la rellevant si se n’exclou la combinació. Queda pendent de DF i Doctorat. |
+| DE0005785802 | 2021 | dubte_D1. L’emissor denomina «Merger» la combinació de 1996 i el 20-F documenta l’adquisició d’accions de W.R. Grace. Per la regla 26 no s’aplica D1 davant la contradicció. Powell arriba el 1997 des d’empreses externes; el període 1978–1996 no acredita que fos en cap de les parts. La d no es compleix contra el 1996 i falta tancar quina operativa de la part absorbent és la rellevant si se n’exclou la combinació. Queda pendent de DF i Doctorat. |
+| DE0007472060 | 2016 | dubte_D1: la documentació de Deutsche Börse exclou la combinació InfoGenie del 2004/05 com a fusió entre iguals (80 % de capital per al costat d’ebs). Queda pendent l’efecte de l’operació anterior d’ebs sobre la fundació del negoci operatiu i la data d’entrada de Braun. |
+| DE0007472060 | 2017 | dubte_D1: la documentació de Deutsche Börse exclou la combinació InfoGenie del 2004/05 com a fusió entre iguals (80 % de capital per al costat d’ebs). Queda pendent l’efecte de l’operació anterior d’ebs sobre la fundació del negoci operatiu i la data d’entrada de Braun. |
+| DE0007472060 | 2018 | dubte_D1: la documentació de Deutsche Börse exclou la combinació InfoGenie del 2004/05 com a fusió entre iguals (80 % de capital per al costat d’ebs). Queda pendent l’efecte de l’operació anterior d’ebs sobre la fundació del negoci operatiu i la data d’entrada de Braun. |
+| DE0007472060 | 2019 | dubte_D1: la documentació de Deutsche Börse exclou la combinació InfoGenie del 2004/05 com a fusió entre iguals (80 % de capital per al costat d’ebs). Queda pendent l’efecte de l’operació anterior d’ebs sobre la fundació del negoci operatiu i la data d’entrada de Braun. |
+| DE000A12DM80 | 2025 | La prova e depèn de si Beisheim Holding Schweiz AG compta com a vehicle personal de fundador (P9), com suggereix la cronologia. Cal verificar la participació personal de Beisheim o localitzar un ocupador anterior de Weitz en una font original. |
+| DE000KBX1006 | 2019 | Dubte metodològic R2b. La base fa servir 0 a FounderCEO, amb R-SC;R2b a regles i NA_sense_ceo a la robustesa R2b. P5 conserva el tractament de robustesa. Cal que DF i Doctorat resolguin si amb aquesta direcció col·legiada també correspon NA_sense_ceo a l’etiqueta principal. La font acredita l’arranjament de direcció i la prova de no fundador a títol individual queda inaplicable. |
+| DE000KBX1006 | 2020 | Dubte metodològic R2b. La base fa servir 0 a FounderCEO, amb R-SC;R2b a regles i NA_sense_ceo a la robustesa R2b. P5 conserva el tractament de robustesa. Cal que DF i Doctorat resolguin si amb aquesta direcció col·legiada també correspon NA_sense_ceo a l’etiqueta principal. La font acredita l’arranjament de direcció i la prova de no fundador a títol individual queda inaplicable. |
+
+## Revisió del lot 5 al PR #13
+
+- S’han revisat **704 de 704 files de 139 empreses**. Hi ha **701 files** amb el CEO o la direcció del 31/10 acreditats i **684** amb totes dues proves disponibles. S’han reforçat **303 files** amb cites addicionals de mandat.
+- Les **1.195 entrades originals** i les **264 addicions** porten `fora_mostra_auditoria`. El lot acumula **53 entrades originals** marcades [NV] en aquesta passada, corresponents a **42 URLs**. El motiu i la cita anterior consten al registre.
+- Wayback té **414 entrades** amb cita literal verificada i **1.025 pendents**. S’han reconsultat **1.108 de les 1.108 pendents anteriors**, amb **283 verificacions noves** entre les entrades originals i **825 originals** encara pendents.
+- Motius de la verificació pendent a Wayback. **802** per errors de servei o límits de consulta, **132** amb una consulta sense captura disponible, **91** amb una captura sense la cita literal verificada i **0** per altres errors o verificació encara pendent.
+- **20 dubtes metodològics** continuen pendents de DF i Doctorat. Hi ha **0 canvis** a `FounderCEO` i `ceos`.
+
+KION 2024 manté b. L’emissor fa remuntar Linde Material Handling a Güldner-Motoren-Werke el 1904 i documenta la continuïtat de les marques que Linde va aportar al segment escindit i venut el 2006. Segons P1, es tracta de l’operativa preexistent. L’entrada de Smith el 2022 procedent de Konecranes també satisfà d si es pren el 2006 com a referència. La prova b també se sosté amb el 1920, l’origen més recent dels tres negocis operatius citats. [Fitxa KION](../empreses/DE000KGX8881.md)
+
+### Canvis potencials pendents de DF i Doctorat
+
+| Empresa | Anys | Canvi potencial |
+|---|---|---|
+| [1&1 Drillisch](../empreses/DE0005545503.md) | 2018 | 0 → 1 si DF/Doctorat accepten que Dommermuth, fundador de la banda 1&1, és fundador de l’entitat rellevant per J1/D37. Cal resoldre l’adquisició inversa i la relació entre l’operativa que va fundar i l’emissor del 2018. |
+| [Fresenius Medical Care](../empreses/DE0005785802.md) | 2016–2021 | 0 → indeterminat si la combinació del 1996 es considera rellevant per la regla 26. La descripció de l’emissor és «Merger» i cap part superaria el 60 %. Cal valorar-ho amb l’estructura de l’operació i l’entrada de Rice Powell el 1997. |
+| [Vifor Pharma](../empreses/CH0364749348.md) | 2017–2019 | Possible canvi del CEO d’Étienne Jornod a Stefan Schulze si DF/Doctorat consideren que la presidència del comitè executiu complia R3. També queda oberta l’aplicació de R-SC si cap dels dos complia el criteri. |
+| [Galenica](../empreses/CH0360674466.md) | 2018–2019 | 0 → 1 si la frase de l’emissor sobre haver establert Galenica com a empresa independent és una atribució D37 a Jean-Claude Clémençon. Si descriu el procés d’independència després de la sortida a borsa, es pot mantenir el 0 per b. |
+| [PSP Swiss Property](../empreses/CH0018294154.md) | 2016 | 0 → indeterminat si no es pot aplicar d_per_part. L’entrada de Luciano Gabriel el març del 2002 queda a menys de tres anys de la constitució del 28/07/1999 i falta acreditar una predecessora pertinent. |
+| [Wirecard](../empreses/DE0007472060.md) | 2016–2019 | 0 → indeterminat mentre no quedin acreditats l’origen operatiu després d’ebs i la data d’entrada de Markus Braun. La combinació InfoGenie del 2004/05 no resol la prova d per si sola. |
+| [Scout24](../empreses/DE000A12DM80.md) | 2025 | 0 → indeterminat si Beisheim Holding era un vehicle personal de fundador segons P9 i no s’acredita la prova d per a Ralf Weitz mitjançant un ocupador anterior. |
+| [Knorr-Bremse](../empreses/DE000KBX1006.md) | 2019–2020 | 0 → NA_sense_ceo si DF/Doctorat decideixen que R2b també s’aplica a l’etiqueta principal. La direcció col·legiada al 31/10 queda acreditada i faltava un CEO individual. |
+
+### Fonts marcades [NV] en aquesta revisió
+
+| ISIN | Entrades del registre | Motiu i font |
+|---|---|---|
+| CH0021783391 | L5-CH0021783391-C01 | HTTP 403 [URL original](https://www.powercorporationhistory.com/en/1981-1989.html) |
+| CH0038863350 | L5-CH0038863350-C16 | La cita literal no s’ha localitzat al document lliurat per la URL original. [URL original](https://www.nestle.com/media/pressreleases/allpressreleases/executive-board-changes-september-2025) |
+| CH0225173167 | L5-CH0225173167-C02 | PDF no llegible (1798920 bytes) [URL original](https://www.cembra.ch/assets/cembra/investor-relation/berichte-und-praesentationen/finanzberichte/geschaeftsbericht-2018-en.pdf) |
+| CH1169360919 | L5-CH1169360919-C03 | HTTP 503 [URL original](https://new.abb.com/news/detail/95473/abb-completes-accelleron-spin-off) |
+| DE0005140008 | L5-DE0005140008-ANT-01 | PDF no llegible (6159931 bytes) [URL original](https://investor-relations.db.com/files/documents/annual-reports/Deutsche_Bank_Annual_Report_2015.pdf) |
+| DE0005313704 | L5-DE0005313704-C03, L5-DE0005313704-C08 | HTTP 404 [URL original](https://www.zeiss.com/content/dam/med-ag/about-us/czm_cv_markus_weber_2024_de.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/czm_cv_markus_weber_2024_de.pdf) |
+| DE0005810055 | L5-DE0005810055-F06 | HTTP 404 [URL original](https://www.deutsche-boerse.com/resource/blob/245804/6dc3c9b1296722acf002358bfe77b0ea/data/cv-weimer_en.pdf) |
+| DE0005909006 | L5-DE0005909006-C01 | HTTP 503 [URL original](https://www.bilfinger.com/fileadmin/One_Global_Website/Investors/IRgemListe/Publikationen/Quartalsberichtserstattung/2016/2016_GB_e_Print_170314_a.pdf) |
+| DE0005909006 | L5-DE0005909006-F01 | HTTP 503 [URL original](https://www.bilfinger.com/fileadmin/One_Global_Website/Investors/IRgemListe/Publikationen/Quartalsberichtserstattung/2025/Q4/Reporting_Factbook_Q4_2025.pdf) |
+| DE0006062144, DE000BAY0017 | L5-DE0006062144-F04, L5-DE000BAY0017-F01 | HTTP 403 [URL original](https://www.bayer.com/en/about-us/history/history-timeline) |
+| DE0006062144 | L5-DE0006062144-C01, L5-DE0006062144-F02 | HTTP 403 [URL original](https://www.covestro.com/-/media/covestro/corporate/investors/annual-general-meeting/2025/en/covestro_ag_notice_of_-agm_2025) |
+| DE0006062144 | L5-DE0006062144-F01, L5-DE0006062144-F03 | HTTP 403 [URL original](https://www.covestro.com/-/media/covestro/corporate/investors/financial-documents-and-presentations/presentations-and-documents/2015/20150918_covestro_prospectus.pdf) |
+| DE0006062144 | L5-DE0006062144-C02 | HTTP 403 [URL original](https://www.covestro.com/investors/news/download/884970/20180413-covestro-patrick-thomas-to-hand-over-ceo-position-to-dr.-markus-steilemann-on-june-1-2018.pdf) |
+| DE0006095003 | L5-DE0006095003-F05 | La cita literal no s’ha localitzat al document lliurat per la URL original. [URL original](https://www.encavis.com/Dokumente/IR/Finanzberichte/Capital%20Stage%20AG/Gesch%C3%A4ftsjahr%202016/20170331-Capital-Stage-Annual-Report-2016-EN.pdf) |
+| DE0006095003 | L5-DE0006095003-C03 | El comunicat de 2025 atribueix a 2014 la doble funció de portaveu i CFO. L’informe anual 2022 distingeix l’inici com a portaveu l’1/01/2023, i la biografia F03 confirma que el 2014 era només el nomenament com a CFO. [URL original](https://www.encavis.com/en/newsroom/press-releases/2949800-encavis-ag-announces-ceo-transition) |
+| DE0007037129 | L5-DE0007037129-F02 | HTTP 404 [URL original](https://www.rwe.com/-/media/RWE/documents/09-verantwortung-nachhaltigkeit/cr-berichte/bericht-2001.pdf) |
+| DE0007037129 | L5-DE0007037129-F03 | HTTP 404 [URL original](https://www.rwe.com/-/media/archive/ir-archiv/25-en/2014/Financial-Statements-2011-BGE-BeteiligungsGesellschaft-fuer-Energieunternehmen-mbH-PDF.pdf) |
+| DE0007164600 | L5-DE0007164600-F01 | HTTP 403 [URL original](https://www.sap.com/about/company/history/1972-1980.html) |
+| DE0007500001 | L5-DE0007500001-C02 | La cita literal no s’ha localitzat al document lliurat per la URL original. [URL original](https://www.thyssenkrupp.com/en/press-detail/martina-merz-asks-the-supervisory-board-for-talks-to-end-her-mandate-as-chief-executive-officer-of-thyssenkrupp-ag-in-mutual-agreement-89757) |
+| DE0008303504 | L5-DE0008303504-F05 | HTTP 404 [URL original](https://www.tag-ag.com/fileadmin/content/geschaeftsberichte/2001_TAG_Geschaeftsbericht_DE.pdf) |
+| DE000A0HN5C6 | L5-DE000A0HN5C6-F03, L5-DE000A0HN5C6-C06 | La resposta de 29972 bytes no conté un PDF vàlid [URL original](https://ir.deutsche-wohnen.com/download/companies/dewohnen/Annual%20Reports/DE000A0HN5C6-JA-2017-EQ-E-01.pdf) |
+| DE000A0HN5C6 | L5-DE000A0HN5C6-F02 | La cita literal no s’ha localitzat al document lliurat per la URL original. [URL original](https://ir.deutsche-wohnen.com/nachrichten/veraenderungen-im-vorstand-und-aufsichtsrat-der-deutsche-wohnen-ag/b4ef9f28-eceb-4d70-b116-08adfba819ef) |
+| DE000A0HN5C6 | L5-DE000A0HN5C6-C07 | HTTP 404 [URL original](https://www.deutsche-wohnen.com/fileadmin/user_upload/21-12-20_Michael_Zahn_to_leave_Deutsche_Wohnen.pdf) |
+| DE000A0LD6E6 | L5-DE000A0LD6E6-F04, L5-DE000A0LD6E6-C09 | PDF no llegible (4747563 bytes) [URL original](https://www.gerresheimer.com/fileadmin/user_upload/user_upload/Company/Investor_Relations/reports/2018/20190214_Gerresheimer_Annual_Report_2018_EN_g.pdf) |
+| DE000A1J5RX9 | L5-DE000A1J5RX9-F09 | PDF sense text extraïble (9755310 bytes) [URL original](https://www.bt.com/bt-plc/assets/documents/investors/financial-reporting-and-news/listing-history/download-the-1984-prospectus.pdf) |
+| DE000A1J5RX9 | L5-DE000A1J5RX9-F10 | La resposta de 17463 bytes no conté un PDF vàlid [URL original](https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/DEAusgabe_derivate_00001364/Wirtschaft_und_Statistik-1932-06.pdf) |
+| DE000A2AADD2 | L5-DE000A2AADD2-C06 | La resposta de 1531 bytes no conté un PDF vàlid [URL original](https://ircenter.handelsblatt.com/download/companies/innogy/Annual%20Reports/DE000A2AADD2-JA-2018-EQ-E-00.pdf) |
+| DE000A2GS401 | L5-DE000A2GS401-F02, L5-DE000A2GS401-C03 | HTTP 503 [URL original](https://investors.softwareag.com/content/dam/investorrelation/pdfs/english/financial-results/2017/q4/170125_en_sow_q4_2017_annual_report.pdf.sagdownload.inline.1614236595264.pdf) |
+| DE000A2GS401 | L5-DE000A2GS401-F01 | HTTP 503 [URL original](https://investors.softwareag.com/content/dam/investorrelation/pdfs/german/jahresabschluss-hgb/2017_sow_annual-financial-statement_german_hgb.pdf.sagdownload.inline.1615835475390.pdf) |
+| DE000BAY0017 | L5-DE000BAY0017-F03 | HTTP 403 [URL original](https://www.bayer.com/en/about-us/leadership/board-of-management/offices-held-at-other-companies) |
+| DE000BAY0017 | L5-DE000BAY0017-F02, L5-DE000BAY0017-C04 | HTTP 403 [URL original](https://www.bayer.com/media/download/1223820/2020-ir-0218e.pdf) |
+| DE000BAY0017 | L5-DE000BAY0017-C05 | HTTP 403 [URL original](https://www.bayer.com/media/en-us/bill-anderson-to-become-ceo-of-bayer-ag/) |
+| DE000CBK1001 | L5-DE000CBK1001-C08, L5-DE000CBK1001-ANT-01 | HTTP 404 [URL original](https://www.commerzbank.de/konzern/newsroom/pressemitteilungen/2016/20160306-pr-ceo-en.pdf) |
+| DE000ENER6Y0 | L5-DE000ENER6Y0-C1 | PDF no llegible (3235840 bytes) [URL original](https://assets.siemens-energy.com/dam/8645bda3-d1f6-4bd3-bdb8-b03400a3ffc5/2021-12-07-Siemens-Energy-AG-Annual-Report-2021-pdf_Original%20file.pdf) |
+| DE000KBX1006 | L5-DE000KBX1006-C02 | La resposta de 3287 bytes no conté un PDF vàlid [URL original](https://ir.knorr-bremse.com/download/companies/knorrbremse/Annual%20Reports/DE000KBX1006-JA-2019-EQ-D-00.pdf) |
+| DE000KBX1006 | L5-DE000KBX1006-F02 | La transcripció preliminar del tercer trimestre del 2020 anomena Mrosik CEO de Digital Industries a Siemens. El mateix Mrosik va identificar el càrrec com a COO a la transcripció de resultats FY2020. Conserva la cronologia de contractació amb font corregida R13-F01. [URL original](https://ir.knorr-bremse.com/download/companies/knorrbremse/Recordings/Transcript_KnorrBremse_Q320.pdf) |
+| DE000KBX1006 | L5-DE000KBX1006-C07 | Resposta de 3287 bytes sense text llegible [URL original](https://ir.knorr-bremse.com/en/news/knorr-bremse-aktiengesellschaft-knorr-bremse-ag-profitiert-von-hoher-kundennachfrage-und-steigert-umsatz-und-profitabilitaet/d268e0e9-d3a8-4a86-bc99-70476167ee2b) |
+| DE000KBX1006 | L5-DE000KBX1006-C08 | Resposta de 3287 bytes sense text llegible [URL original](https://ir.knorr-bremse.com/en/news/knorr-bremse-aktiengesellschaft-marc-llistosella-wird-neuer-vorstandsvorsitzender-der-knorr-bremse-ag/9dbea701-77cf-4e6c-936e-74ed9b29adc9) |
+| DE000SYM9999 | L5-DE000SYM9999-C02, L5-DE000SYM9999-C03 | HTTP 403 [URL original](https://www.symrise.com/newsroom/article/dr-jean-yves-parisot-assumes-ceo-position-from-dr-heinz-juergen-bertram/) |
+| DE000SYM9999 | L5-DE000SYM9999-C01 | HTTP 403 [URL original](https://www.symrise.com/our-company/our-history/) |
+| DE000TUAG000 | L5-DE000TUAG000-F03, L5-DE000TUAG000-F04 | La resposta de 416115 bytes no conté un PDF vàlid [URL original](https://www.tuigroup.com/damfiles/default/presse/presseinformationen/presseinformationen_en/2014/2014-06-27_tui/CV_Fritz_Joussen-e6dde945d4cc967d33fc6ef13b8377eb.pdf) |
+| DE000TUAG000 | L5-DE000TUAG000-F02 | La resposta de 416115 bytes no conté un PDF vàlid [URL original](https://www.tuigroup.com/damfiles/default/tuigroup-15/en/investors/Capital-Increase-October/German-prospectus.pdf-b86ed0c59a5965e79ade24bedb424e01.pdf) |
+
+### Files amb substitució o corroboració pendent
+
+| ISIN | Any | Motiu documentat |
+|---|---|---|
+| [CH0364749348](../empreses/CH0364749348.md) | 2017 | P5/R3. L’organigrama i els comunicats donen a Jornod el càrrec de president executiu i a Schulze la presidència del comitè executiu i la responsabilitat d’executar l’estratègia. Es demana decisió sobre qui compleix R3 o si s’aplica R-SC. Reoberts el govern corporatiu de Galenica 2016, l’organigrama del 14/03/2017, i els resultats de Vifor del primer semestre i de tot 2017 a l’arxiu de premsa corporatiu de CSL. Reoberts els resultats de 2018 i 2019 a CSL. La comunicació de 2019 dona la direcció del comitè executiu a Schulze des de 2017 i la coordinació del pla Milestone 2020 a Jornod. Cerques d’«Executive Chairman», «President of the Executive Committee», «Chief Executive Officer», «operational management», «Etienne Jornod» i «Stefan Schulze» als arxius de Galenica i CSL, notes de la borsa suïssa i documents disponibles al cercador de la SEC. Cap document localitzat ofereix un títol individual de CEO en aquests tres talls ni resol inequívocament R3. El comunicat de juny del 2021 diu que Schulze va prendre el càrrec el març de 2020. El resultat semestral de 2020 atribueix la data efectiva a la junta del 14/05/2020. Totes dues dates precedeixen el tall del 31/10/2020. |
+| [CH0364749348](../empreses/CH0364749348.md) | 2018 | P5/R3. L’organigrama i els comunicats donen a Jornod el càrrec de president executiu i a Schulze la presidència del comitè executiu i la responsabilitat d’executar l’estratègia. Es demana decisió sobre qui compleix R3 o si s’aplica R-SC. Reoberts el govern corporatiu de Galenica 2016, l’organigrama del 14/03/2017, i els resultats de Vifor del primer semestre i de tot 2017 a l’arxiu de premsa corporatiu de CSL. Reoberts els resultats de 2018 i 2019 a CSL. La comunicació de 2019 dona la direcció del comitè executiu a Schulze des de 2017 i la coordinació del pla Milestone 2020 a Jornod. Cerques d’«Executive Chairman», «President of the Executive Committee», «Chief Executive Officer», «operational management», «Etienne Jornod» i «Stefan Schulze» als arxius de Galenica i CSL, notes de la borsa suïssa i documents disponibles al cercador de la SEC. Cap document localitzat ofereix un títol individual de CEO en aquests tres talls ni resol inequívocament R3. El comunicat de juny del 2021 diu que Schulze va prendre el càrrec el març de 2020. El resultat semestral de 2020 atribueix la data efectiva a la junta del 14/05/2020. Totes dues dates precedeixen el tall del 31/10/2020. |
+| [CH0364749348](../empreses/CH0364749348.md) | 2019 | P5/R3. L’organigrama i els comunicats donen a Jornod el càrrec de president executiu i a Schulze la presidència del comitè executiu i la responsabilitat d’executar l’estratègia. Es demana decisió sobre qui compleix R3 o si s’aplica R-SC. Reoberts el govern corporatiu de Galenica 2016, l’organigrama del 14/03/2017, i els resultats de Vifor del primer semestre i de tot 2017 a l’arxiu de premsa corporatiu de CSL. Reoberts els resultats de 2018 i 2019 a CSL. La comunicació de 2019 dona la direcció del comitè executiu a Schulze des de 2017 i la coordinació del pla Milestone 2020 a Jornod. Cerques d’«Executive Chairman», «President of the Executive Committee», «Chief Executive Officer», «operational management», «Etienne Jornod» i «Stefan Schulze» als arxius de Galenica i CSL, notes de la borsa suïssa i documents disponibles al cercador de la SEC. Cap document localitzat ofereix un títol individual de CEO en aquests tres talls ni resol inequívocament R3. El comunicat de juny del 2021 diu que Schulze va prendre el càrrec el març de 2020. El resultat semestral de 2020 atribueix la data efectiva a la junta del 14/05/2020. Totes dues dates precedeixen el tall del 31/10/2020. |
