@@ -30,6 +30,15 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00BVGBWW93-C01` [V] (2020, `ceo`, `R1`, Nivell A). «Jonathan Murphy CEO» P. 17, declaració del CEO dins l’Strategic report. Signatura de Jonathan Murphy com a CEO a l’exercici tancat el 31/03/2021, que inclou el 31/10/2020. <https://www.phpgroup.co.uk/media/rihlj2zj/annualreport2021final.pdf>
+- `L7-GB00BVGBWW93-C02` [V] (2021, `ceo`, `R1`, Nivell A). «Jonathan Murphy CEO» P. 20, declaració del CEO dins l’Strategic report. Signatura de Jonathan Murphy com a CEO a l’exercici tancat el 31/03/2022, que inclou el 31/10/2021. <https://www.phpgroup.co.uk/media/11lppf3c/annual-report-final2022.pdf>
+- `L7-GB00BVGBWW93-C03` [V] (2022, `ceo`, `R1`, Nivell A). «Jonathan Murphy CEO» P. 20, declaració del CEO dins l’Strategic report. Signatura de Jonathan Murphy com a CEO a l’exercici tancat el 31/03/2023, que inclou el 31/10/2022. <https://www.phpgroup.co.uk/media/bqmnmutz/assura_ar23_web_interactivefinal.pdf>
+- `L7-GB00BVGBWW93-F01` [V] (2020,2021,2022, `fundador`, `d`, Nivell A). «Managing Director for the property management business of Brooks Macdonald Group plc.» P. 44, Board of Directors, biografia de Jonathan Murphy. Va entrar al gener del 2013 com a director financer i abans treballava a Brooks Macdonald. L’emissor data la primera cartera immobiliària el 2003 i acredita la continuïtat de l’activitat des de llavors. L’adquisició d’AH Medical del 2011 i la substitució de la capçalera el 2015 no són fundacions noves. <https://www.phpgroup.co.uk/media/l40ei23m/assura-ar17_bookmarked.pdf>
+- `L7-GB00BVGBWW93-X01` [V] (2020,2021,2022, `context`, Nivell A). «In 2003, the former parent company of the Group was incorporated and registered in Guernsey» P. 47, History of the Group. El vehicle de cartera immobiliària, The Medical Property Investment Fund Limited, es constituí el 2003 i passà a dir-se Assura Group Limited el 2006. La sortida a borsa d’Assura plc el 2015 substituí la capçalera, amb continuïtat de l’activitat i del REIT. <https://ise-prodnr-eu-west-1-data-integration.s3-eu-west-1.amazonaws.com/legacy/ListingParticulars_6cab60bc-bc1a-4735-9577-f461d978ca5f.pdf>
+- `L7-GB00BVGBWW93-X02` [V] (2020,2021,2022, `context`, Nivell A). «for the entire issued and to be issued share capital of AH Medical Properties plc» Oferta regulada d’Assura Group, 19/01/2011, encapçalament i bases dels càlculs, punt 5. Oferta per la totalitat de les accions d’AH Medical i amb alternativa en efectiu. Les accions a lliurar en la proposta representaven només el 13,1% del capital ampliat. L’operació no reinicia l’origen operatiu de la compradora. <https://www.lse.co.uk/rns/ASH/recommended-offer-by-assura-group-for-ah-medical-9bhm4f6twmn8ecq.html>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).
