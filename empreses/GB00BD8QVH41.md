@@ -29,6 +29,13 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00BD8QVH41-C01` [V] (2017, `ceo`, `R1`, Nivell A). «Keith Barr succeeded Richard Solomons as Chief Executive Officer on 1 July 2017,» Secció de retribució del Form 20-F 2017, Salary. Documenta l’entrada en el càrrec al juliol i el mandat fins al tancament de desembre, que inclou el 31/10/2017. <https://www.sec.gov/Archives/edgar/data/858446/000119312518066382/d519981d20f.htm>
+- `L7-GB00BD8QVH41-C02` [V] (2018, `ceo`, `R1`, Nivell A). «Keith Barr was appointed to the Board and the role of Chief Executive Officer effective from 1 July 2017.» Secció de retribució del Form 20-F 2018. El mateix paràgraf identifica el 2018 com el seu primer exercici complet al càrrec, que inclou el 31/10/2018. <https://www.sec.gov/Archives/edgar/data/858446/000119312519055722/d630180d20f.htm>
+- `L7-GB00BD8QVH41-F01` [V] (2017,2018, `fundador`, `d`, Nivell A). «Prior to joining IHG, Keith held several senior positions at Bristol Hotels and Resorts, which was acquired by IHG in 2000.» Notes to Editors, biografia de Keith Barr. L’emissor el situa el 2000 al negoci hoteler que ja operava a Bass com a mínim des del 1988, per adquisició de Bristol. Six Continents va separar el negoci existent el 2003 (P1/P4). <https://www.ihgplc.com/news-and-media/news-releases/2017/ihg-ceo-succession>
+- `L7-GB00BD8QVH41-X01` [V] (2017,2018, `context`, Nivell A). «Six Continents plc splits into two, creating a separate hotels and soft drinks company named InterContinental Hotels Group plc (IHG),» Cronologia de l’emissor, entrada de 2003. La mateixa pàgina documenta l’activitat hotelera de Bass des del 1988 i la compra d’InterContinental el 1998. <https://www.ihgplc.com/en/about-us/our-history>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).
