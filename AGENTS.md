@@ -1,66 +1,103 @@
 # Instruccions per a l'agent
 
-El contingut normatiu d'aquest fitxer coincideix amb el de `CLAUDE.md` (aprovat per Jordi el 19/11/2026 i actualitzat el 20/11/2026 a les 11:56 Europe/Madrid amb la regla 25 de la METODOLOGIA v0.10.8, els 6 ND i la regla de Wayback amb `id_`, i el 20/11/2026 a les 13:10 Europe/Madrid amb la revisió de les fonts antigues del lot, i el 20/11/2026 a les 17:18 Europe/Madrid amb les regles 26 i 27 de la METODOLOGIA v0.10.9 i la norma de metodologia vigent), adaptat a qualsevol agent (Codex, Claude Code o un altre).
+Aquest fitxer té el mateix contingut normatiu que `CLAUDE.md`. **Si discrepen, mana `CLAUDE.md`; anota-ho al PR i atura't en aquell punt.** Historial d'aprovacions: final del fitxer.
 
-**Si `AGENTS.md` i `CLAUDE.md` discrepen, mana `CLAUDE.md`. L'agent ho ha d'anotar al PR.**
+## 1. Missió
 
-## Missió
+Base de fundadors-CEO de l'STOXX Europe 600 (2016-2025, 1.040 empreses, 6.012 files ISIN-any). Base oficial: `dades/base_isin_any_v8r3.csv`. Per a cada fila: el CEO a 31/10 i si és fundador (1/0/ND/NA), cadascun amb una font A/B, una cita literal i una URL estable que qualsevol pugui comprovar.
 
-Acabar la base de fundadors-CEO de l'STOXX Europe 600 (2016-2025, 1.040 empreses) i deixar-la correcta, amb una font que corrobori cada dada. No n'hi ha prou de revisar: s'ha de buscar la informació que falta, corregir errors i resoldre els casos oberts. Per a cada empresa i any: el CEO i si és fundador (1/0), amb una cita literal d'una font fiable.
+## 2. Qui fa què
 
-La base oficial d'aquest repositori és `dades/base_isin_any_v8r3.csv`.
+| Feina | Qui |
+|---|---|
+| Cercar fonts A/B, llegir-les i proposar cita, URL, pàgina i prova (a-e, D37, R1-R3) | Agent (Codex o Claude) |
+| Comprovar que la cita surt literalment al document sencer, buscar i verificar la captura Wayback (`id_`), omplir els camps `wayback_v8r1_*` i `cita_verificada_a_captura`, generar els recomptes | DF, per script, des del seu ordinador |
+| Revisar dubtes de metodologia | Doctorat |
+| Aprovar i fusionar | Jordi |
 
-## Ordre de treball
+L'agent **no** ha de reintentar Wayback, ni demanar desades (Save Page Now), ni repetir descàrregues que el seu entorn talla. Ho fa DF.
 
-Segueix aquest ordre (detall a `PENDENTS.md`):
+## 3. Quan una fila està feta
 
-1. **Casos oberts:** 6 ND (les que queden després del lot ND-1: Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020), 108 `certificada_ceo_pendent`, 241 `no_certificada`, i els casos clau (LVMH, BE Semiconductor, Aberdeen 2016, Anders Dam). Busca fins que trobis la font. Si després d'una cerca exhaustiva i documentada no hi ha cap font A/B, la fila queda indeterminada i a la fitxa s'explica què s'ha buscat i on. Cap límit d'intents.
-2. **Les 3.890 files sense auditar** (`sim_estat_certificacio=fora_mostra_auditoria`; recompte comprovat a la base v8 r3 del `main` actual: **3.890** [V]). Verifica el CEO i l'etiqueta empresa per empresa i afegeix les cites que faltin. Si el recompte no quadrés en una versió futura, posa-hi la xifra real.
-3. **Fitxes completes:** el CEO de cada any amb cita, la prova de fundador o de no fundador, el sector i les fonts amb Wayback.
-4. **Errors:** si una dada contradiu la base, encara que estigui certificada, proposa'n la correcció amb la cita.
+Una fila del lot està **feta** quan té:
 
-## Com treballar
+1. **CEO:** almenys una entrada `funcio_cita=ceo` amb una cita que anomena la persona i el càrrec, d'un document de l'emissor o d'un regulador **del mateix exercici** (informe anual, document de registre, comunicat). Si no n'hi ha, val un **interval** (regla 28 de l'annex): dues entrades A/B, el nomenament amb data igual o anterior al 31/10 de l'any i un document que anomeni la persona CEO en una data igual o posterior al 31/10 de l'any (no n'hi ha prou que el document sigui posterior). Totes dues porten `marca_prova` = `ceo_interval` i a `notes` diuen `inici` o `final`. Si trobes una sortida o successió entre els dos extrems, l'interval no val i s'aplica R1-R3.
+2. **Fundador:** almenys una entrada `funcio_cita=fundador` amb la prova positiva que justifica l'etiqueta (`marca_prova` = a, b, c, d o e per a un 0; D37 o la regla que correspongui per a un 1).
+Si no hi ha font A/B (regla 29 de l'annex), la fila **no** està feta ni verificada: surt a la taula de dubtes del PR amb què s'ha buscat i on, i s'afegeix a la secció «Dubtes dels lots `fora_mostra_auditoria` (regla 29)» de `PENDENTS.md` (només afegint línies). No s'hi canvia l'etiqueta. Després s'hi aplica la cerca sense límit d'intents (A.4).
+
+Cobrir la fila és el que compta. No cal aportar més d'una cita per fet si la primera és bona.
+
+## 4. Fonts
 
 - Només fonts de nivell **A** (documents de la mateixa empresa o registres oficials) i **B** (premsa econòmica de qualitat, llibres, articles acadèmics).
 - Wikipedia, LinkedIn, Crunchbase, pàgines d'alumni, biografies no corporatives i textos d'IA són fonts **C**: serveixen de pista, mai de prova. Una font C mai no verifica, ni sola ni amb altres fonts C.
+- Ordre de preferència: (1) informe anual o document de registre de l'emissor de l'exercici; (2) comunicat de l'emissor o canal regulat (p. ex. EQS); (3) regulador o registre; (4) font B.
+- Agregadors (annualreports.com, companiesmarketcap.com, zonebourse, marketscreener) no són l'original: busca l'original de l'emissor.
 - Un `0` (no fundador) necessita una **prova positiva amb cita**. Si no hi ha proves que sigui fundador, és **indeterminat**, no `0`. No forcis un 0 ni un 1.
-- Cada evidència porta una **cita literal**, l'**URL original** i el **Wayback**. Si no hi ha Wayback, declara-ho (`pendent_verificacio_externa` o equivalent) i no l'inventis.
-- Per verificar una cita en un **PDF** arxivat a Wayback Machine, cal obrir el document de la captura, no l'embolcall HTML. Si la URL de la forma `https://web.archive.org/web/{timestamp}/{url}` retorna una pàgina HTML (barra de Wayback) i no el PDF, s'ha d'usar el modificador públic `id_`: `https://web.archive.org/web/{timestamp}id_/{url}`, que serveix els bytes originals de la captura. Això no és un bypass d'accés: és la forma de recuperar el fitxer arxivat. La cita s'ha de rellegir al document (per exemple amb `pdftotext`). Si, també amb `id_`, la captura no és el document, es declara `pendent_verificacio_externa` i no s'inventa. No s'usa `curl -k` ni s'omet la verificació del certificat TLS.
-- Les fonts i cites que ja hi ha a la fitxa o al registre per a les files del lot no es donen per bones: s'han d'obrir i comprovar que la cita hi és literalment, que la font és A/B i que cobreix l'any. Si una no és vàlida (enllaç mort, font C, cita que no hi surt o d'un altre any), es marca com a no vàlida al registre, s'explica per què i se'n busca una alternativa A/B. No s'esborra mai la font antiga: es deixa marcada.
-- No inventis dades, hashes, dates, càrrecs ni classificacions.
 - La data de referència del CEO és el **31/10 de cada any** i no es pot canviar.
-- Un 403, un temps d'espera esgotat, un captcha o una pàgina de bloqueig no són evidència. La cita ha de ser al document obert, no a un resum ni de memòria.
+- No inventis dades, hashes, dates, càrrecs ni classificacions.
+- La cita ha de ser al document obert, no a un resum ni de memòria. Copia-la tal com surt (sense traduir ni reescriure), d'una a tres frases.
 
-### Branques, lots i PR
+## 5. Estats d'una entrada (definició operativa)
 
-Treballa per **lots d'empreses en branques** i obre **un PR per lot**.
+Aquesta secció i la verificació Wayback per DF (secció 2) són de procediment i no formen part de la metodologia (METODOLOGIA v0.10.10, changelog).
 
-**No toquis mai** `main`, `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `AGENTS.md`, les regles, `.github/` ni `.claude/`.
+| Situació | `marca_veritat` | Què hi poses |
+|---|---|---|
+| Has obert el document **sencer** i hi has trobat la cita literalment | `[V]` | `notes`: on és (pàgina o secció) |
+| No has pogut obrir el document sencer: 403, 429, 503, temps esgotat, captcha, pàgina de bloqueig, **descàrrega tallada** (mida exacta 1.048.576 o 5.242.880 bytes, o PDF que no s'obre) | `[NV]` | `notes`: `pendent_DF: <motiu i mida>`. **No vol dir que la font sigui dolenta** |
+| Has obert el document sencer i la cita **no hi és**, o és d'un altre any, o la font és C | `[NV]` | `notes`: `no_valida: <motiu>`, i busca'n una alternativa A/B |
 
-No pots fer commit ni push a `main`, ni fusionar un PR, ni esmenar, rebasejar o forçar `main`.
+- Un error d'accés no és mai prova que la cita no hi sigui. Només `no_valida` rebaixa una font.
+- Les fonts que ja hi ha al registre per a les files del lot es revisen amb la mateixa taula. No s'esborren mai: si canvia l'estat, s'afegeix la nota nova a continuació de l'antiga.
+- `[V]` de l'agent és provisional fins que DF el confirma per script.
 
-El flux, un cop obert el PR, és aquest i no un altre:
+## 6. Format de sortida (exacte)
 
-1. **DF** valida (format, comptes, `scripts/valida_pr.py`, coherència).
-2. **Doctorat** revisa la metodologia.
-3. **Jordi** aprova.
+Cada entrada nova és una fila a `docs/REGISTRE_CANVIS.csv` amb les mateixes columnes que el fitxer, i omple com a mínim:
 
-La configuració de la protecció de `main` (PR obligatori, aprovació de Jordi, cap push directe, CODEOWNERS) és a `docs/PROTECCIO_BRANCA_MAIN.md`.
+| Camp | Valor |
+|---|---|
+| `tipus` | `evidencia_ceo`, `evidencia_fundador`, `evidencia_context`, `revisio_font` o `dubte_metodologic` |
+| `grup_id` | `L{n}-{ISIN}` |
+| `isin`, `nom`, `anys`, `n_files` | de la fila o de l'interval |
+| `origen` | `proposta_{agent}_lot{n}` (p. ex. `proposta_codex_lot6`) |
+| `estat_certificacio` | `fora_mostra_auditoria` (o el valor de la fila a la base) |
+| `cita_literal`, `url_font` | obligatoris si `funcio_cita` és `ceo` o `fundador` |
+| `id_document_o_font` | `L{n}-{ISIN}-C01`, `-F01`… (C = CEO, F = fundador), únic |
+| `model_verificacio` | nom de l'agent |
+| `marca_veritat` | segons la secció 5 |
+| `notes` | pàgina o secció; `pendent_DF:` o `no_valida:` si escau |
+| `url_wayback`, `wayback_v8r1_*`, `cita_verificada_a_captura` | **buits**: els omple DF |
+| `allotjament` | `emissor`, `regulador`, `grup`, `successor`, `plataforma` o `mitja` |
+| `funcio_cita` | `ceo`, `fundador`, `context` o `revisio_font` |
+| `marca_prova` | per a `fundador`: `a`, `b`, `c`, `d`, `e` o `D37`; per a `ceo`: `R1`, `R2`, `R2b`, `R3` o `ceo_interval` |
 
-### Com començar un lot
+A cada fitxa `empreses/{ISIN}.md` del lot, afegeix (sense esborrar res) les cites amb el seu `id_document_o_font` i la URL original.
 
-1. Crea una branca amb un nom descriptiu a partir de `main` (`fix/...`, `cas/...`, `sector/...`).
-2. Agafa la primera tasca oberta seguint l'ordre de `PENDENTS.md`.
-3. Llegeix la fitxa (`empreses/{ISIN}.md`), les files a `dades/base_isin_any_v8r3.csv`, `docs/REGISTRE_CANVIS.md` i `docs/METODOLOGIA.md`.
-4. Cada canvi de dades ha de deixar, a la fitxa i al `docs/REGISTRE_CANVIS`, la cita literal, l'URL i el Wayback.
-5. A la branca, qualsevol canvi a `dades/` ha d'anar acompanyat del canvi a les fitxes afectades i al registre. No toquis les dades a `main`.
-6. Executa en local, **sense `--live`**:
-   - `python3 scripts/valida_pr.py`
-   - `python3 scripts/comprova_enllacos_cites.py`
-7. **Cal que `scripts/valida_pr.py` passi abans d'obrir el PR.** Si falla, corregeix-ho abans.
-8. Obre el PR amb un resum (què canvia, quins ISIN-any, quina regla, quines cites). No el fusionis.
+El cos del PR té **una sola** secció de resultats, amb aquests recomptes i cap altra xifra: files del lot; files fetes (secció 3); de les quals, files amb `ceo_interval`; files en dubte i enviades a `PENDENTS.md`; entrades noves per `marca_veritat` i per tipus de nota (`pendent_DF`, `no_valida`); fonts antigues revisades i quantes són `no_valida`; canvis proposats a FounderCEO o `ceos` (han de ser 0 en un lot `fora_mostra_auditoria`; si en veus un, va a dubtes). Si refàs el PR, substitueix la secció; les versions anteriors van a `docs/REGISTRE_CANVIS.md` marcades com a «v1», «v2».
 
-### Format de les propostes de canvi
+## 7. Mida del lot i quan aturar-se
+
+- Un lot = la llista d'ISIN que DF posa a `lots/lot{n}.csv` (ISIN, any). Normalment unes 50 empreses i unes 250-300 files. No l'ampliïs ni el retallis.
+- Per fila: si després de mirar l'informe anual de l'any, el de l'any següent i el web d'inversors de l'emissor no trobes la font, passa la fila a dubtes amb el que has mirat i continua. No hi dediquis més temps en aquest lot. És només un triatge de primera passada (regla 29): la fila va a `PENDENTS.md` i després s'hi aplica la cerca sense límit d'intents (A.4). Als casos oberts (ND, `ceo_pendent`, `no_certificada`) no hi ha límit.
+- Si l'entorn falla (feina que no acaba, xarxa), fes commit del que tinguis a la branca i explica-ho al PR. No deixis feina només a la conversa.
+
+## 8. Branques i PR
+
+1. Crea la branca `cas/fora-mostra-lot{n}` a partir de `main`.
+2. Llegeix `lots/lot{n}.csv`, les fitxes del lot, les seves files a `dades/base_isin_any_v8r3.csv` i les entrades que ja tenen a `docs/REGISTRE_CANVIS.csv`.
+3. Escriu les entrades (secció 6), les cites a les fitxes i, si n'hi ha, els dubtes a `PENDENTS.md` (secció 3).
+4. Executa en local, **sense `--live`**, `python3 scripts/valida_pr.py` i `python3 scripts/comprova_enllacos_cites.py`. Han de donar 0 problemes. Recalcula `MANIFEST_SHA256.csv`.
+5. Obre **un** PR per lot amb el cos de la secció 6. No el fusionis.
+
+**No toquis mai** `main`, `dades/`, `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `AGENTS.md`, les regles, `.github/` ni `.claude/`. No pots fer commit ni push a `main`, ni fusionar un PR, ni esmenar, rebasejar o forçar `main`. No s'usa `curl -k` ni s'omet la verificació del certificat TLS. Sense logins ni salts d'antibots.
+
+El flux, un cop obert el PR, és aquest i no un altre: 1) **DF** valida (format, comptes, scripts, verificació de cites i Wayback); 2) **Doctorat** revisa la metodologia; 3) **Jordi** aprova. Protecció de `main`: `docs/PROTECCIO_BRANCA_MAIN.md`.
+
+Si un PR torna amb correccions, DF dona la llista exacta d'ID. Corregeix només aquests ID, a la mateixa branca. Hi ha **una sola ronda** de correccions per lot.
+
+## 9. Format de les propostes de canvi d'etiqueta o de CEO (fora dels lots `fora_mostra_auditoria`)
 
 Cada proposta (al registre i, si cal, al cos del PR) ha de portar com a mínim:
 
@@ -70,11 +107,22 @@ Cada proposta (al registre i, si cal, al cos del PR) ha de portar com a mínim:
 - nivell de font (A o B)
 - cita literal
 - URL original
-- URL Wayback (o declaració de pendent)
+- URL Wayback (o declaració de pendent; la pot completar DF)
 - justificació breu, sense afegir fets que no siguin a la cita
 - efecte esperat sobre la certificació (N1, N2, doctorat, ceo_pendent, no_certificada), sense autodeclarar-la tancada: la certificació queda dins el flux (DF, Doctorat, Jordi)
 
 No proposis un canvi sense cita literal i URL.
+
+## 10. Altres feines (ordre de `PENDENTS.md`)
+
+1. **Casos oberts:** 6 ND (les que queden després del lot ND-1: Drillisch 2017, Sopra Steria 2025 i Aroundtown 2017-2020), 108 `certificada_ceo_pendent`, 241 `no_certificada`, i els casos clau (LVMH, BE Semiconductor, Aberdeen 2016, Anders Dam). Busca fins que trobis la font. Si després d'una cerca exhaustiva i documentada no hi ha cap font A/B, la fila queda indeterminada i a la fitxa s'explica què s'ha buscat i on. Cap límit d'intents.
+2. **Les files sense auditar** (`sim_estat_certificacio=fora_mostra_auditoria`: 3.890 a la base v8 r3 [V]; després dels lots 4 i 5, en queden 2.888 a 625 ISIN [V, càlcul de DF del 20/11/2026]). Es fan per lots de DF (secció 7).
+3. **Fitxes completes:** el CEO de cada any amb cita, la prova de fundador o de no fundador, el sector i les fonts amb Wayback.
+4. **Errors:** si una dada contradiu la base, encara que estigui certificada, proposa'n la correcció amb la cita (secció 9). En un lot `fora_mostra_auditoria` la proposta va a la taula de dubtes i no es canvia `dades/`.
+
+Nota sobre Wayback per a qui la verifiqui (DF): per verificar una cita en un **PDF** arxivat a Wayback Machine, cal obrir el document de la captura, no l'embolcall HTML. Si la URL de la forma `https://web.archive.org/web/{timestamp}/{url}` retorna una pàgina HTML (barra de Wayback) i no el PDF, s'ha d'usar el modificador públic `id_`: `https://web.archive.org/web/{timestamp}id_/{url}`, que serveix els bytes originals de la captura. Això no és un bypass d'accés: és la forma de recuperar el fitxer arxivat. La cita s'ha de rellegir al document (per exemple amb `pdftotext`). Si, també amb `id_`, la captura no és el document, es declara `pendent_verificacio_externa` i no s'inventa.
+
+# Annex normatiu (text vigent; les regles es copien literalment de la metodologia)
 
 ## Criteris aprovats de la regla 25 (METODOLOGIA v0.10.8)
 
@@ -114,6 +162,26 @@ Text literal: «Només són fusions entre iguals (AAF 2009) si la font les descr
 
 Aquest text no autoritza a canviar `dades/` ni les robusteses en el mateix PR que només documenta les instruccions. Qualsevol aplicació a la base va en un lot a part, amb cita, registre i el flux DF → Doctorat → Jordi.
 
+Ampliació de la regla 27 a la METODOLOGIA v0.10.10 (text literal; l'ITV 2017 ja és aplicada a `main`, `ceos`=Peter Bazalgette [V]):
+
+- Resultats de DF (21/11/2026, `INFORME_PR_pas3_v3.md`, segons DF; cites marcades [V] per DF, no rellegides per Doctorat):
+  - B&M 2016-2021: no hi ha cap cita contemporània que anomeni Arora fundador (AR 2016-2021 i fullet IPO del 12/6/2014). «founder-led… since the Group was acquired by the Aroras in December 2004» (fullet, p. 51) no compta (P6). Queda 1 per D37 (cita del 2024), `fundador_transformador`=1 i `founderceo_rob_cita_contemporania`=0 als anys 2016-2021.
+  - LVMH 2016-2025: l'1 ve d'un FT validat de tipus c (decisió de Jordi X9-3, 15/11/2026), no de D37 ni de D1. Es manté a 1 i es retira la proposta 1→0. La regla 26 no hi aplica (Arnault no era a cap de les parts del 1987).
+  - Sopra Steria 2025: CEO a 31/10/2025 Xavier Pecquet (nomenat el 8/10/2025), director de Sopra Group Holding Ltd des del 7/7/2005, sense vincle amb Steria. Amb `dubte_D1`, es prova contra Sopra (fundada el 1968). ND provisional: abans de tancar-la, prova b amb el mes i l'any de naixement de Companies House i prova a per P8 si l'emissor dona la llista de fundadors del 1968. ND només després d'una cerca exhaustiva i documentada.
+  - ITV 2017: Bazalgette per R3 amb cites A de l'AR 2017 (p. 61, Executive Chairman fins al nou Chief Executive i incompliment de la A.2.1; p. 93, taula del Chief Executive). Pendent d'aplicar al PR.
+
+## Regles 28 i 29 (METODOLOGIA v0.10.10)
+
+Font: `METODOLOGIA_3_Articles_v0.10.10.md` (secció 2.3, regles 28 i 29, i annex A.4 corregit), SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`, comprovat el 21/11/2026. Decisions de Jordi del 21/11/2026 a les 10:23 Europe/Madrid (segons DF). Text literal:
+
+- Regla 28. **Cobertura del CEO per interval [Jordi, 21/11/2026 10:23, segons DF].** Si no hi ha cap document de l'emissor o del regulador del mateix exercici que anomeni el CEO, la identitat del CEO a 31/10/t es pot acreditar amb un interval de dos extrems documentats amb font A/B: el nomenament (data igual o anterior al 31/10/t) i un document posterior que anomeni la persona com a CEO en una data igual o posterior al 31/10/t (no n'hi ha prou que el document sigui posterior). Marca `ceo_interval`, recompte al PR i robustesa `founderceo_rob_sense_interval` (les files amb `ceo_interval` com a ND). No s'exigeix comprovar l'absència de sortides o successions entre els dos extrems (Jordi: l'evidència no es trobarà); queda com a limitació declarada de la base: «a les files amb `ceo_interval` no s'ha verificat l'absència de canvis de CEO entre els dos extrems». Si es troba una sortida o successió entremig, l'interval no val i s'aplica R1-R3.
+
+- Regla 29. **Límit de cerca com a triatge als lots `fora_mostra_auditoria` [Jordi, 21/11/2026 10:23, segons DF].** En aquests lots l'agent mira, per fila, l'informe anual de l'any, el de l'any següent i el web d'inversors de l'emissor. Si no hi troba font A/B, la fila va a la taula de dubtes amb el que s'ha mirat i no se'n canvia l'etiqueta. El límit és només de primera passada: una fila en dubte no compta com a feta ni com a verificada, i passa a la cua de casos oberts (`PENDENTS.md`), on s'aplica la cerca sense límit d'intents (A.4) abans de la base final. Als casos oberts (ND, `ceo_pendent`, `no_certificada`) no hi ha límit.
+
+- A.4 Regla d'exclusió per manca de documentació (Jordi, 17/11, segons DF; corregida a la v0.10.10 amb la decisió de Jordi del 19/11, segons DF, que rebutja el límit de tres intents). Les files que, després d'una cerca exhaustiva i documentada (script, IA i manual), sense límit d'intents, no tinguin ni font de CEO ni font de prova surten de la mostra principal. El límit de la regla 29 és només de triatge i no és motiu d'exclusió. Queden registrades amb motiu, es desglossen per F/P, any i sector i es fa una robustesa que les inclou. Justificació [C]: evita una exclusió cas a cas i permet avaluar el biaix de selecció si les mancances es concentren en un grup.
+
+La robustesa `founderceo_rob_sense_interval` és una columna de `dades/`: la calcula DF per script a partir de la marca `ceo_interval`; l'agent no la toca.
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
@@ -125,3 +193,7 @@ Les propostes de l'agent no compten com a tercer model a cegues. El que certific
 ## El que aquestes instruccions no autoritzen
 
 No pots canviar la metodologia, ni tocar els fitxers protegits, ni fusionar a `main`. L'extensió del sector del juny 2023 als anys 2024-2025 ja està aplicada a la v8 r3 per als ISIN que tenien aquesta font; les 48 empreses només presents el 2024-2025 i les 24 no casades queden pendents (font A, per exemple un informe anual amb la classificació ICB) i no s'inventa cap sector.
+
+## Historial
+
+El contingut normatiu d'aquest fitxer coincideix amb el de `CLAUDE.md` (aprovat per Jordi el 19/11/2026 i actualitzat el 20/11/2026 a les 11:56 Europe/Madrid amb la regla 25 de la METODOLOGIA v0.10.8, els 6 ND i la regla de Wayback amb `id_`, i el 20/11/2026 a les 13:10 Europe/Madrid amb la revisió de les fonts antigues del lot, i el 20/11/2026 a les 17:18 Europe/Madrid amb les regles 26 i 27 de la METODOLOGIA v0.10.9 i la norma de metodologia vigent), adaptat a qualsevol agent (Codex, Claude Code o un altre).

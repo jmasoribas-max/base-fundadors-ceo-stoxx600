@@ -686,3 +686,10 @@ La llista nominativa de les 13 parelles **no s'ha trobat** als fitxers localitza
 | `FR0011594233` | SFR Group S.A. Actions Nom. EO 1 | 2016–2016 | no_certificada | Doctorat tanca l'etiqueta, pero r3e tenia incidences greus (E4); no puja a N1/N2 | [fitxa](empreses/FR0011594233.md) |
 | `GB0005758098` | Meggitt PLC Registered Shares LS -,052) | 2016, 2018 | no_certificada | incidencia greu r3e (E4): no puja a N1/N2 | [fitxa](empreses/GB0005758098.md) |
 | `NL0000008977` | Heineken Holding N.V. Aandelen aan toonder | 2016, 2018, 2021, 2022, 2023, 2024, 2025 | no_certificada | incidencia greu r3e (E4): no puja a N1/N2 | [fitxa](empreses/NL0000008977.md) |
+
+## Dubtes dels lots fora_mostra_auditoria (regla 29)
+
+Afegida el 21/11/2026 (Europe/Madrid) amb el PR `df/agents-v2` (METODOLOGIA v0.10.10, regla 29). Els agents hi afegeixen, sense esborrar res, les files dels lots `fora_mostra_auditoria` on no han trobat font A/B a la primera passada (informe anual de l'any, el de l'any següent i el web d'inversors). Aquestes files no compten com a fetes ni verificades i passen a la cerca sense límit d'intents (A.4).
+
+| ISIN | Any | Lot | Què falta (CEO / fundador) | Què s'ha mirat | PR |
+|---|---|---|---|---|---|
