@@ -31,6 +31,15 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00B1ZBKY84-C01` [V] (2017, `ceo`, `R1`, Nivell A). «Mark Lewis Chief Executive Officer» p. 74, Taula de consellers. La nota de la mateixa pàgina data l’inici del mandat el 10 d’abril de 2017. <https://www.monygroup.com/application/files/2417/1378/9087/annual-report-2017.pdf>
+- `L7-GB00B1ZBKY84-C02` [V] (2019, `ceo`, `R1`, Nivell A). «Mark Lewis Chief Executive Officer Served throughout year» p. 105, Taula de consellers. L’informe confirma el servei durant tot l’exercici. <https://www.monygroup.com/application/files/4417/1378/7806/annual-report-2019.pdf>
+- `L7-GB00B1ZBKY84-C03` [V] (2020, `ceo`, `R1`, Nivell A). «Peter Duffy Chief Executive Officer» p. 62, Fitxa del consell. Duffy va assumir el càrrec el setembre de 2020. <https://www.monygroup.com/application/files/4717/1378/1818/moneysupermarket-ar20-dps-new-1.pdf>
+- `L7-GB00B1ZBKY84-F01` [V] (2017,2019, `fundador`, `d`, Nivell A). «He was previously Retail Director, and prior to that Online Director, at John Lewis.» p. 64, fitxa de Mark Lewis. L’ocupador anterior era John Lewis. La fitxa data l’entrada al consell el març de 2017 i al càrrec l’abril de 2017. <https://www.monygroup.com/application/files/4417/1378/7806/annual-report-2019.pdf>
+- `L7-GB00B1ZBKY84-F02` [V] (2020, `fundador`, `d`, Nivell A). «He was previously CEO of Just Eat» p. 62, fitxa de Peter Duffy. Entrada al setembre de 2020 des de Just Eat, 21 anys després del llançament del web. <https://www.monygroup.com/application/files/4717/1378/1818/moneysupermarket-ar20-dps-new-1.pdf>
+- `L7-GB00B1ZBKY84-X01` [V] (2017,2019,2020, `context`, `d`, Nivell A). «The Group is first established as Mortgage 2000 in Chester as an offline business providing mortgage listings» Cronologia corporativa: «1993» és l’origen operatiu i «1999» documenta el llançament de MoneySuperMarket. Ambdues dates precedeixen l’entrada de Lewis i Duffy en més de tres anys. <https://www.monygroup.com/about-us/who-we-are/>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).

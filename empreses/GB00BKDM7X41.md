@@ -30,6 +30,14 @@
 
 Les cites no s'han reescrit; són literals de les fonts d'origen d'aquest repositori.
 
+### Lot 7
+
+- `L7-GB00BKDM7X41-C01` [V] (2020, `ceo`, `R1`, Nivell A). «Mark Johnstone Group CEO» Pàg. impresa 8, PDF 10, Q&A with Mark Johnstone. Signatura de l’informe de l’exercici tancat el 31/12/2020, que inclou el 31/10/2020. <https://find-and-update.company-information.service.gov.uk/company/00053688/filing-history/MzMwNTY1MDU0OGFkaXF6a2N4/document?format=pdf&download=1>
+- `L7-GB00BKDM7X41-F01` [V] (2020, `fundador`, `d`, Nivell A). «Prior to joining held roles in the aerospace and off-highway division of GKN plc.» Pàg. impresa 14, PDF 16, Signature Leadership Team. La biografia documenta la incorporació de Johnstone al grup el 2008, després de treballar a GKN. El negoci aeroportuari Signature ja operava des de la combinació de Butler i Page Avjet el 1992. <https://find-and-update.company-information.service.gov.uk/company/00053688/filing-history/MzMwNTY1MDU0OGFkaXF6a2N4/document?format=pdf&download=1>
+- `L7-GB00BKDM7X41-R01` [V] (2020, `revisio_font`, Nivell A). «Date of birth September 1968» Fitxa de Mark Robin Johnstone a Officers, camp Date of birth. La cita de la base és literal. <https://find-and-update.company-information.service.gov.uk/company/00053688/officers>
+- `L7-GB00BKDM7X41-X01` [V] (2020, `context`, Nivell B). «BBA Group (BBA) bought and combined Butler Aviation, whose operations included FBOs, and Page Avjet, an executive aircraft interiors outfitter, in 1992.» Perfil sectorial, paràgraf sobre els orígens. Descriu l’adquisició i combinació de les dues operatives per la cotitzada BBA. El mandat de 2020 correspon a la matriu continuadora. <https://www.bjtonline.com/company/signature-flight-support>
+- `L7-GB00BKDM7X41-X02` [V] (2020, `context`, Nivell A). «NEW: GB00BKDM7X41» Pàg. 1, Contract Adjustments. L’avís d’ICE vincula l’ISIN anterior GB00B1FP8915 amb el nou, després d’una consolidació de quatre accions noves per cinc d’antigues. Companies House documenta la continuïtat de la societat 00053688, que canvia el nom de BBA Aviation plc a Signature Aviation plc el 22/11/2019. <https://www.ice.com/publicdocs/liffe/corporate_actions/2019/CA-2019-543-DA.pdf>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).

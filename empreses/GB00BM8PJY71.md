@@ -32,6 +32,18 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00BM8PJY71-C01` [V] (2022, `ceo`, `R1`, Nivell A). «Alison Rose-Slade DBE Group Chief Executive Officer» Taula de signatures de l’informe del grup. La columna d’Alison Rose-Slade la identifica com a Group Chief Executive Officer. <https://www.sec.gov/Archives/edgar/data/844150/000110465923025378/nwg-20221231x20f.htm>
+- `L7-GB00BM8PJY71-C02` [V] (2023, `ceo`, `R2`, Nivell A). «Paul Thwaite had been appointed as CEO» p. 27, relació amb els inversors. Nomenament el 26 de juliol de 2023 per un període inicial de dotze mesos. <https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/16022024/nwg-annual-report-and-accounts-2023.pdf>
+- `L7-GB00BM8PJY71-C03` [V] (2024, `ceo`, `R1`, Nivell A). «Paul Thwaite Group Chief Executive Officer» p. 9, signatura de la revisió del conseller delegat. El nomenament definitiu és de febrer de 2024. <https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/14022025/nwg-annual-report-and-accounts-2024.pdf>
+- `L7-GB00BM8PJY71-C04` [V] (2025, `ceo`, `R1`, Nivell A). «Paul Thwaite Group Chief Executive Officer» p. 10, signatura de la revisió del conseller delegat. El nomenament definitiu és de febrer de 2024. <https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/13022026/nwg-annual-report-and-accounts-2025.pdf>
+- `L7-GB00BM8PJY71-F01` [V] (2022, `fundador`, `b`, Nivell A). «Date of birth November 1969» Fitxa del titular. El naixement és posterior a la fusió operativa de l’1 d’abril de 1969. <https://find-and-update.company-information.service.gov.uk/officers/LTJbiusqpopqQ9Oku8F4_hdvvUc/appointments>
+- `L7-GB00BM8PJY71-F02` [V] (2023,2024,2025, `fundador`, `b`, Nivell A). «Date of birth September 1971» Fitxa del titular. El naixement és posterior a la fusió operativa de l’1 d’abril de 1969. <https://find-and-update.company-information.service.gov.uk/officers/pUqJvmBsV1BK9F_B5lP1rBpti-s/appointments>
+- `L7-GB00BM8PJY71-X01` [V] (2022,2023,2024,2025, `context`, `b`, Nivell A). «With effect from 1 April 1969 the two banks merged to form the Royal Bank of Scotland» «Brief history». L’emissor descriu la fusió del Royal Bank of Scotland i el National Commercial Bank of Scotland el 1969. L’any 2007 el grup va participar en l’adquisició d’ABN AMRO. <https://www.natwestgroup.com/heritage/companies/natwest-group-plc.html>
+- `L7-GB00BM8PJY71-X02` [V] (2022,2023,2024,2025, `context`, `b`, Nivell A). «In March 2000 it was acquired by the Royal Bank of Scotland Group» «Brief history». L’emissor identifica NatWest com a adquirida el 2000, després de la fusió de 1969. <https://www.natwestgroup.com/heritage/companies/national-westminster-bank-plc.html>
+- `L7-GB00BM8PJY71-X03` [V] (2022,2023,2024,2025, `context`, `b`, Nivell A). «The ISIN for the New Ordinary Shares is GB00BM8PJY71» Form 6-K, 30 d’agost de 2022. El nou ISIN deriva de la consolidació de les ordinàries del mateix emissor. <https://www.sec.gov/Archives/edgar/data/844150/000165495422011931/a5583x.htm>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).

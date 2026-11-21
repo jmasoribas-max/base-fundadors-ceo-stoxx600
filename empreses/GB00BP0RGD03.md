@@ -31,6 +31,13 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00BP0RGD03-C01` [V] (2024, `ceo`, `R1`, Nivell A). «Rob Perrins | Chief Executive» Informe complet, p. 16–17, Chief Executive’s Review. Exercici de l’1/05/2024 al 30/04/2025. El pas a Executive Chair es va produir després, el setembre de 2025. <https://www.berkeleygroup.co.uk/-/media/migration/berkeley-group/about-us/investors/annual-report/annual-report-2025.ashx?hash=B92B10FFEB5941E33913ED4795C13A13&rev=fe76b2b4f6044238887d9d89996b7436>
+- `L7-GB00BP0RGD03-C02` [V] (2025, `ceo`, `R1`, Nivell A). «At the same time, Richard Stearn, who had served as Berkeley’s Chief Financial Officer since April 2015, became Chief Executive Officer.» Informe complet, p. 96–97, Executive Chair’s introduction. La frase anterior fixa la data de la transició en el 5/09/2025. Exercici de l’1/05/2025 al 30/04/2026. <https://www.berkeleygroup.co.uk/-/media/migration/berkeley-group/about-us/investors/annual-report/berkeley-group_annual-report-2026.ashx?rev=fe7c7137a96c4ccc92d13d6814d82413&hash=3905F8F090EEAEAECBBCF546199A04DD>
+- `L7-GB00BP0RGD03-F01` [V] (2024,2025, `fundador`, `a`, Nivell A). «Berkeley was established in 1976 by Tony Pidgley CBE and Jim Farrer, based in Weybridge, Surrey.» Història oficial completa, fita de fundació. Llista tancada dels dos fundadors. Ni Rob Perrins ni Richard Stearn hi apareixen. <https://www.berkeleygroup.co.uk/about-us/who-we-are/history>
+- `L7-GB00BP0RGD03-X01` [NV] (2025, `context`, Nivell A). pendent_DF: HTTP 503 al visor en línia, 98 bytes. El PDF oficial del mateix informe s’ha obert sencer. <https://brochures2.berkeleygroup.co.uk/berkeleygroup-2026-annual-report/index.html>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).

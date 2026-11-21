@@ -29,6 +29,13 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00BVFD7Q58-C01` [V] (2016, `ceo`, `R1`, Nivell A). «Keith Skeoch Chief Executive Standard Life plc» P. 7, signatura de Chief Executive’s overview de l’exercici 2016. <https://www.rns-pdf.londonstockexchange.com/rns/7418X_1-2017-2-23.pdf>
+- `L7-GB00BVFD7Q58-F01` [V] (2016, `fundador`, `d`, Nivell A). «Previously he spent nearly 20 years at James Capel & Company Limited» P. 50, Board of Directors. El paràgraf també documenta que Skeoch va entrar a Standard Life Investments el 1999 com a Chief Investment Officer. Standard Life opera des del 1825 i la cotització del 2006 va seguir la desmutualització del negoci existent (P1). <https://www.rns-pdf.londonstockexchange.com/rns/7418X_1-2017-2-23.pdf>
+- `L7-GB00BVFD7Q58-X01` [V] (2016, `context`, Nivell A). «The Life Insurance Company of Scotland was established in 1825.» P. 83, History of the Standard Life Group. Explica el canvi de nom a Standard Life Assurance el 1832. <https://www.aberdeenplc.com/docs?documentId=GB-280720-122228-1>
+- `L7-GB00BVFD7Q58-X02` [V] (2016, `context`, Nivell A). «GB00BVFD7Q58» Comunicació RNS, apartats 1 i 8. Identifica Standard Life plc i l’ISIN de les seves accions. <https://www.investegate.co.uk/announcement/rns/aberdeen-group-plc--abdn/holding-s-in-company/4506247>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).

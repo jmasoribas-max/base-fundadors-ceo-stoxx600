@@ -35,6 +35,17 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-GB00BJFFLV09-C01` [V] (2019, `ceo`, `R1`, Nivell A). «Steve Foots Group Chief Executive» Chief Executive’s Review, signatura del Strategic Report aprovat el 24/02/2020. <https://www.croda.com/mediaassets/files/corporate/investors/annual-reports/2019-croda-annual-report.pdf?hash=E8A2C32F8752D5474251B000777864D7&la=en-GB>
+- `L7-GB00BJFFLV09-C02` [V] (2020, `ceo`, `R1`, Nivell A). «Steve Foots Group Chief Executive» P. 10 del PDF, Chief Executive’s Review, signatura del Strategic Report. <https://www.croda.com/mediaassets/files/corporate/investors/annual-reports/full-ar-2020.pdf?hash=690FAF3DD3D3D6D18606281C7C7E2120&la=en-GB>
+- `L7-GB00BJFFLV09-C03` [V] (2021, `ceo`, `R1`, Nivell A). «Steve Foots Group Chief Executive» Chief Executive’s Review, signatura del Strategic Report aprovat el 28/02/2022. <https://www.croda.com/mediaassets/files/corporate/reporting-2021/croda-2021-annual-report.pdf?hash=96CF03D24B88EB7BCF3B4E7F1BC9837F&la=en-GB>
+- `L7-GB00BJFFLV09-C04` [V] (2022, `ceo`, `R1`, Nivell A). «Steve Foots, Chief Executive Officer, commented:» Resultats anuals de l’emissor, comentari del Chief Executive Officer després del resum econòmic. <https://www.croda.com/mediaassets/files/corporate/investor-result-downloads/2023/croda-2022-financial-results-statement-28-feb-2023-final.pdf?la=en-GB>
+- `L7-GB00BJFFLV09-C05` [V] (2023, `ceo`, `R1`, Nivell A). «Steve Foots, Chief Executive Officer, commented:» Resultats anuals de l’emissor, comentari del Chief Executive Officer. <https://www.croda.com/mediaassets/files/corporate/investor-result-downloads/2024/croda-2023-financial-results-statement-final.pdf?hash=92C8C93888FAD86AEA3A54CC88E7FCB3&la=en-GB>
+- `L7-GB00BJFFLV09-C06` [V] (2024, `ceo`, `R1`, Nivell A). «Steve Foots Group Chief Executive» Board of Directors. La biografia indica que Foots és Group Chief Executive des del gener del 2012. <https://www.croda.com/mediaassets/files/corporate/reporting-hub-2024/annual-report/annual-report-2024.pdf?hash=3ADA13312C081C611CD1EC839780C889&la=en-GB>
+- `L7-GB00BJFFLV09-C07` [V] (2025, `ceo`, `R1`, Nivell A). «Steve Foots, Chief Executive Officer, commented:» Resultats anuals de l’emissor, comentari del Chief Executive Officer. <https://www.croda.com/mediaassets/files/corporate/full-year-2025/croda-full-year-2025-results-and-financial-framework-final.pdf?hash=44B276C6FF874B8740B4556D3A3300B0&la=en-GB>
+- `L7-GB00BJFFLV09-F01` [V] (2019,2020,2021,2022,2023,2024,2025, `fundador`, `a`, Nivell A). «Croda was founded in 1925 by Mr Crowe and Mr Dawe at a disused waterworks in Yorkshire, UK.» Història oficial de l’emissor. Identifica els dos fundadors que donen nom a l’empresa. Steve Foots no hi figura. <https://www.croda.com/en-gb/about-us/our-heritage/our-centenary>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).

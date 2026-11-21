@@ -31,6 +31,16 @@
 
 No hi ha cites recollides al registre de canvis ni als camps `font_classificacio_cita` / `d37_cita_contemporania` d'aquesta empresa. [V] com a absència en aquests fitxers d'origen.
 
+### Lot 7
+
+- `L7-PTBCP0AM0015-C01` [V] (2018, `ceo`, `R1`, Nivell A). «Nuno Amado (anterior CEO) foi nomeado Presidente do Conselho de Administração e Miguel Maya eleito CEO.» P. 20 del PDF. El consell va prendre possessió el 23/7/2018 i Maya va assumir el càrrec executiu; Amado n’era el president no executiu. El canvi precedeix el 31/10/2018. <https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/Publicacoes_Obrigatorias/0033_CAM_201812.pdf>
+- `L7-PTBCP0AM0015-C02` [V] (2024, `ceo`, `R1`, Nivell A). «Miguel Maya Dias Pinheiro (Vice-Presidente do CA e CEO)» Govern societari, composició del consell a 31/12/2024, p. 18 del PDF. Mandat executiu iniciat el juliol del 2018. <https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/RelatorioContas/2024/RABCP2024Vol1PT.pdf>
+- `L7-PTBCP0AM0015-C03` [V] (2025, `ceo`, `R1`, Nivell A). «Miguel Maya Dias Pinheiro (Vice-Presidente do CA e CEO)» Govern societari, composició del consell a 31/12/2025, p. 19 del PDF. Mandat executiu iniciat el juliol del 2018. <https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/RelatorioContas/2025/RCBCP2025PT.pdf>
+- `L7-PTBCP0AM0015-F01` [V] (2018,2024,2025, `fundador`, `d`, Nivell A). «De 1990 a 1995 - Quadro do Banco Português de Atlântico» P. 1. Ocupador identificat: Banco Português de Atlântico. La mateixa biografia documenta «Desde 1996 - Quadro do Grupo Banco Comercial Português» després de la presa de control del 1995. Fins i tot l’any 1990 retrospectiu supera el llindar de tres anys des del 1985. <https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/CorposSociais/CV_Miguel_Maya_PT_443888a.pdf>
+- `L7-PTBCP0AM0015-X01` [V] (2018,2024,2025, `context`, Nivell A). «O BCP foi fundado por um grupo de mais de 200 acionistas e uma equipa de profissionais bancários experientes» Constituït el 25/6/1985 arran de la liberalització. El grup mixt d’accionistes i professionals no constitueix una llista tancada de persones; d documenta independentment l’etiqueta. <https://ind.millenniumbcp.pt/pt/Institucional/quemsomos/Pages/historia.aspx>
+- `L7-PTBCP0AM0015-X02` [V] (2018,2024,2025, `context`, Nivell A). «Em março de 1995, o BCP adquiriu o controlo do Banco Português do Atlântico SA» La incorporació legal d’Atlântico el juny del 2000 va seguir la presa de control del 1995, i les operacions de Banco Mello i Pinto & Sotto Mayor foren adquisicions. P2/D1 estricta, continuïtat del BCP del 1985. <https://ind.millenniumbcp.pt/pt/Institucional/quemsomos/Pages/historia.aspx>
+- `L7-PTBCP0AM0015-X03` [V] (2018,2024,2025, `context`, Nivell A). «He joined the Millennium bcp team in 1990» L’afiliada data el vincle retrospectiu el 1990; la biografia de l’emissor distingeix l’ocupador independent Atlântico el 1990–1995 i la incorporació al Grup BCP el 1996. Ambdues dates donen d respecte del 1985. <https://www.atlantico.ao/en/institutional/governance/corporate-bodies/miguel-maya-dias-pinheiro>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).
