@@ -36,6 +36,14 @@
 
 Les cites no s'han reescrit; són literals de les fonts d'origen d'aquest repositori.
 
+### Lot 7
+
+- `L7-GB00B2PDGW16-C01` [V] (2021, `ceo`, `R1`, Nivell A). «Carl Cowling Group Chief Executive» Pàgina 2 del PDF. Presentació del conseller delegat. Exercici tancat el 31/08/2022, que inclou el 31/10/2021. <https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/whsmith-ar22.pdf>
+- `L7-GB00B2PDGW16-C02` [V] (2023, `ceo`, `R1`, Nivell A). «Carl Cowling Group Chief Executive» Pàgina 4 del PDF. Presentació del conseller delegat. Exercici tancat el 31/08/2024, que inclou el 31/10/2023. <https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/2024/whsmith_ar24_web.pdf>
+- `L7-GB00B2PDGW16-X01` [V] (2021,2023, `context`, Nivell A). «Established in 1792, WHSmith’s first store was opened by Henry Walton Smith and his wife Anna in Little Grosvenor Street, London.» Introducció de la història operativa del grup. <https://www.whsmithplc.co.uk/about-us/history-heritage>
+- `L7-GB00B2PDGW16-X02` [V] (2021,2023, `context`, Nivell A). «‘WH Smith Retail business’ means the business carried on by Old WH Smith prior to the demerger and by the Company following the demerger» Pàgina 3 del PDF. Definicions de l’informe anual posterior a l’escissió del 2006. Descriu la continuïtat del negoci minorista en el vehicle cotitzat actual. <https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/whsplc-ir-ar07.pdf>
+- `L7-GB00B2PDGW16-F01` [V] (2021,2023, `fundador`, `b`, Nivell A). «Date of birth October 1973» Fitxa de Carl David Cowling al registre oficial. La data coincideix literalment amb la cita de la base i és posterior a l’origen operatiu del 1792. <https://find-and-update.company-information.service.gov.uk/company/05202036/officers>
+
 ## Canvis del registre
 
 Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre cobreix els canvis documentats amb cita, no totes les files del panell).
