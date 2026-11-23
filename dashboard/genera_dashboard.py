@@ -61,11 +61,13 @@ MANIFEST = ROOT / "MANIFEST_SHA256.csv"
 WAYBACK_EXTRA = SORTIDA / "fonts_wayback_extra.csv"
 
 # Criteris de la part pública ------------------------------------------------
-# Termes que no es mostren mai (dades amb llicència, fitxers interns i columnes
-# o notes de decisió). Si surten a la cita o a l'URL d'una prova, la prova
-# sencera queda oculta; si només surten a les notes, s'oculta la nota.
+# Termes que no es mostren mai (fitxers interns i columnes o notes de decisió).
+# Si surten a la cita o a l'URL d'una prova, la prova sencera queda oculta; si
+# només surten a les notes, s'oculta la nota. Per decisió de Jordi (23/11/2026),
+# sí que es mostren les proves de LSEG (inclosa Refinitiv), les de fonts
+# Bloomberg i les cites amb dates de naixement publicades per l'emissor.
 RE_RESTRINGIT = re.compile(
-    r"lseg|wrds|bloomberg|(?<![a-z0-9])article_?1(?![0-9])|refinitiv|no_per_a_ia|pes_pct|"
+    r"wrds|(?<![a-z0-9])article_?1(?![0-9])|no_per_a_ia|pes_pct|"
     r"founderceo_rob|sim_nota|sim_decisio|v75_decisio|ids_decisio|"
     r"model_verificacio|informe\s+intern",
     re.I,
@@ -1079,7 +1081,7 @@ def html_prova(p: dict) -> str:
             f'<span class="mini">{esc(", ".join(funcions))}</span>{anys_html(p)}</header>'
             + ("<p>Prova de la classificació sectorial: el sector no es mostra en aquesta versió, pendent d'aclarir-ne la "
                "llicència. L'entrada consta al registre.</p></article>" if p["ocult"] == "sector" else
-               "<p>La cita o l'URL contenen un terme de la llista restringida (proveïdors de dades amb llicència o documents "
+               "<p>La cita o l'URL contenen un terme de la llista restringida (columnes o documents "
                "interns). Criteri de la part pública; l'entrada consta al registre.</p></article>")
         )
     badges = []
@@ -1440,7 +1442,7 @@ def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
 </ul>
 </section>
 <section class="seccio"><h2>Criteris de la part pública</h2>
-<p>No es mostren les columnes de robustesa, les propostes brutes ni les notes de decisió de l'auditoria, ni referències a proveïdors de dades amb llicència. Quan una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota. Les cites llargues es retallen a un fragment, amb l'avís corresponent.</p>
+<p>No es mostren les columnes de robustesa, les propostes brutes ni les notes de decisió de l'auditoria, ni referències a fitxers o informes interns. Quan una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota. Les cites es mostren tal com les publica l'emissor, incloses les dates de naixement que serveixen per a la prova b. Les cites llargues es retallen a un fragment, amb l'avís corresponent.</p>
 <ul>{ocults}</ul>
 </section>
 <section class="seccio"><h2>Fitxers llegits</h2>
