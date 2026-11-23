@@ -87,3 +87,37 @@ Proposta posterior (lot 2, pendent del flux):
   - Observacions i dubtes de la verificació independent d'aquesta versió (19/11/2026; per a DF i Doctorat; no decidits): (1) Desacord sobre l'allotjament amb la primera classificació. C1-C5, C7 i C8 són a library.standardlife.co.uk. El web standardlife.co.uk (baixat el 19/11/2026) diu «© 2026 Phoenix Group Management Services Limited» i que descriu productes de «Phoenix Life Limited, trading as Standard Life»; totes dues són filials de l'emissor. El domini corporatiu de l'emissor és standardlifeplc.com («© 2026 Standard Life plc»), que enllaça aquests PDF des de la pàgina de resultats. Per això els classifico com a «grup» i no com a «emissor». C6, a library.standardlifeplc.com (subdomini del domini corporatiu), queda com a «emissor». El nivell és A en tots els casos: són informes anuals de l'emissor i les cites són literals. Si Doctorat considera que la biblioteca compartida compta com a domini propi, cal tornar a «emissor». · (2) C6 (AR 2024, library.standardlifeplc.com) no té URL Wayback a la primera versió del PR #3. No he consultat archive.org perquè web.archive.org no era accessible des de la sessió, així que queda com a pendent_verificacio_externa. Per la mateixa raó tampoc he pogut comprovar les URL Wayback declarades de C1-C5, C7 i C8. · (3) Hi estic d'acord: C2 i C8 són «context». C2 anomena només Bannister. C8 atribueix «Group CEO» a Bannister i a Briggs només el títol «CEO-designate». Les files 2020 i 2025 conserven una cita «ceo» de l'informe de l'exercici (C1 i C7). · (4) Qüestió de metodologia per a Doctorat: les frases dels AR 2021-2025 (C3-C7) estan en present i parlen del moment de la publicació (març de t+1). Les he tractat com a cita «ceo» de l'informe de l'exercici que inclou el 31/10/t, sense marca, perquè les llistes de canvis del consell (fins a la data del Directors' Report) no registren cap canvi de CEO. C1 (AR 2020) no és en present, sinó la data d'inici («became CEO on 10 March 2020»), i el mateix informe no registra cap canvi posterior. · (5) L'AR 2025 parla del «role as Dual CEO» d'Andy Briggs (CEO del grup i de les Life Companies). No afecta el càrrec de Group CEO, però en deixo constància. · (6) No hi ha cites noves ni supressions.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 9 · CEO i fundador
+
+| Any | CEO a 31/10 | Classificació | Estat de la prova |
+|---:|---|---|---|
+| 2020 | `L9-GB00BGXQNP29-C01` | `L9-GB00BGXQNP29-F01` | Feta |
+| 2021 | `L9-GB00BGXQNP29-C02` | `L9-GB00BGXQNP29-F01` | Feta |
+| 2022 | `L9-GB00BGXQNP29-C03` | `L9-GB00BGXQNP29-F01` | Feta |
+| 2023 | `L9-GB00BGXQNP29-C04` | `L9-GB00BGXQNP29-F01` | Feta |
+| 2024 | `L2\|GB00BGXQNP29\|C6` | `L9-GB00BGXQNP29-F01` | Feta |
+| 2025 | `L9-GB00BGXQNP29-C05` | `L9-GB00BGXQNP29-F01` | Feta |
+
+### Cites del lot
+
+- **L9-GB00BGXQNP29-C01** (2020, [V], ceo, R1). «Andy Briggs joined the Board of Phoenix Group Holdings plc on 10 February 2020 as Group CEO Designate and became CEO on 10 March 2020.» Nivell A. Informe anual de l’exercici 2020 al domini de la cotitzada. PDF complet idèntic a la còpia del grup de L2|GB00BGXQNP29|C1. Phoenix Group Holdings plc va adoptar la denominació Standard Life plc el 24/02/2026. Pàgina 132 del PDF. <https://library.standardlifeplc.com/fy-20-annual-report-and-accounts.pdf>
+- **L9-GB00BGXQNP29-C02** (2021, [V], ceo, R1). «Andy Briggs is Group Chief Executive Officer of the Company.» Nivell A. Informe anual de l’exercici 2021 al domini de la cotitzada. PDF complet idèntic a la còpia del grup de L2|GB00BGXQNP29|C3. Phoenix Group Holdings plc va adoptar la denominació Standard Life plc el 24/02/2026. Pàgina 92 del PDF. <https://library.standardlifeplc.com/phoenix-group-full-year-results-2021.pdf>
+- **L9-GB00BGXQNP29-C03** (2022, [V], ceo, R1). «Andy Briggs is Group Chief Executive Officer (‘CEO’) of Phoenix.» Nivell A. Informe anual de l’exercici 2022 al domini de la cotitzada. PDF complet idèntic a la còpia del grup de L2|GB00BGXQNP29|C4. Phoenix Group Holdings plc va adoptar la denominació Standard Life plc el 24/02/2026. Pàgina 84 del PDF. <https://library.standardlifeplc.com/phoenix-group-annual-report-and-accounts-2022.pdf>
+- **L9-GB00BGXQNP29-C04** (2023, [V], ceo, R1). «Andy Briggs is the Group Chief Executive Officer (‘CEO’).» Nivell A. Informe anual de l’exercici 2023 al domini de la cotitzada. PDF complet idèntic a la còpia del grup de L2|GB00BGXQNP29|C5. Phoenix Group Holdings plc va adoptar la denominació Standard Life plc el 24/02/2026. Pàgina 71 del PDF. <https://library.standardlifeplc.com/phoenix-group-annual-report-and-accounts-2023.pdf>
+- **L9-GB00BGXQNP29-C05** (2025, [V], ceo, R1). «Andy Briggs, Group CEO, is responsible for embedding sustainability within the Group, in line with the strategy set by the Group Board.» Nivell A. Informe anual de l’exercici 2025 al domini de la cotitzada. PDF complet idèntic a la còpia del grup de L2|GB00BGXQNP29|C7. Phoenix Group Holdings plc va adoptar la denominació Standard Life plc el 24/02/2026. Pàgina 40 del PDF. <https://library.standardlifeplc.com/annual-report-and-accounts-2025-spread.pdf>
+- **L9-GB00BGXQNP29-F01** (2020-2025, [V], fundador, d). «Andy joined Phoenix Group in 2020 with over 30 years of experience in the insurance industry. He has held senior executive roles across multiple business areas in the industry including CEO of UK Insurance and Global Life and Health at Aviva plc; CEO of Friends Life Group Limited; Managing Director of Scottish Widows; CEO of the Retirement Income Division at Prudential plc and Chair of the Association of British Insurers (‘ABI’).» Nivell A. Informe anual 2023, biografia d’Andy Briggs, Career and experience. Va entrar al grup el 2020 després de treballar a Aviva. L’historial corporatiu documenta el nom Phoenix Group Holdings ja el 2010. Pàgina 66 del PDF. <https://library.standardlifeplc.com/phoenix-group-annual-report-and-accounts-2023.pdf>
+- **L9-GB00BGXQNP29-X01** (2020-2025, [V], context). «2010 Pearl Group changes its name to Phoenix Group Holdings» Nivell A. Our history, Key milestones, 2010s. El grup operava amb el nom Phoenix deu anys abans de l’entrada de Briggs. La mateixa cronologia identifica l’adquisició de Standard Life Assurance el 2018 i de ReAssure el 2020. Consulta del document complet el 23/11/2026. <https://www.standardlifeplc.com/about/our-history>
+
+### Revisió del registre anterior
+
+| Entrada | Estat de lectura | Pàgina, secció o incidència |
+|---|---|---|
+| `L2\|GB00BGXQNP29\|C1` | [V] | PDF complet, pàgina 132 del PDF. |
+| `L2\|GB00BGXQNP29\|C2` | [V] | PDF complet, pàgina 147 del PDF. |
+| `L2\|GB00BGXQNP29\|C3` | [V] | PDF complet, pàgina 92 del PDF. |
+| `L2\|GB00BGXQNP29\|C4` | [V] | PDF complet, pàgina 84 del PDF. |
+| `L2\|GB00BGXQNP29\|C5` | [V] | PDF complet, pàgina 71 del PDF. |
+| `L2\|GB00BGXQNP29\|C6` | [V] | PDF complet, pàgina 56 del PDF. |
+| `L2\|GB00BGXQNP29\|C7` | [V] | PDF complet, pàgina 40 del PDF. |
+| `L2\|GB00BGXQNP29\|C8` | [V] | PDF complet, pàgina 87 del PDF. |
