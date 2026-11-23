@@ -14,9 +14,9 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %) |
 | Files amb evidència de CEO i de fundador (C1 i C2) | 4.107 de 6.012 (68,3 %) |
 | Files F amb C1 i C2 | 44 de 349 |
-| Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 esperant els fitxers de DF |
+| Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 en curs: candidates generades (839 files es poden completar amb cites ja verificades) |
 | Pendent de Jordi | Decisions 4-10 de DF (sessió 5); accés a `scripts/`, `.github/` i, si ho vol, `dades/` (sessions 4 i 6); OK per obrir el PR de la branca |
-| Pendent de DF | Pujar els fitxers a una branca (sessió 5); configurar l'accés de Claude (sessió 6) |
+| Pendent de DF | Configurar l'accés de Claude, amb l'opció de `dades/` (sessió 7); pujar `verificacio_cites_20261122.csv` quan acabi |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -118,3 +118,16 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Dels 13 pendents del lot 9, Allreal 2019-2022 (4 files) es pot tancar amb el criteri (a); Sandoz, Bankia, Paysafe i EVRAZ continuen depenent d'altres criteris (cotització doble, P5, D37d, P6).
 - **Troballa per a la tasca 0.3:** les 46 entrades `decisio_doctorat` i `decisio_doctorat_r4` del registre no tenen `funcio_cita`, i per això l'script d'estat no les compta com a evidència de fundador (p. ex. AB InBev). Cal normalitzar-les.
 - **Pendent:** qui aplica els lots que toquen `dades/` (Claude o DF), segons el que decideixi Jordi sobre l'accés.
+
+### 23/11/2026 · Sessió 7 · Fitxers de DF rebuts i primera anàlisi de la fase 1
+
+- **Fitxers:** branca `df/fitxers-per-claude`, carpeta `entrada_claude/`, commit `34cff60` (main intacte, cap PR). Els 9 SHA-256 coincideixen amb el README de DF: 4 JSONL (r3e i r4, ChatGPT i Claude), `CERTIFICACIO_parella_any_r3e.csv`, els dos `MANIFEST_evidencies_web_r4.csv`, `fonts_v75r2.csv` i `wayback_resultats_20261122.csv`. `verificacio_cites_20261122.csv` arribarà quan acabi (DF ho revisa a partir de les 16:00).
+- **Avís de DF sobre fonts de pagament:** 11 URL a `fonts_v75r2.csv` (LSEG, Bloomberg, LexisNexis; cites de 114 caràcters com a màxim) i 3 de Bloomberg al JSONL de Claude r4. En importar cites al registre s'han de revisar aquestes URL: no s'hi ha de copiar contingut de pagament més enllà d'una cita curta, i cal preferir una font oberta si n'hi ha.
+- **Comprovació d'estructura:** cada evidència web de r4 lliga 1 a 1 amb el manifest de DF (3.768 de 3.768 a Claude); les evidències `paquet` porten URL; r3e té una cita de classificació per fila i model.
+- **Fet:** [`traspas/candidates_auditoria.py`](../traspas/candidates_auditoria.py) genera les evidències candidates per fila (`traspas/candidates_evidencia.csv`, 15.425 cites per a 3.246 files; no es puja al repositori perquè es regenera) i el resum [`traspas/RESUM_CANDIDATES.md`](../traspas/RESUM_CANDIDATES.md). No modifica el registre.
+- **Resultat:** de les 1.905 files que avui no tenen cita de CEO o de fundador, **839** quedarien amb totes dues només amb cites que els scripts de DF ja van trobar literalment al document. Per condició:
+  - Sense CEO: 1.856 files; 1.307 amb candidata, 985 amb candidata ja verificada (F: 146 de 302).
+  - Sense fundador: 1.283 files; 1.160 amb candidata, 978 amb candidata ja verificada (F: 134 de 138).
+- **Límits d'aquesta anàlisi:** per al fundador encara no es comprova que la prova sigui completa per a la regla (p. ex. la b necessita any de fundació i any de naixement) en el cas de les cites de r3e i de l'inventari antic; per al CEO, encara no es comprova que el document sigui de l'exercici. Es farà en el pas d'importació.
+- **Decisió de Jordi:** incloure a la petició d'accés l'opció que Claude pugui aplicar a `dades/` els lots de correcció que Jordi aprovi.
+- **Pas següent:** lot d'importació F (les 88 empreses F), amb les cites verificades i, per a la resta, re-descàrrega i verificació pròpia.
