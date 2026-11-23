@@ -125,6 +125,14 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
             code = p.stdout.strip()
         except Exception as ex:  # noqa: BLE001
             return "no_accessible", f"error {str(ex)[:60]}"
+        if (code != "200" or not fn.exists() or fn.stat().st_size == 0) and ua:
+            # alguns servidors (p. ex. lindt, lanxess) refusen l'agent de navegador i accepten el de curl
+            try:
+                p = subprocess.run(["curl", "-sSL", "--max-time", "120", "--max-filesize", "150000000",
+                                    "-o", str(fn), "-w", "%{http_code}", url], capture_output=True, text=True, timeout=150)
+                code = p.stdout.strip()
+            except Exception:  # noqa: BLE001
+                pass
         if code != "200" or not fn.exists() or fn.stat().st_size == 0:
             txt.write_text(f"#ERROR HTTP {code}", encoding="utf-8")
         else:
