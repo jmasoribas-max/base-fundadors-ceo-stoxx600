@@ -5,7 +5,7 @@ Fitxer generat per `estat/estat_files.py`. No l'editis a mà. Definicions a [`es
 Entrades llegides:
 
 - `dades/base_isin_any_v8r3.csv` SHA-256 `d55dd6883ceb21b7e589ec666c9a9fdca93247ac31e4bb964174616c78980034`
-- `docs/REGISTRE_CANVIS.csv` SHA-256 `1316d6cb7385f33a55c632aac7bf39efa6f3fd8cde8ec4a010fe793e86918c1e` (11.977 entrades)
+- `docs/REGISTRE_CANVIS.csv` SHA-256 `68126fa6848ac702e10cb27e5fae28b77cb703d95664295db10bfb15152e67c2` (11.992 entrades)
 - `PENDENTS.md` SHA-256 `399a47bab6a4dde3e6e1b2ea075572386dadfb3c929bd6963b179edc741dd8fe`
 - `estat/dubtes_tancats.csv` SHA-256 `e008e8b1910c0c23c7b80bed48436cc77c9464c86ea5a6c39ea941f81a4c67f1`
 
@@ -13,19 +13,19 @@ Entrades llegides:
 
 | Etiqueta | Files | C1 CEO | C2 fundador | C1 i C2 | C4 coherent i sense dubtes | C3 arxiu | **Acabades** |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| F (`1`) | 349 | 337 (96,6 %) | 292 (83,7 %) | 282 (80,8 %) | 202 (57,9 %) | 0 (0,0 %) | **0 (0,0 %)** |
+| F (`1`) | 349 | 349 (100,0 %) | 292 (83,7 %) | 292 (83,7 %) | 202 (57,9 %) | 0 (0,0 %) | **0 (0,0 %)** |
 | P (`0`) | 5.631 | 4.087 (72,6 %) | 4.490 (79,7 %) | 4.041 (71,8 %) | 5.509 (97,8 %) | 278 (4,9 %) | **278 (4,9 %)** |
 | NA | 31 | 27 (87,1 %) | 27 (87,1 %) | 27 (87,1 %) | 24 (77,4 %) | 0 (0,0 %) | **0 (0,0 %)** |
 | ND | 1 | 1 (100,0 %) | 1 (100,0 %) | 1 (100,0 %) | 0 (0,0 %) | 1 (100,0 %) | **0 (0,0 %)** |
-| **Total** | 6.012 | 4.452 (74,1 %) | 4.810 (80,0 %) | 4.351 (72,4 %) | 5.735 (95,4 %) | 279 (4,6 %) | **278 (4,6 %)** |
+| **Total** | 6.012 | 4.464 (74,3 %) | 4.810 (80,0 %) | 4.361 (72,5 %) | 5.735 (95,4 %) | 279 (4,6 %) | **278 (4,6 %)** |
 
 ## Embut
 
 | Pas | Files |
 |---|---:|
 | Panell | 6.012 |
-| Amb evidència de CEO i de fundador (C1 i C2) | 4.351 (72,4 %) |
-| … i coherents, sense dubtes oberts (C4) | 4.185 (69,6 %) |
+| Amb evidència de CEO i de fundador (C1 i C2) | 4.361 (72,5 %) |
+| … i coherents, sense dubtes oberts (C4) | 4.191 (69,7 %) |
 | … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 278 (4,6 %) |
 
 ## Què falta, per condició
@@ -34,7 +34,7 @@ Una fila pot tenir més d'una mancança.
 
 | Mancança | F | P | NA | ND | Total |
 |---|---:|---:|---:|---:|---:|
-| `falta_ceo` | 12 | 1.544 | 4 | 0 | 1.560 |
+| `falta_ceo` | 0 | 1.544 | 4 | 0 | 1.548 |
 | `falta_fundador` | 57 | 1.141 | 4 | 0 | 1.202 |
 | `incoherent` | 0 | 3 | 0 | 0 | 3 |
 | `dubte_obert` | 147 | 119 | 7 | 1 | 274 |
@@ -44,12 +44,12 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c1_ceo` | Files |
 |---|---:|
-| `ok` | 4.425 |
-| `falta` | 1.472 |
+| `ok` | 4.437 |
+| `falta` | 1.462 |
 | `cita_sense_nom` | 79 |
 | `rsc_documentat` | 27 |
-| `co_ceo_parcial` | 5 |
 | `falta_rsc` | 4 |
+| `co_ceo_parcial` | 3 |
 
 | Valor de `c2_fundador` | Files |
 |---|---:|
@@ -62,8 +62,8 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c3_arxiu` | Files |
 |---|---:|
-| `falta_ceo+fundador` | 3.827 |
-| `sense_evidencia` | 1.661 |
+| `falta_ceo+fundador` | 3.837 |
+| `sense_evidencia` | 1.651 |
 | `ok` | 279 |
 | `falta_ceo` | 172 |
 | `falta_fundador` | 72 |
@@ -73,7 +73,7 @@ Una fila pot tenir més d'una mancança.
 
 | Estat antic | Files | C1 i C2 | Acabades |
 |---|---:|---:|---:|
-| `certificada` | 1.773 | 249 (14,0 %) | 0 (0,0 %) |
+| `certificada` | 1.773 | 259 (14,6 %) | 0 (0,0 %) |
 | `certificada_ceo_pendent` | 108 | 108 (100,0 %) | 0 (0,0 %) |
 | `no_certificada` | 241 | 241 (100,0 %) | 1 (0,4 %) |
 | `fora_mostra_auditoria` | 3.890 | 3.753 (96,5 %) | 277 (7,1 %) |
@@ -82,8 +82,8 @@ Una fila pot tenir més d'una mancança.
 
 | | Totes les files amb C1 i C2 | Totes les files acabades | Total |
 |---|---:|---:|---:|
-| Empreses amb almenys un any F | 53 | 0 | 88 |
-| Totes les empreses | 714 | 32 | 1.040 |
+| Empreses amb almenys un any F | 60 | 0 | 88 |
+| Totes les empreses | 721 | 32 | 1.040 |
 
 ## Incoherències del CSV (3 files)
 

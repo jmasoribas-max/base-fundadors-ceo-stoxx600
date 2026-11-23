@@ -9,14 +9,14 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 
 | | Valor |
 |---|---|
-| Última actualització | 23/11/2026 |
-| `main` de referència | `17b03df` (PR #20) |
-| Files acabades (4 condicions) | 278 de 6.012 (4,6 %) |
-| Files amb evidència de CEO i de fundador (C1 i C2) | 4.162 de 6.012 (69,2 %) |
-| Files F amb C1 i C2 | 99 de 349 (lot 11) |
-| Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 en curs: lot 11 (F) aplicat a la branca; queda la cerca nova de CEO per a 232 files F |
-| Pendent de Jordi | Fusionar el PR #21 (accés; revisat per Claude, correcte); decisions 4-10 de DF (sessió 5); OK per obrir el PR de la branca |
-| Flux nou | Claude prepara, valida (scripts i comprovació independent per mostra) i obre els PR; Jordi aprova i fusiona. DF queda fora (document final per a DF quan s'acabi) |
+| Última actualització | 23/11/2026, sessió 14 |
+| `main` de referència | `0ad59fc` (PR #27) |
+| Files acabades (4 condicions) | 278 de 6.012 (4,6 %): falta sobretot l'arxiu a Wayback (C3) |
+| Files amb evidència de CEO i de fundador (C1 i C2) | 4.361 de 6.012 (72,5 %), amb el lot 13 |
+| Files F | 349 de 349 amb cita de CEO; 292 amb cita de fundador (falten 57, de 22 empreses) |
+| Fase del pla | Fase 1: grup F gairebé tancat (falta la cita de fundador de 57 files). Fase 2 en curs: files P (lot 14, traspàs de l'auditoria; lot 15, informes ESEF de l'exercici) |
+| Pendent de Jordi | Fusionar el PR del lot 13. Dubtes de criteri (paquet en preparació) |
+| Flux nou | Claude prepara, valida (scripts i comprovació independent) i obre els PR; Jordi aprova i fusiona. Wayback, a GitHub Actions. DF queda fora (document final per a DF quan s'acabi) |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -244,3 +244,25 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Base: C1 i C2, 4.351 de 6.012 (72,4 %).
 - **Queden 12 files F sense la condició del CEO:** 10 amb cita `[NV]` del lot 11 i 2 de co-CEO on la cita retallada al lot 11 només anomena un dels dos (Zalando 2023, Adyen 2023). Es reprenen en un lot petit.
 - **Lliçó per a l'importador del lot 11:** quan hi ha diversos CEO, el retall de la cita ha de començar al primer nom, no al més proper al mot clau.
+
+### 23/11/2026 · Sessió 14 · PR #26 i #27 fusionats, lot 13 i preparació de les files P
+
+- **Fusionats per Jordi:** #26 (lot 12) i #27 (instruccions sense DF i metodologia v0.10.10 completa al repositori). El conflicte del #27 era només a `MANIFEST_SHA256.csv`; s'ha resolt fusionant `main` i regenerant el manifest.
+- **Lot 13 (les 12 últimes files F sense cita de CEO):**
+  - Cerca amb dos agents i importació amb `traspas/importa_cerca.py`: 15 entrades `[V]`.
+  - Dues cites s'han comprovat al fitxer baixat per la cerca, perquè la re-descàrrega no ha funcionat (Cellnex, 403; BALO, temps esgotat).
+  - Detall a [`lots/lot13_README.md`](../lots/lot13_README.md).
+  - **El grup F ja té cita de CEO a les 349 files.**
+- **Error propi corregit:** en la primera execució del lot 13 vaig passar a `--descarregues` una carpeta que no era la que l'script espera (`arrel/lotN`), i dues cites van sortir `[NV]`. Vaig desfer l'escriptura i tornar-la a fer amb la carpeta correcta.
+- **Correcció del lot 12:** 18 entrades de `echanges.dila.gouv.fr` passen d'`allotjament=emissor` a `regulador`, amb una nota a cada entrada.
+- **Lot 14 (files P, traspàs de les cites de l'auditoria):**
+  - En revisar la mostra de la primera escriptura, he vist que l'importador acceptava per a la fila *t* informes de l'exercici *t-1* publicats a principis de *t*, perquè només mirava l'any de publicació. CLAUDE.md §3 demana un document del mateix exercici.
+  - He desfet l'escriptura i he afegit a `traspas/importa_lot.py` una comprovació de l'exercici. Informes llargs: l'any dominant del text ha de ser el de la fila. Comunicats: la data ha de ser de l'any de la fila.
+  - Les cites de CEO dels lots 11 i 12 es revisaran amb el mateix criteri.
+- **Via nova per a les files P de 2020-2025 (lot 15, en preparació):**
+  - Els informes anuals oficials ESEF, a partir dels dipòsits oficials recollits a filings.xbrl.org, amb l'exercici de les metadades. La correspondència ISIN → LEI es fa amb GLEIF i es desa a `traspas/isin_lei.csv`.
+  - `traspas/troba_esef.py` tria l'informe de l'exercici que inclou el 31/10.
+  - `traspas/extreu_ceo_documents.py` hi busca una frase literal amb el nom del CEO i el càrrec. Filtra les sortides, els càrrecs anteriors o futurs, els adjunts i els càrrecs en altres entitats.
+  - En una prova amb 41 files, n'ha cobert 29 amb cites com «Johan Thijs (CEO)» o «Herbert Eibensteiner Vorsitzender des Vorstands».
+- **Wayback:** la primera execució (run 45204845355) continua en marxa.
+
