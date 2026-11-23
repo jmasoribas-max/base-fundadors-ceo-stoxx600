@@ -30,6 +30,8 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Nom del fundador: **sí** a la proposta. Es desa quan l'evidència el dona (totes les F i les P resoltes per la prova a); no es fa cap cerca específica a les P resoltes per b, c, d o e. |
 | 23/11/2026 | Claude porta la batuta de la base i ha de poder escriure a `scripts/` i `.github/`. Jordi farà el canvi de permisos i d'instruccions (vegeu la sessió 4). |
 | 23/11/2026 | Sí a les decisions 1, 2 i 3 (CEO oficial, `regles`, criteris del PR #3). Detall a la sessió 6. DF pot configurar l'accés de Claude. |
+| 23/11/2026 | Accés: Claude també ha de poder aplicar a `dades/` els lots de correcció que Jordi aprovi (s'inclou a la petició a DF). |
+| 23/11/2026 | Fonts de LSEG, Bloomberg, LexisNexis i similars: tot el que és públic al web es pot fer servir, encara que provingui d'aquestes fonts. Mai no s'ha fet servir cap base de dades privada seva. Deixa sense efecte l'avís de la sessió 7. |
 
 ## Entrades
 
@@ -131,3 +133,16 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Límits d'aquesta anàlisi:** per al fundador encara no es comprova que la prova sigui completa per a la regla (p. ex. la b necessita any de fundació i any de naixement) en el cas de les cites de r3e i de l'inventari antic; per al CEO, encara no es comprova que el document sigui de l'exercici. Es farà en el pas d'importació.
 - **Decisió de Jordi:** incloure a la petició d'accés l'opció que Claude pugui aplicar a `dades/` els lots de correcció que Jordi aprovi.
 - **Pas següent:** lot d'importació F (les 88 empreses F), amb les cites verificades i, per a la resta, re-descàrrega i verificació pròpia.
+
+### 23/11/2026 · Sessió 8 · Lot 11: importació del grup F (en curs)
+
+- **Lot 11** = les 349 files F (88 empreses): [`lots/lot11.csv`](../lots/lot11.csv).
+- **Script:** [`traspas/importa_lot.py`](../traspas/importa_lot.py). Per a cada fila sense C1 o C2, tria la millor cita candidata:
+  - CEO: la cita anomena el CEO i conté un títol de primer executiu.
+  - Fundador (F): la cita anomena el CEO i conté un mot de fundació.
+  - Prioritat: ja verificada per DF; després document de l'exercici; no agregador; nivell A.
+  - Si no n'hi ha cap de verificada, Claude baixa l'original i hi busca la cita literal.
+  - Escriu entrades al registre amb el format de `CLAUDE.md` §6 (`origen=proposta_claude_lot11`, identificadors `L11-{ISIN}-C01`/`F01`) i les afegeix a les fitxes.
+- **Agregadors:** `annualreports.com` és la font més freqüent de les candidates. Només s'usa si no n'hi ha cap altra, amb la nota `agregador=true` per substituir-la per la còpia de l'emissor.
+- **Prova en sec (sense baixades):** CEO 132 files amb cita ja verificada (170 sense); fundador 106 (32 sense).
+- **En curs:** execució amb verificació pròpia en una còpia separada (worktree) per revisar-ne el resultat abans d'escriure al registre de la branca.
