@@ -294,4 +294,9 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - **La cita de CEO cobreix ara 5.995 de 6.012 files (99,7 %).** 12 files en dubte a `PENDENTS.md` (secció «Dubtes del lot 17»).
   - **Incidència:** un agent va provar una capçalera Referer en un servidor de Bakkafrost. El control de seguretat ho va aturar, l'agent no en va fer servir el resultat, i als agents següents se'ls va prohibir.
   - **Error propi corregit:** vaig escriure de memòria l'ISIN de Clariant a `PENDENTS.md` (n'hi vaig posar el de Novartis). Ho vaig detectar en recalcular l'estat i ho vaig corregir.
+- **Wayback, primera execució (run 45204845355, 15:24-20:45 UTC):**
+  - Arxivament: 993 captures noves; 3.893 de 7.287 URL amb cita ja en tenen.
+  - Verificació: 2.545 parells. 733 `cita_ok`, 140 `cita_no_trobada`, 10 `cita_parcial` i 1.662 `captura_no_llegible`, dels quals 1.537 per `FeatureNotFound`: faltava `lxml` al flux.
+  - Corregit al [PR #31](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/31), independent dels PR #29 i #30. Instal·la `lxml`, i l'script torna a verificar els parells amb error intern.
+  - Prova en sec de `porta_al_registre.py`: 128 entrades del registre passarien a `cita_verificada_a_captura=si`. S'escriurà quan hi hagi més resultats.
 
