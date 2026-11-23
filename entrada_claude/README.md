@@ -4,7 +4,9 @@ Fitxers de DF per a Claude, a la branca `df/fitxers-per-claude` (creada des de `
 
 Els dos `MANIFEST_evidencies_web_r4.csv` tenen el mateix nom i s'han posat a subcarpetes (`r4_claude/` i `r4_chatgpt/`).
 
-`verificacio_cites_20261122.csv` **no s'inclou ara**: la verificació de cites encara s'està generant al box (`/workspace/dashboard-fundadors/wayback/verificacio_cites_20261122.csv`) i s'afegirà més endavant, quan acabi.
+`verificacio_cites_20261122.csv` i `INFORME_VERIFICACIO_CITES.md` **no s'inclouen ara**: la verificació de cites encara s'està executant al box (`/workspace/dashboard-fundadors/wayback/`, procés `verifica_cites.py`) i s'afegiran a aquesta carpeta quan acabi.
+
+Els scripts de Wayback són a `scripts_wayback/`, copiats sense modificar des de `/workspace/dashboard-fundadors/wayback/`. El `LLEGEIX-ME.md` original no explica com repetir el procés a GitHub Actions; les notes corresponents són a `scripts_wayback/NOTES_GITHUB.md` (fitxer nou, el LLEGEIX-ME no s'ha editat).
 
 ## Fitxers
 
@@ -25,3 +27,11 @@ Els dos `MANIFEST_evidencies_web_r4.csv` tenen el mateix nom i s'han posat a sub
 - `fonts_v75r2.csv` — origen canònic box `/workspace/dashboard-fundadors/integracio_20261117_v75/fonts_v75r2.csv` (còpies idèntiques a `/workspace/dashboard-fundadors/vigent_upload_20261117_v75r2/fonts_v75r2.csv`, `/workspace/dashboard-fundadors/vigent_verify_20261117_v75r2/fonts_v75r2.csv`, i al Drive fitxer `1Ze-INmZqhA07lp7y-PjaCZ9kI4QT8kE1`). Format CSV. 8.310 files de dades + capçalera (8.606 línies físiques, per salts de línia dins de camps). SHA-256 `fb25b45b60cbf047d764aa7760cb3de0fd0c7c02020d82183c1ca9b6a2845afb`. Coincideix amb el `SHA256SUMS` de la carpeta d'integració.
 
 - `wayback_resultats_20261122.csv` — origen box `/workspace/dashboard-fundadors/wayback/wayback_resultats_20261122.csv` (només al box, no és al Drive). Format CSV. 4.555 files de dades + capçalera. SHA-256 `fa0ee9c025457d0bea20a4981c4aaa51c1a7e0d4c7efb66206a4c9822345d2e5`.
+
+- `scripts_wayback/wayback_arxiva.py` — origen box `/workspace/dashboard-fundadors/wayback/wayback_arxiva.py` (còpia al box del paquet executat a l'ordinador de casa el 21-22/11/2026). Script Python. SHA-256 `c26f0dd045d76cd4b36cc49c402fdaf505ea04d93798503fc2154f8a353bf55c`.
+
+- `scripts_wayback/verifica_cites.py` — origen box `/workspace/dashboard-fundadors/wayback/verifica_cites.py` (versió en execució al box, PID 30762). Script Python. SHA-256 `0f45779681bf30a3284efc7df3977fd012a5896298da8d0a6cdfc824d9db3d5a`.
+
+- `scripts_wayback/LLEGEIX-ME.md` — origen box `/workspace/dashboard-fundadors/wayback/LLEGEIX-ME.md` (instruccions originals per executar `wayback_arxiva.py` en local, sense modificar). Format Markdown. SHA-256 `9664817acf77ca0d487ee95536585c2d237e919e6f43b591d5fff47107e41cfd`.
+
+- `scripts_wayback/NOTES_GITHUB.md` — fitxer nou de DF (no hi era al paquet original). Explica per a què serveix cada script, les entrades i sortides, que les claus han d'anar com a secrets del repositori (`IA_S3_ACCESS`, `IA_S3_SECRET`) i que el run del box va fer servir el proxy de sortida. Format Markdown. SHA-256 `1e898823e4be2c5a97fefc3f80541072b764950b1fbdb1ebf03f9cc3b65c4196`.
