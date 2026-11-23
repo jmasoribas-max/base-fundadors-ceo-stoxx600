@@ -12,8 +12,6 @@
       "Bash(gh pr merge *)",
       "Bash(gh api *merge*)",
       "Bash(gh api *protection*)",
-      "Edit(/docs/METODOLOGIA.md)",
-      "Edit(/CLAUDE.md)",
       "Edit(/docs/REGLES*)",
       "Edit(/.claude/**)"
     ]
