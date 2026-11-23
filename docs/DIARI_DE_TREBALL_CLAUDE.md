@@ -16,7 +16,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Files F amb C1 i C2 | 99 de 349 (lot 11) |
 | Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 en curs: lot 11 (F) aplicat a la branca; queda la cerca nova de CEO per a 232 files F |
 | Pendent de Jordi | Fusionar el PR #21 (accés; revisat per Claude, correcte); decisions 4-10 de DF (sessió 5); OK per obrir el PR de la branca |
-| Pendent de DF | Pujar `verificacio_cites_20261122.csv` quan acabi |
+| Flux nou | Claude prepara, valida (scripts i comprovació independent per mostra) i obre els PR; Jordi aprova i fusiona. DF queda fora (document final per a DF quan s'acabi) |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -31,6 +31,8 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Claude porta la batuta de la base i ha de poder escriure a `scripts/` i `.github/`. Jordi farà el canvi de permisos i d'instruccions (vegeu la sessió 4). |
 | 23/11/2026 | Sí a les decisions 1, 2 i 3 (CEO oficial, `regles`, criteris del PR #3). Detall a la sessió 6. DF pot configurar l'accés de Claude. |
 | 23/11/2026 | Accés: Claude també ha de poder aplicar a `dades/` els lots de correcció que Jordi aprovi (s'inclou a la petició a DF). |
+| 23/11/2026 | Claude té llibertat per vigilar els PR, crear una branca per lot i fer la feina proposada, sempre que tingui el control de tot i sigui correcte per a la base final amb evidència vàlida per al doctorat. |
+| 23/11/2026 | **DF ja no porta res de la base: ho porta tot Claude.** En acabar, es passarà a DF un document amb tots els passos seguits fins a la base final, perquè n'estigui al cas. |
 | 23/11/2026 | Fonts de LSEG, Bloomberg, LexisNexis i similars: tot el que és públic al web es pot fer servir, encara que provingui d'aquestes fonts. Mai no s'ha fet servir cap base de dades privada seva. Deixa sense efecte l'avís de la sessió 7. |
 
 ## Entrades
@@ -169,3 +171,18 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Manifest recalculat.
 - **Jordi vol que Claude obri el PR de la branca:** Claude és l'encarregat d'acabar la base. El PR recull tot el que hi ha a la branca des del 23/11 (auditoria, pla, diari, eines d'estat i de traspàs, lot 11 i lot de correcció 1 preparat però no aplicat).
 - **PR obert:** [jmasoribas-max/base-fundadors-ceo-stoxx600#22](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/22) (de `claude/charming-mayer-ejb9ek` a `main`). No fusionat. Flux: DF valida → Doctorat (si toca metodologia) → Jordi fusiona.
+
+### 23/11/2026 · Sessió 10 · Nou flux sense DF i lot de correcció 1 aplicat
+
+- **Decisió de Jordi:** DF ja no porta la base. Claude ho fa tot: prepara, valida i obre els PR. Jordi aprova i fusiona. Al final, document per a DF amb tots els passos.
+- **Conseqüències que cal resoldre:**
+  1. `CLAUDE.md` i `AGENTS.md` encara diuen que DF valida els PR i fa el Wayback; s'han d'actualitzar (Claude no pot editar `CLAUDE.md`).
+  2. Wayback: l'arxivament amb claus només es podia fer a l'ordinador de casa, i la verificació de cites a la captura la feia DF al seu ordinador. Cal decidir on es farà ara.
+  3. `verificacio_cites_20261122.csv` (11.709 cites ja verificades a la captura, segons DF a les 14:53) encara no s'ha lliurat.
+- **PR #22:** vigilat per Claude (subscripció a l'activitat del PR); CI `valida` correcte.
+- **Lot de correcció 1 aplicat** a la branca `cas/correccio1` (creada a partir de la branca de Claude):
+  - 171 cel·les a 59 files; 59 entrades `correccio_coherencia` al registre i una secció a 19 fitxes.
+  - Les entrades de correcció porten `[NV]`, perquè el registre exigeix `[NV]` a les entrades sense cita; el fonament és la decisió citada a `notes`.
+  - Files incoherents: de 51 a 3 (Knorr-Bremse 2019-2020 i Pandora 2018).
+  - Nous SHA: CSV `d55dd688…0034`, xlsx `8ffdf24f…acbfac`.
+  - Validadors: 0 problemes. Dashboard i manifest regenerats.
