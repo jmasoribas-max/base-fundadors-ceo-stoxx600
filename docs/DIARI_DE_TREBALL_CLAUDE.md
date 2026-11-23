@@ -15,7 +15,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Files amb evidència de CEO i de fundador (C1 i C2) | 4.107 de 6.012 (68,3 %) |
 | Files F amb C1 i C2 | 44 de 349 |
 | Fase del pla | Fase 0 (preparació): tasca 0.2 feta; esperant respostes de Grok (0.1) |
-| Pendent de Jordi | Respostes de Grok; afegir l'script al CI; decisió sobre el nom del fundador; OK per obrir el PR de la branca |
+| Pendent de Jordi | Respostes de Grok; canvi de permisos per a `scripts/` i `.github/` (sessió 4); OK per obrir el PR de la branca |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -26,6 +26,8 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Les preguntes sobre on és cada cosa (Wayback, sortides de l'auditoria, etc.) les farà Jordi a Grok i passarà la resposta. |
 | 23/11/2026 | OK per començar l'script d'estat per fila. |
 | 23/11/2026 | Cal deixar anotat tot el que es fa en un document per tenir-ho controlat (aquest diari). |
+| 23/11/2026 | Nom del fundador: **sí** a la proposta. Es desa quan l'evidència el dona (totes les F i les P resoltes per la prova a); no es fa cap cerca específica a les P resoltes per b, c, d o e. |
+| 23/11/2026 | Claude porta la batuta de la base i ha de poder escriure a `scripts/` i `.github/`. Jordi farà el canvi de permisos i d'instruccions (vegeu la sessió 4). |
 
 ## Entrades
 
@@ -66,3 +68,12 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   ```
 
 - **Pas següent:** quan arribin les respostes de Grok, fase 1 (recuperar les cites de l'auditoria r3e/r4 i de l'inventari antic). Mentrestant es pot preparar la tasca 0.3 (camps mínims del registre) o el lot de coherència 1.3, si Jordi ho vol.
+
+### 23/11/2026 · Sessió 4 · Accés a `scripts/` i `.github/`
+
+- **Què s'ha demanat:** Jordi vol que Claude pugui escriure a `scripts/` i `.github/`.
+- **Per què Claude no ho pot fer sol:** el bloqueig és a `.claude/settings.json` (regles `deny`) i a `CLAUDE.md` / `AGENTS.md` (§8, «No toquis mai…»). Aquests fitxers també estan protegits contra l'agent, i Claude no se salta aquesta protecció. El canvi l'ha de fer Jordi a GitHub, amb un PR que ell mateix fusiona.
+- **Canvi proposat (mínim):**
+  - `.claude/settings.json`: treure només `Edit(/scripts/**)` i `Edit(/.github/**)`. Es mantenen els bloquejos de push a `main`, de fusió i d'edició de `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*` i `.claude/`.
+  - `CLAUDE.md` i `AGENTS.md`, línia 94: treure `scripts/` i `.github/` de la llista «No toquis mai» i afegir que Claude, com a coordinador de la base, els pot modificar en una branca i per PR que Jordi aprova i fusiona.
+- **Quan Jordi ho hagi fusionat:** Claude fusiona `main` a la seva branca, afegeix el pas de l'script d'estat al CI, actualitza les frases de `README.md` i `docs/PROTECCIO_BRANCA_MAIN.md` que diuen que Claude no toca `scripts/` ni `.github/`, i ho anota aquí. Pot caldre obrir una sessió nova perquè el canvi de permisos tingui efecte.
