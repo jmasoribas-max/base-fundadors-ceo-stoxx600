@@ -12,6 +12,7 @@
 |---|---:|
 | Files del lot | 12 (10 empreses) |
 | Files amb cita de CEO (C1) | 12 |
+| Files fetes (cita de CEO i de fundador) | 10 (alstria 2020 i Cellnex 2022 encara no tenen cita de fundador) |
 | … de les quals amb `ceo_interval` | 0 |
 | Files en dubte enviades a `PENDENTS.md` | 0 |
 | Entrades noves `[V]` | 15 (9 de l'emissor, 4 de reguladors, 2 de plataformes de comunicats oficials) |
