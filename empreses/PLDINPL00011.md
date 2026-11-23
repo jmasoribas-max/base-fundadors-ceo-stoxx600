@@ -43,3 +43,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada de registre anterior aplicable als anys del lot.
+
+- **L10-PLDINPL00011-F01** · 2020-2025 · [V] · `evidencia_context`. «In 2007, Tomasz Biernacki established Dino Polska sp. z o.o. which was subsequently transformed into the „DINO POLSKA” S.A. in 2011. From 2009 to 2010 Tomasz Biernacki managed the Dino Polska as the President of the Management Board, and since 2010 he has been the Chairman of the Supervisory Board.» Història de fundació i transformació de la societat; el càrrec executiu citat és de 2009–2010. L’etiqueta oficial és NA_sense_ceo i no hi ha CEO a classificar. Supervisory Board Members, biografia de Tomasz Biernacki, s. d.; consulta 23/11/2026. Candidatura 1 (identitat_empresa). Font A. Etiqueta oficial NA_sense_ceo; sense CEO a classificar. Consulta del 23/11/2026. [Font original](https://grupadino.pl/en/management/rada-nadzorcza-dino-polska-en/).
