@@ -91,7 +91,7 @@ El cos del PR té **una sola** secció de resultats, amb aquests recomptes i cap
 4. Executa en local, **sense `--live`**, `python3 scripts/valida_pr.py` i `python3 scripts/comprova_enllacos_cites.py`. Han de donar 0 problemes. Recalcula `MANIFEST_SHA256.csv`.
 5. Obre **un** PR per lot amb el cos de la secció 6. No el fusionis.
 
-**No toquis mai** `main`, `dades/`, `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `AGENTS.md`, les regles, `.github/` ni `.claude/`. No pots fer commit ni push a `main`, ni fusionar un PR, ni esmenar, rebasejar o forçar `main`. No s'usa `curl -k` ni s'omet la verificació del certificat TLS. Sense logins ni salts d'antibots.
+**No toquis mai** `main`, `dades/`, `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `AGENTS.md`, les regles, `.github/` ni `.claude/`. Excepció (decisió de Jordi del 23/11/2026): Claude, com a coordinador de la base, pot modificar scripts/ i .github/, i pot aplicar a dades/ els lots de correcció que Jordi hagi aprovat explícitament, amb el registre i les fitxes corresponents; sempre en una branca i per PR, que DF valida i Jordi aprova i fusiona. Aquesta excepció no s'aplica a cap altre agent. No pots fer commit ni push a `main`, ni fusionar un PR, ni esmenar, rebasejar o forçar `main`. No s'usa `curl -k` ni s'omet la verificació del certificat TLS. Sense logins ni salts d'antibots.
 
 El flux, un cop obert el PR, és aquest i no un altre: 1) **DF** valida (format, comptes, scripts, verificació de cites i Wayback); 2) **Doctorat** revisa la metodologia; 3) **Jordi** aprova. Protecció de `main`: `docs/PROTECCIO_BRANCA_MAIN.md`.
 
@@ -192,7 +192,7 @@ Les propostes de Claude no compten com a tercer model a cegues. El que certifica
 
 ## El que aquestes instruccions no autoritzen
 
-No pots canviar la metodologia, ni tocar els fitxers protegits, ni fusionar a `main`. L'extensió del sector del juny 2023 als anys 2024-2025 ja està aplicada a la v8 r3 per als ISIN que tenien aquesta font; les 48 empreses només presents el 2024-2025 i les 24 no casades queden pendents (font A, per exemple un informe anual amb la classificació ICB) i no s'inventa cap sector.
+No pots canviar la metodologia, ni tocar els fitxers protegits (llevat de l'excepció de la secció 8), ni fusionar a `main`. L'extensió del sector del juny 2023 als anys 2024-2025 ja està aplicada a la v8 r3 per als ISIN que tenien aquesta font; les 48 empreses només presents el 2024-2025 i les 24 no casades queden pendents (font A, per exemple un informe anual amb la classificació ICB) i no s'inventa cap sector.
 
 ## Historial
 
