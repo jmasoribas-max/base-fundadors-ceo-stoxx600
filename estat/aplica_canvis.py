@@ -147,8 +147,9 @@ def main() -> int:
             "estat_certificacio": idx[(isin, cs[0]["any"])][col["sim_estat_certificacio"]],
             "id_document_o_font": ";".join(c["id_canvi"] for c in cs),
             "model_verificacio": "Claude (script estat/aplica_canvis.py)",
-            "marca_veritat": "[V]",
-            "notes": f"{cs[0]['motiu']} Font de la decisió: {cs[0]['font_decisio']}",
+            "marca_veritat": "[NV]",
+            "notes": f"Entrada de correcció d'un camp, sense cita pròpia (convenció del registre: [NV] si no hi ha cita); "
+                     f"el fonament és la decisió citada. {cs[0]['motiu']} Font de la decisió: {cs[0]['font_decisio']}",
         })
         noves.append(fila)
     with REG.open("a", encoding="utf-8", newline="") as f:

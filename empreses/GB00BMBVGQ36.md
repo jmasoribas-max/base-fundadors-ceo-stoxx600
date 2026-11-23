@@ -45,3 +45,10 @@ Les cites no s'han reescrit; són literals de les fonts d'origen d'aquest reposi
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Correcció de coherència (correccio1_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO1-130** · 2022 · `regles`: «cita_fundador» → «e». P per la prova e; regles deia cita_fundador
+- **CO1-131** · 2023 · `regles`: «cita_fundador» → «e». P per la prova e; regles deia cita_fundador

@@ -74,3 +74,13 @@ Les cites no s'han reescrit; són literals de les fonts d'origen d'aquest reposi
 Cap entrada de registre anterior aplicable als anys del lot.
 
 - **L10-PLOPTTC00011-F01** · 2018-2021 · [V] · `evidencia_fundador`. «Back when Michał Kiciński and myself were establishing the company, I don’t think either of us would have been able to imagine this incredible journey, not even in our wildest dreams – summarizes Marcin Iwiński.» Marcin Iwiński identifica Michał Kiciński i ell mateix com els fundadors; Marcin és un dels dos CEO oficials. Adam Kiciński és l’altre CEO i la cita no li atribueix la fundació. History, fita del 2022, declaració de Marcin Iwiński; consulta 23/11/2026. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Adam Kiciński|Marcin Iwiński. Consulta del 23/11/2026. [Font original](https://www.cdprojekt.com/en/capital-group/history/).
+
+## Correcció de coherència (correccio1_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO1-154** · 2023 · `detall_motiu_nd`: «Primer empleat el 1994 (any de fundacio); sense D37; llista no exhaustiva. d no aplicable: entra l'any de fundació.» → «». Camp de motiu de ND en una fila que ja no és ND (FounderCEO=0). El valor antic queda en aquest fitxer i a l'historial.
+- **CO1-153** · 2023 · `motiu_nd`: «llista_fundadors_no_exhaustiva» → «». Camp de motiu de ND en una fila que ja no és ND (FounderCEO=0). El valor antic queda en aquest fitxer i a l'historial.
+- **CO1-155** · 2023 · `motiu_nd_article`: «prova_no_fundador_insuficient» → «». Camp de motiu de ND en una fila que ja no és ND (FounderCEO=0). El valor antic queda en aquest fitxer i a l'historial.
+- **CO1-152** · 2023 · `regles`: «cap» → «a». P per la prova a; regles deia cap
+- **CO1-156** · 2023 · `tancament_nd`: «limitacio_documentada_L4_reobrible» → «». Camp de motiu de ND en una fila que ja no és ND (FounderCEO=0). El valor antic queda en aquest fitxer i a l'historial.
