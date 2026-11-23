@@ -37,3 +37,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada anterior al registre per als anys del lot.
+
+- **L10-JE00B3CGFD43-F01** · 2016 · [NV] · `revisio_font`. pendent_DF: La pàgina retorna una pantalla de protecció Incapsula sense el document (HTTP 200, 212 bytes). No es pot verificar la menció de Mark Dixon ni el vincle amb Regus. . Candidatura 1 (identitat_empresa). Font A. CEO oficial: Mark Dixon. Consulta del 23/11/2026. [Font original](https://www.iwgplc.com/en-gb/about-us).
+- **L10-JE00B3CGFD43-F02** · 2016 · [NV] · `revisio_font`. pendent_DF: La pàgina retorna una pantalla de protecció Incapsula sense el document (HTTP 200, 212 bytes). No es pot verificar la menció de Mark Dixon ni el vincle amb Regus. . Candidatura 2 (identitat_empresa). Font A. CEO oficial: Mark Dixon. Consulta del 23/11/2026. [Font original](https://www.iwgplc.com/en-gb/about-us).
