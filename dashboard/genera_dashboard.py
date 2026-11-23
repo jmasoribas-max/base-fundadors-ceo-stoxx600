@@ -65,7 +65,7 @@ WAYBACK_EXTRA = SORTIDA / "fonts_wayback_extra.csv"
 # o notes de decisió). Si surten a la cita o a l'URL d'una prova, la prova
 # sencera queda oculta; si només surten a les notes, s'oculta la nota.
 RE_RESTRINGIT = re.compile(
-    r"lseg|wrds|bloomberg|article1|article_1|refinitiv|no_per_a_ia|pes_pct|"
+    r"lseg|wrds|bloomberg|(?<![a-z0-9])article_?1(?![0-9])|refinitiv|no_per_a_ia|pes_pct|"
     r"founderceo_rob|sim_nota|sim_decisio|v75_decisio|ids_decisio|"
     r"model_verificacio|informe\s+intern",
     re.I,
@@ -301,10 +301,19 @@ def commit_referencia(commit_arg: str | None) -> tuple[str, str]:
     de la mateixa branca. Es pot forçar amb --commit."""
     sha = commit_arg
     if not sha:
+        # La còpia local de `main` pot estar endarrerida respecte d'`origin/main`:
+        # es pren el merge-base més recent dels dos.
+        candidats = []
         for ref in ("main", "origin/main"):
-            sha = git("merge-base", "HEAD", ref)
-            if sha:
+            mb = git("merge-base", "HEAD", ref)
+            if mb and mb not in candidats:
+                candidats.append(mb)
+        for mb in candidats:
+            if all(o == mb or git("merge-base", "--is-ancestor", o, mb) is not None for o in candidats):
+                sha = mb
                 break
+        if not sha and candidats:
+            sha = candidats[0]
     if not sha:
         sha = git("rev-parse", "HEAD")
     if not sha:
@@ -1332,7 +1341,6 @@ def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
     docs = [
         ("docs/METODOLOGIA.md", "Resum de les regles R1-R3, de les proves de fundador i dels criteris N1/N2."),
         ("AGENTS.md", "Instruccions de treball i annex normatiu (regles 25 a 29, METODOLOGIA v0.10.10)."),
-        ("CLAUDE.md", "Mateix contingut normatiu que AGENTS.md; si discrepen, mana aquest."),
         ("docs/LIMITACIONS.md", "Limitacions declarades de la base."),
         ("docs/DICCIONARI_CAMPS.md", "Diccionari de camps de la base."),
     ]
@@ -1390,7 +1398,7 @@ def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
 {avis(ctx)}
 <div class="text-llarg">
 <section class="seccio"><h2>La metodologia que mana</h2>
-<p>La metodologia vigent és la del repositori: les instruccions <code>AGENTS.md</code> / <code>CLAUDE.md</code> (amb el mateix contingut normatiu, que incorporen les regles 25 a 29 i citen la METODOLOGIA v0.10.10) i els documents als quals remeten. <code>docs/METODOLOGIA.md</code> n'és un resum. Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
+<p>La metodologia vigent és la del repositori: les instruccions de treball del repositori (<code>AGENTS.md</code>, que incorpora les regles 25 a 29 i cita la METODOLOGIA v0.10.10) i els documents als quals remeten. <code>docs/METODOLOGIA.md</code> n'és un resum. Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
 <ul class="docs">{docs_html}</ul>
 </section>
 <section class="seccio"><h2>La unitat: empresa i any</h2>
