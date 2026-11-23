@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Metodologia i llegenda · Dashboard Fundadors</title>
+<meta name="description" content="Com es llegeixen les etiquetes F, P, ND, NA, la certificació i les proves del dashboard.">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.className+=' js';</script>
+
+</head>
+<body>
+<a class="salta" href="#contingut">Salta al contingut</a>
+<header class="barra">
+<div class="barra-in">
+<a class="marca" href="index.html"><span class="marca-logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="marca-text">Dashboard Fundadors<small>STOXX Europe 600 · 2016–2025</small></span></a>
+<nav class="nav" aria-label="Navegació principal"><a href="index.html">Empreses</a><a href="metodologia.html" aria-current="page">Metodologia i llegenda</a></nav>
+</div>
+</header>
+<main id="contingut" class="pagina">
+<p class="molla"><a href="index.html">← Totes les empreses</a></p>
+<section class="heroi heroi-petit">
+<p class="eyebrow">Metodologia i llegenda</p>
+<h1>Com es llegeix aquest dashboard</h1>
+<p class="entradeta">Explicació en llenguatge planer de les etiquetes que surten a les dades. La metodologia que mana és la del repositori; aquest resum no la substitueix.</p>
+</section>
+<aside class="avis" role="note"><span class="avis-icona" aria-hidden="true">!</span><p><strong>Base en revisió final.</strong> Dades de <code>main</code> (commit <code title="fa8f90d18ed3977efe267105d996575b63075352">fa8f90d</code>, CSV <code title="3d08bb99ede12676f0857bae6d83ba82c29a5dd8975e9a2897edf364688e35b8">3d08bb99ede1…</code>). Encara no és la v9 congelada. Algunes files tenen etiqueta però no tenen cita estructurada al registre.</p></aside>
+<div class="text-llarg">
+<section class="seccio"><h2>La metodologia que mana</h2>
+<p>La metodologia vigent és la del repositori: les instruccions de treball del repositori (<code>AGENTS.md</code>, que incorpora les regles 25 a 29 i cita la METODOLOGIA v0.10.10) i els documents als quals remeten. <code>docs/METODOLOGIA.md</code> n'és un resum. Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
+<ul class="docs"><li><a href="https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/blob/main/docs/METODOLOGIA.md" target="_blank" rel="noopener noreferrer">docs/METODOLOGIA.md<span class="ext" aria-hidden="true">↗</span></a> — Resum de les regles R1-R3, de les proves de fundador i dels criteris N1/N2.</li><li><a href="https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/blob/main/AGENTS.md" target="_blank" rel="noopener noreferrer">AGENTS.md<span class="ext" aria-hidden="true">↗</span></a> — Instruccions de treball i annex normatiu (regles 25 a 29, METODOLOGIA v0.10.10).</li><li><a href="https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/blob/main/docs/LIMITACIONS.md" target="_blank" rel="noopener noreferrer">docs/LIMITACIONS.md<span class="ext" aria-hidden="true">↗</span></a> — Limitacions declarades de la base.</li><li><a href="https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/blob/main/docs/DICCIONARI_CAMPS.md" target="_blank" rel="noopener noreferrer">docs/DICCIONARI_CAMPS.md<span class="ext" aria-hidden="true">↗</span></a> — Diccionari de camps de la base.</li></ul>
+</section>
+<section class="seccio"><h2>La unitat: empresa i any</h2>
+<p>Cada fila de la base és un ISIN i un any (2016–2025). La base té 6.012 files i 1.040 ISIN. Per a cada fila hi ha el CEO i l'etiqueta FounderCEO.</p>
+<p><b>Data de referència del CEO: el 31 d'octubre de cada any.</b> El CEO de l'any t és qui ocupava el càrrec el 31/10/t. Aquesta data no es canvia.</p>
+</section>
+<section class="seccio"><h2>Etiqueta FounderCEO</h2><div class="def"><span class="etq e-F"><b>F</b> Fundador-CEO</span><p>Valor <code>1</code>. El CEO de l'empresa a 31/10 d'aquell any és fundador o cofundador de l'empresa cotitzada o d'una entitat rellevant (per exemple, una predecessora documentada), segons les regles de la metodologia (D37, cita directa, fundador transformador).</p></div><div class="def"><span class="etq e-P"><b>P</b> Professional</span><p>Valor <code>0</code>. El CEO no és fundador. Cal una prova positiva amb cita (proves a–e); si no n'hi ha, no es posa 0.</p></div><div class="def"><span class="etq e-ND"><b>ND</b> No determinat</span><p>Valor <code>no_determinat</code>. Hi ha un CEO identificat però cap prova concloent de sí ni de no, o les proves es contradiuen.</p></div><div class="def"><span class="etq e-NA"><b>NA</b> Sense CEO</span><p>Valor <code>NA_sense_ceo</code>. Un cop aplicades les regles R1-R3, a 31/10 no hi ha cap CEO individual (R-SC).</p></div>
+<p class="nota">Recompte actual: F 349, P 5.631, ND 1, NA 31.</p></section>
+<section class="seccio"><h2>Estat de certificació i nivell</h2><div class='def'><span class='cert cert-certificada'>Certificada</span><p>L'etiqueta està certificada dins de l'auditoria. El nivell diu com: <b>N1</b> (les dues revisions independents de l'auditoria coincideixen amb la base, amb cita A/B i sense incidències E2, E4 ni E6), <b>N2</b> (una revisió coincideix amb la base i l'altra ho deixa indeterminat, sense incidència greu) o <b>doctorat</b> (certificada per decisió de Doctorat).</p></div><div class='def'><span class='cert cert-certificada_ceo_pendent'>Certificada, CEO pendent</span><p>L'etiqueta és certificable, però la identitat del CEO encara no està verificada. Pot portar nivell N1 o N2.</p></div><div class='def'><span class='cert cert-no_certificada'>No certificada</span><p>La fila és dins de l'àmbit de l'auditoria però no s'ha pogut certificar.</p></div><div class='def'><span class='cert cert-fora_mostra_auditoria'>Fora de la mostra d&#x27;auditoria</span><p>La fila no formava part de la mostra de l'auditoria. Es revisa per lots; aquest estat no vol dir que l'etiqueta sigui dubtosa.</p></div></section>
+<section class="seccio"><h2>Nivells de font</h2>
+<div class="def"><span class="b b-nivell">Font A</span><p>Documents de la mateixa empresa o registres oficials: informe anual, fullet o document d'IPO, comunicat, pàgina oficial, document presentat a un regulador o a la borsa.</p></div>
+<div class="def"><span class="b b-nivell">Font B</span><p>Tercers fiables: premsa econòmica de qualitat, obres de referència, llibres, articles acadèmics.</p></div>
+<div class="def"><span class="b b-gris">Font C</span><p>Agregadors, blogs, enciclopèdies obertes, LinkedIn… Serveixen de pista, però una font C mai no verifica.</p></div>
+<p class="nota">El nivell no té columna pròpia al registre. Quan consta, és al camp «origen de la cita» (<code>Nivell A</code>, <code>Nivell B</code>) o al text de les notes; el dashboard el mostra tal com és.</p>
+</section>
+<section class="seccio"><h2>Marques de prova</h2>
+<h3>Per al CEO</h3><div class='def'><code class='b b-marca'>R1</code><p>Títol de CEO o càrrec legal equivalent (Vorstandsvorsitzender, consejero delegado, PDG, directeur général…).</p></div><div class='def'><code class='b b-marca'>R2</code><p>CEO interí.</p></div><div class='def'><code class='b b-marca'>R2b</code><p>Direcció col·legiada transitòria.</p></div><div class='def'><code class='b b-marca'>R3</code><p>Persona descrita literalment com a primer executiu quan el càrrec de CEO és vacant (el president executiu, només per aquesta via).</p></div><div class='def'><code class='b b-marca'>ceo_interval</code><p>Interval: un document de nomenament amb data igual o anterior al 31/10 i un altre que anomena la persona CEO en una data igual o posterior. A les notes, «inici» o «final».</p></div>
+<h3>Per a l'etiqueta de fundador</h3><div class='def'><code class='b b-marca'>D37</code><p>Cita de l&#x27;emissor que anomena la persona fundadora o cofundadora de la cotitzada, del grup o d&#x27;una predecessora documentada.</p></div><div class='def'><code class='b b-marca'>a</code><p>Llista tancada de fundadors en què el CEO no hi és.</p></div><div class='def'><code class='b b-marca'>b</code><p>Edat: l&#x27;any de la fundació rellevant més recent, el CEO tenia menys de 18 anys.</p></div><div class='def'><code class='b b-marca'>c</code><p>64 anys o més entre la fundació rellevant i l&#x27;inici del mandat, només si no hi ha dada d&#x27;edat.</p></div><div class='def'><code class='b b-marca'>d</code><p>Incorporació tardana: el CEO entra 3 anys o més després de la fundació, amb cita de l&#x27;ocupador anterior.</p></div><div class='def'><code class='b b-marca'>e</code><p>Origen no personal: l&#x27;entitat la va crear l&#x27;Estat o una altra empresa, sense persona fundadora.</p></div>
+<p class="nota">Algunes entrades d'auditoria porten marques més llargues (per exemple <code>2016=informe_exercici:confirmada</code>); es mostren tal com són al registre.</p>
+</section>
+<section class="seccio"><h2>Estat d'una prova</h2>
+<div class="def"><span class="b b-v">[V] Verificada</span><p>Qui va fer l'entrada va obrir el document sencer i hi va trobar la cita literalment. Fins que DF ho confirma per script, és provisional.</p></div>
+<div class="def"><span class="b b-nv">[NV] No verificada</span><p>No s'ha pogut obrir el document sencer (bloqueig, descàrrega tallada…: a les notes, <code>pendent_DF</code>) o la cita no hi és (<code>no_valida</code>). Un error d'accés no vol dir que la font sigui dolenta.</p></div>
+<div class="def"><span class="b b-mal">Font no vàlida</span><p>Distintiu que surt quan la nota de l'entrada diu <code>no_valida</code>: la cita no és al document, és d'un altre any o la font és C.</p></div>
+<div class="def"><span class="b b-base">Cita de la base</span><p>Cita que només consta als camps <code>font_classificacio_cita</code> / <code>font_classificacio_url</code> o <code>d37_*</code> del CSV de la base. Només cobreix els anys en què el camp té valor.</p></div>
+</section>
+<section class="seccio"><h2>Fonts i còpies arxivades</h2>
+<p><b>Font original</b>: l'URL del document on hi ha la cita. <b>Còpia Wayback</b>: la captura d'archive.org que consta al registre. Si no n'hi ha, es diu «no consta» (sense còpia arxivada, el document es considera no durable); si està pendent, «pendent de verificació externa». El dashboard no consulta ni completa cap captura.</p>
+<p><b>Cita verificada a la captura</b>: <code>si</code> si DF ha comprovat la cita al document arxivat; <code>no</code> si no s'ha pogut comprovar.</p>
+<p><b>Allotjament</b>: on és el document segons el registre (<code>emissor</code>, <code>regulador</code>, <code>grup</code>, <code>successor</code>, <code>plataforma</code>, <code>mitja</code>…). Es mostra tal com consta.</p>
+</section>
+<section class="seccio"><h2>Què no hi ha (i no s'inventa)</h2>
+<ul>
+<li><b>Fundadors de l'empresa.</b> La base no té cap camp amb els noms dels fundadors. Si una fila és F, el CEO d'aquell any està classificat com a fundador; no és una llista completa de fundadors.</li>
+<li><b>Any de fundació.</b> No és un camp. Si apareix, és dins del text d'una cita o d'una nota.</li>
+<li><b>País.</b> La base no té país. El filtre «país d'emissió de l'ISIN» es deriva del prefix de l'ISIN i no és la seu social.</li>
+<li><b>Sector.</b> No es mostra en aquesta versió, pendent d'aclarir la llicència de la classificació.</li>
+<li><b>Títol, data i pàgina del document.</b> No tenen columna pròpia; quan l'autor de l'entrada els va escriure, són a les notes.</li>
+</ul>
+</section>
+<section class="seccio"><h2>Criteris de la part pública</h2>
+<p>No es mostren les columnes de robustesa, les propostes brutes ni les notes de decisió de l'auditoria, ni referències a fitxers o informes interns. Quan una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota. Les cites es mostren tal com les publica l'emissor, incloses les dates de naixement que serveixen per a la prova b. Les cites llargues es retallen a un fragment, amb l'avís corresponent.</p>
+<ul><li>Proves del registre no mostrades perquè la cita o l'URL contenen un terme restringit: <b>0</b>.</li><li>Notes no mostrades per termes restringits o referències internes: <b>13</b>; per noms de models: <b>8</b>.</li><li>Proves de la classificació sectorial no mostrades (sector desactivat): <b>13</b>.</li><li>Valors d'«origen de la cita» no mostrats: <b>10</b>.</li><li>URL del rastre secundari no mostrades: <b>0</b>.</li></ul>
+</section>
+<section class="seccio"><h2>Fitxers llegits</h2>
+<div class="taula-wrap"><table class="taula-simple">
+<thead><tr><th>Fitxer</th><th>SHA-256</th></tr></thead>
+<tbody>
+<tr><td><code>dades/base_isin_any_v8r3.csv</code></td><td><code class="sha">3d08bb99ede12676f0857bae6d83ba82c29a5dd8975e9a2897edf364688e35b8</code></td></tr>
+<tr><td><code>docs/REGISTRE_CANVIS.csv</code></td><td><code class="sha">71f5a117e54b69babc6141bf1259f2ebcc7f4fd24719557022372169b4fb8c9a</code></td></tr>
+</tbody></table></div>
+<p class="nota">Commit de referència de <code>main</code>: <code>fa8f90d18ed3977efe267105d996575b63075352</code>. Els SHA es comproven contra <code>MANIFEST_SHA256.csv</code> cada vegada que es genera el lloc.</p>
+</section>
+</div>
+</main>
+<footer class="peu">
+<div class="peu-in">
+<p>Generat per <code>dashboard/genera_dashboard.py</code> a partir del repositori. Commit de referència de <code>main</code>: <code>fa8f90d18ed3977efe267105d996575b63075352</code> (2026-11-23).</p>
+<p><code>dades/base_isin_any_v8r3.csv</code> SHA-256 <code>3d08bb99ede12676f0857bae6d83ba82c29a5dd8975e9a2897edf364688e35b8</code> · <code>docs/REGISTRE_CANVIS.csv</code> SHA-256 <code>71f5a117e54b69babc6141bf1259f2ebcc7f4fd24719557022372169b4fb8c9a</code></p>
+<p>Prototip estàtic: no està publicat a GitHub Pages. La metodologia que mana és la del <a href="https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600" target="_blank" rel="noopener noreferrer">repositori</a>; aquest lloc no la substitueix.</p>
+</div>
+</footer>
+</body>
+</html>
