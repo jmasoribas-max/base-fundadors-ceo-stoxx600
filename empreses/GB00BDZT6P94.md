@@ -40,3 +40,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
+
+- **L10-GB00BDZT6P94-F01** · 2016-2019 · [V] · `dubte_metodologic`. «Merlin Entertainments was formed in 1999 following the £47m Management Buyout of Vardon Entertainments led by Nick, who subsequently became CEO of the rebranded group.» dubte_metodologic: L’emissor diu que el CEO oficial Nick Varney va dirigir la compra de Vardon per l’equip directiu i va esdevenir CEO del grup rebatejat. La P1 de la regla 25 no equipara l’operació amb la fundació d’un negoci nou. La cita no li atribueix la fundació del negoci operatiu i no justifica una classificació alternativa. Comunicació sobre la jubilació de Nick Varney, 29/04/2022, paràgraf sobre 1999. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Nick Varney. Consulta del 23/11/2026. [Font original](https://www.merlinentertainments.biz/newsroom/news-releases/2022/merlin-entertainments-nick-varney-chief-executive-officer-to-retire/).
