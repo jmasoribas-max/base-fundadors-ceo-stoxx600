@@ -68,3 +68,7 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-GB00BDVZYZ77-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Rico Back - Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/225698683.pdf).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-GB00BDVZYZ77-C01** · 2019 · [V] · `R1`. «Rico Back, Group Chief Executive Officer, commented:» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20191121070015_14316895.html).

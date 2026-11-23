@@ -905,3 +905,19 @@ Afegida el 23/11/2026 per Claude. Al lot 16 s'han buscat cites de fundador per a
 | `DE000A0LD2U1` | 2019–2021 | 16 | No s'ha trobat cap font A/B que anomeni fundador Elamine; només en parlen agregadors. Segons l'informe del 2006, alstria la va crear un vehicle d'un fons de Captiva, i Elamine en va ser el primer gerent, aportat per NATIXIS Capital Partners. Possible prova e o P3 | Informes anuals 2006, 2007 i 2021-2024 |
 | `SE0005127818` | 2021–2025 | 16 | No s'ha trobat cap font A/B: l'emissor només diu «CEO since 2004». Dos articles d'Affärsvärlden (B) en diuen «grundare» segons el resum del cercador, però no s'han pogut obrir (redirecció a l'inici de sessió) | Informes anuals 2021 i 2023-2025, i prospectes 2015-2018 |
 
+## Dubtes del lot 17 (cerca de CEO)
+
+Afegida el 23/11/2026 per Claude. El lot 17 ha cercat la cita de CEO de les 804 files que encara no en tenien, amb dotze agents i verificació independent. Aquesta secció recull les files on la cerca ha trobat un CEO diferent del de la base, on el criteri del CEO (R1-R3) cal decidir-lo, o on no hi ha cap document de l'exercici. Detall a `lots/lot17_dubtes.csv` i `lots/lot17_pendents.csv`. No s'ha canviat cap etiqueta ni cap CEO.
+
+| ISIN | Anys | Lot | Dubte | Què s'ha trobat |
+|---|---|---|---|---|
+| `ES0115056139` | 2017–2018 | 17 | CEO de la base diferent del de la font: la base diu Antonio Zoido (president), però el consejero delegado era Javier Hernani des del 27/4/2017 (R1). Proposta: corregir `ceos` a Javier Hernani Burzako els anys 2017 i 2018, en un lot de correcció | IAGC 2017 (CNMV), p. 59: «…D. Javier Hernani Burzako desde su nombramiento como Consejero Delegado el 27 de abril de 2017»; IAGC 2018, p. 22 |
+| `CH0364749348` | 2017–2019 | 17 | Ningú no tenia el títol de CEO: Jornod era Executive Chairman, i Schulze, «President of the Executive Committee and COO» (CEO només des del 14/5/2020). Jornod és el CEO per R3 (president executiu amb el càrrec de CEO vacant): cal confirmar que la base hi aplica la R3 i la marca `ceo_president_exec` | Comunicats de resultats de Vifor 2017-2019 (ara al web de CSL) |
+| `DK0060252690` | 2018 | 17 | Sense CEO el 31/10/2018: direcció conjunta interina (Anders Boyer, CFO, i Jeremy Schwartz, COO). R2b, i a la robustesa `founderceo_rob_r2b_com_na` com a NA | Informe anual 2018, p. 10 |
+| `ES0124244E34` | 2025 | 17 | Mapfre no té consejero delegado: Huertas és «máximo responsable ejecutivo» i president. R1 o R3? | IAGC 2025 |
+| `ES0148396007` | 2016 | 17 | No s'ha trobat cap document de l'exercici 2016/17 (inditex.com només té informes des del 2017; la còpia de la CNMV és escanejada). Possible interval amb l'informe del 2018 («Chairman and CEO of Inditex since 2011») si es troba un document d'inici | — |
+| `BE0003851681` | 2019 | 17 | L'exercici d'Aedifica es va allargar a 18 mesos (1/7/2019-31/12/2020) i l'informe és del 2021. És el document de l'exercici que inclou el 31/10/2019, però l'importador el rebutja per la data. Cal confirmar-ho | Informe financer anual 2019/2020: «Stefaan Gielens is CEO and chairs the Executive Committee» |
+| `SE0000108847` | 2016 | 17 | El document trobat és l'informe de govern corporatiu del 2016, però la data que en dona la cerca és del 2018. Cal comprovar la data de publicació | «Fredrik Lundberg is President and CEO» |
+| `CH0012142631` | 2016 | 17 | L'interval de Clariant 2016 té com a document d'inici un article de Börsen-Zeitung (B) del 22/5/2017 («seit 1. Oktober 2008 ist er CEO»): el nomenament és anterior, però el document és posterior al 31/10/2016. Val per a la regla 28? | Interval inici (B) i final (A, comunicat del 31/10/2017) |
+| `CH0013841017` | 2019 | 17 | L'interval de Lonza 2019 té com a document final un article de BioPharma Dive (B) del 14/11/2019 que anuncia la sortida del CEO («will step down»). Era CEO el 31/10, però la font és B i la frase parla de la sortida | Interval inici (A, 30/1/2019) i final (B) |
+

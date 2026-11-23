@@ -101,3 +101,9 @@ Anys contrastats en aquesta passada 2016–2025.
 - 2025. L’informe anual de l’exercici 2025 identifica el titular i no registra un altre titular al tall.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-DE000A1EWWW0-C01** · 2023 · [V] · `R1`. «Bjørn Gulden Chief Executive Officer, Global Brands» [Font original](https://report.adidas-group.com/2023/en/_assets/downloads/annual-report-adidas-ar23.pdf).
+- **L17-DE000A1EWWW0-C02** · 2024 · [V] · `R1`. «Bjørn Gulden Chief Executive Officer, Global Brands» [Font original](https://report.adidas-group.com/2024/en/_assets/downloads/annual-report-adidas-ar24.pdf).
+- **L17-DE000A1EWWW0-C03** · 2025 · [V] · `R1`. «Bjørn Gulden Chief Executive Officer» [Font original](https://report.adidas-group.com/2025/en/_assets/downloads/annual-report-adidas-ar25.pdf).

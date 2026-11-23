@@ -12,8 +12,8 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Última actualització | 23/11/2026, sessió 14 |
 | `main` de referència | `0ad59fc` (PR #27) |
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %): falta sobretot l'arxiu a Wayback (C3) |
-| Files amb evidència de CEO i de fundador (C1 i C2) | 4.628 de 6.012 (77,0 %), amb els lots 13-16 (C1: 5.204, 86,6 %) |
-| Files F | 338 de 349 amb cita de CEO; 329 amb cita de fundador; 318 amb les dues |
+| Files amb evidència de CEO i de fundador (C1 i C2) | 4.941 de 6.012 (82,2 %), amb els lots 13-17 (C1: 5.995, 99,7 %) |
+| Files F | 349 de 349 amb cita de CEO; 329 amb cita de fundador i amb les dues |
 | Fase del pla | Fase 1: grup F gairebé tancat (falta la cita de fundador de 57 files). Fase 2 en curs: files P (lot 14, traspàs de l'auditoria; lot 15, informes ESEF de l'exercici) |
 | Pendent de Jordi | Fusionar el PR del lot 13. Dubtes de criteri (paquet en preparació) |
 | Flux nou | Claude prepara, valida (scripts i comprovació independent) i obre els PR; Jordi aprova i fusiona. Wayback, a GitHub Actions. DF queda fora (document final per a DF quan s'acabi) |
@@ -287,4 +287,11 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - 508 entrades `[V]` i 502 files més amb cita de CEO.
   - He afinat els filtres en tres rondes de revisió de mostres: un cognom dins el nom d'una altra societat, taules, una altra persona entre el nom i el títol, text amb les lletres separades, i «does» com a verb.
   - Queden 804 files sense cita de CEO (411 del 2016-2019 i 393 del 2020-2025).
+- **Lot 17 (cerca de CEO de les 804 files restants), a la branca `cas/lot15-esef`:**
+  - 12 agents, uns 67 files cadascun. Tots van acabar: 790 files trobades, 3 intervals, discrepàncies a BME i Vifor, i Inditex 2016 sense trobar.
+  - Verificació independent: 794 entrades `[V]` i 4 `[NV]` `no_valida` (la cita no és al document tornat a baixar).
+  - Ampliats els títols equivalents a CEO (Chairman of the Executive Board, President of the Executive Committee, Spokesman, máximo responsable ejecutivo…) i normalitzats els apòstrofs.
+  - **La cita de CEO cobreix ara 5.995 de 6.012 files (99,7 %).** 12 files en dubte a `PENDENTS.md` (secció «Dubtes del lot 17»).
+  - **Incidència:** un agent va provar una capçalera Referer en un servidor de Bakkafrost. El control de seguretat ho va aturar, l'agent no en va fer servir el resultat, i als agents següents se'ls va prohibir.
+  - **Error propi corregit:** vaig escriure de memòria l'ISIN de Clariant a `PENDENTS.md` (n'hi vaig posar el de Novartis). Ho vaig detectar en recalcular l'estat i ho vaig corregir.
 

@@ -92,3 +92,12 @@ Proposta posterior (lot 3, pendent del flux DF → Doctorat → Jordi):
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-GB00BWFGQN14-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Nicholas Anderson Group Chief» [Font original](https://filings.xbrl.org/213800WFVZQMHOZP2W17/2022-12-31/ESEF/GB/0/213800WFVZQMHOZP2W17-2022-12-31/reports/213800WFVZQMHOZP2W17-2022-12-31-T01.xhtml).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-GB00BWFGQN14-C01** · 2020 · [V] · `R1`. «Nicholas Anderson, Group Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/3905468.html).
+- **L17-GB00BWFGQN14-C02** · 2021 · [V] · `R1`. «Nicholas Anderson, Group Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4298032.html).
+- **L17-GB00BWFGQN14-C03** · 2016 · [V] · `R1`. «Nicholas Anderson, Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20170309070007_13152070.html).
+- **L17-GB00BWFGQN14-C04** · 2017 · [V] · `R1`. «Nicholas Anderson, Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20180315070004_13567513.html).
+- **L17-GB00BWFGQN14-C05** · 2018 · [V] · `R1`. «Nicholas Anderson, Group Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20190307070007_13993120.html).
+- **L17-GB00BWFGQN14-C06** · 2019 · [V] · `R1`. «Nicholas Anderson, Group Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20200311070004_3522210.html).

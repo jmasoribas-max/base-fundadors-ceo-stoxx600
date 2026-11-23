@@ -65,3 +65,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L15-GB00BGDT3G23-C02** · 2019 · [V] · `evidencia_ceo` (`R1`). «Peter Brooks-Johnson Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/271391419.pdf).
 - **L15-GB00BGDT3G23-C03** · 2020 · [V] · `evidencia_ceo` (`R1`). «Peter Brooks-Johnson Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000022247/NI-000022247.pdf).
 - **L15-GB00BGDT3G23-C04** · 2022 · [V] · `evidencia_ceo` (`R1`). «Contacts Chief Executive Officer: Peter Brooks-Johnson» [Font original](https://filings.xbrl.org/2138001JXGCFKBXYB828/2022-12-31/ESEF/GB/0/2138001JXGCFKBXYB828-2022-12-31/reports/2138001JXGCFKBXYB828-2022-12-31-T01.html).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-GB00BGDT3G23-C01** · 2021 · [V] · `R1`. «Peter Brooks-Johnson, Chief Executive Officer, said:» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4283149.html).

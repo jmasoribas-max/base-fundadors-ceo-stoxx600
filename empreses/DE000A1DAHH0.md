@@ -96,3 +96,7 @@ Fonts incorporades en aquesta revisió.
 - [V] `QC2024` · 2024 · ceo · «Dr. Christian Kohlpaintner Chief Executive Officer». Informe anual de l’exercici 2024. La cita identifica el titular del càrrec. URL original https://brenntagprod-media.e-spirit.cloud/06432017-be1f-41ce-8d1d-564e2a66d213/documents/corporate/investor-relations/2024/annual-report-2024/brenntag_annual-report-2024_en.pdf. Wayback pendent_verificacio_externa (API availability HTTP 503.).
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-DE000A1DAHH0-C01** · 2025 · [V] · `R1`. «Jens Birgersson Chief Executive Officer and Chairman of the Board of Management» [Font original](https://brenntagprod-media.e-spirit.cloud/06432017-be1f-41ce-8d1d-564e2a66d213/documents/corporate/investor-relations/2025/annual-report-2025/brenntag_annual-report-2025_en.pdf).

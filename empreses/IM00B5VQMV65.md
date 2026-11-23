@@ -72,3 +72,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-IM00B5VQMV65-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Jette Nygaard-Andersen Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000070804/NI-000070804.pdf).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-IM00B5VQMV65-C01** · 2021 · [V] · `R1`. «Our CEO, Jette Nygaard-Andersen and Deputy CEO and CFO, Rob Wood also attended the Employee Forum» [Font original](https://www.entaingroup.com/media/p4shehf1/2021-annual-report.pdf).

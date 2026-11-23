@@ -95,3 +95,7 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 - **L12-PLOPTTC00011-C06** · 2019 · [V] · `R1`. «Adam Kiciński Marcin Iwiński Piotr Nielubowicz Adam Badowski Michał Nowakowski Piotr Karwowski President, Joint CEO Co-founder, Joint CEO» [Font original](https://www.cdprojekt.com/en/wp-content/uploads-en/2019/12/en-cdpir_factsheet-11-2019.pdf).
 - **L12-PLOPTTC00011-C07** · 2020 · [V] · `R1`. «Composition of the Management Board of CD PROJEKT S.A. Adam Kiciński – President of the Board» [Font original](https://www.cdprojekt.com/en/wp-content/uploads-en/2021/04/management-board-report-on-the-activities-of-the-cd-projekt-group-and-cdc-projekt-sa-in-2020.pdf).
 - **L12-PLOPTTC00011-C08** · 2021 · [V] · `R1`. «Composition of the Management Board of CD PROJEKT S.A. Adam Kiciński – President of the Board» [Font original](https://www.cdprojekt.com/en/wp-content/uploads-en/2022/04/cdr-management-board-report-fy2021.pdf).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-PLOPTTC00011-C01** · 2023 · [V] · `R1`. «On 5 October 2023 Mr. Adam Kiciński, CEO of CD PROJEKT S.A. notified the Company of his intent to seek appointment as Member of the Supervisory Board of the Company in 2025» [Font original](https://www.cdprojekt.com/en/wp-content/uploads-en/2024/03/management-board-report-on-cd-projekt-group-activities-in-2023.pdf).
