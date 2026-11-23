@@ -89,3 +89,7 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 ## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L11-GB00BNGDN821-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «and Simon Peckham our Chief Executive, who have each served the Company since it was founded in 2003, and Geoffrey Martin who» [Font original](https://www.melroseplc.net/media/mejhotsg/melrose-2023-half-year-results-announcement.pdf).
+
+## Lot 16 · Cerca nova de cites de fundador
+
+- **L16-GB00BNGDN821-F01** · 2023 · [V] · `D37`. «As announced last year, our executive Directors and co‑founders, Christopher Miller and Simon Peckham, together with longstanding executive Director Geoffrey Martin, will not stand for re‑election at the 2024 AGM.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000093406/NI-000093406.pdf).

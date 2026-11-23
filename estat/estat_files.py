@@ -50,6 +50,7 @@ SECCIONS_DUBTES = (
     "Dubtes del lot ceo_pendent (lot 9)",
     "Dubtes del lot traspàs de cites (lot 10)",
     "Dubtes del lot 12 (cerca de CEO del grup F)",
+    "Dubtes del lot 16 (cites de fundador del grup F)",
 )
 REGLES_SI = {"cita_fundador", "D37", "FT", "D10b_prelacio", "D10"}
 REGLES_NO = {"a", "b", "c_AAF64_reserva", "d", "e", "d_per_part", "b_per_part"}
@@ -147,7 +148,7 @@ def dubtes_pendents(tancats: set[tuple[str, str]]) -> dict[tuple[str, str], set[
             continue
         isin = cel[0].strip("` ")
         ref = ("regla29" if "regla 29" in seccio else "lot9" if "lot 9" in seccio
-               else "lot12" if "lot 12" in seccio else "lot10")
+               else "lot12" if "lot 12" in seccio else "lot16" if "lot 16" in seccio else "lot10")
         for y in anys(re.sub(r"<[^>]+>", "", cel[1])):
             oberts[(isin, y)].add(ref)
     for k in tancats:

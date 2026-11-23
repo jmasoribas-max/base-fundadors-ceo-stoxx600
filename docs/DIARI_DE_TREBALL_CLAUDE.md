@@ -271,4 +271,13 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Revisió del lot 11 (tasca de l'exercici):** 18 entrades de CEO usaven un document d'un altre exercici per a algun any. 8 passen a `[NV]` `no_valida` i 10 redueixen els anys, amb la nota corresponent. El grup F passa a 331 de 349 files amb cita de CEO fins que es trobin les noves.
 - **Cerca de fundadors F (dos agents):** el primer ha acabat (8 de 11 empreses amb cita vàlida; contradiccions a Cellnex, Merlin i la co-CEO de Rubis 2023-2024). Queda pendent el segon.
 - **Per a Jordi (paquet de criteris):** la condició C2 de les files P compta ara la columna antiga `font_classificacio_cita`. Sovint és una sola cita que no conté totes les parts de la prova. Cal decidir si s'exigeixen les parts (com al lot 14) a tota la base.
+- **PR #28 (lot 13) fusionat per Jordi.** He obert el [PR #29](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/29) (lot 14), després de fusionar-hi `main` en un arbre de treball a part.
+- **Lot 16 (cites de fundador del grup F), a la branca `cas/lot15-esef`:**
+  - 19 entrades `[V]`: 18 `D37` i 1 `si_font_B`, la d'Actelion, que ve del prospecte de l'oferent.
+  - Quatre cites que només deien el nom de pila s'han ampliat cap enrere, amb text contigu del document, fins al nom complet.
+  - 17 dubtes del lot 10 tancats a `estat/dubtes_tancats.csv`, perquè ja hi ha cita vàlida.
+  - Secció nova a `PENDENTS.md`, «Dubtes del lot 16», amb 27 files: predecessores, P6, contradiccions i casos sense font.
+  - Grup F: 329 de 349 files amb cita de fundador.
+  - Importador nou: `traspas/importa_fundador.py`. A més, `FUNDACIO` admet «fonder» i «setting up».
+- **Lot 15 (ESEF):** en execució. Informe de l'exercici trobat per a 415 de les 793 files 2020-2025 sense cita de CEO.
 

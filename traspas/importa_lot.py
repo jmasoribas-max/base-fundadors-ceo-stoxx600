@@ -64,7 +64,7 @@ PLATAFORMES = ("cision.com", "globenewswire.com", "eqs.com", "eqs-news.com", "bu
                "investis.com", "q4cdn.com", "rns-pdf", "emarketstorage", "1info.it", "lsegissuerservices.com",
                "ritzau.dk", "pressetext.com")
 FUNDACIO = re.compile(r"found|fundad|fundat|fundador|grunder|grundare|grundlag|grundet|grunnla|gegrund|grunde"
-                      r"|fondat|fondateur|fondatrice|fondee|fonde par|oprichter|opgericht|perustaja|perusti"
+                      r"|fondat|fondateur|fondatrice|fondee|fonde par|fonder\b|setting up|oprichter|opgericht|perustaja|perusti"
                       r"|zalozyciel|zalozyl|stiftet|stifter|set up|established|started the|launched the"
                       r"|created the company|creat(ed|or) of")
 # P6: expressions que no compten com a fundador

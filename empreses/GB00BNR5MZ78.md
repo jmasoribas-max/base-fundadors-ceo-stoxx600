@@ -43,3 +43,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 
 - **L12-GB00BNR5MZ78-C01** · 2021 · [V] · `R1`. «On behalf of the Board: Simon Peckham Chief Executive 3 March 2022» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046785/NI-000046785.pdf).
 - **L12-GB00BNR5MZ78-C02** · 2022 · [V] · `R1`. «The Strategic Report, as set out on pages 2 to 93, has been approved by the Board. Simon Peckham Chief Executive 2 March 2023» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000073602/NI-000073602.pdf).
+
+## Lot 16 · Cerca nova de cites de fundador
+
+- **L16-GB00BNR5MZ78-F01** · 2021-2022 · [V] · `D37`. «Simon Peckham, Chief Executive, co-founder of Melrose, is standing for re-election as Director due to his deep understanding of the Melrose business model, having joined the Company initially in 2003 as Chief Operating Officer, and having been appointed as Chief Executive in 2012.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046785/NI-000046785.pdf).
