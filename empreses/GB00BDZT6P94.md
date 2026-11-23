@@ -46,3 +46,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 
 - **L10-GB00BDZT6P94-F01** · 2016-2019 · [V] · `dubte_metodologic`. «Merlin Entertainments was formed in 1999 following the £47m Management Buyout of Vardon Entertainments led by Nick, who subsequently became CEO of the rebranded group.» dubte_metodologic: L’emissor diu que el CEO oficial Nick Varney va dirigir la compra de Vardon per l’equip directiu i va esdevenir CEO del grup rebatejat. La P1 de la regla 25 no equipara l’operació amb la fundació d’un negoci nou. La cita no li atribueix la fundació del negoci operatiu i no justifica una classificació alternativa. Comunicació sobre la jubilació de Nick Varney, 29/04/2022, paràgraf sobre 1999. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Nick Varney. Consulta del 23/11/2026. [Font original](https://www.merlinentertainments.biz/newsroom/news-releases/2022/merlin-entertainments-nick-varney-chief-executive-officer-to-retire/).
+
+## Lot 12 · Cerca nova de cites de CEO
+
+- **L12-GB00BDZT6P94-C01** · 2017 · [V] · `R1`. «Nick Varney Chief Executive Officer 28 February 2018» [Font original](https://www.merlinentertainments.biz/media/1171/annual-report-and-accounts-2017-screen-version-3.pdf).
+- **L12-GB00BDZT6P94-C02** · 2016 · [V] · `R1`. «Nick Varney Chief Executive Officer 1 March 2017» [Font original](https://www.merlinentertainments.biz/media/1184/annual-report-and-accounts-2016-screen-viewing-3.pdf).
+- **L12-GB00BDZT6P94-C03** · 2018 · [V] · `R1`. «Nick Varney Chief Executive Officer 27 February 2019» [Font original](https://www.merlinentertainments.biz/media/2139/2018-annual-report-and-accounts-screen-version.pdf).
+- **L12-GB00BDZT6P94-C04** · 2019 · [V] · `R1`. «Nick Varney, Group Chief Executive Officer Nick has nearly 30 years’ experience in the visitor attractions industry and was appointed Chief Executive Officer of Merlin Entertainments in 1999.» [Font original](https://www.merlinentertainments.biz/media/3068/merlin-entertainments-annual-report-and-accounts-2019.pdf).

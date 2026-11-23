@@ -38,3 +38,8 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 12 · Cerca nova de cites de CEO
+
+- **L12-GB00BNR5MZ78-C01** · 2021 · [V] · `R1`. «On behalf of the Board: Simon Peckham Chief Executive 3 March 2022» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046785/NI-000046785.pdf).
+- **L12-GB00BNR5MZ78-C02** · 2022 · [V] · `R1`. «The Strategic Report, as set out on pages 2 to 93, has been approved by the Board. Simon Peckham Chief Executive 2 March 2023» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000073602/NI-000073602.pdf).
