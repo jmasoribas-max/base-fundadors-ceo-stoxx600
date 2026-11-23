@@ -168,3 +168,4 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Dashboard regenerat amb les cites del lot 11.
   - Manifest recalculat.
 - **Jordi vol que Claude obri el PR de la branca:** Claude és l'encarregat d'acabar la base. El PR recull tot el que hi ha a la branca des del 23/11 (auditoria, pla, diari, eines d'estat i de traspàs, lot 11 i lot de correcció 1 preparat però no aplicat).
+- **PR obert:** [jmasoribas-max/base-fundadors-ceo-stoxx600#22](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/22) (de `claude/charming-mayer-ejb9ek` a `main`). No fusionat. Flux: DF valida → Doctorat (si toca metodologia) → Jordi fusiona.
