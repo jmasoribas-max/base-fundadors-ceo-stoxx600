@@ -143,3 +143,25 @@ Context per a Grok: Claude es fa càrrec de la base al repositori `jmasoribas-ma
 17. Codex continuarà fent lots en paral·lel? Si és així, qui els assigna, per evitar que dos agents treballin les mateixes files?
 18. On s'han de desar les còpies de les evidències (extractes o PDF): al repositori, a Zenodo o al Drive? Hi ha cap limitació de drets acordada?
 19. Continua vigent el pla de fer privat el repositori de treball i obrir-ne un de públic i net al final?
+
+## 7. Actualització després de les respostes de DF (23/11/2026, tarda)
+
+Font: `RESPOSTES_19_PREGUNTES_CLAUDE.md` de DF (no és al repositori; en conserva el resum el diari de treball, sessió 5).
+
+**El que canvia:**
+
+- **L'evidència de les certificades existeix i és localitzable.** r3e: una cita de classificació per fila amb URL i captura (2.065 de 2.122 files, per model); la cita del CEO no té camp propi. r4: les cites del CEO (`ceo_31_10.evidencies[]`) i de classificació, amb URL, captura i data, per a 1.666 files. La base ja té `sim_id_fila_r4`, que coincideix amb el mapa de DF, de manera que el mapa intern (`MAPA_FILES_r4_NO_PER_A_IA.csv`) no cal.
+- **Inventari antic:** `fonts_v75r2.csv` (8.310 fonts amb URL, captura i SHA). Les fonts X6 (5.026) tenen l'extracte desat però només 333 tenen la cita literal. Els extractes són al Drive (8.472 fitxers de text).
+- **Wayback.** L'arxivament a casa va acabar el 22/11: 4.550 URL amb captura (tot fins al lot 5; dels lots 6-10, només les URL que coincidien amb fonts anteriors). La verificació de cites a la captura corre al box de DF (a les 14:53 del 23/11: 11.709 `cita_ok`). Res d'això no és encara al registre.
+- **Columnes:** el CEO aplicat per disseny és `sim_ceo_aplicat`; `ceos` és heretat. `regles` no s'ha actualitzat en 24 files amb decisió de Doctorat, i n'hi ha 80 de P amb `cap` per revisar.
+
+**Fase 1, reordenada:**
+
+| Pas | Què | Qui |
+|---|---|---|
+| 1.0 | DF puja a una branca del repositori els fitxers que Claude necessita (llista al diari, sessió 5). Els fitxers del Drive són massa grans per llegir-los amb el connector | DF |
+| 1.1 | Script d'importació: de r4, cites de CEO i de classificació; de r3e, cites de classificació; de `fonts_v75r2.csv`, les fonts amb cita literal. Entren al registre com a entrades noves, marcades [NV] fins que es verifiquen | Claude |
+| 1.2 | Verificació de les cites importades: les que DF ja va verificar (estat `verificada` i cita literal als manifests) i, per a la resta, re-descàrrega i cerca literal | Claude |
+| 1.3 | PR que omple `url_wayback` i `cita_verificada_a_captura` amb els resultats de la verificació del box, quan acabi | Claude a partir dels CSV de DF; DF valida |
+| 1.4 | Nova passada d'arxivament a casa amb `estat/urls_per_arxivar.csv` | Jordi o DF |
+| 1.5 | Lot de coherència del CSV (`ceos`, `regles`, `motiu_nd`) segons les decisions de Jordi | Claude prepara; DF aplica; Jordi aprova |

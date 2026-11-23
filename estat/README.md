@@ -8,6 +8,7 @@ Aquesta carpeta conté el comptador únic de progrés de la base. Respon, per a 
 | [`estat_files.csv`](estat_files.csv) | Una fila per ISIN-any amb l'estat de cada condició (generat) |
 | [`RESUM_ESTAT.md`](RESUM_ESTAT.md) | Resum per etiqueta, embut, mancances, empreses i llista d'incoherències (generat) |
 | [`dubtes_tancats.csv`](dubtes_tancats.csv) | Files amb un dubte de `PENDENTS.md` ja tancat (s'hi afegeixen línies quan un PR tanca un dubte) |
+| [`llista_urls_arxiu.py`](llista_urls_arxiu.py) | Genera [`urls_per_arxivar.csv`](urls_per_arxivar.csv): les URL del registre amb cita que encara no tenen la cita verificada a una captura Wayback. És l'entrada de la passada d'arxivament (`wayback_arxiva.py`, a l'ordinador amb les claus) |
 
 ## Com s'executa
 

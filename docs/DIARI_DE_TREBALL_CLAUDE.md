@@ -14,8 +14,8 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %) |
 | Files amb evidència de CEO i de fundador (C1 i C2) | 4.107 de 6.012 (68,3 %) |
 | Files F amb C1 i C2 | 44 de 349 |
-| Fase del pla | Fase 0 (preparació): tasca 0.2 feta; esperant respostes de Grok (0.1) |
-| Pendent de Jordi | Respostes de Grok; canvi de permisos per a `scripts/` i `.github/` (sessió 4); OK per obrir el PR de la branca |
+| Fase del pla | Fase 0 feta (0.1 respostes rebudes, 0.2 script d'estat). Fase 1 esperant els fitxers de DF |
+| Pendent de Jordi | Les 10 decisions de DF (sessió 5); demanar a DF els fitxers; canvi de permisos per a `scripts/` i `.github/` (sessió 4); OK per obrir el PR de la branca |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -77,3 +77,26 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - `.claude/settings.json`: treure només `Edit(/scripts/**)` i `Edit(/.github/**)`. Es mantenen els bloquejos de push a `main`, de fusió i d'edició de `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*` i `.claude/`.
   - `CLAUDE.md` i `AGENTS.md`, línia 94: treure `scripts/` i `.github/` de la llista «No toquis mai» i afegir que Claude, com a coordinador de la base, els pot modificar en una branca i per PR que Jordi aprova i fusiona.
 - **Quan Jordi ho hagi fusionat:** Claude fusiona `main` a la seva branca, afegeix el pas de l'script d'estat al CI, actualitza les frases de `README.md` i `docs/PROTECCIO_BRANCA_MAIN.md` que diuen que Claude no toca `scripts/` ni `.github/`, i ho anota aquí. Pot caldre obrir una sessió nova perquè el canvi de permisos tingui efecte.
+
+### 23/11/2026 · Sessió 5 · Respostes de DF a les 19 preguntes
+
+- **Què s'ha rebut:** `RESPOSTES_19_PREGUNTES_CLAUDE.md`, de DF (via Jordi). No s'ha copiat al repositori; aquí en queda el resum operatiu.
+- **On és cada cosa (resum):**
+  - Sortides r3e (Drive `1jwCn3Eev6Ni5McBp1jEpQnEjpBQj8j61`): `SORTIDA_chatgpt_COMPLET.jsonl` (`1cMhGnfZlw3EcaTic-agFu5Ntrd_oD-Fs`) i `SORTIDA_claude_COMPLET.jsonl` (`1iOkn2Hz08Yq_7Dboxgkh2teiVZYRvrew`). Una cita de classificació per fila; el CEO només a `justificacio`.
+  - Sortides r4 (Drive `1ic68PNoqKOXURIpE7-MzQES4Zaj0BP2o`): `SORTIDA_chatgpt_COMPLETACIO.jsonl` (`12PYpFI4UPkNWQoFACsKjBwtyyM4GokhP`) i `SORTIDA_claude_COMPLETACIO.jsonl` (`1snomzCW0Ar8nYYfXnc2fgpud6289v19A`). Cites del CEO a `ceo_31_10.evidencies[]`; lligam per `id_fila` = `sim_id_fila_r4` de la base.
+  - Registres de verificació de la certificació (només al box): `CERTIFICACIO_parella_any_r3e.csv` i `MANIFEST_evidencies_web_r4.csv` (Claude 3.768 evidències, 2.708 verificades; ChatGPT 2.481, 946 verificades).
+  - Inventari antic: `fonts_v75r2.csv` (box i Drive `1Ze-INmZqhA07lp7y-PjaCZ9kI4QT8kE1`, 8.310 fonts). Extractes al Drive, carpeta `15zme4Bygi5mCC5SqZWbTyN4VM8_XHR9A` (8.472 fitxers).
+  - Wayback: arxivament acabat el 22/11 (`wayback_resultats_20261122.csv`, 4.550 URL); verificació en curs al box (`verificacio_cites_20261122.csv`). Lots 9 i 10 fora; lots 6-8 gairebé sense captura.
+- **Comprovacions de Claude:**
+  - Accés de lectura al Drive confirmat (metadades de 3 fitxers; 3-6,5 MB cadascun). No es poden llegir sencers pel connector (el contingut arribaria íntegre a la conversa), per això es demanen a DF en una branca.
+  - **GitHub Pages és actiu** (https://jmasoribas-max.github.io/base-fundadors-ceo-stoxx600/, HTTP 200). La branca `gh-pages` la va publicar el compte de Jordi el 23/11 a les 14:00 (commit `64ce9cc`). `dashboard/README.md` encara diu que no està publicat: cal corregir-ho.
+  - **«Proves de LSEG i Bloomberg»:** són 47 entrades amb URL de comunicats regulats RNS (`rns-pdf.londonstockexchange.com`), informes anuals de la mateixa LSEG (que és a la mostra, `GB00B0SWJX34`) i `assets.lsegissuerservices.com`, més articles de premsa de Bloomberg. Són documents públics, no dades amb llicència (Datastream, Workspace o el terminal de Bloomberg). Lectura de Claude [C]: no afecta l'A.5.
+- **Fet en aquesta sessió:** `estat/llista_urls_arxiu.py` i `estat/urls_per_arxivar.csv`: 6.579 URL del registre sense la cita verificada a la captura (5.559 sense `url_wayback`). Pla actualitzat (secció 7). Commit: vegeu `git log` d'aquesta data.
+- **Fitxers que cal demanar a DF** (a una branca del repositori, p. ex. `df/fitxers-per-claude`, carpeta `entrada_claude/`):
+  1. Les 4 sortides JSONL (r3e i r4, ChatGPT i Claude).
+  2. `CERTIFICACIO_parella_any_r3e.csv` i els dos `MANIFEST_evidencies_web_r4.csv`.
+  3. `fonts_v75r2.csv`.
+  4. `wayback_resultats_20261122.csv` i, quan acabi, `verificacio_cites_20261122.csv`.
+  5. Opcional, més endavant: els extractes X6 en un zip.
+  - No cal `MAPA_FILES_r4_NO_PER_A_IA.csv` (la base ja té `sim_id_fila_r4`) ni les evidències web en brut (9,7 GB).
+- **Decisions pendents de Jordi:** les 10 de DF, amb la recomanació de Claude al missatge del 23/11 (resumides a l'estat ràpid quan es resolguin).
