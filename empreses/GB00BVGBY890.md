@@ -34,3 +34,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `sense_sector` — cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font)
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L11-GB00BVGBY890-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Eamonn O’Hare Chairman and Chief Executive Officer 16 June 2026» [Font original](https://www.annualreports.com/HostedData/AnnualReports/PDF/LSE_ZEG_2026.pdf).

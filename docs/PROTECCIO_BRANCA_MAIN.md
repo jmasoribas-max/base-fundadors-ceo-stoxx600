@@ -19,8 +19,8 @@ Per això la protecció de `main` (decisió de Jordi, 19/11/2026 10:22) és:
 Com que Claude i Jordi comparteixen el mateix compte de GitHub, la protecció de branques no pot servir d'aprovació d'un segon revisor. La barrera real és la combinació de:
 
 1. **La protecció contra el push directe a `main`** (`enforce_admins=true`, PR obligatori, sense force push ni esborrat). GitHub ja rebutja qualsevol push directe a `main`, també si ve d'una ordre no emparellada pels permisos. Claude pot empènyer les seves branques i obrir un PR; no pot empènyer ni forçar `main`.
-2. **Els permisos de Claude Code** a `.claude/settings.json` (regles `deny`): bloqueja només el `git push` cap a `main` (p. ex. `origin main` o `:main`) i el force push (`--force` / `-f`); no bloqueja el push de les branques de Claude, necessari per obrir un PR. També bloqueja `gh pr merge` i `gh api` quan l'ordre conté `merge` o `protection`, i les eines d'edició (`Edit`/`Write`) sobre `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*`, `.github/` i `.claude/`.
-3. **`CLAUDE.md`**, que li prohibeix tocar `main`, fusionar i modificar aquests mateixos camins.
+2. **Els permisos de Claude Code** a `.claude/settings.json` (regles `deny`): bloqueja només el `git push` cap a `main` (p. ex. `origin main` o `:main`) i el force push (`--force` / `-f`); no bloqueja el push de les branques de Claude, necessari per obrir un PR. També bloqueja `gh pr merge` i `gh api` quan l'ordre conté `merge` o `protection`, i les eines d'edició (`Edit`/`Write`) sobre `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*` i `.claude/`. Des del 23/11/2026 (PR #21, decisió de Jordi) ja no bloqueja `scripts/` ni `.github/`: Claude, com a coordinador de la base, els pot modificar en una branca i per PR.
+3. **`CLAUDE.md`**, que li prohibeix tocar `main`, fusionar i modificar aquests mateixos camins (amb l'excepció de `scripts/`, `.github/` i els lots de correcció aprovats a `dades/`, secció 8).
 
 **Jordi és qui fusiona**, amb el botó de fusió del PR a GitHub, després que DF validi i Doctorat revisi la metodologia. Claude no ha de fusionar.
 
@@ -28,7 +28,7 @@ Com que Claude i Jordi comparteixen el mateix compte de GitHub, la protecció de
 
 | Actor | Permès | Prohibit |
 |---|---|---|
-| Claude Code | Crear branques, fer-hi commits, empènyer les seves branques, executar scripts en local, obrir un PR amb resum | Push directe a `main`, force push, fusionar un PR, esborrar `main`, editar els camins protegits |
+| Claude Code | Crear branques, fer-hi commits, empènyer les seves branques, executar scripts en local, obrir un PR amb resum; com a coordinador de la base (des del 23/11/2026), modificar `scripts/` i `.github/` i aplicar a `dades/` els lots de correcció aprovats per Jordi | Push directe a `main`, force push, fusionar un PR, esborrar `main`, editar `docs/METODOLOGIA.md`, `CLAUDE.md`, `AGENTS.md`, les regles i `.claude/` |
 | DF | Validar el PR (format, comptes, `scripts/valida_pr.py`, coherència) | Fusionar a `main` |
 | Doctorat | Revisar la metodologia del PR | Fusionar a `main` |
 | Jordi | Fusionar el PR a `main` amb el botó de GitHub | Push directe a `main` (la protecció també s'aplica als administradors) |
@@ -64,7 +64,7 @@ Limitació documentada oficialment [V]: una regla `Bash` emparella el text de l'
 
 ## 4. CODEOWNERS (documentació)
 
-`.github/CODEOWNERS` llista els camins que Claude no ha de modificar i els assigna a `@jmasoribas-max`. **No és un requisit de revisió a GitHub**, perquè amb un sol compte no es pot complir. Serveix de documentació i de guia, juntament amb les regles `Edit` de `.claude/settings.json`.
+`.github/CODEOWNERS` llista els camins protegits i els assigna a `@jmasoribas-max` (des del 23/11/2026, Claude pot modificar `scripts/` i `.github/` per PR; la resta, no). **No és un requisit de revisió a GitHub**, perquè amb un sol compte no es pot complir. Serveix de documentació i de guia, juntament amb les regles `Edit` de `.claude/settings.json`.
 
 Camins documentats: `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, `docs/REGLES*.md`, `.github/` i `.claude/`.
 

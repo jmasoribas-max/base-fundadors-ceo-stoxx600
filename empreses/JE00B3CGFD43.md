@@ -44,3 +44,7 @@ Cap entrada anterior al registre per als anys del lot.
 
 - **L10-JE00B3CGFD43-F01** · 2016 · [NV] · `revisio_font`. pendent_DF: La pàgina retorna una pantalla de protecció Incapsula sense el document (HTTP 200, 212 bytes). No es pot verificar la menció de Mark Dixon ni el vincle amb Regus. . Candidatura 1 (identitat_empresa). Font A. CEO oficial: Mark Dixon. Consulta del 23/11/2026. [Font original](https://www.iwgplc.com/en-gb/about-us).
 - **L10-JE00B3CGFD43-F02** · 2016 · [NV] · `revisio_font`. pendent_DF: La pàgina retorna una pantalla de protecció Incapsula sense el document (HTTP 200, 212 bytes). No es pot verificar la menció de Mark Dixon ni el vincle amb Regus. . Candidatura 2 (identitat_empresa). Font A. CEO oficial: Mark Dixon. Consulta del 23/11/2026. [Font original](https://www.iwgplc.com/en-gb/about-us).
+
+## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L11-JE00B3CGFD43-F01** · 2016 · [V] · `evidencia_fundador` (`cita_fundador`). «History and development The Regus business (“Regus”) was founded in 1989 by Mark Dixon, the Chief Executive, shortly before Regus opened its first business centre in Brussels.» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/documents/scheme-arrangement-documents/2-prospectus-of-iwg-plc-dated-3-november-2016.pdf).

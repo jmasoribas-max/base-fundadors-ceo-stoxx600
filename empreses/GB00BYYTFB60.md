@@ -43,3 +43,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L11-GB00BYYTFB60-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «by Richard Harpin, our CEO, 25 years ago in the UK» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/h/LSE_HSV_2018.pdf).
+- **L11-GB00BYYTFB60-C02** · 2019 · [V] · `evidencia_ceo` (`R1`). «running of the business rests with the Group Chief Executive, Richard Harpin» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/h/LSE_HSV_2019.pdf).
+- **L11-GB00BYYTFB60-C03** · 2020-2021 · [V] · `evidencia_ceo` (`R1`). «running of the business rests with the Group Chief Executive, Richard Harpin» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/h/LSE_HSV_2021.pdf).
+- **L11-GB00BYYTFB60-C04** · 2022 · [V] · `evidencia_ceo` (`R1`). «Richard Harpin, Founder and Chief Executive» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/h/LSE_HSV_2022.pdf).

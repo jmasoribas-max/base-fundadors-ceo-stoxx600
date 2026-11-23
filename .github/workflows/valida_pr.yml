@@ -16,3 +16,5 @@ jobs:
         run: python3 scripts/valida_pr.py
       - name: Comprova enllaços i cites (sense --live)
         run: python3 scripts/comprova_enllacos_cites.py
+      - name: Estat per fila al dia (sense xarxa)
+        run: python3 estat/estat_files.py --comprova

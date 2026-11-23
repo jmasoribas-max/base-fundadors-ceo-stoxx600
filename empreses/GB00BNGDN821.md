@@ -85,3 +85,7 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 
 - **L10-GB00BNGDN821-F01** · 2023 · [NV] · `revisio_font`. no_valida: La font és un agregador de nivell C. El text sobre el relleu de Simon Peckham i Peter Dilnot tampoc no identifica Peckham com a cofundador. MarketScreener, notícia de S&P Capital IQ, 07/03/2024. Candidatura 1 (prova_any). Font C. CEO oficial: Simon Peckham. Consulta del 23/11/2026. [Font original](https://www.marketscreener.com/quote/stock/MELROSE-INDUSTRIES-PLC-26487567/news/Melrose-Industries-PLC-Announces-CEO-Changes-46133895/).
 - **L10-GB00BNGDN821-F02** · 2023 · [NV] · `revisio_font`. pendent_DF: HTTP 202, 228 bytes. La pàgina només redirigeix a un CAPTCHA i no mostra l’article. Queda pendent la verificació externa per DF. . Candidatura 2 (identitat_empresa). Font B. CEO oficial: Simon Peckham. Consulta del 23/11/2026. [Font original](https://www.thebusinessdesk.com/westmidlands/news/2077477-melrose-founders-to-stand-down).
+
+## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L11-GB00BNGDN821-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «and Simon Peckham our Chief Executive, who have each served the Company since it was founded in 2003, and Geoffrey Martin who» [Font original](https://www.melroseplc.net/media/mejhotsg/melrose-2023-half-year-results-announcement.pdf).

@@ -30,3 +30,6 @@ Thumbs.db
 # Sortides locals de scripts
 *.log
 .cache/
+
+# Fitxer derivat de les entrades de DF (df/fitxers-per-claude); es regenera amb traspas/candidates_auditoria.py
+traspas/candidates_evidencia.csv
