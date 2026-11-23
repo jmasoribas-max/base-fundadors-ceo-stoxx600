@@ -40,3 +40,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada anterior al registre per als anys del lot.
+
+- **L10-JE00BYVQYS01-F01** · 2017 · [V] · `evidencia_fundador`. «International Workplace Group plc ("IWG" or the "Company") today announces three leadership changes. Mark Dixon, founder and current Chief Executive Officer, becomes Executive Chair.» El comunicat identifica Mark Dixon com a fundador d’IWG. Coincideix amb el CEO oficial dels anys del lot. International Workplace Group plc, «Announces Leadership Changes», comunicat via RNS del 16/06/2026, primer paràgraf. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Mark Dixon. Consulta del 23/11/2026. [Font original](https://www.investegate.co.uk/announcement/rns/iwg--iwg/iwg-plc-announces-leadership-changes/9619523).
+- **L10-JE00BYVQYS01-F02** · 2019-2021 · [V] · `evidencia_fundador`. «International Workplace Group plc ("IWG" or the "Company") today announces three leadership changes. Mark Dixon, founder and current Chief Executive Officer, becomes Executive Chair.» El comunicat identifica Mark Dixon com a fundador d’IWG. Coincideix amb el CEO oficial dels anys del lot. International Workplace Group plc, «Announces Leadership Changes», comunicat via RNS del 16/06/2026, primer paràgraf. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Mark Dixon. Consulta del 23/11/2026. [Font original](https://www.investegate.co.uk/announcement/rns/iwg--iwg/iwg-plc-announces-leadership-changes/9619523).

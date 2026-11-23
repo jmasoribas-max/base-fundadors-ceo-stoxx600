@@ -37,3 +37,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
+
+- **L10-GB00BFZZM640-F01** · 2021 · [NV] · `revisio_font`. «Sir Martin was Founder and CEO of WPP for 33 years, building it from a £1 million ‘shell’ company in 1985 into the world’s largest advertising and marketing services company.» no_valida: El passatge que anomena Sorrell fundador identifica WPP. La pàgina descriu la trajectòria de S4Capital des de 2018, però no atribueix a Sorrell la seva fundació. Our Story, apartat «Our leadership», Sir Martin Sorrell, s. d. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Martin Sorrell. Consulta del 23/11/2026. [Font original](https://www.s4capital.com/our-story).
+- **L10-GB00BFZZM640-F02** · 2021 · [V] · `evidencia_fundador`. «S4Capital plc (SFOR.L) is a new age/new era digital advertising and marketing services company established by Sir Martin Sorrell in May 2018.» El comunicat de S4Capital atribueix expressament la fundació de l’emissor el maig de 2018 a Sir Martin Sorrell, el CEO de l’any a la base. «MediaMonks deal with BizTech to expand capabilities and geographic coverage», 21/06/2019, p. 3, «About S4Capital». Candidatura 2 (identitat_empresa). Font A. CEO oficial: Martin Sorrell. Consulta del 23/11/2026. [Font original](https://www.s4capital.com/data/production/2020-02/S4Capital-MediaMonks-deal-with-BizTech-21.06.19.pdf?h.Ug3l.t6v68yw7874bj50Ic58Nestap=).
