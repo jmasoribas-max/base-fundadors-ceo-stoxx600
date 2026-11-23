@@ -48,3 +48,7 @@ Cap entrada anterior al registre per als anys del lot.
 ## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L11-JE00B3CGFD43-F01** · 2016 · [V] · `evidencia_fundador` (`cita_fundador`). «History and development The Regus business (“Regus”) was founded in 1989 by Mark Dixon, the Chief Executive, shortly before Regus opened its first business centre in Brussels.» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/documents/scheme-arrangement-documents/2-prospectus-of-iwg-plc-dated-3-november-2016.pdf).
+
+## Lot 12 · Cerca nova de cites de CEO
+
+- **L12-JE00B3CGFD43-C01** · 2016 · [V] · `R1`. «Overall, the trading outlook for 2017 remains in line with management’s expectations. Mark Dixon Chief Executive Officer 28 February 2017» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/131023445.pdf).

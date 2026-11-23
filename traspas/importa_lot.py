@@ -135,11 +135,43 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
     t = txt.read_text(encoding="utf-8")
     if t.startswith("#ERROR"):
         return "no_accessible", t[1:40]
+    if fn.exists() and fn.read_bytes()[:2] == b"PK":
+        # informe ESEF o paquet zip: text de tots els fitxers HTML/XHTML
+        import io
+        import zipfile
+        try:
+            z = zipfile.ZipFile(io.BytesIO(fn.read_bytes()))
+            parts = []
+            for nom in z.namelist():
+                if nom.lower().endswith((".xhtml", ".html", ".htm")) and z.getinfo(nom).file_size < 200_000_000:
+                    h = z.read(nom).decode("utf-8", "ignore")
+                    h = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h)
+                    parts.append(re.sub(r"<[^>]+>", " ", h))
+            if parts:
+                t = "\n".join(parts)
+        except Exception:  # noqa: BLE001
+            pass
     if len(t) < 1500:
         return "no_accessible", f"text de {len(t)} caràcters (bloqueig o pàgina amb JavaScript)"
     nc = norm_text(cita)
     if nc and nc[:250] in norm_text(t):
         return "trobada", f"{len(t)} caràcters de text"
+    textos = [t]
+    if fn.exists() and fn.read_bytes()[:4] == b"%PDF":
+        raw = fn.with_suffix(".raw.txt")
+        if not raw.exists():
+            try:
+                raw.write_text(subprocess.run(["pdftotext", "-q", "-raw", str(fn), "-"], capture_output=True,
+                                              timeout=180).stdout.decode("utf-8", "ignore"), encoding="utf-8")
+            except Exception:  # noqa: BLE001
+                raw.write_text("", encoding="utf-8")
+        tr = raw.read_text(encoding="utf-8")
+        textos.append(tr)
+        if nc and nc[:250] in norm_text(tr):
+            return "trobada", f"{len(tr)} caràcters de text (pdftotext -raw, PDF a columnes)"
+    sense = re.sub(r"\s+", "", nc[:250])
+    if sense and any(sense in re.sub(r"\s+", "", norm_text(x)) for x in textos):
+        return "trobada", "coincidència literal ignorant els espais (text extret amb espais trencats)"
     return "no_trobada", f"{len(t)} caràcters de text"
 
 

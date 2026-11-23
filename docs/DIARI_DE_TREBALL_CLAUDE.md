@@ -33,6 +33,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Accés: Claude també ha de poder aplicar a `dades/` els lots de correcció que Jordi aprovi (s'inclou a la petició a DF). |
 | 23/11/2026 | Claude té llibertat per vigilar els PR, crear una branca per lot i fer la feina proposada, sempre que tingui el control de tot i sigui correcte per a la base final amb evidència vàlida per al doctorat. |
 | 23/11/2026 | **DF ja no porta res de la base: ho porta tot Claude.** En acabar, es passarà a DF un document amb tots els passos seguits fins a la base final, perquè n'estigui al cas. |
+| 23/11/2026 | Punt 1 (permisos per editar `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`): ho executarà Grok amb un prompt. Punt 3: sí a l'última entrega de DF (verificació Wayback). Punt 2: endavant amb el procés automàtic a GitHub per a Wayback. |
 | 23/11/2026 | Fonts de LSEG, Bloomberg, LexisNexis i similars: tot el que és públic al web es pot fer servir, encara que provingui d'aquestes fonts. Mai no s'ha fet servir cap base de dades privada seva. Deixa sense efecte l'avís de la sessió 7. |
 
 ## Entrades
@@ -186,3 +187,60 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Files incoherents: de 51 a 3 (Knorr-Bremse 2019-2020 i Pandora 2018).
   - Nous SHA: CSV `d55dd688…0034`, xlsx `8ffdf24f…acbfac`.
   - Validadors: 0 problemes. Dashboard i manifest regenerats.
+
+### 23/11/2026 · Sessió 11 · Cerca de CEO del grup F (en curs) i Wayback a GitHub
+
+- **Branca:** `cas/cerca-ceo-f`, a partir de `cas/correccio1`.
+- **Intervals amb cites existents:** amb les cites candidates ja verificades, només 11 de les 232 files F sense CEO es poden cobrir per interval (regla 28); a la majoria els falta la cita del nomenament. Cal una cerca nova.
+- **ESEF:** els informes electrònics ESEF de filings.xbrl.org no cobreixen prou (en una empresa de prova, només el 2025). No serveixen com a via general.
+- **Prova pilot (Galapagos 2017-2021):** cita literal del CEO trobada per a 4 dels 5 anys als informes anuals del web de l'emissor, en pocs minuts.
+- **Cerca en paral·lel:** sis agents, uns 11 per empresa cadascun ([`traspas/cerca_ceo_f_llista.csv`](../traspas/cerca_ceo_f_llista.csv)), amb normes estrictes:
+  - document de l'exercici o interval de la regla 28;
+  - cita literal del document baixat;
+  - fonts A/B, sense agregadors ni Wayback;
+  - discrepàncies i files no trobades declarades.
+  - Els resultats s'escriuen fora del repositori; **Claude els verificarà per script (re-descàrrega i cerca literal) abans d'escriure res al registre.**
+- **Decisions de Jordi:**
+  - Grok farà el canvi de permisos (punt 1).
+  - Sí a l'última entrega de DF (punt 3).
+  - Endavant amb el procés automàtic de Wayback a GitHub (punt 2).
+- **PR #24 (Grok, permisos 2):** revisat. Treu de `deny` `Edit(/CLAUDE.md)` i `Edit(/docs/METODOLOGIA.md)` i amplia l'excepció a `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`. CI correcte. La frase de l'excepció encara diu «que DF valida»; Claude la corregirà quan actualitzi el flux. Pendent que Jordi el fusioni.
+- **Scripts de Wayback de DF** (branca `df/fitxers-per-claude`, commit `529f1d0`): llegits sencers abans d'usar-los. `wayback_arxiva.py` només envia les claus a web.archive.org (capçalera d'autenticació) i no les imprimeix; `verifica_cites.py` no fa servir claus i només baixa captures de web.archive.org. Els SHA coincideixen amb els declarats per DF.
+- **PR [jmasoribas-max/base-fundadors-ceo-stoxx600#25](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/25):** Wayback a GitHub Actions (branca `cas/wayback-github`, a partir de `main`).
+  - Execució cada 6 hores o a mà, reprenible, amb els resultats a la branca `wayback-dades`.
+  - Xifres de partida: 7.287 URL de fonts amb cita, 3.193 ja arxivades i 4.094 per arxivar.
+  - Cal que Jordi posi els secrets `IA_S3_ACCESS` i `IA_S3_SECRET`.
+  - Limitació coneguda: si una captura falla per error de xarxa després dels reintents, `verifica_cites.py` la marca `captura_no_llegible` i no la torna a provar. Caldrà una opció de reintent quan es portin els resultats al registre.
+
+### 23/11/2026 · Sessió 12 · PR #22, #23, #24 i #25 fusionats; balanç de l'estat
+
+- **Fusionats per Jordi:** #24 (permisos per a `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`), #25 (Wayback a GitHub Actions), #22 (auditoria, eines d'estat i lot 11) i #23 (lot de correcció 1, inclòs el buidatge dels motius de ND). Jordi ha posat els secrets `IA_S3_ACCESS` i `IA_S3_SECRET`.
+- **Conflicte del PR #22:** només a `MANIFEST_SHA256.csv`. S'ha resolt fusionant `main` a la branca i regenerant el manifest; propagat a `cas/correccio1` i `cas/cerca-ceo-f`.
+- **Wayback:** primera execució llançada a les 16:24 (run 45204845355); revisió programada a les 19:00.
+- **Cerca de CEO del grup F:** han acabat quatre dels sis agents (lots 1, 3, 5 i 6: 160 files, totes amb cita trobada, una per interval). Verificació independent dels lots 1, 3 i 6: 114 de 116 files [V] (2 cites [NV] perquè no s'han pogut tornar a baixar). Falten els lots 2 i 4.
+- **Estat de `main` després del #23:**
+
+  | Condició | Files |
+  |---|---:|
+  | Evidència de CEO i de fundador (C1 i C2) | 4.168 de 6.012 (69,3 %) |
+  | … F | 99 de 349 |
+  | Coherència del CSV | 3 files incoherents (eren 51) |
+  | Dubtes oberts | 264 |
+  | Arxivades i verificades a Wayback (C3) | 279 (4,6 %) |
+  | Acabades (les quatre condicions) | 278 (4,6 %) |
+
+### 23/11/2026 · Sessió 13 · Lot 12: cerca nova de cites de CEO del grup F
+
+- **Cerca:** sis agents (lots de cerca 1-6, 66 empreses i 232 files). Tots van trobar la cita: 260 `trobat` i 13 intervals, sense cap `no_trobat` ni `discrepancia`. Totes les fonts són de nivell A: emissor, reguladors (FCA NSM, AFM, CNMV, DILA/AMF) o canals oficials de comunicats.
+- **Verificació independent de Claude:** totes les cites s'han tornat a baixar i buscar literalment. Se n'accepten 285, totes [V]: 284 confirmades per re-descàrrega i 1 al fitxer baixat per la cerca.
+- **Correccions del verificador durant la feina:**
+  1. Títols que no reconeixia: Gérant(e)s, President of the Management Board, Co-CEOs, «Management Board of CD PROJEKT S.A. … President of the Board».
+  2. PDF a columnes (`pdftotext -raw`), informes ESEF en zip i textos amb espais trencats.
+  3. Un error propi: l'importador decidia per fila i no per persona, i descartava els intervals dels co-CEO quan un altre CEO de la mateixa fila tenia cita de l'exercici. Es va desfer l'escriptura, es va corregir i es va tornar a executar.
+- **Escrit:** 262 entrades al registre (`origen=proposta_claude_lot12`), cites a 66 fitxes, [`lots/lot12_README.md`](../lots/lot12_README.md). Nova secció de `PENDENTS.md`, «Dubtes del lot 12 (cerca de CEO del grup F)», amb 6 grups de criteri (23 files), que l'script d'estat ara llegeix.
+- **Patrons de títol ampliats a `estat/estat_files.py`** (avís de càrrec i filtre dels importadors).
+- **Resultat:**
+  - Grup F: 337 de 349 files amb cita de CEO (abans 105) i 282 completes (abans 99).
+  - Base: C1 i C2, 4.351 de 6.012 (72,4 %).
+- **Queden 12 files F sense la condició del CEO:** 10 amb cita `[NV]` del lot 11 i 2 de co-CEO on la cita retallada al lot 11 només anomena un dels dos (Zalando 2023, Adyen 2023). Es reprenen en un lot petit.
+- **Lliçó per a l'importador del lot 11:** quan hi ha diversos CEO, el retall de la cita ha de començar al primer nom, no al més proper al mot clau.

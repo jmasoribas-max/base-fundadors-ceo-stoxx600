@@ -51,3 +51,8 @@ Cap entrada anterior al registre per als anys del lot.
 ## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L11-GB00BNYK8G86-F01** · 2021-2022 · [V] · `evidencia_fundador` (`cita_fundador`). «About Poppy Gustafsson Poppy was part of the team of mathematicians, business people and intelligence experts who founded Darktrace in 2013 and brought its AI-powered cybersecurity solutions to market.» [Font original](https://www.darktrace.com/news/poppy-gustafsson-to-step-down-as-ceo-of-darktrace-jill-popelka-appointed-successor).
+
+## Lot 12 · Cerca nova de cites de CEO
+
+- **L12-GB00BNYK8G86-C01** · 2021 · [V] · `R1`. «Poppy Gustafsson OBE Chief Executive Officer 7th September 2022» [Font original](https://ir.darktrace.com/download/Darktrace_Annual_Report_FY2022_Web.pdf).
+- **L12-GB00BNYK8G86-C02** · 2022 · [V] · `R1`. «Poppy Gustafsson OBE Chief Executive Officer 5th September 2023» [Font original](https://ir.darktrace.com/download/Darktrace_Annual_Report_FY2023_Web.pdf).
