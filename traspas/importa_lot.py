@@ -16,7 +16,7 @@ Criteris de selecció:
   Prioritat: ja verificada per script de DF; després document de l'exercici (CEO); no
             agregador; nivell A.
   Si cap candidata no està verificada i s'usa --verifica, Claude baixa el document original
-  i hi busca la cita literal. Si la troba: [V]; si no s'obre: [NV] amb pendent_DF.
+  i hi busca la cita literal. Si la troba: [V]; si no s'obre: [NV] amb pendent_arxiu (abans pendent_DF).
 
 Per defecte és una prova en sec (només recomptes). Amb --escriu afegeix les entrades al
 registre i les cites a les fitxes.
@@ -57,10 +57,12 @@ AGREGADORS = ("annualreports.com", "companiesmarketcap.com", "marketscreener.com
 REGULADORS = ("sec.gov", "cnmv.es", "amf-france.org", "londonstockexchange.com", "company-information.service.gov.uk",
               "fca.org.uk", "consob.it", "bundesanzeiger.de", "unternehmensregister.de", "euronext.com", "nasdaq.com",
               "six-group.com", "ser-ag.com", "oslobors.no", "newsweb.no", "finanstilsynet", "knf.gov.pl", "gpw.pl",
-              "borsaitaliana.it", "fi.se", "dfsa.dk", "cbi.ie", "afm.nl", "fsma.be", "cmvm.pt", "bolsamadrid.es")
+              "borsaitaliana.it", "fi.se", "dfsa.dk", "cbi.ie", "afm.nl", "fsma.be", "cmvm.pt", "bolsamadrid.es",
+              "dila.gouv.fr", "journal-officiel.gouv.fr", "info-financiere.fr")
 PLATAFORMES = ("cision.com", "globenewswire.com", "eqs.com", "eqs-news.com", "businesswire.com", "prnewswire.com",
                "mfn.se", "investegate.co.uk", "mynewsdesk.com", "filings.xbrl.org", "financialreports.eu",
-               "investis.com", "q4cdn.com", "rns-pdf", "emarketstorage", "1info.it", "lsegissuerservices.com")
+               "investis.com", "q4cdn.com", "rns-pdf", "emarketstorage", "1info.it", "lsegissuerservices.com",
+               "ritzau.dk", "pressetext.com")
 FUNDACIO = re.compile(r"found|fundad|fundat|fundador|grunder|grundare|grundlag|grundet|grunnla|gegrund|grunde"
                       r"|fondat|fondateur|fondatrice|fondee|fonde par|oprichter|opgericht|perustaja|perusti"
                       r"|zalozyciel|zalozyl|stiftet|stifter|set up|established|started the|launched the"
@@ -115,9 +117,11 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
     txt = fn.with_suffix(".txt")
     if not txt.exists():
         try:
-            p = subprocess.run(["curl", "-sSL", "--max-time", "60", "--max-filesize", "80000000",
-                                "-A", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-                                "-o", str(fn), "-w", "%{http_code}", url], capture_output=True, text=True, timeout=90)
+            # filings.xbrl.org refusa els agents de navegador i accepta el de curl
+            ua = [] if domini(url) == "filings.xbrl.org" else [
+                "-A", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"]
+            p = subprocess.run(["curl", "-sSL", "--max-time", "120", "--max-filesize", "150000000", *ua,
+                                "-o", str(fn), "-w", "%{http_code}", url], capture_output=True, text=True, timeout=150)
             code = p.stdout.strip()
         except Exception as ex:  # noqa: BLE001
             return "no_accessible", f"error {str(ex)[:60]}"
@@ -173,6 +177,79 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
     if sense and any(sense in re.sub(r"\s+", "", norm_text(x)) for x in textos):
         return "trobada", "coincidència literal ignorant els espais (text extret amb espais trencats)"
     return "no_trobada", f"{len(t)} caràcters de text"
+
+
+ANY_RE = re.compile(r"\b(20[12]\d)\b")
+PARTIT_RE = re.compile(r"\b(20\d\d)\s*[/-]\s*(\d\d)\b(?![-/]\d)")
+
+
+def text_cache(url: str) -> str:
+    """Text del document (el baixa amb verifica() si encara no és a la memòria cau); '' si no s'obre."""
+    verifica(url, "")
+    fn = CACHE / hashlib.sha256(url.encode()).hexdigest()
+    txt = fn.with_suffix(".txt")
+    t = txt.read_text(encoding="utf-8") if txt.exists() else ""
+    if t.startswith("#ERROR"):
+        return ""
+    if fn.exists() and fn.read_bytes()[:2] == b"PK":
+        import io
+        import zipfile
+        try:
+            z = zipfile.ZipFile(io.BytesIO(fn.read_bytes()))
+            parts = []
+            for nom in z.namelist():
+                if nom.lower().endswith((".xhtml", ".html", ".htm")) and z.getinfo(nom).file_size < 200_000_000:
+                    h = z.read(nom).decode("utf-8", "ignore")
+                    h = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h)
+                    parts.append(re.sub(r"<[^>]+>", " ", h))
+            if parts:
+                t = "\n".join(parts)
+        except Exception:  # noqa: BLE001
+            pass
+    return html.unescape(t)
+
+
+def any_dominant(t: str) -> tuple[int | None, bool]:
+    """Any que més surt al text (2010-2027) i si el document té exercicis partits (2019/20)."""
+    c = collections.Counter(int(m) for m in ANY_RE.findall(t) if 2010 <= int(m) <= 2027)
+    partits = sum(1 for a, b in PARTIT_RE.findall(t) if (int(a) + 1) % 100 == int(b))
+    return (c.most_common(1)[0][0] if c else None), partits >= 8
+
+
+def any_fitxer(url: str) -> int | None:
+    m = re.findall(r"(20[12]\d)", urlparse(url).path.rsplit("/", 1)[-1])
+    return int(m[-1]) if m else None
+
+
+_EXERCICI: dict = {}
+
+
+def exercici_ok(c: dict, any_fila: int) -> tuple[bool, str]:
+    """El document de la cita de CEO és de l'exercici que inclou el 31/10 de la fila?
+
+    Informe llarg (>= 150.000 caràcters): l'any dominant del text ha de ser el de la fila (o l'any
+    següent si l'exercici és partit, p. ex. 2019/20). Document curt (comunicat): la data del document
+    ha de ser de l'any de la fila. Si el document no s'obre: l'any del nom del fitxer o, si no en té,
+    la data del document, han de ser l'any de la fila.
+    """
+    clau = (c["url"], any_fila, c.get("data_document") or "")
+    if clau in _EXERCICI:
+        return _EXERCICI[clau]
+    t = text_cache(c["url"])
+    y = any_doc(c)
+    if len(t) >= 150_000:
+        fy, partit = any_dominant(t)
+        ok = fy == any_fila or (partit and fy == any_fila + 1)
+        res = (ok, f"any dominant del document: {fy}{' (exercici partit)' if partit else ''}")
+    elif len(t) >= 1500:
+        ok = (y == any_fila) if y else (any_dominant(t)[0] == any_fila)
+        res = (ok, f"document curt; data: {c.get('data_document') or 'sense data'}")
+    else:
+        yf = any_fitxer(c["url"])
+        ok = (yf == any_fila) if yf else (y == any_fila)
+        res = (ok, f"document no accessible; any del fitxer: {yf}, data: {c.get('data_document') or 'sense data'}")
+    _EXERCICI[clau] = res
+    return res
 
 
 def frases(text: str) -> list[str]:
@@ -369,7 +446,7 @@ def main() -> int:
                 primera_nv = (c, det)
         if primera_nv:
             c, det = primera_nv
-            return c, "[NV]", "Claude (script traspas/importa_lot.py, 23/11/2026)", f"pendent_DF: {det}"
+            return c, "[NV]", "Claude (script traspas/importa_lot.py, 23/11/2026)", f"pendent_arxiu: {det}"
         return None, "", "", ""
 
     for k in lot:
@@ -389,6 +466,8 @@ def main() -> int:
                 if not curta or SORTIDA.search(EF.norm(curta)) or persona_conflictiva(curta, noms):
                     continue
                 cands.append(dict(c, cita_original=c["cita_literal"], cita_literal=curta))
+            # CLAUDE.md §3: el document ha de ser de l'exercici que inclou el 31/10 (no el de l'any anterior)
+            cands = [dict(c, exercici=exercici_ok(c, any_fila)[1]) for c in cands if exercici_ok(c, any_fila)[0]]
             c, marca, model, det = tria(k, "ceo", cands, lambda c: puntua_ceo(c, any_fila))
             if c and marca in ("[V]", "[NV]"):
                 t = tries.setdefault((k[0], "ceo", c["url"], c["cita_literal"]), {"c": c, "anys": [], "marca": marca, "model": model, "det": det})
@@ -475,9 +554,7 @@ def main() -> int:
             if marca_prova == "R1" and re.search(r"executive chair", nc) and not re.search(
                     r"\bceo\b|chief executive|directeur general|director general|consejero delegado|amministratore delegato|vorstand", nc):
                 marca_prova = "R3"
-            y = any_doc(c)
-            exer = "document de l'exercici" if y and any(y in (a, a + 1) for a in t["anys"]) else \
-                (f"document de {y}: no és de l'exercici; cal un document de l'exercici o un interval (regla 28)" if y else "data del document no indicada")
+            exer = f"document de l'exercici ({c.get('exercici') or 'sense comprovació'})"
         else:
             toks = [x for x in (r.get("regles") or "").replace("|", ";").split(";") if x and x != "cap"]
             pref = EF.REGLES_SI if r.get("FounderCEO") == "1" else EF.REGLES_NO
