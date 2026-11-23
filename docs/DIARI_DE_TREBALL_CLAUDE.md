@@ -12,8 +12,8 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Última actualització | 23/11/2026, sessió 14 |
 | `main` de referència | `0ad59fc` (PR #27) |
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %): falta sobretot l'arxiu a Wayback (C3) |
-| Files amb evidència de CEO i de fundador (C1 i C2) | 4.361 de 6.012 (72,5 %), amb el lot 13 |
-| Files F | 349 de 349 amb cita de CEO; 292 amb cita de fundador (falten 57, de 22 empreses) |
+| Files amb evidència de CEO i de fundador (C1 i C2) | 4.628 de 6.012 (77,0 %), amb els lots 13-16 (C1: 5.204, 86,6 %) |
+| Files F | 338 de 349 amb cita de CEO; 329 amb cita de fundador; 318 amb les dues |
 | Fase del pla | Fase 1: grup F gairebé tancat (falta la cita de fundador de 57 files). Fase 2 en curs: files P (lot 14, traspàs de l'auditoria; lot 15, informes ESEF de l'exercici) |
 | Pendent de Jordi | Fusionar el PR del lot 13. Dubtes de criteri (paquet en preparació) |
 | Flux nou | Claude prepara, valida (scripts i comprovació independent) i obre els PR; Jordi aprova i fusiona. Wayback, a GitHub Actions. DF queda fora (document final per a DF quan s'acabi) |
@@ -282,4 +282,9 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Lot 15 (ESEF):** en execució. Informe de l'exercici trobat per a 415 de les 793 files 2020-2025 sense cita de CEO.
 - **Paquet de criteris per a Jordi:** [`docs/PAQUET_CRITERIS_20261123.md`](PAQUET_CRITERIS_20261123.md), amb 10 punts. El més important és el primer. Un control estricte mostra que, de les 4.224 files P amb C2 per registre, només unes 420 tenen cites amb totes les parts de la prova (el control té falsos negatius). Proposo calcular la C2 de les P per parts i completar-les per empresa (any de fundació) i per persona (naixement, carrera).
 - **Wayback:** escrit `scripts/wayback/porta_al_registre.py`, que portarà els resultats de la branca `wayback-dades` al registre quan acabi la primera execució.
+- **Lot 15 (cites de CEO dels informes oficials), a la branca `cas/lot15-esef`:**
+  - Fonts: ESEF (filings.xbrl.org, 2020-2025, amb l'exercici de les metadades) i FCA NSM (emissors britànics, amb la data de tancament llegida a l'informe).
+  - 508 entrades `[V]` i 502 files més amb cita de CEO.
+  - He afinat els filtres en tres rondes de revisió de mostres: un cognom dins el nom d'una altra societat, taules, una altra persona entre el nom i el títol, text amb les lletres separades, i «does» com a verb.
+  - Queden 804 files sense cita de CEO (411 del 2016-2019 i 393 del 2020-2025).
 

@@ -62,3 +62,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-GB00BYW0PQ60-C01** · 2023-2024 · [V] · `evidencia_ceo` (`R1`). «Mark Allan, Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000098174/NI-000098174.pdf).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BYW0PQ60-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «CEO Mark Allan» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000027331/NI-000027331.pdf).
+- **L15-GB00BYW0PQ60-C02** · 2021 · [V] · `evidencia_ceo` (`R1`). «Mark Allan Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000052729/NI-000052729.pdf).
+- **L15-GB00BYW0PQ60-C03** · 2022 · [V] · `evidencia_ceo` (`R1`). «Mark Allan Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000076547/NI-000076547.pdf).
+- **L15-GB00BYW0PQ60-C04** · 2025 · [V] · `evidencia_ceo` (`R1`). «MARK ALLAN CHIEF EXECUTIVE» [Font original](https://filings.xbrl.org/213800V8IAVKS37D6B88/2026-03-31/ESEF/GB/0/213800V8IAVKS37D6B88-2026-03-31/reports/213800V8IAVKS37D6B88-2026-03-31-T01.xhtml).

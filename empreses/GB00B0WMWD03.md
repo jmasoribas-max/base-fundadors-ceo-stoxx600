@@ -46,3 +46,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-GB00B0WMWD03-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Steve Wadey joined QinetiQ as Chief Executive Officer (CEO) on 27 April 2015» [Font original](https://www.qinetiq.com/-/media/1f7d8bbd559b4c55987cf4e96e488779.ashx).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00B0WMWD03-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Steve Wadey Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/136269739.pdf).
+- **L15-GB00B0WMWD03-C02** · 2022 · [V] · `evidencia_ceo` (`R1`). «CEO Steve Wadey» [Font original](https://filings.xbrl.org/213800S8OBDOZMCMUW34/2023-03-31/ESEF/GB/0/213800S8OBDOZMCMUW34-2023-03-31/reports/213800S8OBDOZMCMUW34-2023-03-31-T01.xhtml).
+- **L15-GB00B0WMWD03-C03** · 2023 · [V] · `evidencia_ceo` (`R1`). «Steve Wadey Group Chief» [Font original](https://filings.xbrl.org/213800S8OBDOZMCMUW34/2024-03-31/ESEF/GB/0/213800S8OBDOZMCMUW34-2024-03-31/reports/213800S8OBDOZMCMUW34-2024-03-31-T01.xhtml).
+- **L15-GB00B0WMWD03-C04** · 2024 · [V] · `evidencia_ceo` (`R1`). «In the interests of clarit y , CEO refers to Steve Wadey» [Font original](https://filings.xbrl.org/213800S8OBDOZMCMUW34/2025-03-31/ESEF/GB/0/213800S8OBDOZMCMUW34-2025-03-31/reports/213800S8OBDOZMCMUW34-2025-03-31-T01.xhtml).

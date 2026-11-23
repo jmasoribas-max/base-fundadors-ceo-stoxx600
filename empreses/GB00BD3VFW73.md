@@ -62,3 +62,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-GB00BD3VFW73-C01** · 2019 · [V] · `evidencia_ceo` (`R1`). «Karim Bitar took up the role of Chief Executive Officer in September» [Font original](https://companiesmarketcap.com/annual-reports/56068.ar.en.2019.pdf).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BD3VFW73-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «Karim Bitar Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000021795/NI-000021795.pdf).
+- **L15-GB00BD3VFW73-C02** · 2022 · [V] · `evidencia_ceo` (`R1`). «Karim Bitar CEO» [Font original](https://filings.xbrl.org/213800LS272L4FIDOH92/2022-12-31/ESEF/GB/0/213800LS272L4FIDOH92-2022-12-31/reports/213800LS272L4FIDOH92-2022-12-31-T01.html).
+- **L15-GB00BD3VFW73-C03** · 2023 · [V] · `evidencia_ceo` (`R1`). «Karim Bitar CEO» [Font original](https://filings.xbrl.org/213800LS272L4FIDOH92/2023-12-31/ESEF/GB/0/213800LS272L4FIDOH92-2023-12-31/reports/213800LS272L4FIDOH92-2023-12-31-T01.html).
+- **L15-GB00BD3VFW73-C04** · 2024 · [V] · `evidencia_ceo` (`R1`). «Karim Bitar CEO» [Font original](https://filings.xbrl.org/213800LS272L4FIDOH92/2024-12-31/ESEF/GB/0/213800LS272L4FIDOH92-2024-12-31/reports/213800LS272L4FIDOH92-2024-12-31-T01.html).

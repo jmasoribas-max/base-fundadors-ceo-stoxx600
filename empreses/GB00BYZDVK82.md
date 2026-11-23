@@ -50,3 +50,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BYZDVK82-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Graeme Watt (CEO)» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000085054/NI-000085054.pdf).

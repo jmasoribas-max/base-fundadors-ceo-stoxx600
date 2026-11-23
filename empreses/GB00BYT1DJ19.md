@@ -54,3 +54,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BYT1DJ19-C01** · 2021 · [V] · `evidencia_ceo` (`R1`). «Benoît Durteste CEO» [Font original](https://filings.xbrl.org/549300OGASR5WRKJ8R68/2022-03-31/ESEF/GB/0/549300OGASR5WRKJ8R68-2022-03-31/reports/549300OGASR5WRKJ8R68-2022-03-31-T01.xhtml).
+- **L15-GB00BYT1DJ19-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Benoît Durteste has been ICG’ s Chief Executive» [Font original](https://filings.xbrl.org/549300OGASR5WRKJ8R68/2024-03-31/ESEF/GB/0/549300OGASR5WRKJ8R68-2024-03-31/reports/549300OGASR5WRKJ8R68-2024-03-31-T01.xhtml).
+- **L15-GB00BYT1DJ19-C03** · 2024 · [V] · `evidencia_ceo` (`R1`). «Benoît Durteste CEO» [Font original](https://filings.xbrl.org/549300OGASR5WRKJ8R68/2025-03-31/ESEF/GB/0/549300OGASR5WRKJ8R68-2025-03-31/reports/549300OGASR5WRKJ8R68-2025-03-31-T01.xhtml).

@@ -47,7 +47,8 @@ ANTERIOR = re.compile(r"previous|previously|prior to|before joining|formerly|for
                       r"|ex-|ehemalig|tidigare|tidligere|aiemmin|in precedenza|voorheen|eerder")
 ADJUNT = re.compile(r"deputy|vice[- ]|stellvertret|delegue|adjoint|adjunt|deputy chief|assistant|\bcoo\b|\bcfo\b(?! and)")
 ALTRA = re.compile(r"(?:chief executive(?: officer)?|ceo|managing director|directeur general|director general"
-                   r"|consejero delegado|amministratore delegato|vorstandsvorsitzender)\s+(?:of|at|de|du|der|des|di|del|bei|chez)\s+"
+                   r"|consejero delegado|amministratore delegato|vorstandsvorsitzender|administrador-delegado|presidente executivo"
+                   r"|verkstallande direktor|vd)\s+(?:of|at|de|du|der|des|di|del|da|do|della|bei|chez|i|i\.)\s+"
                    r"((?:[\w&'.-]+\s+){0,3}[\w&'.-]+)")
 
 
@@ -74,6 +75,50 @@ FUTUR = re.compile(r"will (be|become|take|assume|succeed|join|step|hand|remain)|
                    r"|deviendra|prendra|succedera|wird .{0,40}(ubernehmen|nachfolgen)|sucedera|asumira")
 ALTRES_ROLS = re.compile(r"\b(cfo|coo|cto|chair|chairman|member|director|officer|vorstand|e\.h|mitglied|secretary)\b")
 TRACT = {"mr", "mrs", "ms", "dr", "prof", "herr", "frau", "m", "mme", "sir", "dame", "dott", "ing", "mag", "dipl"}
+
+
+CURTS_OK = {"of", "de", "du", "da", "do", "di", "la", "le", "el", "et", "en", "i", "y", "e", "a", "&", "and", "och", "og", "og",
+            "the", "to", "in", "on", "at", "by", "as", "is", "vd", "ceo", "co", "ag", "se", "sa", "nv", "bv", "plc", "mr", "ms", "dr",
+            "m.", "-", "–", "•", "|", "(", ")", "der", "des", "den", "het", "van", "von", "zu", "af", "al", "il", "lo", "su"}
+
+
+def trencament(w: str) -> float:
+    """Proporció de «paraules» d'una o dues lletres que no són paraules curtes normals (text amb lletres separades)."""
+    toks = re.findall(r"[^\s]+", w)
+    if not toks:
+        return 0.0
+    curts = [t for t in toks if len(t.strip(".,;:()«»\"'")) <= 2 and t.lower().strip(".,;:()") not in CURTS_OK
+             and not t.strip(".,;:()").isdigit()]
+    return len(curts) / len(toks)
+
+
+def nom_ok(nw: str, nom: str) -> bool:
+    """Nom de pila + cognom, o tots els mots del cognom; un sol cognom curt no n'hi ha prou si n'hi ha més."""
+    toks = [t for t in EF.tokens_nom(nom) if t]
+    pila = EF.norm(nom.split()[0]) if nom.split() else ""
+    hi = [t for t in toks if re.search(r"(?<![\w])" + re.escape(t) + r"(?![\w])", nw)]
+    if not hi:
+        return False
+    if pila and re.search(r"(?<![\w])" + re.escape(pila) + r"(?![\w])", nw):
+        return True
+    return len(hi) == len(toks)
+
+
+TITOLS_MOTS = {"Chief", "Executive", "Officer", "Group", "Managing", "Director", "President", "Board", "Chairman", "Chair",
+               "The", "Company", "Vorstand", "Vorsitzender", "Directeur", "Général", "General", "Consejero", "Delegado",
+               "Amministratore", "Delegato", "CEO", "Our", "Annual", "Report", "Executive,", "Officer,"}
+
+
+def altra_persona(entre: str, nom: str) -> bool:
+    propis = {x.strip(".,()").lower() for x in re.split(r"[\s-]+", nom) if x}
+    for m in re.finditer(r"\b([A-ZÀ-Þ][a-zà-ÿ'’-]+|[A-ZÀ-Þ]{2,})\s+([A-ZÀ-Þ][a-zà-ÿ'’-]+|[A-ZÀ-Þ]{2,})\b", entre):
+        a, b = m.group(1), m.group(2)
+        if a in TITOLS_MOTS or b in TITOLS_MOTS:
+            continue
+        if a.lower() in propis or b.lower() in propis:
+            continue
+        return True
+    return False
 
 
 def fragments(t: str, nom: str, nom_panell: str) -> list[tuple[tuple, str]]:
@@ -125,7 +170,21 @@ def fragments(t: str, nom: str, nom_panell: str) -> list[tuple[tuple, str]]:
                 continue
             vistos.add(w)
             nw = EF.norm(w)
-            if not EF.anomena(nw, nom) or not EF.CARRECS.search(nw):
+            if not EF.anomena(nw, nom) or not nom_ok(nw, nom) or not EF.CARRECS.search(nw):
+                continue
+            # el cognom ha de sortir com a nom propi (majúscula), no com a paraula comuna («does», «young»…)
+            cognoms = [x for x in re.split(r"[\s-]+", nom)[1:] if len(x) >= 3 and EF.norm(x) not in EF.PARTICULES]
+            if cognoms and not any(re.search(r"(?<![\w])(" + re.escape(x) + "|" + re.escape(x.upper()) + r")(?![\w])", w)
+                                   for x in cognoms):
+                continue
+            if re.search(r"\b\d{1,3}[,.]\d{3}\b|\d\s?%", w):
+                continue  # taules (accions, percentatges)
+            # entre el nom i el títol no hi pot haver el nom d'una altra persona
+            if k.start() >= e:
+                entre = tt[mapa[min(e, len(mapa) - 1)]:mapa[min(k.start(), len(mapa) - 1)]]
+            else:
+                entre = tt[mapa[min(k.end(), len(mapa) - 1)]:mapa[min(s, len(mapa) - 1)]]
+            if altra_persona(entre, nom):
                 continue
             if IL.SORTIDA.search(nw) or ANTERIOR.search(nw) or FUTUR.search(nw) or IL.persona_conflictiva(w, [nom]):
                 continue
@@ -140,7 +199,10 @@ def fragments(t: str, nom: str, nom_panell: str) -> list[tuple[tuple, str]]:
                 continue
             w = re.sub(r"\s+\d{1,2}\.?$", "", w)
             pila = EF.norm(nom.split()[0]) if nom.split() else ""
-            out.append(((bool(pila) and pila in nw, -gap, -len(w)), w))
+            trencat = trencament(w)
+            if trencat > 0.3:
+                continue  # text amb les lletres separades: massa risc de llegir malament el càrrec
+            out.append(((bool(pila) and pila in nw, -round(trencat, 1), -gap, -len(w)), w))
     out.sort(reverse=True)
     return out
 
@@ -276,7 +338,9 @@ def main() -> int:
                 r"\bceo\b|chief executive|directeur general|director general|consejero delegado|amministratore delegato|vorstand", nc):
             marca_prova = "R3"
         ex = t_["info"].get("exercici")
-        origen_doc = (f"informe anual de l'exercici {ex} (ESEF, metadades del dipòsit oficial)" if ex else
+        origen_doc = ((f"informe anual de l'exercici tancat el {ex} (ESEF, metadades del dipòsit oficial)"
+                       if t_["info"].get("font") == "esef_filings.xbrl.org" else
+                       f"informe anual de l'exercici tancat el {ex} (FCA NSM; data de tancament llegida a l'informe)") if ex else
                       f"any dominant del document; el document ja era a l'auditoria o al registre ({t_['info']['font']})")
         notes = (f"Frase extreta per script del document original de l'exercici {', '.join(str(a) for a in sorted(set(t_['anys'])))} "
                  f"({origen_doc}). "

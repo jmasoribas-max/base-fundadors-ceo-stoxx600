@@ -56,3 +56,7 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-GB00BMBVGQ36-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Cook, CEO of Harbour Energy» [Font original](https://www.harbourenergy.com/news-and-media/announcements-and-latest-news/board-change-2022/).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BMBVGQ36-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «Cook Chief Executive» [Font original](https://filings.xbrl.org/213800YPC42DYBKVPF97/2023-12-31/ESEF/GB/0/213800YPC42DYBKVPF97-2023-12-31/reports/213800YPC42DYBKVPF97-2023-12-31-T01.html).

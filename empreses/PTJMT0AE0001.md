@@ -53,3 +53,8 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-PTJMT0AE0001-C01** · 2024 · [V] · `evidencia_ceo` (`R1`). «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://reports.jeronimomartins.com/annual-report/2024/_assets/downloads/entire-jeronimomartins-ar24.pdf?h=-sb8wExq).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-PTJMT0AE0001-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Pedro Soares dos Santos Presidente e CEO» [Font original](https://filings.xbrl.org/259400A8SZP10GB5IB19/2022-12-31/ESEF/PT/0/000320-2022-12-31/reports/000320-2022-12-31.xhtml).
+- **L15-PTJMT0AE0001-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Pedro Soares dos Santos Presidente e CEO» [Font original](https://filings.xbrl.org/259400A8SZP10GB5IB19/2023-12-31/ESEF/PT/0/000320-2023-12-31/reports/000320-2023-12-31.xhtml).

@@ -65,3 +65,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BVFNZH21-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Kevin Hostetler Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/215761084.pdf).
+- **L15-GB00BVFNZH21-C02** · 2019 · [V] · `evidencia_ceo` (`R1`). «Kevin Hostetler Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/272002576.pdf).
+- **L15-GB00BVFNZH21-C03** · 2020 · [V] · `evidencia_ceo` (`R1`). «CEO Kevin Hostetler» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000022510/NI-000022510.pdf).
+- **L15-GB00BVFNZH21-C04** · 2021 · [V] · `evidencia_ceo` (`R1`). «Kevin Hostetler, Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046470/NI-000046470.pdf).

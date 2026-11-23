@@ -5,7 +5,7 @@ Fitxer generat per `estat/estat_files.py`. No l'editis a mà. Definicions a [`es
 Entrades llegides:
 
 - `dades/base_isin_any_v8r3.csv` SHA-256 `d55dd6883ceb21b7e589ec666c9a9fdca93247ac31e4bb964174616c78980034`
-- `docs/REGISTRE_CANVIS.csv` SHA-256 `aa4286b0244b2a3dbcc771cde190edc1778c416dc94b16d084e09ff185d11df1` (12.317 entrades)
+- `docs/REGISTRE_CANVIS.csv` SHA-256 `cb0d7eaf2b6a1ed38f85566e3a6f4a18d1302abd2cedfadb1e1f2b032fecc0c8` (12.825 entrades)
 - `PENDENTS.md` SHA-256 `2e76be2ddb6feea280fdab299fdf747d6963b511aff9b625cd7afb33ed04a951`
 - `estat/dubtes_tancats.csv` SHA-256 `f64b2f2642272a7a80460e503ba0f26b631a2eb0db74b66941df0038cf6c4714`
 
@@ -13,19 +13,19 @@ Entrades llegides:
 
 | Etiqueta | Files | C1 CEO | C2 fundador | C1 i C2 | C4 coherent i sense dubtes | C3 arxiu | **Acabades** |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| F (`1`) | 349 | 331 (94,8 %) | 329 (94,3 %) | 311 (89,1 %) | 219 (62,8 %) | 0 (0,0 %) | **0 (0,0 %)** |
-| P (`0`) | 5.631 | 4.343 (77,1 %) | 4.592 (81,5 %) | 4.142 (73,6 %) | 5.509 (97,8 %) | 278 (4,9 %) | **278 (4,9 %)** |
+| F (`1`) | 349 | 338 (96,8 %) | 329 (94,3 %) | 318 (91,1 %) | 219 (62,8 %) | 0 (0,0 %) | **0 (0,0 %)** |
+| P (`0`) | 5.631 | 4.838 (85,9 %) | 4.592 (81,5 %) | 4.282 (76,0 %) | 5.509 (97,8 %) | 278 (4,9 %) | **278 (4,9 %)** |
 | NA | 31 | 27 (87,1 %) | 27 (87,1 %) | 27 (87,1 %) | 24 (77,4 %) | 0 (0,0 %) | **0 (0,0 %)** |
 | ND | 1 | 1 (100,0 %) | 1 (100,0 %) | 1 (100,0 %) | 0 (0,0 %) | 1 (100,0 %) | **0 (0,0 %)** |
-| **Total** | 6.012 | 4.702 (78,2 %) | 4.949 (82,3 %) | 4.481 (74,5 %) | 5.752 (95,7 %) | 279 (4,6 %) | **278 (4,6 %)** |
+| **Total** | 6.012 | 5.204 (86,6 %) | 4.949 (82,3 %) | 4.628 (77,0 %) | 5.752 (95,7 %) | 279 (4,6 %) | **278 (4,6 %)** |
 
 ## Embut
 
 | Pas | Files |
 |---|---:|
 | Panell | 6.012 |
-| Amb evidència de CEO i de fundador (C1 i C2) | 4.481 (74,5 %) |
-| … i coherents, sense dubtes oberts (C4) | 4.300 (71,5 %) |
+| Amb evidència de CEO i de fundador (C1 i C2) | 4.628 (77,0 %) |
+| … i coherents, sense dubtes oberts (C4) | 4.445 (73,9 %) |
 | … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 278 (4,6 %) |
 
 ## Què falta, per condició
@@ -34,7 +34,7 @@ Una fila pot tenir més d'una mancança.
 
 | Mancança | F | P | NA | ND | Total |
 |---|---:|---:|---:|---:|---:|
-| `falta_ceo` | 18 | 1.288 | 4 | 0 | 1.310 |
+| `falta_ceo` | 11 | 793 | 4 | 0 | 808 |
 | `falta_fundador` | 20 | 1.039 | 4 | 0 | 1.063 |
 | `incoherent` | 0 | 3 | 0 | 0 | 3 |
 | `dubte_obert` | 130 | 119 | 7 | 1 | 257 |
@@ -44,12 +44,12 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c1_ceo` | Files |
 |---|---:|
-| `ok` | 4.675 |
-| `falta` | 1.224 |
-| `cita_sense_nom` | 79 |
+| `ok` | 5.177 |
+| `falta` | 741 |
+| `cita_sense_nom` | 62 |
 | `rsc_documentat` | 27 |
 | `falta_rsc` | 4 |
-| `co_ceo_parcial` | 3 |
+| `co_ceo_parcial` | 1 |
 
 | Valor de `c2_fundador` | Files |
 |---|---:|
@@ -62,10 +62,10 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c3_arxiu` | Files |
 |---|---:|
-| `falta_ceo+fundador` | 3.957 |
-| `sense_evidencia` | 1.531 |
+| `falta_ceo+fundador` | 4.097 |
+| `sense_evidencia` | 1.384 |
 | `ok` | 279 |
-| `falta_ceo` | 172 |
+| `falta_ceo` | 179 |
 | `falta_fundador` | 72 |
 | `falta_fundador_columna_antiga` | 1 |
 
@@ -73,17 +73,17 @@ Una fila pot tenir més d'una mancança.
 
 | Estat antic | Files | C1 i C2 | Acabades |
 |---|---:|---:|---:|
-| `certificada` | 1.773 | 379 (21,4 %) | 0 (0,0 %) |
+| `certificada` | 1.773 | 507 (28,6 %) | 0 (0,0 %) |
 | `certificada_ceo_pendent` | 108 | 108 (100,0 %) | 0 (0,0 %) |
 | `no_certificada` | 241 | 241 (100,0 %) | 1 (0,4 %) |
-| `fora_mostra_auditoria` | 3.890 | 3.753 (96,5 %) | 277 (7,1 %) |
+| `fora_mostra_auditoria` | 3.890 | 3.772 (97,0 %) | 277 (7,1 %) |
 
 ## Per empresa (ISIN)
 
 | | Totes les files amb C1 i C2 | Totes les files acabades | Total |
 |---|---:|---:|---:|
-| Empreses amb almenys un any F | 63 | 0 | 88 |
-| Totes les empreses | 728 | 32 | 1.040 |
+| Empreses amb almenys un any F | 67 | 0 | 88 |
+| Totes les empreses | 748 | 32 | 1.040 |
 
 ## Incoherències del CSV (3 files)
 
