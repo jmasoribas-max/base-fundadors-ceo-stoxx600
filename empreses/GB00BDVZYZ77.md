@@ -58,3 +58,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
+
+- **L10-GB00BDVZYZ77-F01** · 2021-2022 · [V] · `evidencia_context`. «With origins dating back to 1516, Royal Mail is one of the oldest organisations in the world.» La pàgina corporativa d’International Distribution Services, a la qual redirigeix l’adreça original de Royal Mail, data el negoci postal i descriu la xarxa reial de 1516. Evidència de context. En tots dos anys l’etiqueta és NA_sense_ceo i el camp ceos és buit. No hi ha CEO a classificar. Our History, presentació i cronologia de 1516, s. d. Candidatura 1 (identitat_empresa). Font A. Etiqueta oficial NA_sense_ceo; sense CEO a classificar. Consulta del 23/11/2026. [Font original](https://www.royalmailgroup.com/en/about-us/our-history/).

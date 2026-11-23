@@ -68,3 +68,9 @@ Les cites no s'han reescrit; són literals de les fonts d'origen d'aquest reposi
 - 2025: sector `pendent_extensio_2024_2025` — No s'estén el sector de l'any de la font (any_font=2021) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada de registre anterior aplicable als anys del lot.
+
+- **L10-PLOPTTC00011-F01** · 2018-2021 · [V] · `evidencia_fundador`. «Back when Michał Kiciński and myself were establishing the company, I don’t think either of us would have been able to imagine this incredible journey, not even in our wildest dreams – summarizes Marcin Iwiński.» Marcin Iwiński identifica Michał Kiciński i ell mateix com els fundadors; Marcin és un dels dos CEO oficials. Adam Kiciński és l’altre CEO i la cita no li atribueix la fundació. History, fita del 2022, declaració de Marcin Iwiński; consulta 23/11/2026. Candidatura 1 (identitat_empresa). Font A. CEO oficial: Adam Kiciński|Marcin Iwiński. Consulta del 23/11/2026. [Font original](https://www.cdprojekt.com/en/capital-group/history/).

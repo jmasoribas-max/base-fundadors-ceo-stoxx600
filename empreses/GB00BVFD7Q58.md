@@ -45,3 +45,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 10 · Traspàs de cites de classificació
+
+Cap entrada anterior al registre per als anys del lot.
+
+- **L10-GB00BVFD7Q58-F01** · 2017 · [NV] · `revisio_font`. no_valida: L’article documenta la fusió i la codirecció de Martin Gilbert i Keith Skeoch. No identifica cap dels dos com a fundador. Financier Worldwide, Dealfront, Mergers & Acquisitions, octubre de 2017. Candidatura 1 (identitat_empresa). Font B. CEO oficial: Keith Skeoch|Martin Gilbert. Consulta del 23/11/2026. [Font original](https://www.financierworldwide.com/aberdeen-asset-and-standard-life-complete-11bn-merger).
