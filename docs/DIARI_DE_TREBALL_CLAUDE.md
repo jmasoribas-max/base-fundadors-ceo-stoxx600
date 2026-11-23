@@ -211,3 +211,20 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Xifres de partida: 7.287 URL de fonts amb cita, 3.193 ja arxivades i 4.094 per arxivar.
   - Cal que Jordi posi els secrets `IA_S3_ACCESS` i `IA_S3_SECRET`.
   - Limitació coneguda: si una captura falla per error de xarxa després dels reintents, `verifica_cites.py` la marca `captura_no_llegible` i no la torna a provar. Caldrà una opció de reintent quan es portin els resultats al registre.
+
+### 23/11/2026 · Sessió 12 · PR #22, #23, #24 i #25 fusionats; balanç de l'estat
+
+- **Fusionats per Jordi:** #24 (permisos per a `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`), #25 (Wayback a GitHub Actions), #22 (auditoria, eines d'estat i lot 11) i #23 (lot de correcció 1, inclòs el buidatge dels motius de ND). Jordi ha posat els secrets `IA_S3_ACCESS` i `IA_S3_SECRET`.
+- **Conflicte del PR #22:** només a `MANIFEST_SHA256.csv`. S'ha resolt fusionant `main` a la branca i regenerant el manifest; propagat a `cas/correccio1` i `cas/cerca-ceo-f`.
+- **Wayback:** primera execució llançada a les 16:24 (run 45204845355); revisió programada a les 19:00.
+- **Cerca de CEO del grup F:** han acabat quatre dels sis agents (lots 1, 3, 5 i 6: 160 files, totes amb cita trobada, una per interval). Verificació independent dels lots 1, 3 i 6: 114 de 116 files [V] (2 cites [NV] perquè no s'han pogut tornar a baixar). Falten els lots 2 i 4.
+- **Estat de `main` després del #23:**
+
+  | Condició | Files |
+  |---|---:|
+  | Evidència de CEO i de fundador (C1 i C2) | 4.168 de 6.012 (69,3 %) |
+  | … F | 99 de 349 |
+  | Coherència del CSV | 3 files incoherents (eren 51) |
+  | Dubtes oberts | 264 |
+  | Arxivades i verificades a Wayback (C3) | 279 (4,6 %) |
+  | Acabades (les quatre condicions) | 278 (4,6 %) |
