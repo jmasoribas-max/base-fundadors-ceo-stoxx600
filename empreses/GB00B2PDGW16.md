@@ -53,3 +53,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00B2PDGW16-C01** · 2017 · [V] · `evidencia_ceo` (`R1`). «Stephen Clarke is Group Chief Executive and joined the Board of WH Smith in June» [Font original](https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/21119-whsmiths-ar17-web-2017-10-25.pdf).

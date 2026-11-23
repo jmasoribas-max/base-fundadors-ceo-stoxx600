@@ -52,3 +52,7 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 
 - **CO1-130** · 2022 · `regles`: «cita_fundador» → «e». P per la prova e; regles deia cita_fundador
 - **CO1-131** · 2023 · `regles`: «cita_fundador» → «e». P per la prova e; regles deia cita_fundador
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00BMBVGQ36-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Cook, CEO of Harbour Energy» [Font original](https://www.harbourenergy.com/news-and-media/announcements-and-latest-news/board-change-2022/).

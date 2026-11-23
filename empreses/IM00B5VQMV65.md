@@ -64,3 +64,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-IM00B5VQMV65-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «Stella David was appointed Interim CEO on 13 December 2023, replacing Jette Nygaard-Andersen.» [Font original](https://www.entaingroup.com/media/wxxf1k1s/2023-entain-annual-report-2023.pdf).

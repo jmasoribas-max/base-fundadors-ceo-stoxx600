@@ -265,4 +265,10 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - `traspas/extreu_ceo_documents.py` hi busca una frase literal amb el nom del CEO i el càrrec. Filtra les sortides, els càrrecs anteriors o futurs, els adjunts i els càrrecs en altres entitats.
   - En una prova amb 41 files, n'ha cobert 29 amb cites com «Johan Thijs (CEO)» o «Herbert Eibensteiner Vorsitzender des Vorstands».
 - **Wayback:** la primera execució (run 45204845355) continua en marxa.
+- **Lot 14 escrit (branca `cas/lot14-traspas-p`, apilada sobre el lot 13):**
+  - 256 files P amb cita de CEO de l'exercici i 102 amb prova de no fundador completa.
+  - En revisar mostres he endurit el criteri dues vegades abans d'escriure (vegeu [`lots/lot14_README.md`](../lots/lot14_README.md)). Primer, l'exercici del document de CEO. Després, que cada prova de no fundador tingui totes les parts i que cada cita contingui la seva. Cada vegada he desfet l'escriptura i l'he tornada a fer.
+- **Revisió del lot 11 (tasca de l'exercici):** 18 entrades de CEO usaven un document d'un altre exercici per a algun any. 8 passen a `[NV]` `no_valida` i 10 redueixen els anys, amb la nota corresponent. El grup F passa a 331 de 349 files amb cita de CEO fins que es trobin les noves.
+- **Cerca de fundadors F (dos agents):** el primer ha acabat (8 de 11 empreses amb cita vàlida; contradiccions a Cellnex, Merlin i la co-CEO de Rubis 2023-2024). Queda pendent el segon.
+- **Per a Jordi (paquet de criteris):** la condició C2 de les files P compta ara la columna antiga `font_classificacio_cita`. Sovint és una sola cita que no conté totes les parts de la prova. Cal decidir si s'exigeixen les parts (com al lot 14) a tota la base.
 

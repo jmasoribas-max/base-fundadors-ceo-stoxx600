@@ -58,3 +58,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00BKFB1C65-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Andrea Rossi was appointed as Group Chief Executive Officer on 10 October 2022 and Kathryn McLeland was appointed» [Font original](https://www.mandg.com/~/media/Files/M/MandG-Plc/annual-report-2022/mandg-ar22-governance-report.pdf).
+- **L14-GB00BKFB1C65-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Andrea Rossi Group Chief Executive Officer» [Font original](https://www.mandg.com/~/media/Files/M/MandG-Plc/documents/investors/2024/mgplc-ara23-interactive-4-4-24.pdf).
+- **L14-GB00BKFB1C65-C03** · 2025 · [V] · `evidencia_ceo` (`R1`). «Andrea Rossi Group Chief Executive Officer» [Font original](https://filings.xbrl.org/254900TWUJUQ44TQJY84/2025-12-31/ESEF/GB/0/254900TWUJUQ44TQJY84-2025-12-31/reports/254900TWUJUQ44TQJY84-2025-12-31-T01.html).

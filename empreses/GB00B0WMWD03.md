@@ -42,3 +42,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00B0WMWD03-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Steve Wadey joined QinetiQ as Chief Executive Officer (CEO) on 27 April 2015» [Font original](https://www.qinetiq.com/-/media/1f7d8bbd559b4c55987cf4e96e488779.ashx).

@@ -70,3 +70,7 @@ Anys contrastats en aquesta passada 2022–2023.
 - 2023. L’informe anual 2023 de Daimler Truck identifica Daum com a president del consell de direcció.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-DE000DTR0CK8-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Karin Rådström President & CEO» [Font original](https://www.daimlertruck.com/fileadmin/user_upload/documents/investors/reports/annual-reports/2025/daimler-truck-ir-annual-report-2025-incl-combined-management-report-dth-ag.pdf).
