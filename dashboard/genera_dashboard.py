@@ -677,7 +677,7 @@ def pagina(ctx: Context, *, titol: str, descripcio: str, cos: str, prefix: str,
 <div class="peu-in">
 <p>Generat per <code>dashboard/genera_dashboard.py</code> a partir del repositori. Commit de referència de <code>main</code>: <code>{esc(ctx.commit)}</code>{data}.</p>
 <p><code>dades/base_isin_any_v8r3.csv</code> SHA-256 <code>{esc(ctx.sha_base)}</code> · <code>docs/REGISTRE_CANVIS.csv</code> SHA-256 <code>{esc(ctx.sha_registre)}</code></p>
-<p>Prototip estàtic: no està publicat a GitHub Pages. La metodologia que mana és la del <a href="{REPO_GITHUB}" target="_blank" rel="noopener noreferrer">repositori</a>; aquest lloc no la substitueix.</p>
+<p>Versió provisional, publicada a GitHub Pages mentre la base està en revisió final. La metodologia que mana és la del <a href="{REPO_GITHUB}" target="_blank" rel="noopener noreferrer">repositori</a>; aquest lloc no la substitueix.</p>
 </div>
 </footer>
 </body>
@@ -1341,7 +1341,7 @@ def pagina_fitxa(ctx: Context, e: dict, anterior: dict | None, seguent: dict | N
 def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
     gh = f"{REPO_GITHUB}/blob/main"
     docs = [
-        ("docs/METODOLOGIA.md", "Resum de les regles R1-R3, de les proves de fundador i dels criteris N1/N2."),
+        ("docs/METODOLOGIA.md", "Porta d'entrada a la metodologia vigent (v0.10.10), amb el text complet."),
         ("AGENTS.md", "Instruccions de treball i annex normatiu (regles 25 a 29, METODOLOGIA v0.10.10)."),
         ("docs/LIMITACIONS.md", "Limitacions declarades de la base."),
         ("docs/DICCIONARI_CAMPS.md", "Diccionari de camps de la base."),
@@ -1400,7 +1400,7 @@ def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
 {avis(ctx)}
 <div class="text-llarg">
 <section class="seccio"><h2>La metodologia que mana</h2>
-<p>La metodologia vigent és la del repositori: les instruccions de treball del repositori (<code>AGENTS.md</code>, que incorpora les regles 25 a 29 i cita la METODOLOGIA v0.10.10) i els documents als quals remeten. <code>docs/METODOLOGIA.md</code> n'és un resum. Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
+<p>La metodologia vigent és la del repositori: les instruccions de treball del repositori (<code>AGENTS.md</code>, que incorpora les regles 25 a 29 i cita la METODOLOGIA v0.10.10) i els documents als quals remeten. El text complet de la metodologia vigent (v0.10.10) és a <code>docs/METODOLOGIA_3_Articles_v0.10.10.md</code>. Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
 <ul class="docs">{docs_html}</ul>
 </section>
 <section class="seccio"><h2>La unitat: empresa i any</h2>

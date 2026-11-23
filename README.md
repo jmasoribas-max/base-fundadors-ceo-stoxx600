@@ -46,7 +46,7 @@ Les instruccions per configurar la protecció de `main` a GitHub (PR obligatori,
 | [`empreses/`](empreses/) | Una fitxa `empreses/{ISIN}.md` per cada ISIN |
 | [`dades/`](dades/) | Base `base_isin_any_v8r3.csv` / `.xlsx` i `sector_icb_v8r3.csv` |
 | [`docs/DICCIONARI_CAMPS.md`](docs/DICCIONARI_CAMPS.md) | Diccionari de camps |
-| [`docs/METODOLOGIA.md`](docs/METODOLOGIA.md) | Resum de les regles R1-R3 i dels criteris N1/N2 (el que no està documentat es marca [NV]) |
+| [`docs/METODOLOGIA.md`](docs/METODOLOGIA.md) | Porta d'entrada a la metodologia vigent (v0.10.10, text complet a `docs/METODOLOGIA_3_Articles_v0.10.10.md`) |
 | [`docs/REGISTRE_CANVIS.md`](docs/REGISTRE_CANVIS.md) | Registre de canvis i cites |
 | [`docs/LIMITACIONS.md`](docs/LIMITACIONS.md) | Limitacions de la base |
 | [`docs/QA.md`](docs/QA.md) | Control de qualitat |
