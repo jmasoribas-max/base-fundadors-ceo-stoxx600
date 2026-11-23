@@ -204,3 +204,10 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Grok farà el canvi de permisos (punt 1).
   - Sí a l'última entrega de DF (punt 3).
   - Endavant amb el procés automàtic de Wayback a GitHub (punt 2).
+- **PR #24 (Grok, permisos 2):** revisat. Treu de `deny` `Edit(/CLAUDE.md)` i `Edit(/docs/METODOLOGIA.md)` i amplia l'excepció a `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`. CI correcte. La frase de l'excepció encara diu «que DF valida»; Claude la corregirà quan actualitzi el flux. Pendent que Jordi el fusioni.
+- **Scripts de Wayback de DF** (branca `df/fitxers-per-claude`, commit `529f1d0`): llegits sencers abans d'usar-los. `wayback_arxiva.py` només envia les claus a web.archive.org (capçalera d'autenticació) i no les imprimeix; `verifica_cites.py` no fa servir claus i només baixa captures de web.archive.org. Els SHA coincideixen amb els declarats per DF.
+- **PR [jmasoribas-max/base-fundadors-ceo-stoxx600#25](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/25):** Wayback a GitHub Actions (branca `cas/wayback-github`, a partir de `main`).
+  - Execució cada 6 hores o a mà, reprenible, amb els resultats a la branca `wayback-dades`.
+  - Xifres de partida: 7.287 URL de fonts amb cita, 3.193 ja arxivades i 4.094 per arxivar.
+  - Cal que Jordi posi els secrets `IA_S3_ACCESS` i `IA_S3_SECRET`.
+  - Limitació coneguda: si una captura falla per error de xarxa després dels reintents, `verifica_cites.py` la marca `captura_no_llegible` i no la torna a provar. Caldrà una opció de reintent quan es portin els resultats al registre.
