@@ -68,6 +68,7 @@ def a_local(desc: Path | None, url: str, cita: str) -> bool:
         try:
             if cap.startswith(b"%PDF"):
                 t = subprocess.run(["pdftotext", "-q", str(p), "-"], capture_output=True, timeout=180).stdout.decode("utf-8", "ignore")
+                t += "\n" + subprocess.run(["pdftotext", "-q", "-raw", str(p), "-"], capture_output=True, timeout=180).stdout.decode("utf-8", "ignore")
             elif p.suffix.lower() in (".html", ".htm", ".txt", ".xhtml", "") or cap.startswith(b"<"):
                 t = p.read_bytes().decode("utf-8", "ignore")
                 t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", t)
@@ -76,7 +77,8 @@ def a_local(desc: Path | None, url: str, cita: str) -> bool:
                 continue
         except Exception:  # noqa: BLE001
             continue
-        if nc and nc in IL.norm_text(t):
+        nt = IL.norm_text(t)
+        if nc and (nc in nt or re.sub(r"\s+", "", nc) in re.sub(r"\s+", "", nt)):
             return True
     return False
 
