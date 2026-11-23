@@ -280,4 +280,6 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Grup F: 329 de 349 files amb cita de fundador.
   - Importador nou: `traspas/importa_fundador.py`. A més, `FUNDACIO` admet «fonder» i «setting up».
 - **Lot 15 (ESEF):** en execució. Informe de l'exercici trobat per a 415 de les 793 files 2020-2025 sense cita de CEO.
+- **Paquet de criteris per a Jordi:** [`docs/PAQUET_CRITERIS_20261123.md`](PAQUET_CRITERIS_20261123.md), amb 10 punts. El més important és el primer. Un control estricte mostra que, de les 4.224 files P amb C2 per registre, només unes 420 tenen cites amb totes les parts de la prova (el control té falsos negatius). Proposo calcular la C2 de les P per parts i completar-les per empresa (any de fundació) i per persona (naixement, carrera).
+- **Wayback:** escrit `scripts/wayback/porta_al_registre.py`, que portarà els resultats de la branca `wayback-dades` al registre quan acabi la primera execució.
 
