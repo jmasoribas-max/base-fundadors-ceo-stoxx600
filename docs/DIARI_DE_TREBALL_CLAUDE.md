@@ -33,6 +33,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Accés: Claude també ha de poder aplicar a `dades/` els lots de correcció que Jordi aprovi (s'inclou a la petició a DF). |
 | 23/11/2026 | Claude té llibertat per vigilar els PR, crear una branca per lot i fer la feina proposada, sempre que tingui el control de tot i sigui correcte per a la base final amb evidència vàlida per al doctorat. |
 | 23/11/2026 | **DF ja no porta res de la base: ho porta tot Claude.** En acabar, es passarà a DF un document amb tots els passos seguits fins a la base final, perquè n'estigui al cas. |
+| 23/11/2026 | Punt 1 (permisos per editar `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`): ho executarà Grok amb un prompt. Punt 3: sí a l'última entrega de DF (verificació Wayback). Punt 2: endavant amb el procés automàtic a GitHub per a Wayback. |
 | 23/11/2026 | Fonts de LSEG, Bloomberg, LexisNexis i similars: tot el que és públic al web es pot fer servir, encara que provingui d'aquestes fonts. Mai no s'ha fet servir cap base de dades privada seva. Deixa sense efecte l'avís de la sessió 7. |
 
 ## Entrades
@@ -186,3 +187,20 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Files incoherents: de 51 a 3 (Knorr-Bremse 2019-2020 i Pandora 2018).
   - Nous SHA: CSV `d55dd688…0034`, xlsx `8ffdf24f…acbfac`.
   - Validadors: 0 problemes. Dashboard i manifest regenerats.
+
+### 23/11/2026 · Sessió 11 · Cerca de CEO del grup F (en curs) i Wayback a GitHub
+
+- **Branca:** `cas/cerca-ceo-f`, a partir de `cas/correccio1`.
+- **Intervals amb cites existents:** amb les cites candidates ja verificades, només 11 de les 232 files F sense CEO es poden cobrir per interval (regla 28); a la majoria els falta la cita del nomenament. Cal una cerca nova.
+- **ESEF:** els informes electrònics ESEF de filings.xbrl.org no cobreixen prou (en una empresa de prova, només el 2025). No serveixen com a via general.
+- **Prova pilot (Galapagos 2017-2021):** cita literal del CEO trobada per a 4 dels 5 anys als informes anuals del web de l'emissor, en pocs minuts.
+- **Cerca en paral·lel:** sis agents, uns 11 per empresa cadascun ([`traspas/cerca_ceo_f_llista.csv`](../traspas/cerca_ceo_f_llista.csv)), amb normes estrictes:
+  - document de l'exercici o interval de la regla 28;
+  - cita literal del document baixat;
+  - fonts A/B, sense agregadors ni Wayback;
+  - discrepàncies i files no trobades declarades.
+  - Els resultats s'escriuen fora del repositori; **Claude els verificarà per script (re-descàrrega i cerca literal) abans d'escriure res al registre.**
+- **Decisions de Jordi:**
+  - Grok farà el canvi de permisos (punt 1).
+  - Sí a l'última entrega de DF (punt 3).
+  - Endavant amb el procés automàtic de Wayback a GitHub (punt 2).
