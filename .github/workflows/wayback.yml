@@ -1,0 +1,106 @@
+# Arxivament a Wayback i verificació de les cites a la captura (sense tocar main).
+#
+# Cada execució: (1) recupera els resultats anteriors de la branca `wayback-dades`;
+# (2) prepara la llista d'URL de les fonts amb cita; (3) arxiva a web.archive.org les URL
+# que encara no tenen captura (Save Page Now amb les claus d'Internet Archive, guardades
+# com a secrets del repositori IA_S3_ACCESS i IA_S3_SECRET; si no hi són, aquest pas se
+# salta); (4) comprova si la cita literal és a la captura (id_); (5) desa els resultats a
+# la branca `wayback-dades`. És reprenible: cada execució continua on ho va deixar l'anterior.
+name: wayback
+on:
+  workflow_dispatch:
+    inputs:
+      limit_arxiu:
+        description: "Màxim d'URL a consultar o desar en aquesta execució"
+        default: "700"
+      limit_verifica:
+        description: "Màxim d'URL a verificar en aquesta execució"
+        default: "400"
+  schedule:
+    - cron: "23 */6 * * *"
+permissions:
+  contents: write
+concurrency:
+  group: wayback
+  cancel-in-progress: false
+jobs:
+  wayback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      TE_CLAUS: ${{ secrets.IA_S3_ACCESS != '' && secrets.IA_S3_SECRET != '' }}
+      LIMIT_ARXIU: ${{ github.event.inputs.limit_arxiu || '700' }}
+      LIMIT_VERIFICA: ${{ github.event.inputs.limit_verifica || '400' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependències
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          python -m pip install --quiet requests==2.32.3 beautifulsoup4==4.12.3
+      - name: Recupera els resultats anteriors
+        run: |
+          mkdir -p treball
+          if git ls-remote --exit-code --heads origin wayback-dades >/dev/null; then
+            git fetch -q origin wayback-dades
+            git show origin/wayback-dades:wayback/resultats_arxiu.csv > treball/resultats_arxiu.csv 2>/dev/null || true
+            git show origin/wayback-dades:wayback/verificacio_cites.csv > treball/verificacio_cites.csv 2>/dev/null || true
+          fi
+          if [ ! -s treball/resultats_arxiu.csv ]; then cp wayback/resultats_arxiu_inicial.csv treball/resultats_arxiu.csv; fi
+          if [ ! -s treball/verificacio_cites.csv ] && [ -f wayback/verificacio_cites_inicial.csv ]; then
+            cp wayback/verificacio_cites_inicial.csv treball/verificacio_cites.csv
+          fi
+          wc -l treball/*.csv
+      - name: Prepara la llista d'URL
+        run: python scripts/wayback/prepara_entrada.py --sortida treball/entrada.csv
+      - name: Arxiva a Wayback
+        if: env.TE_CLAUS == 'true'
+        continue-on-error: true
+        timeout-minutes: 200
+        env:
+          IA_S3_ACCESS: ${{ secrets.IA_S3_ACCESS }}
+          IA_S3_SECRET: ${{ secrets.IA_S3_SECRET }}
+        run: python scripts/wayback/wayback_arxiva.py --input treball/entrada.csv --output treball/resultats_arxiu.csv --limit "$LIMIT_ARXIU"
+      - name: Avís si no hi ha claus
+        if: env.TE_CLAUS != 'true'
+        run: echo "No hi ha els secrets IA_S3_ACCESS i IA_S3_SECRET; només es verifiquen les URL que ja tenen captura."
+      - name: Verifica les cites a la captura
+        continue-on-error: true
+        timeout-minutes: 120
+        run: >
+          python scripts/wayback/verifica_cites.py
+          --base dades/base_isin_any_v8r3.csv
+          --registre docs/REGISTRE_CANVIS.csv
+          --resultats-wb treball/resultats_arxiu.csv
+          --out treball/verificacio_cites.csv
+          --informe treball/INFORME_VERIFICACIO_CITES.md
+          --cache treball/cache
+          --log treball/verifica_cites.log
+          --limit-urls "$LIMIT_VERIFICA"
+      - name: Desa els resultats a la branca wayback-dades
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin wayback-dades >/dev/null; then
+            git worktree add -q ../wd origin/wayback-dades
+            cd ../wd && git checkout -q -B wayback-dades && cd -
+          else
+            git worktree add -q --detach ../wd
+            cd ../wd && git checkout -q --orphan wayback-dades && git rm -rf -q . && cd -
+          fi
+          mkdir -p ../wd/wayback
+          cp treball/resultats_arxiu.csv ../wd/wayback/resultats_arxiu.csv
+          [ -f treball/verificacio_cites.csv ] && cp treball/verificacio_cites.csv ../wd/wayback/verificacio_cites.csv
+          [ -f treball/INFORME_VERIFICACIO_CITES.md ] && cp treball/INFORME_VERIFICACIO_CITES.md ../wd/wayback/
+          python scripts/wayback/resum.py --resultats treball/resultats_arxiu.csv --verificacio treball/verificacio_cites.csv \
+            --entrada treball/entrada.csv --commit "$GITHUB_SHA" --run "$GITHUB_RUN_ID" > ../wd/wayback/RESUM.md
+          cd ../wd
+          git add wayback
+          git commit -q -m "Wayback: resultats de l'execució ${GITHUB_RUN_ID} (main ${GITHUB_SHA::7})" || { echo "Sense canvis"; exit 0; }
+          git push -q origin wayback-dades
