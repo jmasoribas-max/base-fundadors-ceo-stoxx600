@@ -95,4 +95,4 @@ Una fila pot tenir més d'una mancança.
 
 ## Avisos (no bloquegen)
 
-- `carrec_no_detectat_a_la_cita`: 137 files
+- `carrec_no_detectat_a_la_cita`: 136 files

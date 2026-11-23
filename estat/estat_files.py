@@ -67,6 +67,10 @@ CARRECS = re.compile(
     r"|directeur generaal|generaldirektor|chief executive officer|presidente e ceo"
     r"|\bgerant(e|s|es)?\b|\bgerance\b|president of the [\w .]{0,30}management board|president du directoire"
     r"|management board.{0,100}president of the board|presidente del consiglio di gestione"
+    r"|chair(man|woman|person)? of [\w .'’-]{0,45}(board of management|management board|executive board)"
+    r"|executive board.{0,160}\(chair(man|woman|person)?\)|executive board.{0,80}its chair(man|woman|person)?"
+    r"|president of the (executive committee|ec|management committee)\b|voorzitter van het directiecomite"
+    r"|president du comite de direction|maximo responsable ejecutivo"
 )
 TRANSLIT = str.maketrans({"ø": "o", "Ø": "o", "æ": "ae", "Æ": "ae", "ß": "ss", "ł": "l",
                           "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe"})
