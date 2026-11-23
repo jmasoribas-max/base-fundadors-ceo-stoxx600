@@ -65,6 +65,10 @@ FUNDACIO = re.compile(r"found|fundad|fundat|fundador|grunder|grundare|grundlag|g
                       r"|fondat|fondateur|fondatrice|fondee|fonde par|oprichter|opgericht|perustaja|perusti"
                       r"|zalozyciel|zalozyl|stiftet|stifter|set up|established|started the|launched the"
                       r"|created the company|creat(ed|or) of")
+# P6: expressions que no compten com a fundador
+EXCLOU_P6 = re.compile(r"founding (ceo|chief executive|shareholder|member|members|partner|chairman|director|team member)"
+                       r"|ceo fundador|consejero delegado fundador|founder[- ]led|fondateur[- ]dirigeant")
+ABREV = re.compile(r"(?:\b(?:mr|mrs|ms|dr|prof|st|inc|ltd|plc|co|corp|no|nr|jr|sr|n\.v|s\.a|s\.p\.a|ag|se|vs|e\.g|i\.e))\.$", re.I)
 NECESSITA = {"a": [{"llista_fundadors"}], "b": [{"any_fundacio", "naixement_ceo"}],
              "b_per_part": [{"any_fundacio", "naixement_ceo"}], "d": [{"ocupador_anterior", "any_fundacio"}],
              "d_per_part": [{"ocupador_anterior", "any_fundacio"}], "e": [{"origen_entitat"}],
@@ -137,6 +141,133 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
     if nc and nc[:250] in norm_text(t):
         return "trobada", f"{len(t)} caràcters de text"
     return "no_trobada", f"{len(t)} caràcters de text"
+
+
+def frases(text: str) -> list[str]:
+    t = re.sub(r"\s+", " ", text).strip()
+    trossos, ini = [], 0
+    for m in re.finditer(r"[.!?;:](?=\s+[A-ZÀ-ÖØ-Ý0-9«\"(])|\s{0}\n", t):
+        fi = m.end()
+        if ABREV.search(t[max(0, fi - 8):fi]):
+            continue
+        trossos.append(t[ini:fi].strip())
+        ini = fi
+    trossos.append(t[ini:].strip())
+    return [x for x in trossos if x]
+
+
+def norm_mapa(text: str) -> tuple[str, list[int]]:
+    """Normalitza com EF.norm però caràcter a caràcter, i retorna el mapa de posicions a l'original."""
+    out, mapa = [], []
+    for i, ch in enumerate(text):
+        n = unicodedata.normalize("NFKD", ch.translate(EF.TRANSLIT))
+        n = "".join(c for c in n if not unicodedata.combining(c)).lower()
+        if ch.isspace():
+            n = " "
+        for c in n:
+            out.append(c)
+            mapa.append(i)
+    return "".join(out), mapa
+
+
+def finestra(f: str, noms: list[str], patro: re.Pattern, exclou: re.Pattern | None) -> str:
+    """Dins la frase f, comença al nom més proper abans del mot clau i talla poc després."""
+    nf, mapa = norm_mapa(f)
+    excl = [m.span() for m in exclou.finditer(nf)] if exclou is not None else []
+    mk = next((m for m in patro.finditer(nf) if not any(a <= m.start() < b for a, b in excl)), None)
+    if mk is None:
+        return f
+    toks = set()
+    for nm in noms:
+        toks.update(t for t in EF.tokens_nom(nm) if t)
+    ini = 0
+    millor = -1
+    for t in toks:
+        for m in re.finditer(r"(?<![\w])" + re.escape(t) + r"(?![\w])", nf[:mk.start()]):
+            if mk.start() - m.start() <= 260 and m.start() > millor:
+                millor = m.start()
+    if millor >= 0:
+        ini = millor
+        # inclou el nom de pila o el tractament que va just abans
+        abans = nf[max(0, ini - 25):ini]
+        mm = re.search(r"((?:mr|mrs|ms|dr|sir|m|mme)\.?\s+)?((?:[a-z][\w'-]*\.?\s+){0,2})$", abans)
+        if mm and mm.group(0).strip():
+            cand = abans[mm.start():]
+            if any(w.strip(".") in toks or w.strip(".") in {EF.norm(x.split()[0]) for x in noms} for w in cand.split()):
+                ini -= len(cand)
+    fi = len(nf)
+    punt = nf.find(". ", mk.end())
+    if 0 <= punt <= mk.end() + 220:
+        fi = punt + 1
+    elif fi > mk.end() + 120:
+        tall = nf.rfind(" ", mk.end(), mk.end() + 120)
+        fi = tall if tall > mk.end() else mk.end() + 120
+    o_ini = mapa[ini] if ini < len(mapa) else 0
+    o_fi = mapa[fi - 1] + 1 if fi - 1 < len(mapa) else len(f)
+    return f[o_ini:o_fi].strip(" ,;:")
+
+
+def retalla(cita: str, noms: list[str], patro: re.Pattern, exclou: re.Pattern | None = None) -> str:
+    """Retorna el tros de la cita que anomena la persona i conté el patró; '' si no n'hi ha."""
+    fs = frases(cita)
+    def ok_pat(x):
+        n = EF.norm(x)
+        if exclou is not None:
+            n = exclou.sub(" ", n)
+        return bool(patro.search(n))
+    def ok_nom(x):
+        n = EF.norm(x)
+        return any(EF.anomena(n, nm) for nm in noms)
+    cands = [f for f in fs] + [fs[i] + " " + fs[i + 1] for i in range(len(fs) - 1)]
+    for f in cands:
+        if ok_pat(f) and ok_nom(f) and len(f) <= 1200:
+            w = finestra(f, noms, patro, exclou)
+            if ok_pat(w) and ok_nom(w) and len(w) <= 450:
+                return w
+            if len(f) <= 450:
+                return f
+    return ""
+
+
+SORTIDA = re.compile(r"step(ped|s)? down|will step|resign|demission|retir|former|outgoing|left the|held the position"
+                     r"|until \d|succeeded by|to be succeeded|will leave|leaves the|departure|depart|abandon|cesa|cese|dimission"
+                     r"|tritt zuruck|ausgeschieden|scheidet")
+TITOLS = {"mr", "mrs", "ms", "dr", "sir", "dame", "prof", "herr", "frau", "don", "dona", "d", "m", "mme", "lord",
+          "chief", "ceo", "executive", "director", "chairman", "founder", "co-founder", "president", "the", "and", "our", "by"}
+GENERICS = {"actions", "aktien", "namens", "inhaber", "registered", "shares", "share", "group", "holding", "holdings",
+            "port", "nom", "bearer", "ordinary", "class", "akt", "reg", "stammaktien", "vorzugsaktien", "acciones",
+            "azioni", "aandelen", "navne", "aktier", "namn", "osake", "company", "limited", "international",
+            "europe", "european", "plc", "the", "and"}
+AUTOREF = re.compile(r"\bour\b|\bwe\b|the company|the group|its founder|the business|the bank|the firm|du groupe"
+                     r"|de la societe|de l'entreprise|des unternehmens|der gruppe|selskapet|bolaget|yhtio|la compania"
+                     r"|la empresa|del grupo|della societa|del gruppo|het bedrijf|de onderneming")
+
+
+def persona_conflictiva(cita: str, noms: list[str]) -> bool:
+    """Cert si el cognom del CEO surt precedit d'un altre nom de pila (p. ex. Aditya Mittal per Lakshmi Mittal)."""
+    for nom in noms:
+        parts = [p.strip(".,") for p in nom.split()]
+        if len(parts) < 2:
+            continue
+        pila = EF.norm(parts[0])
+        for cog in [p for p in parts[1:] if len(p) >= 3 and EF.norm(p) not in EF.PARTICULES]:
+            for m in re.finditer(r"([A-ZÀ-ÖØ-Ý][\w'\-]+)\.?\s+(?:[A-Z]\.\s*)*" + re.escape(cog), cita):
+                prev = EF.norm(m.group(1))
+                if prev in TITOLS or prev == pila or prev == pila[:1] or EF.norm(cog) == prev:
+                    continue
+                if prev in [EF.norm(x) for x in parts]:
+                    continue
+                return True
+    return False
+
+
+def esmenta_empresa(cita: str, nom_panell: str) -> bool:
+    n = EF.norm(cita)
+    if AUTOREF.search(n):
+        return True
+    toks = [EF.norm(t).strip(".,()&'") for t in re.split(r"[\s/]+", nom_panell)]
+    toks = [t for t in toks if len(t) >= 4 and t not in GENERICS and not re.match(r"^[\d,.-]+$", t)]
+    return any(t in n for t in toks[:3])
 
 
 def puntua_ceo(c: dict, any_fila: int) -> tuple:
@@ -214,7 +345,18 @@ def main() -> int:
         any_fila = int(k[1])
         cs = per.get(k, [])
         if "falta_ceo" in e["estat"].split("+") and r["FounderCEO"] in ("0", "1"):
-            cands = [c for c in cs if c["funcio"] == "ceo" and c["anomena_ceo"] == "si" and EF.CARRECS.search(EF.norm(c["cita_literal"]))]
+            noms = [n.strip() for n in (r.get("ceos") or "").split("|") if n.strip()]
+            cands = []
+            for c in cs:
+                if c["funcio"] != "ceo" or c["anomena_ceo"] != "si":
+                    continue
+                y = any_doc(c)
+                if y not in (any_fila, any_fila + 1):
+                    continue  # CLAUDE.md §3: document del mateix exercici (si no, interval de la regla 28)
+                curta = retalla(c["cita_literal"], noms, EF.CARRECS)
+                if not curta or SORTIDA.search(EF.norm(curta)) or persona_conflictiva(curta, noms):
+                    continue
+                cands.append(dict(c, cita_original=c["cita_literal"], cita_literal=curta))
             c, marca, model, det = tria(k, "ceo", cands, lambda c: puntua_ceo(c, any_fila))
             if c and marca in ("[V]", "[NV]"):
                 t = tries.setdefault((k[0], "ceo", c["url"], c["cita_literal"]), {"c": c, "anys": [], "marca": marca, "model": model, "det": det})
@@ -225,8 +367,17 @@ def main() -> int:
                 pendents.append((k, "ceo"))
         if "falta_fundador" in e["estat"].split("+") and r["FounderCEO"] in ("0", "1"):
             if r["FounderCEO"] == "1":
-                cands = [c for c in cs if c["funcio"] == "fundador" and c["anomena_ceo"] == "si" and FUNDACIO.search(EF.norm(c["cita_literal"]))
-                         and (not c["font_traspas"].startswith("r3e") or c["model_etiqueta"] == "1")]
+                noms = [n.strip() for n in (r.get("ceos") or "").split("|") if n.strip()]
+                cands = []
+                for c in cs:
+                    if c["funcio"] != "fundador" or c["anomena_ceo"] != "si":
+                        continue
+                    if c["font_traspas"].startswith("r3e") and c["model_etiqueta"] != "1":
+                        continue
+                    curta = retalla(c["cita_literal"], noms, FUNDACIO, EXCLOU_P6)
+                    if not curta or persona_conflictiva(curta, noms) or not esmenta_empresa(curta, r.get("nom_panell") or ""):
+                        continue
+                    cands.append(dict(c, cita_original=c["cita_literal"], cita_literal=curta))
                 c, marca, model, det = tria(k, "fundador", cands, puntua_fund)
                 triades = [(c, marca, model, det)] if c and marca in ("[V]", "[NV]") else []
             else:
@@ -288,11 +439,17 @@ def main() -> int:
         if funcio == "ceo":
             marques = r.get("marques") or ""
             marca_prova = "R2" if "interi" in marques else ("R3" if "ceo_president_exec" in marques or "de_facto" in marques else "R1")
+            nc = EF.norm(cita)
+            if marca_prova == "R1" and re.search(r"executive chair", nc) and not re.search(
+                    r"\bceo\b|chief executive|directeur general|director general|consejero delegado|amministratore delegato|vorstand", nc):
+                marca_prova = "R3"
             y = any_doc(c)
             exer = "document de l'exercici" if y and any(y in (a, a + 1) for a in t["anys"]) else \
                 (f"document de {y}: no és de l'exercici; cal un document de l'exercici o un interval (regla 28)" if y else "data del document no indicada")
         else:
             toks = [x for x in (r.get("regles") or "").replace("|", ";").split(";") if x and x != "cap"]
+            pref = EF.REGLES_SI if r.get("FounderCEO") == "1" else EF.REGLES_NO
+            toks = [x for x in toks if x in pref] or toks
             marca_prova = toks[0] if toks else ""
             exer = f"prova: {c['tipus_prova']}"
         notes = [f"Traspàs de l'auditoria IA i de l'inventari antic ({c['font_traspas']}, {c['id_origen']}).",

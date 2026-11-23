@@ -12,11 +12,11 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Última actualització | 23/11/2026 |
 | `main` de referència | `17b03df` (PR #20) |
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %) |
-| Files amb evidència de CEO i de fundador (C1 i C2) | 4.107 de 6.012 (68,3 %) |
-| Files F amb C1 i C2 | 44 de 349 |
-| Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 en curs: candidates generades (839 files es poden completar amb cites ja verificades) |
-| Pendent de Jordi | Decisions 4-10 de DF (sessió 5); accés a `scripts/`, `.github/` i, si ho vol, `dades/` (sessions 4 i 6); OK per obrir el PR de la branca |
-| Pendent de DF | Configurar l'accés de Claude, amb l'opció de `dades/` (sessió 7); pujar `verificacio_cites_20261122.csv` quan acabi |
+| Files amb evidència de CEO i de fundador (C1 i C2) | 4.162 de 6.012 (69,2 %) |
+| Files F amb C1 i C2 | 99 de 349 (lot 11) |
+| Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 en curs: lot 11 (F) aplicat a la branca; queda la cerca nova de CEO per a 232 files F |
+| Pendent de Jordi | Fusionar el PR #21 (accés; revisat per Claude, correcte); decisions 4-10 de DF (sessió 5); OK per obrir el PR de la branca |
+| Pendent de DF | Pujar `verificacio_cites_20261122.csv` quan acabi |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -134,7 +134,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Decisió de Jordi:** incloure a la petició d'accés l'opció que Claude pugui aplicar a `dades/` els lots de correcció que Jordi aprovi.
 - **Pas següent:** lot d'importació F (les 88 empreses F), amb les cites verificades i, per a la resta, re-descàrrega i verificació pròpia.
 
-### 23/11/2026 · Sessió 8 · Lot 11: importació del grup F (en curs)
+### 23/11/2026 · Sessió 8 · Lot 11: importació del grup F
 
 - **Lot 11** = les 349 files F (88 empreses): [`lots/lot11.csv`](../lots/lot11.csv).
 - **Script:** [`traspas/importa_lot.py`](../traspas/importa_lot.py). Per a cada fila sense C1 o C2, tria la millor cita candidata:
@@ -146,3 +146,12 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Agregadors:** `annualreports.com` és la font més freqüent de les candidates. Només s'usa si no n'hi ha cap altra, amb la nota `agregador=true` per substituir-la per la còpia de l'emissor.
 - **Prova en sec (sense baixades):** CEO 132 files amb cita ja verificada (170 sense); fundador 106 (32 sense).
 - **En curs:** execució amb verificació pròpia en una còpia separada (worktree) per revisar-ne el resultat abans d'escriure al registre de la branca.
+- **PR #21 (DF, branca `config/claude-coordinador`):** revisat per Claude. Fa exactament els canvis demanats: `.claude/settings.json` només treu `Edit(/scripts/**)` i `Edit(/.github/**)`; `CLAUDE.md` i `AGENTS.md` afegeixen l'excepció per a Claude (`scripts/`, `.github/` i els lots de correcció aprovats a `dades/`) i la referència a la línia 195. CI `valida` correcte. Detall cosmètic: `scripts/`, `.github/` i `dades/` dins l'excepció van sense accents greus. **Claude no el fusiona**: és decisió de Jordi (i `CLAUDE.md` i els permisos li ho impedeixen).
+- **Refinament de l'importador abans d'escriure al registre** (després de revisar a mà dues proves en una còpia separada):
+  - Les cites es retallen a la frase rellevant.
+  - S'exclouen les expressions que la P6 no admet.
+  - Per al CEO, només documents de l'exercici (CLAUDE.md §3) i cap frase de sortida.
+  - Es rebutgen les cites on el cognom correspon a una altra persona (Aditya / Lakshmi Mittal) i les de fundador d'una altra entitat (fons de Rigas).
+  - La marca de la regla ve del token que correspon a l'etiqueta.
+- **Lot 11 aplicat a la branca:** 74 entrades noves al registre (66 [V], 8 [NV] `pendent_DF`; 17 amb `agregador=true`), cites afegides a 47 fitxes, cap canvi de FounderCEO ni de `ceos`. Grup F: cita de CEO 47 → 105 files; cita de fundador 211 → 292; totes dues 44 → 99. Resum a [`lots/lot11_README.md`](../lots/lot11_README.md).
+- **Queda al grup F:** 232 files sense cita de CEO (66 empreses) i 57 sense cita de fundador (22 empreses): [`lots/lot11_pendents.csv`](../lots/lot11_pendents.csv). Cal una cerca nova amb l'informe anual de cada exercici.
