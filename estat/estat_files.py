@@ -71,6 +71,7 @@ CARRECS = re.compile(
     r"|executive board.{0,160}\(chair(man|woman|person)?\)|executive board.{0,80}its chair(man|woman|person)?"
     r"|president of the (executive committee|ec|management committee)\b|voorzitter van het directiecomite"
     r"|president du comite de direction|maximo responsable ejecutivo"
+    r"|spokes(man|woman|person) of the (executive|management) board|chair(man|woman|person)? of the board of executive directors"
 )
 TRANSLIT = str.maketrans({"ø": "o", "Ø": "o", "æ": "ae", "Æ": "ae", "ß": "ss", "ł": "l",
                           "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe"})
