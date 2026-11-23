@@ -12,7 +12,7 @@ Des de l'arrel del repositori:
 python3 dashboard/genera_dashboard.py
 ```
 
-L'script només fa servir la biblioteca estàndard de Python (3.10 o posterior). No fa cap petició de xarxa. El resultat és determinista: amb les mateixes dades, els mateixos fitxers. Quan canviïn les dades de `main` (i el `MANIFEST_SHA256.csv`), n'hi ha prou de tornar-lo a executar.
+L'script només fa servir la biblioteca estàndard de Python (3.11 o posterior). No fa cap petició de xarxa. El resultat és determinista: amb les mateixes dades, els mateixos fitxers. Quan canviïn les dades de `main` (i el `MANIFEST_SHA256.csv`), n'hi ha prou de tornar-lo a executar.
 
 Per veure'l en local, obre `dashboard/index.html` al navegador. No cal cap servidor: la cerca i els filtres funcionen amb JavaScript al navegador, sense dependències externes.
 
@@ -39,9 +39,9 @@ Només dins de `dashboard/`: `index.html`, `metodologia.html`, `empreses/{ISIN}.
 ## Criteris de la part pública
 
 - **Sector ICB**: no es mostra ni es fa servir als filtres (`MOSTRA_SECTOR = False` a l'script) fins que Jordi aclareixi la llicència. Les proves del registre que són de la classificació sectorial (PDF de components STOXX) també queden ocultes.
-- No es mostren mai: `pes_pct`, les columnes `founderceo_rob_*`, les propostes brutes dels models (`sim_*_chatgpt`, `sim_*_claude`), les notes de decisió (`sim_nota`, `sim_decisio_doctorat`, `v75_decisio_jordi`, `ids_decisio`, `model_verificacio`), `FounderCEO_v75r2`, ni res de proveïdors de dades amb llicència. Si la cita o l'URL d'una prova contenen un terme de la llista restringida, la prova es mostra com a «no mostrada», amb el seu identificador. Si una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota.
+- No es mostren mai: `pes_pct`, les columnes `founderceo_rob_*`, les propostes brutes de cada revisor de l'auditoria (columnes `sim_*` de propostes), les notes de decisió (`sim_nota`, `sim_decisio_doctorat`, `v75_decisio_jordi`, `ids_decisio`, `model_verificacio`), `FounderCEO_v75r2`, ni res de proveïdors de dades amb llicència. Si la cita o l'URL d'una prova contenen un terme de la llista restringida, la prova es mostra com a «no mostrada», amb el seu identificador. Si una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota.
 - Sí que es mostren: FounderCEO oficial, CEO per any, `sim_estat_certificacio` i `sim_nivell`, marques de prova, `[V]` / `[NV]`, fonts no vàlides o sense còpia arxivada, i `cita_verificada_a_captura`.
 - Les cites de més de 600 caràcters es mostren com a fragment, marcat amb […], i s'indica que el text complet és al registre.
 - No s'inventa cap camp: no hi ha noms de fundadors de l'empresa, ni any de fundació, ni país com a camp de la base. El filtre «país d'emissió de l'ISIN» es deriva del prefix de l'ISIN i es marca com a derivat.
 
-La metodologia que mana és la del repositori ([`AGENTS.md`](../AGENTS.md) / [`CLAUDE.md`](../CLAUDE.md) i [`docs/METODOLOGIA.md`](../docs/METODOLOGIA.md)). La pàgina de llegenda del dashboard no la substitueix.
+La metodologia que mana és la del repositori ([`AGENTS.md`](../AGENTS.md) i [`docs/METODOLOGIA.md`](../docs/METODOLOGIA.md)). La pàgina de llegenda del dashboard no la substitueix.
