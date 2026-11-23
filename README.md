@@ -26,7 +26,7 @@ Valors de FounderCEO a la base: `1` (F), `0` (P), `no_determinat` (ND), `NA_sens
 
 ## Protecció de `main` i flux de canvis
 
-La branca `main` ha d'estar protegida i **Claude no la pot tocar mai** (ni push, ni commit, ni fusió, ni esmena directa). Tampoc no toca `scripts/`, `docs/METODOLOGIA.md`, `CLAUDE.md`, les regles ni `.github/`. Claude Code només treballa en branques, per lots d'empreses, i obre un pull request per lot.
+La branca `main` ha d'estar protegida i **Claude no la pot tocar mai** (ni push, ni commit, ni fusió, ni esmena directa). Tampoc no toca `docs/METODOLOGIA.md`, `CLAUDE.md`, les regles ni `.claude/`. Des del 23/11/2026 (decisió de Jordi, PR #21), Claude és el coordinador de la base i pot modificar `scripts/` i `.github/`, i aplicar a `dades/` els lots de correcció que Jordi aprovi, sempre en una branca i per PR. Claude Code treballa en branques i obre pull requests; Jordi fusiona.
 
 El flux és:
 

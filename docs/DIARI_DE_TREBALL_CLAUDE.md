@@ -156,3 +156,15 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Lot 11 aplicat a la branca:** 74 entrades noves al registre (66 [V], 8 [NV] `pendent_DF`; 17 amb `agregador=true`), cites afegides a 47 fitxes, cap canvi de FounderCEO ni de `ceos`. Grup F: cita de CEO 47 → 105 files; cita de fundador 211 → 292; totes dues 44 → 99. Resum a [`lots/lot11_README.md`](../lots/lot11_README.md).
 - **Queda al grup F:** 232 files sense cita de CEO (66 empreses) i 57 sense cita de fundador (22 empreses): [`lots/lot11_pendents.csv`](../lots/lot11_pendents.csv). Cal una cerca nova amb l'informe anual de cada exercici.
 - **Nota sobre els filtres de la P6 (pregunta de Jordi, 23/11/2026):** la P6 (regla 25) exclou literalment «founder-led», «founding CEO», «founding shareholder», «architect» i «creator» (aquests dos només per la via FT), i les cites de fundador d'una altra entitat. L'importador també exclou «founding member(s)», «founding partner», «founding chairman» i «founding director» **per analogia**: això no és al text de la P6 i ho ha de confirmar Doctorat o Jordi. Files F on el filtre va deixar fora la cita candidata: Cellnex 2016-2022 («CEO fundador»; ja és un dubte obert del lot 6), Energean 2023 («founding shareholder») i alstria 2019-2021 («founding members»). L'etiqueta no canvia; aquestes files queden pendents d'una altra font o del criteri de Doctorat.
+
+### 23/11/2026 · Sessió 9 · PR #21 fusionat i primer PR de la branca de Claude
+
+- **PR #21 fusionat per Jordi** (`main` `242fff0`). Claude ja pot modificar `scripts/` i `.github/` i aplicar a `dades/` els lots de correcció que Jordi aprovi (sempre per PR). Comprovat: l'edició de `.github/workflows/valida_pr.yml` ja és permesa en aquesta sessió.
+- **Fet:**
+  - `main` fusionat a la branca de Claude (sense conflictes).
+  - CI: nou pas `python3 estat/estat_files.py --comprova`.
+  - `README.md` i `docs/PROTECCIO_BRANCA_MAIN.md` actualitzats amb el nou rol de Claude.
+  - `dashboard/README.md`: ara diu que el dashboard està publicat a GitHub Pages.
+  - Dashboard regenerat amb les cites del lot 11.
+  - Manifest recalculat.
+- **Jordi vol que Claude obri el PR de la branca:** Claude és l'encarregat d'acabar la base. El PR recull tot el que hi ha a la branca des del 23/11 (auditoria, pla, diari, eines d'estat i de traspàs, lot 11 i lot de correcció 1 preparat però no aplicat).
