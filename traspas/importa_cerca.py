@@ -108,51 +108,57 @@ def main() -> int:
     for r in files:
         per_fila[(r["isin"].strip(), r["any"].strip())].append(r)
 
-    for k, rs in sorted(per_fila.items()):
+    for k, rs_fila in sorted(per_fila.items()):
         if k not in base:
             rebutjades.append((k, "fila fora del panell"))
             continue
         noms = [n.strip() for n in (base[k].get("ceos") or "").split("|") if n.strip()]
         any_fila = int(k[1])
-        bones = []
-        for r in rs:
-            res = (r.get("resultat") or "").strip()
-            if res == "discrepancia":
-                dubtes.append({**r, "motiu": "la cerca indica un altre CEO a 31/10"})
-                continue
-            if res not in ("trobat", "interval_inici", "interval_final"):
-                continue
-            cita = re.sub(r"\s+", " ", r.get("cita_literal") or "").strip()
-            url = (r.get("url") or "").strip()
-            if not cita or not url.lower().startswith("http"):
-                rebutjades.append((k, "sense cita o URL"))
-                continue
-            nc = EF.norm(cita)
-            if not any(EF.anomena(nc, n) for n in noms) and res != "interval_inici":
-                rebutjades.append((k, f"la cita no anomena {base[k]['ceos']}"))
-                continue
-            if res != "interval_inici" and not EF.CARRECS.search(nc):
-                rebutjades.append((k, "la cita no conté un títol de primer executiu"))
-                continue
-            if res == "trobat":
-                y = IL.any_doc({"data_document": r.get("data_document") or ""})
-                if y not in (any_fila, any_fila + 1):
-                    rebutjades.append((k, f"document de {y}: no és de l'exercici"))
+        # es decideix per persona (co-CEO): cada CEO de la fila necessita la seva evidència
+        per_ceo = collections.defaultdict(list)
+        for r in rs_fila:
+            per_ceo[(r.get("ceo_esperat") or "").strip()].append(r)
+        for ceo, rs in sorted(per_ceo.items()):
+            noms_c = [ceo] if ceo else noms
+            bones = []
+            for r in rs:
+                res = (r.get("resultat") or "").strip()
+                if res == "discrepancia":
+                    dubtes.append({**r, "motiu": "la cerca indica un altre CEO a 31/10"})
                     continue
-            if res == "interval_final" and not data_ok_final(r.get("data_document") or "", any_fila):
-                rebutjades.append((k, "document final de l'interval no posterior al 31/10"))
-                continue
-            bones.append({**r, "cita_literal": cita, "url": url})
-        trobats = [r for r in bones if r["resultat"] == "trobat"]
-        ini = [r for r in bones if r["resultat"] == "interval_inici"]
-        fin = [r for r in bones if r["resultat"] == "interval_final"]
-        if trobats:
-            acceptades += trobats
-        elif ini and fin:
-            acceptades += ini + fin
-        elif not any(d["isin"] == k[0] and d["any"] == k[1] for d in dubtes):
-            pendents.append({"isin": k[0], "any": k[1], "falta": "ceo",
-                             "notes": "; ".join((r.get("notes") or "")[:200] for r in rs)})
+                if res not in ("trobat", "interval_inici", "interval_final"):
+                    continue
+                cita = re.sub(r"\s+", " ", r.get("cita_literal") or "").strip()
+                url = (r.get("url") or "").strip()
+                if not cita or not url.lower().startswith("http"):
+                    rebutjades.append((k, "sense cita o URL"))
+                    continue
+                nc = EF.norm(cita)
+                if not any(EF.anomena(nc, n) for n in noms_c) and res != "interval_inici":
+                    rebutjades.append((k, f"la cita no anomena {ceo or base[k]['ceos']}"))
+                    continue
+                if res != "interval_inici" and not EF.CARRECS.search(nc):
+                    rebutjades.append((k, "la cita no conté un títol de primer executiu"))
+                    continue
+                if res == "trobat":
+                    y = IL.any_doc({"data_document": r.get("data_document") or ""})
+                    if y not in (any_fila, any_fila + 1):
+                        rebutjades.append((k, f"document de {y}: no és de l'exercici"))
+                        continue
+                if res == "interval_final" and not data_ok_final(r.get("data_document") or "", any_fila):
+                    rebutjades.append((k, "document final de l'interval no posterior al 31/10"))
+                    continue
+                bones.append({**r, "cita_literal": cita, "url": url})
+            trobats = [r for r in bones if r["resultat"] == "trobat"]
+            ini = [r for r in bones if r["resultat"] == "interval_inici"]
+            fin = [r for r in bones if r["resultat"] == "interval_final"]
+            if trobats:
+                acceptades += trobats
+            elif ini and fin:
+                acceptades += ini + fin
+            elif not any(d["isin"] == k[0] and d["any"] == k[1] for d in dubtes):
+                pendents.append({"isin": k[0], "any": k[1], "falta": f"ceo ({ceo})" if ceo else "ceo",
+                                 "notes": "; ".join((r.get("notes") or "")[:200] for r in rs)})
 
     # verificació independent
     resultat_ver = {}

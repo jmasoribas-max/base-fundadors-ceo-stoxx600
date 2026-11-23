@@ -228,3 +228,19 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   | Dubtes oberts | 264 |
   | Arxivades i verificades a Wayback (C3) | 279 (4,6 %) |
   | Acabades (les quatre condicions) | 278 (4,6 %) |
+
+### 23/11/2026 · Sessió 13 · Lot 12: cerca nova de cites de CEO del grup F
+
+- **Cerca:** sis agents (lots de cerca 1-6, 66 empreses i 232 files). Tots van trobar la cita: 260 `trobat` i 13 intervals, sense cap `no_trobat` ni `discrepancia`. Totes les fonts són de nivell A: emissor, reguladors (FCA NSM, AFM, CNMV, DILA/AMF) o canals oficials de comunicats.
+- **Verificació independent de Claude:** totes les cites s'han tornat a baixar i buscar literalment. Se n'accepten 285, totes [V]: 284 confirmades per re-descàrrega i 1 al fitxer baixat per la cerca.
+- **Correccions del verificador durant la feina:**
+  1. Títols que no reconeixia: Gérant(e)s, President of the Management Board, Co-CEOs, «Management Board of CD PROJEKT S.A. … President of the Board».
+  2. PDF a columnes (`pdftotext -raw`), informes ESEF en zip i textos amb espais trencats.
+  3. Un error propi: l'importador decidia per fila i no per persona, i descartava els intervals dels co-CEO quan un altre CEO de la mateixa fila tenia cita de l'exercici. Es va desfer l'escriptura, es va corregir i es va tornar a executar.
+- **Escrit:** 262 entrades al registre (`origen=proposta_claude_lot12`), cites a 66 fitxes, [`lots/lot12_README.md`](../lots/lot12_README.md). Nova secció de `PENDENTS.md`, «Dubtes del lot 12 (cerca de CEO del grup F)», amb 6 grups de criteri (23 files), que l'script d'estat ara llegeix.
+- **Patrons de títol ampliats a `estat/estat_files.py`** (avís de càrrec i filtre dels importadors).
+- **Resultat:**
+  - Grup F: 337 de 349 files amb cita de CEO (abans 105) i 282 completes (abans 99).
+  - Base: C1 i C2, 4.351 de 6.012 (72,4 %).
+- **Queden 12 files F sense la condició del CEO:** 10 amb cita `[NV]` del lot 11 i 2 de co-CEO on la cita retallada al lot 11 només anomena un dels dos (Zalando 2023, Adyen 2023). Es reprenen en un lot petit.
+- **Lliçó per a l'importador del lot 11:** quan hi ha diversos CEO, el retall de la cita ha de començar al primer nom, no al més proper al mot clau.

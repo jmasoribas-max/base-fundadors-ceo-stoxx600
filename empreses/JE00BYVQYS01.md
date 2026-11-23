@@ -52,3 +52,8 @@ Cap entrada anterior al registre per als anys del lot.
 
 - **L11-JE00BYVQYS01-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «The Group’s Chief Executive Officer, Mark Dixon, is a major shareholder of the Company.» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/reports-and-presentations/2021/2020-iwg-annual-report-accounts-v1.pdf).
 - **L11-JE00BYVQYS01-C02** · 2021 · [V] · `evidencia_ceo` (`R1`). «Mark Dixon Founder and CEO» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/reports-and-presentations/2022/2021-iwg-annual-report-and-accounts-hi-res.pdf).
+
+## Lot 12 · Cerca nova de cites de CEO
+
+- **L12-JE00BYVQYS01-C01** · 2017 · [V] · `R1`. «MARK DIXON Chief Executive Officer» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/reports-and-presentations/2017/annual-reports-2017.pdf).
+- **L12-JE00BYVQYS01-C02** · 2019 · [V] · `R1`. «MARK DIXON Chief Executive Officer The Chief Executive Officer is responsible» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/reports-and-presentations/2020/consolidated-report-and-accounts-2019-final.pdf).
