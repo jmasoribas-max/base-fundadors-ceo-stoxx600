@@ -74,7 +74,8 @@ CARRECS = re.compile(
     r"|spokes(man|woman|person) of the (executive|management) board|chair(man|woman|person)? of the board of executive directors"
 )
 TRANSLIT = str.maketrans({"ø": "o", "Ø": "o", "æ": "ae", "Æ": "ae", "ß": "ss", "ł": "l",
-                          "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe"})
+                          "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe",
+                          "’": "'", "‘": "'", "´": "'", "`": "'"})
 MAX_IDS = 5
 COLUMNES = [
     "isin", "any", "nom", "FounderCEO", "ceos", "regles", "estat_certificacio_antic",

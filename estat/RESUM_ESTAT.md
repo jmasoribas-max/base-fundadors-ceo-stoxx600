@@ -14,18 +14,18 @@ Entrades llegides:
 | Etiqueta | Files | C1 CEO | C2 fundador | C1 i C2 | C4 coherent i sense dubtes | C3 arxiu | **Acabades** |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | F (`1`) | 349 | 338 (96,8 %) | 329 (94,3 %) | 318 (91,1 %) | 219 (62,8 %) | 0 (0,0 %) | **0 (0,0 %)** |
-| P (`0`) | 5.631 | 4.838 (85,9 %) | 4.592 (81,5 %) | 4.282 (76,0 %) | 5.509 (97,8 %) | 278 (4,9 %) | **278 (4,9 %)** |
+| P (`0`) | 5.631 | 4.839 (85,9 %) | 4.592 (81,5 %) | 4.283 (76,1 %) | 5.509 (97,8 %) | 278 (4,9 %) | **278 (4,9 %)** |
 | NA | 31 | 27 (87,1 %) | 27 (87,1 %) | 27 (87,1 %) | 24 (77,4 %) | 0 (0,0 %) | **0 (0,0 %)** |
 | ND | 1 | 1 (100,0 %) | 1 (100,0 %) | 1 (100,0 %) | 0 (0,0 %) | 1 (100,0 %) | **0 (0,0 %)** |
-| **Total** | 6.012 | 5.204 (86,6 %) | 4.949 (82,3 %) | 4.628 (77,0 %) | 5.752 (95,7 %) | 279 (4,6 %) | **278 (4,6 %)** |
+| **Total** | 6.012 | 5.205 (86,6 %) | 4.949 (82,3 %) | 4.629 (77,0 %) | 5.752 (95,7 %) | 279 (4,6 %) | **278 (4,6 %)** |
 
 ## Embut
 
 | Pas | Files |
 |---|---:|
 | Panell | 6.012 |
-| Amb evidència de CEO i de fundador (C1 i C2) | 4.628 (77,0 %) |
-| … i coherents, sense dubtes oberts (C4) | 4.445 (73,9 %) |
+| Amb evidència de CEO i de fundador (C1 i C2) | 4.629 (77,0 %) |
+| … i coherents, sense dubtes oberts (C4) | 4.446 (74,0 %) |
 | … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 278 (4,6 %) |
 
 ## Què falta, per condició
@@ -34,7 +34,7 @@ Una fila pot tenir més d'una mancança.
 
 | Mancança | F | P | NA | ND | Total |
 |---|---:|---:|---:|---:|---:|
-| `falta_ceo` | 11 | 793 | 4 | 0 | 808 |
+| `falta_ceo` | 11 | 792 | 4 | 0 | 807 |
 | `falta_fundador` | 20 | 1.039 | 4 | 0 | 1.063 |
 | `incoherent` | 0 | 3 | 0 | 0 | 3 |
 | `dubte_obert` | 130 | 119 | 7 | 1 | 257 |
@@ -44,9 +44,9 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c1_ceo` | Files |
 |---|---:|
-| `ok` | 5.177 |
+| `ok` | 5.178 |
 | `falta` | 741 |
-| `cita_sense_nom` | 62 |
+| `cita_sense_nom` | 61 |
 | `rsc_documentat` | 27 |
 | `falta_rsc` | 4 |
 | `co_ceo_parcial` | 1 |
@@ -62,8 +62,8 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c3_arxiu` | Files |
 |---|---:|
-| `falta_ceo+fundador` | 4.097 |
-| `sense_evidencia` | 1.384 |
+| `falta_ceo+fundador` | 4.098 |
+| `sense_evidencia` | 1.383 |
 | `ok` | 279 |
 | `falta_ceo` | 179 |
 | `falta_fundador` | 72 |
@@ -76,14 +76,14 @@ Una fila pot tenir més d'una mancança.
 | `certificada` | 1.773 | 507 (28,6 %) | 0 (0,0 %) |
 | `certificada_ceo_pendent` | 108 | 108 (100,0 %) | 0 (0,0 %) |
 | `no_certificada` | 241 | 241 (100,0 %) | 1 (0,4 %) |
-| `fora_mostra_auditoria` | 3.890 | 3.772 (97,0 %) | 277 (7,1 %) |
+| `fora_mostra_auditoria` | 3.890 | 3.773 (97,0 %) | 277 (7,1 %) |
 
 ## Per empresa (ISIN)
 
 | | Totes les files amb C1 i C2 | Totes les files acabades | Total |
 |---|---:|---:|---:|
 | Empreses amb almenys un any F | 67 | 0 | 88 |
-| Totes les empreses | 748 | 32 | 1.040 |
+| Totes les empreses | 749 | 32 | 1.040 |
 
 ## Incoherències del CSV (3 files)
 
