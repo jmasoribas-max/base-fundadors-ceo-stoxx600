@@ -14,8 +14,9 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %) |
 | Files amb evidència de CEO i de fundador (C1 i C2) | 4.107 de 6.012 (68,3 %) |
 | Files F amb C1 i C2 | 44 de 349 |
-| Fase del pla | Fase 0 feta (0.1 respostes rebudes, 0.2 script d'estat). Fase 1 esperant els fitxers de DF |
-| Pendent de Jordi | Les 10 decisions de DF (sessió 5); demanar a DF els fitxers; canvi de permisos per a `scripts/` i `.github/` (sessió 4); OK per obrir el PR de la branca |
+| Fase del pla | Fase 0 feta. Lot de correcció 1 preparat (no aplicat). Fase 1 esperant els fitxers de DF |
+| Pendent de Jordi | Decisions 4-10 de DF (sessió 5); accés a `scripts/`, `.github/` i, si ho vol, `dades/` (sessions 4 i 6); OK per obrir el PR de la branca |
+| Pendent de DF | Pujar els fitxers a una branca (sessió 5); configurar l'accés de Claude (sessió 6) |
 
 ## Decisions i indicacions de Jordi rebudes
 
@@ -28,6 +29,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Cal deixar anotat tot el que es fa en un document per tenir-ho controlat (aquest diari). |
 | 23/11/2026 | Nom del fundador: **sí** a la proposta. Es desa quan l'evidència el dona (totes les F i les P resoltes per la prova a); no es fa cap cerca específica a les P resoltes per b, c, d o e. |
 | 23/11/2026 | Claude porta la batuta de la base i ha de poder escriure a `scripts/` i `.github/`. Jordi farà el canvi de permisos i d'instruccions (vegeu la sessió 4). |
+| 23/11/2026 | Sí a les decisions 1, 2 i 3 (CEO oficial, `regles`, criteris del PR #3). Detall a la sessió 6. DF pot configurar l'accés de Claude. |
 
 ## Entrades
 
@@ -100,3 +102,19 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   5. Opcional, més endavant: els extractes X6 en un zip.
   - No cal `MAPA_FILES_r4_NO_PER_A_IA.csv` (la base ja té `sim_id_fila_r4`) ni les evidències web en brut (9,7 GB).
 - **Decisions pendents de Jordi:** les 10 de DF, amb la recomanació de Claude al missatge del 23/11 (resumides a l'estat ràpid quan es resolguin).
+
+### 23/11/2026 · Sessió 6 · Decisions 1-3 i lot de correcció 1 (preparat, no aplicat)
+
+- **Decisions de Jordi (23/11/2026):** sí a les tres recomanacions:
+  1. Copiar `sim_ceo_aplicat` a `ceos` a les 7 files (Enagás 2016-2021, Bellway 2017).
+  2. Corregir `regles` amb les decisions de Doctorat i revisar les P amb `cap`.
+  3. Criteris del PR #3: (a) un document de l'emissor allotjat fora del seu domini (CDN, regulador, plataforma de comunicats) és font A si la cita és literal; (b) l'informe de l'exercici com a aproximació del 31/10 (D21); (c) una cita de CEO només de font B és vàlida (D4b); (d) la llista de mitjans B la proposa Claude i la valida Doctorat.
+- Jordi ha enviat a DF el missatge per pujar els fitxers a una branca. També proposa que DF configuri l'accés de Claude a `scripts/` i `.github/`.
+- **Fet:** lot de correcció 1 preparat (no aplicat): [`lots/correccio1_canvis.csv`](../lots/correccio1_canvis.csv) i [`lots/correccio1_README.md`](../lots/correccio1_README.md). 171 cel·les a 59 files: 7 `ceos`, 41 `regles`, 123 camps de motiu de ND en files que ja no són ND. Cap canvi de FounderCEO. Script reutilitzable [`estat/aplica_canvis.py`](../estat/aplica_canvis.py) (prova en sec per defecte; amb `--aplica` escriu CSV, xlsx, registre i fitxes).
+- **Prova en una còpia separada (worktree, esborrada després):** l'aplicació canvia exactament 59 files del CSV, afegeix 59 entrades al registre i una secció a 19 fitxes; les incoherències passen de 51 a 3 (Knorr-Bremse 2019-2020 i Pandora 2018); `valida_pr.py` dona 0 problemes; si es torna a executar, l'script detecta que ja està aplicat.
+- **Queden fora del lot:** Knorr-Bremse 2019-2020 i Pandora 2018 (R2b sense proves per a cada membre de la direcció interina) → dubte per a Doctorat i cerca.
+- **Conseqüències dels criteris del PR #3:**
+  - S'han d'incorporar a la metodologia (Doctorat, nova versió) i a `CLAUDE.md` / `AGENTS.md` (Jordi).
+  - Dels 13 pendents del lot 9, Allreal 2019-2022 (4 files) es pot tancar amb el criteri (a); Sandoz, Bankia, Paysafe i EVRAZ continuen depenent d'altres criteris (cotització doble, P5, D37d, P6).
+- **Troballa per a la tasca 0.3:** les 46 entrades `decisio_doctorat` i `decisio_doctorat_r4` del registre no tenen `funcio_cita`, i per això l'script d'estat no les compta com a evidència de fundador (p. ex. AB InBev). Cal normalitzar-les.
+- **Pendent:** qui aplica els lots que toquen `dades/` (Claude o DF), segons el que decideixi Jordi sobre l'accés.
