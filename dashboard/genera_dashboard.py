@@ -31,6 +31,7 @@ import argparse
 import csv
 import hashlib
 import html
+import json
 import re
 import subprocess
 import sys
@@ -944,6 +945,8 @@ def calcula_estat(model: dict, resum_text: str) -> dict:
         "interval": sum("interval" in f["est"]["c1_tipus"] for f in files),
         "registre": model["registre"],
         "emp_totes_acabades": sum(e["st"]["acabada"] == len(e["files"]) for e in emp.values()),
+        "emp_estat": Counter(k for e in emp.values() for k in ORDRE_ESTATS if e["st"][k]),
+        "emp_etiq": Counter(l for e in emp.values() for l in ORDRE_ETIQ if e["recompte"][l]),
     }
 
 
@@ -1001,6 +1004,39 @@ def nom_versio() -> str:
     return f"la versió congelada ({VERSIO_CONGELADA})" if VERSIO_CONGELADA else "la versió congelada"
 
 
+# Icones de la navegació (decoratives; al mòbil, a les pestanyes inferiors).
+ICONES_NAV = {
+    "estat": '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 16h14M5 13V9m4 4V5m4 8v-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "empreses": '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 4h12M4 8h12M4 12h12M4 16h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "metode": '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 3h8l3 3v11H5zM8 9h5M8 12h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+}
+ICONA_LUPA = ('<svg class="cb-lupa" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5" fill="none" '
+              'stroke="currentColor" stroke-width="1.8"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>')
+# Tema: l'opció desada (clar o fosc) s'aplica abans de pintar; si no n'hi ha, mana prefers-color-scheme.
+SCRIPT_TEMA = ("<script>(function(d){d.className+=' js';try{var t=localStorage.getItem('fc-tema');"
+               "if(t==='dark'||t==='light'){d.setAttribute('data-theme',t);}}catch(e){}})(document.documentElement);</script>")
+
+
+def combobox(id_: str, prefix: str, etiqueta: str, placeholder: str, *, local: bool = False,
+             cls: str = "", boto: bool = False, etiqueta_visible: bool = False, valor_nom: str = "q") -> str:
+    """Cercador amb suggeriments (patró combobox de l'ARIA APG). Sense JS, és un
+    formulari normal que porta a empreses.html?q=…; amb `local`, filtra la llista
+    de la mateixa pàgina i el Retorn no navega."""
+    lab_cls = "cb-et" if etiqueta_visible else "vh"
+    accio = "" if local else f' action="{prefix}empreses.html" method="get"'
+    nom = "" if local else f' name="{valor_nom}"'
+    submit = '<button type="submit" class="boto cb-boto">Cerca</button>' if boto else ""
+    kbd = '' if local or boto else '<kbd class="cb-kbd" aria-hidden="true">/</kbd>'
+    extra = ' data-local onsubmit="return false"' if local else ""
+    return (f'<form class="cb {cls}" role="search"{accio} data-combobox{extra} data-prefix="{prefix}">'
+            f'<label class="{lab_cls}" for="{id_}">{esc(etiqueta)}</label>'
+            f'<div class="cb-camp">{ICONA_LUPA}<input type="search" id="{id_}"{nom} autocomplete="off" spellcheck="false" '
+            f'placeholder="{esc(placeholder)}" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="{id_}-llista">'
+            f'{kbd}{submit}</div>'
+            f'<ul class="cb-llista" id="{id_}-llista" role="listbox" aria-label="Suggeriments" hidden></ul>'
+            f'<span class="vh cb-viu" aria-live="polite"></span></form>')
+
+
 def pagina(ctx: Context, *, titol: str, descripcio: str, cos: str, prefix: str,
            actiu: str, scripts: tuple[str, ...] = (), ample: bool = False, cap_extra: str = "",
            cls_body: str = "") -> str:
@@ -1009,10 +1045,11 @@ def pagina(ctx: Context, *, titol: str, descripcio: str, cos: str, prefix: str,
                              ("empreses", "empreses.html", "Empreses"),
                              ("metode", "metodologia.html", "Mètode")):
         cur = ' aria-current="page"' if clau == actiu else ""
-        nav.append(f'<a href="{prefix}{href}"{cur}>{text}</a>')
-    js = "".join(f'<script src="{prefix}assets/{s}" defer></script>' for s in scripts)
+        nav.append(f'<a href="{prefix}{href}"{cur}>{ICONES_NAV[clau]}<span>{text}</span></a>')
+    js = "".join(f'<script src="{prefix}assets/{s}" defer></script>' for s in ("comu.js", *scripts))
     data = data_ca(ctx.data_commit)
     body = f' class="{cls_body}"' if cls_body else ""
+    cerca = combobox("cerca-cap", prefix, "Busca una empresa, un ISIN o un CEO", "Busca empresa, ISIN o CEO", cls="cb-cap")
     return f"""<!doctype html>
 <html lang="ca">
 <head>
@@ -1021,17 +1058,19 @@ def pagina(ctx: Context, *, titol: str, descripcio: str, cos: str, prefix: str,
 <meta name="robots" content="noindex">
 <title>{esc(titol)}</title>
 <meta name="description" content="{esc(descripcio)}">
+{SCRIPT_TEMA}
 <link rel="stylesheet" href="{prefix}assets/style.css">
-<script>document.documentElement.className+=' js';</script>
 {cap_extra}{js}
 </head>
 <body{body}>
 <a class="salta" href="#contingut">Salta al contingut</a>
 <header class="barra">
 <div class="barra-in">
-<a class="marca" href="{prefix}index.html"><span class="marca-logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="marca-text">Fundadors-CEO · STOXX Europe 600<small>Base de dades de doctorat · 2016–2025</small></span></a>
-<nav class="nav" aria-label="Navegació principal">{''.join(nav)}</nav>
+<a class="marca" href="{prefix}index.html"><b>Fundadors-CEO · STOXX Europe 600</b><small>Base de dades de doctorat · 2016–2025</small></a>
+{cerca}
 <a class="pindola" href="{prefix}index.html#versio">En revisió · dades del {esc(data)}</a>
+<button type="button" class="tema" aria-pressed="false" title="Canvia entre el mode clar i el mode fosc"><span class="tema-i" aria-hidden="true"></span><span class="vh">Mode fosc</span></button>
+<nav class="nav" aria-label="Navegació principal">{''.join(nav)}</nav>
 </div>
 </header>
 <main id="contingut" class="pagina{' ample' if ample else ''}">
@@ -1057,6 +1096,7 @@ def cel_buida(titol: str, petita: bool = False) -> str:
 
 
 NOM_ETIQ = {v[0]: v[1] for v in ETIQUETES.values()}
+DEF_ND = "Hi ha un CEO identificat però cap prova concloent de sí ni de no, o les proves es contradiuen."
 NOM_ETIQ_MIN = {"F": "fundador-CEO", "P": "professional", "ND": "no determinat", "NA": "sense CEO"}
 
 
@@ -1123,9 +1163,9 @@ def llegenda_estats(cat: Counter, total: int) -> str:
     for k in ORDRE_ESTATS:
         icona, nom, _, defi = ESTATS[k]
         items.append(
-            f'<li><span class="sw s-{k}" aria-hidden="true">{icona}</span>'
-            f'<span class="ll-txt"><b>{esc(nom)}</b> <span class="ll-n">{fmt_int(cat[k])} · {fmt_pct(cat[k], total)}</span>'
-            f'<span class="ll-def">{esc(defi)}</span></span></li>'
+            f'<li><span class="ll-cap"><span class="sw s-{k}" aria-hidden="true">{icona}</span><b>{esc(nom)}</b></span>'
+            f'<span class="ll-n"><span class="ll-xifra">{fmt_int(cat[k])}</span> <span class="ll-pc">{fmt_pct(cat[k], total)}</span></span>'
+            f'<span class="ll-def">{esc(defi)}</span></li>'
         )
     return f'<ul class="ll-estats">{"".join(items)}</ul>'
 
@@ -1378,13 +1418,37 @@ def sobre_dades(ctx: Context) -> str:
             f'<ul class="docs">{links}</ul>')
 
 
-def seccio(id_: str, titol: str, resposta: str, cos: str, cls: str = "") -> str:
+def seccio(id_: str, titol: str, resposta: str, cos: str, cls: str = "", n: int | None = None) -> str:
+    num = f'<span class="bloc-n" aria-hidden="true">{n}</span>' if n else ""
     return (f'<section class="bloc{(" " + cls) if cls else ""}" id="{id_}" aria-labelledby="h-{id_}">'
-            f'<h2 id="h-{id_}">{esc(titol)}</h2>{resposta}{cos}</section>')
+            f'<header class="bloc-cap">{num}<h2 id="h-{id_}">{esc(titol)}</h2></header>'
+            f'<div class="bloc-cos">{resposta}{cos}</div></section>')
+
+
+def dreceres(E: dict) -> str:
+    """Targetes clicables amb el recompte de files i el d'empreses del filtre
+    que obren (Empreses filtra per empresa: «amb alguna fila així»)."""
+    cat, ee, et = E["cat"], E["emp_estat"], E["emp_etiq"]
+    targetes = [(k, f"#t={k}", ESTATS[k][0], ESTATS[k][1], cat[k], ee[k], "amb alguna fila així") for k in ORDRE_ESTATS]
+    targetes.append(("F", "#e=F", "F", "Fundadors-CEO (F)", E["etiq"]["F"], et["F"], "amb algun any F"))
+    items = []
+    for k, hash_, icona, nom, files, emps, que in targetes:
+        sw = f'<span class="sw e-F" aria-hidden="true">F</span>' if k == "F" else f'<span class="sw s-{k}" aria-hidden="true">{icona}</span>'
+        items.append(
+            f'<li><a class="drec" href="empreses.html{hash_}">'
+            f'<span class="drec-cap">{sw}<span class="drec-nom">{esc(nom)}</span></span>'
+            f'<span class="drec-n"><b>{fmt_int(files)}</b> {"fila" if files == 1 else "files"}</span>'
+            f'<span class="drec-emp"><b>{fmt_int(emps)}</b> {"empresa" if emps == 1 else "empreses"} {esc(que)} <span aria-hidden="true">→</span></span></a></li>')
+    return ('<h3 class="vh">Dreceres a Empreses</h3>'
+            f'<ul class="dreceres">{"".join(items)}</ul>'
+            '<p class="nota">Cada targeta compta files; l\'enllaç obre Empreses amb el filtre aplicat, que compta empreses.</p>')
 
 
 REDIRECCIO_HASH = ("<script>(function(){var h=location.hash;"
                    "if(/^#(?:.*&)?(?:q|e|c|p|s|v|t|m)=/.test(h)){location.replace('empreses.html'+h);}})();</script>\n")
+
+
+ISIN_EXEMPLES = ("FR0000121014", "CH0038863350")
 
 
 def pagina_estat(ctx: Context, E: dict) -> str:
@@ -1394,11 +1458,11 @@ def pagina_estat(ctx: Context, E: dict) -> str:
     # 3. Quantes files estan acabades
     segs = [(k, cat[k], ESTATS[k][1]) for k in ORDRE_ESTATS]
     if acab:
-        heroi = (f'<p class="heroi-xifra"><b>{fmt_int(acab)}</b> de {fmt_int(tot)} files acabades '
-                 f'<span>({fmt_pct(acab, tot)})</span></p>')
+        heroi = (f'<p class="heroi-xifra"><b>{fmt_int(acab)}</b> <span>de {fmt_int(tot)} files acabades '
+                 f'({fmt_pct(acab, tot)})</span></p>')
     else:
         heroi = '<p class="heroi-xifra">Encara cap fila no compleix les quatre condicions.</p>'
-    acabades = (heroi + barra_apilada(segs, tot, "Files segons l'estat", "s")
+    acabades = (heroi + dreceres(E) + barra_apilada(segs, tot, "Files segons l'estat", "s")
                 + llegenda_estats(cat, tot)
                 + '<p class="nota">Cada fila compta en un sol estat: el primer pas de l\'embut que no supera.</p>')
     # 4. Embut
@@ -1435,24 +1499,30 @@ def pagina_estat(ctx: Context, E: dict) -> str:
     resultats = (barra_apilada(segs_e, tot, "Files segons l'etiqueta FounderCEO", "e")
                  + f'<ul class="ll-etiq">{ll_e}</ul>' + grafic_f_per_any(E))
 
-    cos = f"""<section class="cap-estat">
+    cerca = combobox("q", "", "Troba l'evidència d'una empresa", "LVMH, Nestlé, Arnault…", cls="cb-gran", boto=True, etiqueta_visible=True)
+    exemples = ('<p class="exemples">Exemples: <a href="empreses/FR0000121014.html">LVMH</a> '
+                '<a href="empreses/CH0038863350.html">Nestlé</a> <a href="empreses.html?q=Arnault">Arnault</a></p>')
+    cos = f"""<section class="obertura">
+<div class="ob-text">
 <h1>En quin punt és la base</h1>
 <p class="entradeta">{fmt_int(tot)} files empresa-any ({fmt_int(E["n_isin"])} empreses, 2016–2025). Per a cada fila: qui era el CEO el 31 d'octubre i si era fundador, amb una cita literal, l'URL original i una còpia a Wayback Machine.</p>
 {linia_versio(ctx)}
+</div>
+<div class="cerca-rapida">
+{cerca}
+<p class="cr-ajuda">Busca per nom, ISIN o CEO. Des de la fitxa, la cita i la còpia arxivada són a un clic.</p>
+{exemples}
+</div>
 </section>
-<form class="cerca-rapida" action="empreses.html" method="get" role="search">
-<label for="q">Busca una empresa (nom, ISIN o CEO)</label>
-<div class="cr-fila"><input type="search" id="q" name="q" autocomplete="off" placeholder="p. ex. Nestlé, DE000A0D9PT0, Arora…"><button type="submit" class="boto">Cerca</button></div>
-</form>
-{seccio("acabades", "Quantes files estan acabades?", "", acabades)}
-{seccio("embut", "On es queden les files?", "", embut(E) + detall)}
-{seccio("etiquetes", "Com està cada etiqueta?", resp_etiq, taula_etiquetes(E))}
-{seccio("anys", "Com va cada any?", resp_any, taula_anys(E))}
-{seccio("mancances", "Què falta i què s'hi fa?", resp_m, nota_m + barres_mancances(E))}
-{seccio("dubtes", "D'on venen els dubtes oberts?", resp_d, barres_dubtes(E, ctx.pend) + nota_d)}
-{seccio("qualitat", "Com es controla la qualitat?", '<p class="resposta">Cada cita passa per cinc controls abans de comptar com a acabada.</p>', passos_qualitat(E))}
-{seccio("resultats", "Resultats provisionals", '<p class="resposta etiqueta-prov">Provisional: pot canviar fins a ' + nom_versio() + '.</p>', resultats)}
-{seccio("versio", "Sobre aquestes dades", linia_versio(ctx), sobre_dades(ctx), "versio")}"""
+{seccio("acabades", "Quantes files estan acabades?", "", acabades, n=1)}
+{seccio("embut", "On es queden les files?", "", embut(E) + detall, n=2)}
+{seccio("etiquetes", "Com està cada etiqueta?", resp_etiq, taula_etiquetes(E), n=3)}
+{seccio("anys", "Com va cada any?", resp_any, taula_anys(E), n=4)}
+{seccio("mancances", "Què falta i què s'hi fa?", resp_m, nota_m + barres_mancances(E), n=5)}
+{seccio("dubtes", "D'on venen els dubtes oberts?", resp_d, barres_dubtes(E, ctx.pend) + nota_d, n=6)}
+{seccio("qualitat", "Com es controla la qualitat?", '<p class="resposta">Cada cita passa per cinc controls abans de comptar com a acabada.</p>', passos_qualitat(E), n=7)}
+{seccio("resultats", "Resultats provisionals", '<p class="resposta etiqueta-prov">Provisional: pot canviar fins a ' + nom_versio() + '.</p>', resultats, n=8)}
+{seccio("versio", "Sobre aquestes dades", linia_versio(ctx), sobre_dades(ctx), "versio", n=9)}"""
     return pagina(ctx, titol="Estat de la base · Fundadors-CEO STOXX Europe 600",
                   descripcio="En quin punt és la base Fundadors-CEO: files acabades, embut, mancances, dubtes i control de qualitat.",
                   cos=cos, prefix="", actiu="estat", cap_extra=REDIRECCIO_HASH, cls_body="p-estat")
@@ -1530,7 +1600,8 @@ def pagina_empreses(ctx: Context, model: dict, E: dict) -> str:
         cel = []
         for a in ANYS_PANELL:
             f = per_any.get(a)
-            cel.append(f'<i class="{f["lletra"]} {LLETRA_ESTAT[f["cat"]]}">{f["lletra"]}</i>' if f else '<i class="fora"></i>')
+            # Casella sense classe = l'empresa no era a l'índex aquell any (pesa menys).
+            cel.append(f'<i class="{f["lletra"]} {LLETRA_ESTAT[f["cat"]]}">{f["lletra"]}</i>' if f else '<i></i>')
         r = e["recompte"]
         n = len(e["files"])
         st = e["st"]
@@ -1540,12 +1611,11 @@ def pagina_empreses(ctx: Context, model: dict, E: dict) -> str:
         if norm_cerca(e["nom"]) not in norm_cerca(" ".join(noms_c)):
             noms_c.insert(0, e["nom"])
         cerca = norm_cerca(" ".join([*noms_c, e["isin"], *e["ceos_noms"]]))
-        pa = round(100 * st["acabada"] / n) if n else 0
         st_curt = f'{st["acabada"]}/{n} acabades' + "".join(f' · {estat_n(k, st[k])}' for k in ("dubte", "falta") if st[k])
         files_html.append(
             f'<tr data-c="{esc(cerca)}" data-e="{" ".join(l for l in ORDRE_ETIQ if r[l])}" '
             f'data-st="{" ".join(str(st[k]) for k in ORDRE_ESTATS)}" data-m="{" ".join(e["mancances"])}" '
-            f'data-p="{e["pais_codi"]}" data-n="{esc(clau_ordre(e["nom"]))}" data-f="{r["F"]}" data-pa="{pa}">'
+            f'data-p="{e["pais_codi"]}" data-f="{r["F"]}">'
             f'<td><a class="emp-nom" href="empreses/{e["isin"]}.html" title="{esc(e["nom_base"])}">{esc(e["nom"])}</a>'
             f'<span class="sub"><code>{e["isin"]}</code> · CEO {darrer["any"]}: {esc(ceo_darrer)}</span></td>'
             f'<td><span class="sr" role="img" aria-label="{esc(aria_serie(e))}">{"".join(cel)}</span></td>'
@@ -1561,8 +1631,8 @@ def pagina_empreses(ctx: Context, model: dict, E: dict) -> str:
 <h1>Empreses</h1>
 <p class="entradeta">{fmt_int(n_emp)} empreses i {fmt_int(model["n_files"])} files. Cerca per nom, ISIN o CEO, o filtra per etiqueta i estat.</p>
 </section>
-<form class="filtres" id="filtres" role="search" onsubmit="return false">
-<label class="camp camp-cerca"><span>Cerca per nom, ISIN o CEO</span><input type="search" id="f-q" placeholder="p. ex. Nestlé, DE000A0D9PT0, Arora…" autocomplete="off"></label>
+{combobox("f-q", "", "Cerca per nom, ISIN o CEO", "Nom, ISIN o CEO…", local=True, cls="cb-llista-emp", etiqueta_visible=True)}
+<form class="filtres" id="filtres" aria-label="Filtres" onsubmit="return false">
 <label class="camp"><span>Etiqueta</span><select id="f-e"><option value="">Totes</option>{opt_etiq}</select></label>
 <label class="camp"><span>Estat</span><select id="f-t"><option value="">Tots</option>{opt_estat}</select></label>
 <label class="camp"><span>País d'emissió de l'ISIN <small>(derivat)</small></span><select id="f-p"><option value="">Tots</option>{opt_pais}</select></label>
@@ -1576,7 +1646,7 @@ def pagina_empreses(ctx: Context, model: dict, E: dict) -> str:
 <caption class="vh">Empreses, sèrie FounderCEO 2016–2025 i estat de les files</caption>
 <thead><tr>
 <th scope="col" aria-sort="ascending"><button type="button" data-ordre="n">Empresa<span class="ord" aria-hidden="true"></span></button></th>
-<th scope="col">Sèrie 2016–2025</th>
+<th scope="col" class="col-serie"><span class="vh">Sèrie 2016–2025</span><span class="serie-anys" aria-hidden="true">{"".join(f"<span>{str(a)[2:]}</span>" for a in ANYS_PANELL)}</span></th>
 <th scope="col"><button type="button" data-ordre="pa">Estat<span class="ord" aria-hidden="true"></span></button></th>
 <th scope="col" class="num"><button type="button" data-ordre="f">Anys F<span class="ord" aria-hidden="true"></span></button></th>
 </tr></thead>
@@ -1597,55 +1667,42 @@ def pagina_empreses(ctx: Context, model: dict, E: dict) -> str:
 # ---------------------------------------------------------------------------
 
 
-def linia_temps(e: dict) -> str:
+def franja_anys(e: dict, obert: int) -> str:
+    """Franja de deu targetes 2016-2025 (any, etiqueta, icona d'estat i línia de
+    color d'estat). Els anys fora de l'índex són targetes buides i no clicables.
+    El JS hi afegeix el patró «roving tabindex» (fletxes ←/→)."""
     per_any = {f["any"]: f for f in e["files"]}
-    anys_cel, cels, estats = [], [], []
-    for i, a in enumerate(ANYS_PANELL, start=1):
-        f = per_any.get(a)
-        if f:
-            anys_cel.append(f'<a class="tl-any" style="grid-column:{i}" href="#any-{a}">{a}</a>')
-            ceo = f["ceos_text"].replace("|", " · ") or "sense CEO"
-            a_txt = str(a)
-            cels.append(f'<span class="tl-cel" style="grid-column:{i}">{cel_etiq(f["lletra"], a_txt + " · " + f["etiqueta"] + " · " + ceo)}</span>')
-            icona, nom, _, _ = ESTATS[f["cat"]]
-            estats.append(f'<a class="tl-st s-{f["cat"]}" style="grid-column:{i}" href="#any-{a}" title="{a}: {esc(nom)}">'
-                          f'<span aria-hidden="true">{icona}</span><span class="vh">{a}: {esc(nom)}</span></a>')
-        else:
-            anys_cel.append(f'<span class="tl-any" style="grid-column:{i}">{a}</span>')
-            cels.append(f'<span class="tl-cel" style="grid-column:{i}">{cel_buida(f"{a}: no és al panell")}</span>')
-            estats.append(f'<span class="tl-st tl-st-buit" style="grid-column:{i}"></span>')
-    trams = []
-    for i, a in enumerate(ANYS_PANELL, start=1):
+    items = []
+    for a in ANYS_PANELL:
         f = per_any.get(a)
         if not f:
+            items.append(f'<li><span class="rl rl-buit"><span class="rl-a">{a}</span>'
+                         f'<span class="vh">: l\'empresa no era a l\'índex</span></span></li>')
             continue
-        clau = f["ceos_text"]
-        if trams and trams[-1]["clau"] == clau and trams[-1]["fi"] == a - 1:
-            trams[-1]["fi"] = a
-            trams[-1]["span"] += 1
-            trams[-1]["files"].append(f)
+        icona, nom_st = ESTATS[f["cat"]][0], ESTATS[f["cat"]][1]
+        cur = ' aria-current="true"' if a == obert else ""
+        items.append(
+            f'<li><a class="rl b-{f["cat"]}" href="#any-{a}"{cur}><span class="rl-a">{a}</span>'
+            f'<span class="rl-e e-{f["lletra"]}" aria-hidden="true">{f["lletra"]}</span>'
+            f'<span class="rl-s" aria-hidden="true">{icona}</span>'
+            f'<span class="vh">: {esc(NOM_ETIQ[f["lletra"]])}, {esc(nom_st.lower())}</span></a></li>')
+    return f'<nav class="franja" aria-label="Anys de l\'empresa"><ol class="rail">{"".join(items)}</ol></nav>'
+
+
+def trams_ceo(e: dict) -> str:
+    """Qui era el CEO per períodes (trams d'anys consecutius amb el mateix `ceos`)."""
+    trams: list[dict] = []
+    for f in e["files"]:
+        if trams and trams[-1]["clau"] == f["ceos_text"] and trams[-1]["fi"] == f["any"] - 1:
+            trams[-1]["fi"] = f["any"]
         else:
-            trams.append({"clau": clau, "ini": a, "fi": a, "col": i, "span": 1, "ceos": f["ceos"], "files": [f]})
-    noms, llista = [], []
+            trams.append({"clau": f["ceos_text"], "ini": f["any"], "fi": f["any"], "ceos": f["ceos"]})
+    items = []
     for t in trams:
         nom = " · ".join(t["ceos"]) if t["ceos"] else "Sense CEO"
         rang = str(t["ini"]) if t["ini"] == t["fi"] else f"{t['ini']}–{t['fi']}"
-        lletres = {f["lletra"] for f in t["files"]}
-        cls = "tl-ceo" + (" tl-ceo-buit" if not t["ceos"] else "") + (f" v-{next(iter(lletres))}" if len(lletres) == 1 else "")
-        noms.append(f'<span class="{cls}" style="grid-column:{t["col"]} / span {t["span"]}" title="{esc(nom)} · {rang}">'
-                    f'<b>{esc(nom)}</b><small>{rang}</small></span>')
-        cels_t = "".join(
-            f'<a class="cel cel-p e-{f["lletra"]} b-{f["cat"]}" href="#any-{f["any"]}" title="{f["any"]} · {f["lletra"]} · {esc(ESTATS[f["cat"]][1])}">'
-            f'{f["lletra"]}<span class="vh"> {f["any"]}: {esc(ESTATS[f["cat"]][1])}</span></a>' for f in t["files"])
-        llista.append(f'<li class="{cls.replace("tl-ceo", "tram")}"><span class="tram-anys">{rang}</span>'
-                      f'<b class="tram-nom">{esc(nom)}</b><span class="serie">{cels_t}</span></li>')
-    return ('<div class="tl-wrap"><div class="tl" role="group" aria-label="CEO, etiqueta i estat per any">'
-            f'<div class="tl-fila">{"".join(anys_cel)}</div>'
-            f'<div class="tl-fila">{"".join(cels)}</div>'
-            f'<div class="tl-fila tl-fila-st">{"".join(estats)}</div>'
-            f'<div class="tl-fila tl-fila-ceo">{"".join(noms)}</div>'
-            "</div></div>"
-            f'<ol class="trams" aria-label="CEO per períodes">{"".join(llista)}</ol>')
+        items.append(f'<li><span class="tc-anys">{rang}</span> <b{"" if t["ceos"] else " class=buit"}>{esc(nom)}</b></li>')
+    return f'<div class="trams-ceo"><h3 class="tc-cap">CEO a 31/10 per períodes</h3><ol>{"".join(items)}</ol></div>'
 
 
 def html_cita(text: str, ident: str, maxim: int = LONGITUD_MAX_CITA) -> str:
@@ -1869,31 +1926,107 @@ def primer_id(ids: str) -> list[str]:
     return [i for i in (ids or "").split(";") if i and not i.startswith("(+") and i != "(sense id)"]
 
 
-SEP_CADENA = ' <span aria-hidden="true">→</span> '
 TITOL_COMPROVADA = {
     "sí": "La cita s'ha verificat per script a la captura de Wayback.",
     "no": "S'ha intentat verificar la cita a la captura i no s'ha pogut comprovar.",
     "pendent": "Encara no s'ha intentat verificar la cita a la captura.",
 }
+RE_NIVELL = re.compile(r"\bNivell ([ABC])\b")
 
 
-def resum_prova_any(p: dict | None, ident: str, titol: str) -> str:
-    """Bloc de «Per què?» per a una prova: marca, cita curta, font, còpia i comprovació."""
+def nivell_font(p: dict) -> str:
+    """Nivell A/B/C que declara la mateixa entrada (origen de la cita o nota pública)."""
+    for o, ocult in p["origen_pub"]:
+        m = None if ocult else re.fullmatch(r"Nivell ([ABC])", o)
+        if m:
+            return m.group(1)
+    for n, motiu in p["notes_pub"]:
+        m = None if motiu else RE_NIVELL.search(n)
+        if m:
+            return m.group(1)
+    return ""
+
+
+def descripcio_document(p: dict) -> str:
+    """El document i la pàgina, segons la primera nota pública de l'entrada (sense
+    inventar res: si la nota no diu «Document:», es mostra com a nota)."""
+    for n, motiu in p["notes_pub"]:
+        if motiu:
+            continue
+        t = norm_ws(n)
+        t = re.sub(r"^(?:Nivell [ABC]\.\s*)?(?:Funció: \w+\.\s*)?", "", t)
+        m = re.search(r"Document:\s*(.+?)(?:\.\s+Prova:|$)", t)
+        doc = bool(m)
+        if m:
+            t = m.group(1)
+        if not t:
+            continue
+        if len(t) > 230:
+            t = t[:230].rsplit(" ", 1)[0].rstrip(",;:") + "…"
+        return (esc(t) if doc else f'<span class="doc-et">Nota:</span> {esc(t)}')
+    return ""
+
+
+def comprovada_txt(p: dict) -> str:
+    return "sí" if p["capt_si"] else ("no" if "no" in p["capt"] else "pendent")
+
+
+def ev_prova(p: dict | None, ident: str) -> tuple[str, str]:
+    """(insígnies, cos) d'una prova a la columna d'evidència: cita en serif, document,
+    «Font original», «Còpia arxivada» i si la cita s'ha comprovat a la còpia."""
     if p is None:
-        return (f'<div class="pq-bloc"><h3 class="pq-h">{esc(titol)}</h3><p class="mini">Identificador <code>{esc(ident)}</code> '
-                "(no trobat entre les proves d'aquesta empresa).</p></div>")
+        return "", (f'<p class="mini">Identificador <code>{esc(ident)}</code> '
+                    "(no trobat entre les proves d'aquesta empresa).</p>")
     if p["ocult"]:
-        return (f'<div class="pq-bloc"><h3 class="pq-h">{esc(titol)}</h3><p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
-                f'<code>{esc(p["id"])}</code></p></div>')
+        return "", (f'<p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
+                    f'<code>{esc(p["id"])}</code></p>')
+    ins = []
+    if p["es_v"]:
+        ins.append('<span class="b b-v" title="marca_veritat = [V]: document obert sencer i cita trobada">[V] cita trobada al document</span>')
+    elif "[NV]" in p["veritat"]:
+        ins.append('<span class="b b-nv" title="marca_veritat = [NV]">[NV] no comprovada al document</span>')
+    if p["no_valida"]:
+        ins.append('<span class="b b-mal" title="La nota de l\'entrada diu no_valida">Font no vàlida</span>')
+    niv = nivell_font(p)
+    allot = ", ".join(p["allotjament"])
+    if niv or allot:
+        ins.append(f'<span class="b b-gris" title="Nivell de la font i allotjament del document">'
+                   f'{"Font " + niv if niv else "Font"}{" · " + esc(allot) if allot else ""}</span>')
+    for m in p["marca_prova"]:
+        if len(m) <= 14:
+            ins.append(f'<span class="b b-marca" title="marca_prova">{esc(m)}</span>')
+    url = url_segura(p["url"])
+    if url:
+        font = (f'<a class="boto" href="{esc(url)}" target="_blank" rel="noopener noreferrer">'
+                f'<span class="bt"><span aria-hidden="true">↗</span> Font original</span> <small>{esc(domini(url))}</small></a>')
+    elif p["url"]:
+        font = f'<span class="domini">URL no vàlida: {esc(p["url"])}</span>'
+    else:
+        font = '<span class="boto boto-off">Sense URL de la font</span>'
     wu, d = wayback_prova(p)
-    comprovada = "sí" if p["capt_si"] else ("no" if "no" in p["capt"] else "pendent")
-    cadena = [enllac_ext(p["url"], f"Font original · {domini(p['url'])}") if url_segura(p["url"]) else '<span class="buit">Sense URL de la font</span>',
-              enllac_ext(wu, f"Còpia Wayback · {d}" if d else "Còpia Wayback") if wu else f'<span class="buit">Còpia Wayback: {esc(d)}</span>',
-              f'<span class="{"ok" if comprovada == "sí" else "buit"}" title="{esc(TITOL_COMPROVADA[comprovada])}">Cita comprovada a la còpia: {comprovada}</span>']
-    return (f'<div class="pq-bloc"><h3 class="pq-h">{esc(titol)} <span class="pq-ins">{"".join(insignies_prova(p))}</span></h3>'
-            f'{html_cita(p["cita"], p["id"], 320)}'
-            f'<p class="pq-cadena">{SEP_CADENA.join(cadena)}</p>'
-            f'<p class="mini"><a class="pq-veure" href="#{p["ancora"]}" title="{esc(p["id"])}">Veure la prova</a></p></div>')
+    if wu:
+        extra = " (fitxer extra)" if not p["wb_urls"] else ""
+        copia = (f'<a class="boto boto-wb" href="{esc(wu)}" target="_blank" rel="noopener noreferrer">'
+                 f'<span class="bt"><span aria-hidden="true">⟲</span> Còpia arxivada{extra}</span>{" <small>" + esc(d) + "</small>" if d else ""}</a>')
+    else:
+        copia = f'<span class="boto boto-off">Còpia arxivada: {"pendent" if p["wb_pendent"] else "encara no"}</span>'
+    comp = comprovada_txt(p)
+    doc = descripcio_document(p)
+    cos = (f'<div class="ev-cita">{html_cita(p["cita"], p["id"], 420)}</div>'
+           + (f'<p class="doc">{doc}</p>' if doc else "")
+           + f'<div class="botons">{font}{copia}</div>'
+           f'<p class="verif"><span title="{esc(TITOL_COMPROVADA[comp])}">Cita comprovada a la còpia: '
+           f'<b class="vf vf-{"si" if comp == "sí" else comp}">{comp}</b></span>'
+           f'<span>ID <code>{esc(p["id"])}</code></span>'
+           f'<a href="#{p["ancora"]}">Veure la prova</a>'
+           + ('<button type="button" class="copia" data-copia-cita>Copia la cita</button>' if p["cita"] else "")
+           + '</p>')
+    return "".join(ins), cos
+
+
+def columna(titol: str, ins: str, cos: str, sub: str = "", cls: str = "") -> str:
+    return (f'<div class="ev{(" " + cls) if cls else ""}"><div class="ev-cap"><h4 class="ev-t">{titol}</h4>{ins}</div>'
+            f'{sub}{cos}</div>')
 
 
 def prova_valida(p: dict) -> bool:
@@ -1951,30 +2084,36 @@ def tria_extrems(exts: list[dict]) -> list[tuple[str, dict]]:
     return [(f"extrem {n}", p) for n, p in enumerate(ordenats, start=1)]
 
 
-def any_per_any(e: dict, index_proves: dict[str, dict], pend: dict, anomena) -> str:
-    files = []
+def linia_vertical(e: dict, index_proves: dict[str, dict], pend: dict, anomena, obert: int) -> str:
+    """Un bloc per any: capçalera (CEO, etiqueta, prova, estat) i un plegable
+    «Evidència de l'any» amb dues columnes: qui era el CEO i per què és (o no és)
+    fundador. La prova que es mostra és la que fa complir la condició (la primera
+    amb la cita comprovada a la còpia), amb la mateixa regla que estat_files.py."""
+    blocs_any = []
     for f in e["files"]:
         a = f["any"]
         est = f["est"]
+        l = f["lletra"]
         if f["ceos"]:
             ceo = " · ".join(esc(c) for c in f["ceos"])
         else:
             ceo = '<span class="buit">Sense CEO</span>'
         regles = regles_visibles(f["regles"])
-        prova = "".join(regla_detall(t) for t in regles)
-        # «Per què?»
-        blocs = []
-        es_na, es_nd = f["lletra"] == "NA", f["lletra"] == "ND"
+        es_na, es_nd = l == "NA", l == "ND"
         sense_etiq = es_na or es_nd
-        t_ceo = "Documentació de la fila sense CEO (R-SC)" if es_na else "Cita de CEO"
         # Funcions i noms que fan servir les condicions C1 i C2 (estat/estat_files.py).
         if sense_etiq and not (es_nd and f["ceos"]):
             f1, noms1 = {"ceo", "fundador", "context"}, []
         else:
             f1, noms1 = {"ceo"}, f["ceos"]
         f2 = {"ceo", "fundador", "context"} if sense_etiq else {"fundador"}
+
+        # --- Columna 1: qui era el CEO ---------------------------------------
+        t1 = "Documentació de la fila sense CEO (R-SC)" if es_na else "Qui era el CEO"
+        nom1 = "Sense CEO" if es_na else "CEO"
         mostrades1: list[dict] = []
         ids1 = primer_id(est["c1_ids"])
+        estat1 = "falta"
         if est["c1_ceo"] in ("ok", "rsc_documentat") and ids1:
             cands = candidats(e, est["c1_ids"], a, f1, noms1, anomena)
             docs = [p for p in cands if not es_extrem(p)]
@@ -1982,75 +2121,120 @@ def any_per_any(e: dict, index_proves: dict[str, dict], pend: dict, anomena) -> 
             doc = tria(docs)
             if doc and (doc["capt_si"] or not any(p["capt_si"] for p in exts)):
                 mostrades1 = [doc]
-                blocs.append(resum_prova_any(doc, doc["id"], t_ceo))
+                ins, cos = ev_prova(doc, doc["id"])
+                col1 = columna(t1, ins, cos)
             elif exts:
+                parts = []
                 for nom_ext, p in tria_extrems(exts):
                     mostrades1.append(p)
-                    blocs.append(resum_prova_any(p, p["id"], f"Cita de CEO per interval · {nom_ext}"))
-                blocs.append('<p class="mini">Limitació declarada (regla 28): a les files amb '
+                    ins, cos = ev_prova(p, p["id"])
+                    parts.append(f'<div class="ev-ext"><div class="ev-cap"><span class="ev-ext-t">Extrem de l\'interval: {esc(nom_ext)}</span>{ins}</div>{cos}</div>')
+                parts.append('<p class="mini ev-limit">Limitació declarada (regla 28): a les files amb '
                              '<abbr title="marca ceo_interval">CEO per interval</abbr> no s\'ha verificat '
                              "l'absència de canvis de CEO entre els dos extrems.</p>")
+                col1 = columna(f"{t1} (per interval)", "", "".join(parts))
             else:
-                blocs.append(resum_prova_any(index_proves.get(ids1[0]), ids1[0], t_ceo))
+                ins, cos = ev_prova(index_proves.get(ids1[0]), ids1[0])
+                col1 = columna(t1, ins, cos)
+            estat1 = "v" if mostrades1 else "ok"
         else:
-            blocs.append(f'<p class="falta-txt">Falta: {"documentació de la fila sense CEO" if es_na else "cita de CEO"}.</p>')
+            col1 = columna(t1, "", f'<p class="falta-txt">Falta: {"documentació de la fila sense CEO" if es_na else "cita de CEO"}.</p>',
+                           cls="ev-falta")
+
+        # --- Columna 2: per què és (o no és) fundador -------------------------
+        t2 = {"F": "Per què és fundador (F)", "P": "Per què no és fundador",
+              "NA": "Per què no hi ha CEO", "ND": "Què falta"}[l]
+        nom2 = {"F": "Fundador", "P": "Prova", "NA": "Cerca", "ND": "Cerca"}[l]
+        sub = '<p class="ev-sub">' + "".join(regla_detall(t) for t in regles) + "</p>"
+        if es_nd:
+            sub += f'<p class="ev-sub-nd">{esc(DEF_ND)}</p>'
         if sense_etiq:
-            t_f = "Documentació de la cerca"
-        elif f["lletra"] == "P":
-            t_f = "Prova que no és fundador"
-        else:
-            t_f = "Prova de fundador"
+            sub += '<p class="ev-sub-t">Documentació de la cerca:</p>'
         mostrada2 = None
         ids2 = primer_id(est["c2_ids"])
+        estat2 = "falta"
         if est["c2_fundador"] == "ok_columna_antiga":
+            estat2 = "base"
             d = next((d for d in e["cites_base"] if d["tipus"] == "font_classificacio" and a in d["anys"]), None)
             if d and not d["ocult"]:
                 url = url_segura(d["url"])
-                blocs.append(f'<div class="pq-bloc"><h3 class="pq-h">{t_f} <span class="pq-ins"><span class="b b-gris">Cita de la base</span></span></h3>'
-                             f'{html_cita(d["cita"], "font_classificacio_cita", 320)}'
-                             f'<p class="pq-cadena">{enllac_ext(url, "Font original · " + domini(url)) if url else ""} '
-                             '<span class="buit">· sense còpia arxivada</span></p></div>')
+                font = (f'<a class="boto" href="{esc(url)}" target="_blank" rel="noopener noreferrer"><span class="bt"><span aria-hidden="true">↗</span> '
+                        f'Font original</span> <small>{esc(domini(url))}</small></a>') if url else '<span class="boto boto-off">Sense URL de la font</span>'
+                cos = (f'<div class="ev-cita">{html_cita(d["cita"], "font_classificacio_cita", 420)}</div>'
+                       f'<div class="botons">{font}<span class="boto boto-off">Còpia arxivada: sense còpia arxivada</span></div>')
+                col2 = columna(t2, '<span class="b b-gris">Cita de la base</span>', cos, sub)
             else:
-                blocs.append(f'<div class="pq-bloc"><h3 class="pq-h">{t_f}</h3><p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
-                             "<code>font_classificacio_cita</code></p></div>")
+                col2 = columna(t2, "", '<p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
+                               "<code>font_classificacio_cita</code></p>", sub)
         elif est["c2_fundador"] in ("ok_registre", "rsc_documentat", "cerca_documentada") and ids2:
             mostrada2 = tria(candidats(e, est["c2_ids"], a, f2, [], anomena))
             if mostrada2 is not None and any(mostrada2 is p for p in mostrades1):
-                blocs.append(f'<p class="mini">{esc(t_f)}: la mateixa prova d\'aquí dalt.</p>')
+                col2 = columna(t2, "", f'<p class="mini">La mateixa prova de la columna «{esc(t1)}».</p>', sub)
             elif mostrada2 is not None:
-                blocs.append(resum_prova_any(mostrada2, mostrada2["id"], t_f))
+                ins, cos = ev_prova(mostrada2, mostrada2["id"])
+                col2 = columna(t2, ins, cos, sub)
             else:
-                blocs.append(resum_prova_any(index_proves.get(ids2[0]), ids2[0], t_f))
+                ins, cos = ev_prova(index_proves.get(ids2[0]), ids2[0])
+                col2 = columna(t2, ins, cos, sub)
+            estat2 = "v" if mostrada2 is not None else "ok"
         else:
-            blocs.append(f'<p class="falta-txt">Falta: {"documentació de la cerca" if sense_etiq else "prova de fundador"}.</p>')
+            col2 = columna(t2, "", f'<p class="falta-txt">Falta: {"documentació de la cerca" if sense_etiq else "prova de fundador"}.</p>',
+                           sub, cls="ev-falta")
         # Una fila acabada ha de mostrar, a les dues cites, «comprovada a la còpia: sí».
         if f["cat"] == "acabada":
             if not any(p["capt_si"] for p in mostrades1) or mostrada2 is None or not mostrada2["capt_si"]:
-                atura(f"{e['isin']} {a}: fila acabada sense cita comprovada a la còpia al «Per què?»")
+                atura(f"{e['isin']} {a}: fila acabada sense cita comprovada a la còpia a l'evidència de l'any")
+
+        # --- Avisos de la fila ------------------------------------------------
+        avisos = []
         if est["c4_coherencia"] != "ok":
             probs = [PROBLEMES_C4.get(x, x) for x in est["c4_coherencia"].split(";") if x]
-            blocs.append(f'<p class="falta-txt">No quadra amb la base: {esc(" ".join(probs))}</p>')
+            avisos.append(f'<p class="falta-txt">No quadra amb la base: {esc(" ".join(probs))}</p>')
         for dub in f["dubtes"]:
             nom = ORIGENS_DUBTE.get(dub, (dub, ""))[0]
             url = url_pendents(pend, dub, f"l10-{e['isin'].lower()}-{a}" if dub == "lot10" else None)
-            blocs.append(f'<p class="falta-txt">Dubte obert ({esc(nom)}): {enllac_ext(url, "veure al fitxer de dubtes")}</p>')
+            avisos.append(f'<p class="falta-txt">Dubte obert ({esc(nom)}): {enllac_ext(url, "veure al fitxer de dubtes")}</p>')
         if "carrec_no_detectat_a_la_cita" in est["avisos"]:
-            blocs.append('<p class="mini">Avís (no bloqueja): el càrrec no es detecta automàticament a la cita de CEO.</p>')
+            avisos.append('<p class="mini">Avís (no bloqueja): el càrrec no es detecta automàticament a la cita de CEO.</p>')
         n_proves = sum(a in p["anys"] for p in e["proves"]) + sum(a in d["anys"] for d in e["cites_base"])
-        blocs.append(f'<p class="pq-totes"><a href="#proves" data-filtre-any="{a}">Totes les proves d\'aquest any ({n_proves})</a></p>')
-        files.append(
-            f'<details class="any" id="any-{a}"><summary>'
-            f'<span class="a-any">{a}</span>'
-            f'<span class="a-ceo"><span class="vh">CEO a 31/10: </span>{ceo}</span>'
-            f'<span class="a-etq"><span class="vh">Etiqueta: </span>{badge_etiq(f["lletra"])}</span>'
-            f'<span class="a-prova"><span class="vh">Prova: </span>{" · ".join(esc(REGLES_TEXT.get(t, t)) for t in regles)}</span>'
-            f'<span class="a-st"><span class="vh">Estat: </span>{insignia_estat(f["cat"])}</span>'
-            f'<span class="a-pq">Per què?<span class="a-pq-f" aria-hidden="true"></span></span></summary>'
-            f'<div class="pq"><p class="pq-regla"><b>Prova:</b> {prova}</p>{"".join(blocs)}</div></details>'
-        )
-    cap = ('<div class="anys-cap" aria-hidden="true"><span>Any</span><span>CEO a 31/10</span><span>Etiqueta</span>'
-           '<span>Prova</span><span>Estat</span><span></span></div>')
-    return f'<div class="anys">{cap}{"".join(files)}</div>'
+
+        # --- Resum del plegable: insígnies, data de la còpia i inici de la cita
+        def ins_resum(nom: str, estat: str) -> str:
+            if estat == "v":
+                return f'<span class="b b-v">{esc(nom)} [V]</span>'
+            if estat == "ok":
+                return f'<span class="b b-gris">{esc(nom)}</span>'
+            if estat == "base":
+                return f'<span class="b b-gris">{esc(nom)}: cita de la base</span>'
+            return f'<span class="b b-mal">{esc(nom)}: falta</span>'
+        visibles = [p for p in [*mostrades1, mostrada2] if p is not None and not p["ocult"]]
+        data_copia = next((wayback_prova(p)[1] for p in visibles if wayback_prova(p)[0]), "")
+        copia_txt = f'<span class="b b-gris">còpia {esc(data_copia)}</span>' if data_copia else '<span class="b b-gris">sense còpia arxivada</span>'
+        previ = ""
+        p_previ = next((p for p in mostrades1 if not p["ocult"] and p["cita"]), None)
+        if p_previ:
+            t = p_previ["cita"]
+            t = t if len(t) <= 90 else t[:90].rsplit(" ", 1)[0] + "…"
+            previ = f'<span class="previ" aria-hidden="true">«{esc(t)}»</span>'
+        resum = (f'<summary><span class="fletxa" aria-hidden="true"></span><span class="ev-titol">Evidència de {a}</span>'
+                 f'{ins_resum(nom1, estat1)}{ins_resum(nom2, estat2)}{copia_txt}{previ}</summary>')
+        prova_curta = " · ".join(regla_html(t) for t in regles)
+        defecte = ' open data-defecte' if a == obert else ""
+        blocs_any.append(
+            f'<li class="tl-any l-{l}" id="any-{a}">'
+            f'<div class="tl-marca"><h3 class="tl-a">{a}</h3><span class="tl-punt s-{f["cat"]}" aria-hidden="true">{ESTATS[f["cat"]][0]}</span></div>'
+            f'<div class="tl-cos">'
+            f'<div class="tl-fila"><p class="tl-ceo"><small>CEO a 31/10/{a}</small><b>{ceo}</b></p>'
+            f'<span class="tl-etq"><span class="vh">Etiqueta: </span>{badge_etiq(l)}</span>'
+            f'<span class="tl-prova">Prova: {prova_curta}</span>'
+            f'<span class="tl-st"><span class="vh">Estat: </span>{insignia_estat(f["cat"])}</span></div>'
+            f'<details class="tl-evid"{defecte}>{resum}'
+            f'<div class="evid">{col1}{col2}</div>'
+            + (f'<div class="ev-avisos">{"".join(avisos)}</div>' if avisos else "")
+            + f'<div class="tl-peu"><a href="#proves" data-filtre-any="{a}">Totes les proves d\'aquest any ({n_proves}) <span aria-hidden="true">→</span></a>'
+            f'<span class="tl-peu-st">Estat: {esc(ESTATS[f["cat"]][3])}</span></div>'
+            "</details></div></li>")
+    return f'<ol class="tl">{"".join(blocs_any)}</ol>'
 
 
 def caixa_dubte(e: dict, pend: dict) -> str:
@@ -2149,27 +2333,45 @@ def pagina_fitxa(ctx: Context, e: dict, anterior: dict | None, seguent: dict | N
         nav.append(f'<a class="seg" href="{esc(seguent["isin"])}.html"><small>Següent →</small>{esc(seguent["nom"])}</a>')
     nav.append("</nav>")
 
-    llegenda_tl = "".join(f'<span class="ll"><span class="cel cel-p e-{l}" aria-hidden="true">{l}</span>{esc(NOM_ETIQ_MIN[l])}</span>'
-                          for l in ORDRE_ETIQ) + "".join(
-        f'<span class="ll"><span class="sw s-{k}" aria-hidden="true">{ESTATS[k][0]}</span>{esc(ESTATS[k][1].lower())}</span>' for k in ORDRE_ESTATS)
+    # Etiqueta dominant: la més freqüent (en empat, l'ordre F, P, ND, NA) i el CEO d'aquells anys.
+    dom = max(ORDRE_ETIQ, key=lambda x: (e["recompte"][x], -ORDRE_ETIQ.index(x)))
+    ceos_dom = {f["ceos_text"] for f in e["files"] if f["lletra"] == dom}
+    noms_dom = sorted({c for f in e["files"] if f["lletra"] == dom for c in f["ceos"]}, key=clau_ordre)
+    if dom == "NA" or not noms_dom:
+        qui = ""
+    elif len(ceos_dom) == 1:
+        qui = " · " + esc(" · ".join(next(f["ceos"] for f in e["files"] if f["lletra"] == dom)))
+    else:
+        qui = f" · {len(noms_dom)} CEO diferents"
+    obert = e["files"][-1]["any"]  # per defecte, l'últim any amb dades
+    llegenda = ("".join(f'<span class="ll"><span class="sw e-{l}" aria-hidden="true">{l}</span>{esc(NOM_ETIQ_MIN[l])}</span>' for l in ORDRE_ETIQ)
+                + '<span class="ll-sep" aria-hidden="true"></span>'
+                + "".join(f'<span class="ll"><span class="sw s-{k}" aria-hidden="true">{ESTATS[k][0]}</span>{esc(ESTATS[k][1].lower())}</span>' for k in ORDRE_ESTATS)
+                + '<span class="ll-sep" aria-hidden="true"></span>'
+                + '<span class="ll"><span class="b b-v">[V]</span>cita trobada al document</span>'
+                + '<span class="ll"><span class="sw sw-buida" aria-hidden="true"></span>targeta buida: l\'empresa no era a l\'índex</span>'
+                + '<a class="ll-mes" href="../metodologia.html#llegenda">Llegenda completa</a>')
 
     cos = f"""<p class="molla"><a href="../empreses.html">← Empreses</a></p>
 <section class="fitxa-cap">
+<div class="fc-nom">
 <h1>{esc(e["nom"])}</h1>
-<p class="fitxa-linia"><code>{esc(e["isin"])}</code> · {esc(e["pais"])} <span class="mini">(prefix ISIN)</span> · {esc(anys_txt)} ({n} anys)</p>
+<p class="fitxa-linia"><span class="isin"><code>{esc(e["isin"])}</code><button type="button" class="copia copia-isin" data-copia="{esc(e["isin"])}">Copia l'ISIN</button></span> <span>{esc(e["pais"])} <span class="mini">(prefix ISIN)</span></span> <span>{esc(anys_txt)} ({n} {"any" if n == 1 else "anys"})</span></p>
 {nom_base}{altres}
+</div>
+<div class="fc-resum">
+<p class="fc-etq">{badge_etiq(dom)} <span>{e["recompte"][dom]} de {n} {"any" if n == 1 else "anys"}{qui}</span></p>
 <p class="fitxa-estat">{minibarra_estat(e["st"], n, "mb mb-gran")}<span>{esc(text_estat_empresa(e))}</span></p>
+</div>
 </section>
 {caixa_dubte(e, ctx.pend)}
-<section class="seccio" id="resum" aria-labelledby="h-resum">
-<h2 id="h-resum">CEO, etiqueta i estat per any</h2>
-{linia_temps(e)}
-<div class="llegenda">{llegenda_tl}</div>
-</section>
-<section class="seccio" id="anys" aria-labelledby="h-anys">
+<section class="seccio seccio-anys" id="anys" aria-labelledby="h-anys">
 <h2 id="h-anys">Any per any</h2>
-<p class="nota">CEO a 31/10 segons la base. Obre «Per què?» per veure la cita de CEO i la de fundador de l'any, amb la font original i la còpia arxivada.</p>
-{any_per_any(e, index_proves, ctx.pend, ctx.anomena)}
+<p class="nota">Tria un any per veure qui era el CEO el 31 d'octubre i per què és (o no és) fundador, amb la cita, la font original i la còpia arxivada.</p>
+<div class="com-llegir"><span class="cl-cap">Com es llegeix:</span>{llegenda}</div>
+<div class="rail-envol">{franja_anys(e, obert)}</div>
+{trams_ceo(e)}
+{linia_vertical(e, index_proves, ctx.pend, ctx.anomena, obert)}
 </section>
 <section class="seccio" id="proves" aria-labelledby="h-proves">
 <h2 id="h-proves">Totes les proves</h2>
@@ -2203,7 +2405,7 @@ def pagina_metodologia(ctx: Context, model: dict, E: dict, stats: Counter) -> st
     etiq = "".join(targeta(l, badge_etiq(l), t + f' <span class="mini">({fmt_int(et[l])} {"fila" if et[l] == 1 else "files"})</span>') for l, t in (
         ("F", "Valor <code>1</code>. El CEO a 31/10 d'aquell any és fundador o cofundador de l'empresa cotitzada o d'una entitat rellevant (per exemple, una predecessora documentada), segons les regles de la metodologia."),
         ("P", "Valor <code>0</code>. El CEO no és fundador. Cal una prova positiva amb cita (proves a–e); si no n'hi ha, no es posa 0."),
-        ("ND", "Valor <code>no_determinat</code>. Hi ha un CEO identificat però cap prova concloent de sí ni de no, o les proves es contradiuen."),
+        ("ND", "Valor <code>no_determinat</code>. " + esc(DEF_ND)),
         ("NA", "Valor <code>NA_sense_ceo</code>. Un cop aplicades les regles R1-R3, a 31/10 no hi ha cap CEO individual (R-SC)."),
     ))
     estats = "".join(targeta(k, insignia_estat(k), esc(ESTATS[k][3])) for k in ORDRE_ESTATS)
@@ -2340,6 +2542,30 @@ def pagina_metodologia(ctx: Context, model: dict, E: dict, stats: Counter) -> st
 # ---------------------------------------------------------------------------
 
 
+CODI_ETIQ = {"F": "F", "P": "P", "ND": "D", "NA": "N"}
+
+
+def index_cerca(model: dict) -> str:
+    """Índex compacte del cercador amb suggeriments, compartit per totes les pàgines
+    (un fitxer JS, perquè funcioni també amb file://). Per empresa: ISIN, nom
+    visible, altres noms de la base (normalitzats), CEO de la base, CEO de
+    l'últim any i la sèrie de 10 anys (etiqueta F/P/D/N i estat a/r/d/f; «--» = fora
+    de l'índex). Només dades que ja són a empreses.html."""
+    files = []
+    for e in sorted(model["empreses"].values(), key=lambda e: (clau_ordre(e["nom"]), e["isin"])):
+        per_any = {f["any"]: f for f in e["files"]}
+        serie = "".join(CODI_ETIQ[per_any[a]["lletra"]] + LLETRA_ESTAT[per_any[a]["cat"]] if a in per_any else "--"
+                        for a in ANYS_PANELL)
+        noms = norm_cerca(" ".join([e["nom_base"], *e["altres_noms"]]))
+        files.append([e["isin"], e["nom"], noms, "|".join(e["ceos_noms"]), e["files"][-1]["ceos_text"], serie])
+    dades = json.dumps(files, ensure_ascii=False, separators=(",", ":"))
+    for camp in dades.split('","'):
+        if te_restringit(camp):
+            atura("l'índex de cerca conté un terme de la llista restringida")
+    return ("/* Índex del cercador. Generat per dashboard/genera_dashboard.py; no l'editis a mà. */\n"
+            f"window.CERCA_IDX={dades};\n")
+
+
 def escriu(path: Path, text: str) -> None:
     path = path.resolve()
     path.relative_to(SORTIDA.resolve())  # només dins de dashboard/
@@ -2366,6 +2592,11 @@ def main() -> int:
     escriu(SORTIDA / "assets" / "style.css", CSS)
     escriu(SORTIDA / "assets" / "cerca.js", JS_CERCA)
     escriu(SORTIDA / "assets" / "fitxa.js", JS_FITXA)
+    escriu(SORTIDA / "assets" / "comu.js", JS_COMU)
+    escriu(SORTIDA / "assets" / "index_cerca.js", index_cerca(model))
+    for isin in ISIN_EXEMPLES:
+        if isin not in model["empreses"]:
+            atura(f"l'exemple del cercador {isin} no és a la base")
     escriu(SORTIDA / "index.html", pagina_estat(ctx, E))
     # L'apòstrof no cal escapar-lo (els atributs van entre cometes dobles): la pàgina pesa menys.
     escriu(SORTIDA / "empreses.html", pagina_empreses(ctx, model, E).replace("&#x27;", "'"))
@@ -2405,202 +2636,241 @@ def main() -> int:
 # Actius estàtics (CSS i JS), sense dependències externes
 # ---------------------------------------------------------------------------
 
-CSS = r"""/* Fundadors-CEO. Generat per dashboard/genera_dashboard.py; no l'editis a mà. */
+CSS = r"""/* Fundadors-CEO. Generat per dashboard/genera_dashboard.py; no l'editis a mà.
+   Estil editorial (paper càlid, tinta, xifres i cites en serif), fitxa amb franja
+   d'anys i línia del temps, cercador amb suggeriments i mode clar/fosc. */
 :root {
   color-scheme: light;
-  --fons: #f5f4f0;
-  --sup: #ffffff;
-  --sup-2: #f0efea;
-  --sup-3: #e7e5df;
-  --tinta: #1a1a19;
-  --tinta-2: #4b4a46;
-  --tinta-3: #6e6d68;
-  --linia: #e0ded7;
-  --linia-forta: #c9c7bf;
-  --enllac: #1c5cab;
-  --enllac-hover: #104281;
-  --focus: #2a78d6;
+  --fons: #f7f4ec;
+  --sup: #fffdf8;
+  --sup-2: #f1ede2;
+  --sup-3: #e7e1d3;
+  --tinta: #1d1b16;
+  --tinta-2: #4a463d;
+  --tinta-3: #635e52;
+  --linia: #e2dccd;
+  --linia-forta: #c4bba7;
+  --vora-camp: #8a826f;
+  --enllac: #1f4f8f;
+  --enllac-hover: #123766;
+  --focus: #2456a6;
   /* Etiquetes FounderCEO (text blanc >= 4,5:1) */
   --e-F: #c2521f;
   --e-P: #1f66c1;
   --e-ND: #9b2f8f;
   --e-NA: #6e6d68;
   --e-txt: #ffffff;
-  --e-F-suau: #fbe9e1;
-  --e-P-suau: #e6effa;
-  --e-ND-suau: #f5e6f3;
-  --e-NA-suau: #efeeeb;
-  /* Estats de la fila (escala ordinal, separada de les etiquetes) */
+  --e-F-suau: #f8e4d9;
+  --e-P-suau: #e2eaf5;
+  --e-ND-suau: #f3e2ef;
+  --e-NA-suau: #ebe8e1;
+  /* Insígnies d'estat amb text (to suau) */
   --st-acabada: #1f7a3d;
   --st-acabada-txt: #ffffff;
   --st-arxiu: #cfe8d6;
-  --st-arxiu-txt: #1a1a19;
+  --st-arxiu-txt: #1d1b16;
   --st-dubte: #e9a93a;
-  --st-dubte-txt: #1a1a19;
-  --st-falta: #e7e5df;
-  --st-falta-ratlla: #c9c6bd;
-  --st-falta-txt: #1a1a19;
-  /* Marques d'estat (barres, franges, minibarres, mostres de llegenda). Validades
-     amb validate_palette.js --pairs all sobre #ffffff: CVD >= 10,8; visió normal >= 15,5. */
+  --st-dubte-txt: #1d1b16;
+  --st-falta: #e7e1d3;
+  --st-falta-ratlla: #c9c0ac;
+  --st-falta-txt: #1d1b16;
+  /* Marques d'estat (barres, franges, minibarres, punts). Validades amb
+     validate_palette.js --pairs all sobre #fffdf8 i #f7f4ec. */
   --mk-acabada: #1f7a3d;
   --mk-acabada-txt: #ffffff;
   --mk-arxiu: #86c9a0;
-  --mk-arxiu-txt: #1a1a19;
+  --mk-arxiu-txt: #1d1b16;
   --mk-dubte: #e9a93a;
-  --mk-dubte-txt: #1a1a19;
+  --mk-dubte-txt: #1d1b16;
   --mk-falta: #8a8882;
   --mk-falta-ratlla: #a9a7a0;
-  --mk-falta-txt: #1a1a19;
-  /* Barres d'una sola sèrie */
-  --barra: #4a5d73;
+  --mk-falta-txt: #1d1b16;
+  --barra: #4a463d;
   /* Proves */
   --v: #12692c;
-  --v-fons: #e5f3e8;
+  --v-fons: #e3f1e5;
   --nv: #8a5300;
-  --nv-fons: #fdf1d8;
+  --nv-fons: #fbefd5;
   --mal: #b42318;
-  --mal-fons: #fde8e6;
-  --cita-fons: #fbfaf7;
-  --radi: 12px;
-  --radi-petit: 8px;
+  --mal-fons: #fbe6e2;
+  --cita-fons: #faf7f0;
+  --ombra: 0 12px 32px rgba(29, 27, 22, .14);
+  --radi: 6px;
+  --radi-petit: 4px;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Charter, "Bitstream Charter", Cambria, Georgia, serif;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --font-cita: Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Georgia, Cambria, "Times New Roman", serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-cita: var(--serif);
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace;
 }
+/* Mode fosc: el del sistema (si no s'ha triat res) o el triat amb el botó. Només a la pantalla. */
 @media screen and (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --fons: #121211;
-    --sup: #1a1a19;
-    --sup-2: #22221f;
-    --sup-3: #2c2c29;
-    --tinta: #f0efec;
-    --tinta-2: #c9c8c0;
-    --tinta-3: #9c9b93;
-    --linia: #33332f;
-    --linia-forta: #4a4a45;
-    --enllac: #86b6ef;
-    --enllac-hover: #b7d3f6;
-    --focus: #6da7ec;
+    --fons: #151411; --sup: #1c1a17; --sup-2: #25231f; --sup-3: #2f2c27;
+    --tinta: #efebe1; --tinta-2: #cbc5b8; --tinta-3: #a7a194;
+    --linia: #34312b; --linia-forta: #4d4940; --vora-camp: #8a8476;
+    --enllac: #93b8ec; --enllac-hover: #bfd5f5; --focus: #7aa7ec;
     --e-ND: #a8399c;
-    --e-F-suau: #3a2116;
-    --e-P-suau: #172a42;
-    --e-ND-suau: #33172f;
-    --e-NA-suau: #2a2a27;
-    --st-acabada: #5fcf8a;
-    --st-acabada-txt: #121211;
-    --st-arxiu: #2e6b47;
-    --st-arxiu-txt: #f0efec;
-    --st-dubte: #d9a93a;
-    --st-dubte-txt: #121211;
-    --st-falta: #3a3935;
-    --st-falta-ratlla: #504f4a;
-    --st-falta-txt: #f0efec;
-    /* Validades sobre #1a1a19 (--pairs all): CVD >= 11,9; visió normal >= 16,9. */
-    --mk-acabada: #9be3b5;
-    --mk-acabada-txt: #121211;
-    --mk-arxiu: #3b9a6b;
-    --mk-arxiu-txt: #121211;
-    --mk-dubte: #d9a93a;
-    --mk-dubte-txt: #121211;
-    --mk-falta: #5a5954;
-    --mk-falta-ratlla: #6e6d67;
-    --mk-falta-txt: #f0efec;
-    --barra: #8fa3ba;
-    --v: #7fd99a;
-    --v-fons: #143220;
-    --nv: #f2c14e;
-    --nv-fons: #382a0c;
-    --mal: #ff9a8f;
-    --mal-fons: #3f1814;
-    --cita-fons: #20201d;
+    --e-F-suau: #3b2419; --e-P-suau: #1b2a3e; --e-ND-suau: #35192f; --e-NA-suau: #2a2824;
+    --st-acabada: #5fcf8a; --st-acabada-txt: #121211;
+    --st-arxiu: #2e6b47; --st-arxiu-txt: #f0efec;
+    --st-dubte: #d9a93a; --st-dubte-txt: #121211;
+    --st-falta: #3a3730; --st-falta-ratlla: #57524a; --st-falta-txt: #efebe1;
+    --mk-acabada: #9be3b5; --mk-acabada-txt: #121211;
+    --mk-arxiu: #3b9a6b; --mk-arxiu-txt: #121211;
+    --mk-dubte: #d9a93a; --mk-dubte-txt: #121211;
+    --mk-falta: #5a5954; --mk-falta-ratlla: #6e6d67; --mk-falta-txt: #efebe1;
+    --barra: #b9b2a3;
+    --v: #7fd99a; --v-fons: #143220; --nv: #f2c14e; --nv-fons: #382a0c; --mal: #ff9a8f; --mal-fons: #3f1814;
+    --cita-fons: #211f1b; --ombra: 0 12px 32px rgba(0, 0, 0, .5);
   }
 }
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --fons: #151411; --sup: #1c1a17; --sup-2: #25231f; --sup-3: #2f2c27;
+    --tinta: #efebe1; --tinta-2: #cbc5b8; --tinta-3: #a7a194;
+    --linia: #34312b; --linia-forta: #4d4940; --vora-camp: #8a8476;
+    --enllac: #93b8ec; --enllac-hover: #bfd5f5; --focus: #7aa7ec;
+    --e-ND: #a8399c;
+    --e-F-suau: #3b2419; --e-P-suau: #1b2a3e; --e-ND-suau: #35192f; --e-NA-suau: #2a2824;
+    --st-acabada: #5fcf8a; --st-acabada-txt: #121211;
+    --st-arxiu: #2e6b47; --st-arxiu-txt: #f0efec;
+    --st-dubte: #d9a93a; --st-dubte-txt: #121211;
+    --st-falta: #3a3730; --st-falta-ratlla: #57524a; --st-falta-txt: #efebe1;
+    --mk-acabada: #9be3b5; --mk-acabada-txt: #121211;
+    --mk-arxiu: #3b9a6b; --mk-arxiu-txt: #121211;
+    --mk-dubte: #d9a93a; --mk-dubte-txt: #121211;
+    --mk-falta: #5a5954; --mk-falta-ratlla: #6e6d67; --mk-falta-txt: #efebe1;
+    --barra: #b9b2a3;
+    --v: #7fd99a; --v-fons: #143220; --nv: #f2c14e; --nv-fons: #382a0c; --mal: #ff9a8f; --mal-fons: #3f1814;
+    --cita-fons: #211f1b; --ombra: 0 12px 32px rgba(0, 0, 0, .5);
+  }
+}
+
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
-body { margin: 0; background: var(--fons); color: var(--tinta); font: 15px/1.55 var(--font); }
-a { color: var(--enllac); text-underline-offset: 2px; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
+body { margin: 0; background: var(--fons); color: var(--tinta); font: 400 16px/1.55 var(--font); font-variant-numeric: tabular-nums; }
+a { color: var(--enllac); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { color: var(--enllac-hover); }
-:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
-code { font-family: var(--font-mono); font-size: .86em; background: var(--sup-2); padding: .08em .35em; border-radius: 5px; overflow-wrap: anywhere; }
-h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; font-weight: 700; }
-h1 { font-size: clamp(26px, 2.2vw + 16px, 32px); letter-spacing: -.01em; }
-h2 { font-size: 22px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+code { font-family: var(--font-mono); font-size: .86em; background: var(--sup-2); padding: .08em .35em; border-radius: 3px; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; font-weight: 600; }
+h1 { font: 600 clamp(32px, 4.4vw, 48px)/1.06 var(--serif); letter-spacing: -.015em; }
+h2 { font: 600 26px/1.15 var(--serif); letter-spacing: -.01em; }
 h3, .h3 { font-size: 17px; font-weight: 600; }
 p { margin: 0 0 .8em; }
 small { font-size: 13px; }
 abbr[title] { text-decoration: none; }
 .vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.salta { position: absolute; left: -999px; top: 8px; background: var(--sup); padding: 8px 12px; border-radius: 8px; z-index: 50; }
-.salta:focus { left: 8px; }
-.nota { color: var(--tinta-3); font-size: 13px; max-width: 68ch; }
+.salta { position: absolute; left: 16px; top: -80px; background: var(--tinta); color: var(--fons); padding: 8px 12px; z-index: 60; border-radius: 3px; }
+.salta:focus { top: 8px; color: var(--fons); }
+.nota { color: var(--tinta-3); font-size: 13px; max-width: 72ch; }
 .mini { color: var(--tinta-3); font-size: 13px; font-weight: 400; }
-.nota-clara { color: var(--tinta-2); font-size: 15px; max-width: 68ch; }
+.nota-clara { color: var(--tinta-2); font-size: 15px; max-width: 72ch; }
 .buit { color: var(--tinta-3); }
 .ok { color: var(--v); font-weight: 600; }
-.num, .tc-v, .tc-n, .ll-n, .bs-val, .eb-val, .tl-any, .a-any, .p-anys, td, th { font-variant-numeric: tabular-nums; }
+.num { text-align: right; }
 
-/* Barra superior */
-.barra { position: sticky; top: 0; z-index: 20; background: var(--sup); border-bottom: 1px solid var(--linia); }
-.barra-in { max-width: 1240px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 8px 24px; flex-wrap: wrap; }
-.marca { display: flex; align-items: center; gap: 10px; color: var(--tinta); text-decoration: none; font-weight: 700; margin-right: auto; }
+/* ---------- Capçalera ---------- */
+.barra { background: var(--sup); border-bottom: 1px solid var(--linia); position: relative; z-index: 25; }
+.barra-in { max-width: 1240px; margin: 0 auto; padding: 14px 24px 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "marca cerca pindola tema" "nav nav nav nav"; gap: 8px 20px; align-items: center; }
+.marca { grid-area: marca; display: flex; flex-direction: column; text-decoration: none; color: var(--tinta); padding-bottom: 4px; }
 .marca:hover { color: var(--tinta); }
-.marca-text { display: flex; flex-direction: column; line-height: 1.2; font-size: 15px; }
-.marca-text small { font-weight: 400; color: var(--tinta-3); }
-.marca-logo { display: grid; grid-template-columns: repeat(3, 7px); gap: 3px; }
-.marca-logo i { display: block; width: 7px; height: 22px; border-radius: 3px; background: var(--e-P); }
-.marca-logo i:nth-child(2) { background: var(--e-F); }
-.marca-logo i:nth-child(3) { background: var(--mk-acabada); }
-.nav { display: flex; gap: 4px; }
-.nav a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; text-decoration: none; color: var(--tinta-2); font-weight: 600; }
-.nav a:hover { background: var(--sup-2); color: var(--tinta); }
-.nav a[aria-current="page"] { background: var(--tinta); color: var(--sup); }
-.pindola { display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; font-weight: 600; padding: 0 12px; border-radius: 999px; background: var(--nv-fons); color: var(--nv); text-decoration: none; white-space: nowrap; }
-.pindola:hover { color: var(--nv); text-decoration: underline; }
+.marca b { font: 600 22px/1.15 var(--serif); letter-spacing: -.01em; }
+.marca small { font-size: 13px; color: var(--tinta-3); margin-top: 2px; }
+.cb-cap { grid-area: cerca; justify-self: end; width: min(100%, 400px); }
+.pindola { grid-area: pindola; display: inline-flex; align-items: center; gap: 7px; font-size: 13px; padding: 4px 11px; border: 1px solid var(--linia-forta); border-radius: 999px; color: var(--tinta-2); text-decoration: none; white-space: nowrap; min-height: 32px; }
+.pindola::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--mk-dubte); flex: none; }
+.pindola:hover { color: var(--tinta); border-color: var(--tinta-3); }
+.tema { grid-area: tema; display: none; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta-2); cursor: pointer; padding: 0; }
+.js .tema { display: inline-grid; }
+.tema:hover { color: var(--tinta); border-color: var(--tinta-3); }
+.tema svg { width: 19px; height: 19px; display: block; }
+.nav { grid-area: nav; display: flex; gap: 28px; border-top: 1px solid var(--linia); margin-top: 6px; }
+.nav a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 0 9px; min-height: 44px; font-size: 15px; font-weight: 600; text-decoration: none; color: var(--tinta-3); border-bottom: 3px solid transparent; }
+.nav a:hover { color: var(--tinta); }
+.nav a[aria-current="page"] { color: var(--tinta); border-bottom-color: var(--tinta); }
+.nav svg { display: none; width: 20px; height: 20px; }
 
-.pagina { max-width: 1120px; margin: 0 auto; padding: 32px 16px 48px; }
+/* ---------- Cercador amb suggeriments ---------- */
+.cb { position: relative; }
+.cb-camp { position: relative; display: flex; align-items: center; gap: 8px; }
+.cb-lupa { position: absolute; left: 12px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--tinta-3); pointer-events: none; }
+.cb input { flex: 1; min-width: 0; width: 100%; height: 42px; padding: 0 40px 0 38px; font: 400 16px var(--font); color: var(--tinta); background: var(--fons); border: 1px solid var(--vora-camp); border-radius: 999px; }
+.cb input::placeholder { color: var(--tinta-3); opacity: 1; }
+.cb input::-webkit-search-cancel-button { cursor: pointer; }
+.cb-kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font: 12px var(--font-mono); border: 1px solid var(--linia-forta); border-radius: 4px; padding: 1px 6px; color: var(--tinta-3); background: var(--sup); pointer-events: none; }
+.cb input:focus ~ .cb-kbd, .cb input:not(:placeholder-shown) ~ .cb-kbd { display: none; }
+.cb-et { display: block; font: 600 17px/1.3 var(--serif); margin-bottom: 8px; }
+.cb-pop { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40; background: var(--sup); border: 1px solid var(--linia-forta); border-radius: var(--radi); box-shadow: var(--ombra); padding: 6px; min-width: min(560px, calc(100vw - 32px)); }
+.cb-cap .cb-pop { left: auto; right: 0; }
+.cb-pop[hidden] { display: none; }
+.cb-llista { list-style: none; margin: 0; padding: 0; max-height: min(430px, 60vh); overflow: auto; }
+.cb-llista[hidden] { display: none; }
+.sug { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: center; padding: 9px 10px; border-radius: var(--radi-petit); cursor: pointer; }
+.sug[aria-selected="true"], .sug:hover { background: var(--sup-2); box-shadow: inset 3px 0 0 var(--tinta); }
+.sug-nom { font: 600 17px/1.3 var(--serif); overflow-wrap: anywhere; }
+.sug-sub { grid-column: 1; font-size: 13px; color: var(--tinta-3); overflow-wrap: anywhere; }
+.sug-sub code { background: transparent; padding: 0; color: var(--tinta-2); }
+.sug .sr { grid-row: 1 / span 2; grid-column: 2; }
+.sug mark, .cb mark { background: color-mix(in srgb, var(--mk-dubte) 45%, transparent); color: inherit; border-radius: 2px; padding: 0 1px; }
+.cb-peu { margin: 4px 0 0; padding: 8px 10px 4px; border-top: 1px solid var(--linia); font-size: 14px; display: flex; flex-direction: column; gap: 6px; }
+.cb-peu[hidden] { display: none; }
+.cb-peu a { font-weight: 600; display: inline-flex; align-items: center; gap: .3em; min-height: 32px; }
+.cb-buit { color: var(--tinta-2); }
+
+/* ---------- Estructura ---------- */
+.pagina { max-width: 1120px; margin: 0 auto; padding: 0 24px 64px; }
 .pagina.ample { max-width: 1240px; }
-.molla { margin: 0 0 12px; }
-.molla a { text-decoration: none; font-weight: 600; display: inline-flex; min-height: 40px; align-items: center; }
-.entradeta { font-size: 17px; color: var(--tinta-2); max-width: 68ch; }
-.cap-pagina { margin-bottom: 24px; }
-.resposta { font-size: 17px; max-width: 68ch; }
+.molla { padding-top: 24px; margin: 0; font-size: 14px; }
+.molla a { font-weight: 600; text-decoration: none; display: inline-flex; min-height: 40px; align-items: center; }
+.entradeta { font: 400 19px/1.5 var(--serif); color: var(--tinta-2); max-width: 36em; }
+.cap-pagina { padding: 40px 0 20px; }
+.resposta { font: 400 20px/1.45 var(--serif); margin: 0 0 20px; max-width: 36em; }
+.resposta b { font-weight: 600; }
 
 /* Línia de versió */
-.versio-linia { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--tinta-2); background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 12px 16px; max-width: 100%; }
-.pv-icona { flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--nv-fons); color: var(--nv); display: grid; place-items: center; font-weight: 700; }
+.versio-linia { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--tinta-3); margin: 16px 0 0; max-width: 64em; }
+.pv-icona { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--mk-dubte); color: var(--tinta-2); display: grid; place-items: center; font-weight: 700; font-size: 11px; margin-top: 1px; }
 .versio-linia code { background: transparent; padding: 0; }
 
-/* Cerca ràpida */
-.cerca-rapida { margin: 24px 0 48px; max-width: 640px; }
-.cerca-rapida label { display: block; font-weight: 600; margin-bottom: 8px; }
-.cr-fila { display: flex; gap: 8px; }
-.cr-fila input { flex: 1; min-width: 0; }
-input[type="search"], select { font: inherit; color: var(--tinta); background: var(--sup); border: 1px solid var(--linia-forta); border-radius: var(--radi-petit); padding: 8px 12px; min-height: 42px; width: 100%; min-width: 0; }
-.boto { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; max-width: 100%; white-space: normal; overflow-wrap: anywhere; font: inherit; font-weight: 600; padding: 6px 14px; border: 0; border-radius: var(--radi-petit); background: var(--enllac); color: #fff; text-decoration: none; cursor: pointer; }
-.boto:hover { color: #fff; background: var(--enllac-hover); }
-@media screen and (prefers-color-scheme: dark) { .boto, .boto:hover { color: #0d1b2e; } }
-.boto-wb { background: transparent; color: var(--enllac); border: 1px solid var(--enllac); }
-.boto-wb:hover { background: var(--sup-2); color: var(--enllac-hover); }
-@media screen and (prefers-color-scheme: dark) { .boto-wb, .boto-wb:hover { color: var(--enllac); } }
-.boto-off { background: var(--sup-2); color: var(--tinta-3); border: 1px dashed var(--linia-forta); font-weight: 400; cursor: default; }
-.boto-mostra { min-height: 0; padding: 4px 10px; font-size: 13px; }
-.boto-sec { font: inherit; font-weight: 600; min-height: 42px; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta-2); border-radius: var(--radi-petit); padding: 6px 14px; cursor: pointer; }
-.boto-sec:hover { background: var(--sup-2); color: var(--tinta); }
-.ext { font-size: .85em; margin-left: 2px; }
+/* ---------- Estat: obertura ---------- */
+.obertura { padding: 52px 0 40px; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; align-items: end; border-bottom: 1px solid var(--linia-forta); }
+.obertura h1 { margin-bottom: 16px; }
+.obertura .entradeta { margin: 0; }
+.cerca-rapida { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 20px; }
+.cb-gran input { border-radius: 3px; height: 46px; padding-right: 12px; }
+.cb-boto { min-height: 46px; }
+.cr-ajuda { margin: 10px 0 0; font-size: 13px; color: var(--tinta-3); }
+.exemples { margin: 8px 0 0; font-size: 13px; color: var(--tinta-3); display: flex; flex-wrap: wrap; gap: 0 12px; align-items: center; }
+.exemples a { color: var(--tinta-2); display: inline-flex; align-items: center; min-height: 32px; }
 
-/* Seccions de l'Estat */
-.cap-estat { margin-bottom: 0; }
-.bloc { margin: 0 0 48px; break-inside: avoid; }
-.bloc > h2 { margin-bottom: 8px; }
-.heroi-xifra { font-size: 22px; margin: 4px 0 16px; }
-.heroi-xifra b { font-size: 40px; font-weight: 700; letter-spacing: -.01em; }
-.heroi-xifra span { color: var(--tinta-2); }
+/* ---------- Estat: seccions (pregunta a l'esquerra) ---------- */
+.bloc { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; padding: 48px 0; border-bottom: 1px solid var(--linia); }
+.bloc:last-child { border-bottom: 0; }
+.bloc-cap h2 { margin: 0; }
+.bloc-n { display: block; font: italic 400 15px/1 var(--serif); color: var(--tinta-3); margin-bottom: 10px; }
+.bloc-cos { min-width: 0; }
+.heroi-xifra { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 24px; }
+.heroi-xifra b { font: 500 112px/.9 var(--serif); letter-spacing: -.03em; }
+.heroi-xifra span { font: 400 22px/1.3 var(--serif); color: var(--tinta-2); }
+
+/* Dreceres amb recompte */
+.dreceres { list-style: none; margin: 0 0 8px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.drec { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 14px 14px 12px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); text-decoration: none; color: var(--tinta); }
+.drec:hover { border-color: var(--tinta-3); color: var(--tinta); }
+.drec:hover .drec-emp { text-decoration: underline; }
+.drec-cap { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; line-height: 1.25; }
+.drec-n { font-size: 14px; color: var(--tinta-2); }
+.drec-n b { font: 500 30px/1 var(--serif); color: var(--tinta); letter-spacing: -.01em; margin-right: 2px; }
+.drec-emp { margin-top: auto; font-size: 13px; color: var(--enllac); line-height: 1.35; }
+.drec-emp b { font-weight: 700; }
+.dreceres + .nota { margin: 0 0 24px; }
 
 /* Barra apilada al 100 % */
-.sb { display: flex; gap: 2px; height: 32px; padding: 2px; background: var(--sup); border: 1px solid var(--linia-forta); border-radius: 8px; margin: 0 0 16px; }
-.sb-s { min-width: 3px; flex-basis: 0; border-radius: 4px; display: flex; align-items: center; }
-.sb-n { font-size: 13px; font-weight: 600; white-space: nowrap; padding-left: 8px; }
+.sb { display: flex; gap: 2px; height: 24px; padding: 2px; background: var(--sup); border: 1px solid var(--linia-forta); border-radius: 3px; margin: 0 0 4px; }
+.sb-s { min-width: 3px; flex-basis: 0; border-radius: 1px; }
 .s-acabada { background: var(--mk-acabada); color: var(--mk-acabada-txt); }
 .s-arxiu { background: var(--mk-arxiu); color: var(--mk-arxiu-txt); }
 .s-dubte { background: var(--mk-dubte); color: var(--mk-dubte-txt); }
@@ -2609,50 +2879,57 @@ input[type="search"], select { font: inherit; color: var(--tinta); background: v
 .e-P { background: var(--e-P); color: var(--e-txt); }
 .e-ND { background: var(--e-ND); color: var(--e-txt); }
 .e-NA { background: var(--e-NA); color: var(--e-txt); }
-.sw { display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 6px; font-size: 13px; font-weight: 700; font-style: normal; border: 1px solid var(--linia-forta); }
-.ll-estats, .ll-etiq { list-style: none; margin: 0 0 12px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px 24px; }
-.ll-estats li, .ll-etiq li { display: flex; gap: 10px; align-items: flex-start; }
-.ll-etiq li { align-items: center; }
-.ll-txt { display: flex; flex-direction: column; }
-.ll-n { color: var(--tinta-2); }
-.ll-def { font-size: 13px; color: var(--tinta-3); }
+.sw { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 3px; font: 700 12px/1 var(--font); font-style: normal; }
+.sw.s-falta, .st-falta { border: 1px solid var(--linia-forta); }
+.sw.s-falta { background: repeating-linear-gradient(135deg, var(--st-falta) 0 5px, var(--st-falta-ratlla) 5px 7px); color: var(--st-falta-txt); }
+.sw-buida { background: transparent; border: 1px dashed var(--linia-forta); }
+.ll-estats { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--linia); }
+.ll-estats li { display: flex; flex-direction: column; padding: 16px 20px 0 0; min-width: 0; }
+.ll-estats li + li { padding-left: 20px; border-left: 1px solid var(--linia); }
+.ll-cap { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.3; }
+.ll-xifra { font: 500 40px/1.1 var(--serif); letter-spacing: -.01em; }
+.ll-n { margin: 8px 0 2px; }
+.ll-pc { font-size: 14px; color: var(--tinta-2); }
+.ll-def { font-size: 13px; color: var(--tinta-3); margin-top: 6px; line-height: 1.45; }
+.ll-etiq { list-style: none; margin: 12px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.ll-etiq li { display: inline-flex; align-items: center; gap: 8px; }
+.ll-etiq .ll-n { margin: 0; color: var(--tinta-2); }
 
 /* Embut */
-.embut { list-style: none; margin: 16px 0 8px; padding: 0; max-width: 860px; }
+.embut { list-style: none; margin: 8px 0; padding: 0; max-width: 860px; }
 .eb-pas { margin: 0; }
-.eb-nom { display: block; font-weight: 600; margin-bottom: 4px; }
-.eb-fila { display: flex; align-items: center; gap: 10px; }
-.eb-barra { display: block; height: 22px; min-width: 3px; background: var(--barra); border-radius: 0 4px 4px 0; }
+.eb-nom { display: block; font-size: 14px; color: var(--tinta-2); margin-bottom: 4px; }
+.eb-fila { display: flex; align-items: center; gap: 14px; }
+.eb-barra { display: block; height: 26px; min-width: 3px; background: var(--barra); border-radius: 2px; }
 .eb-final .eb-barra { background: var(--mk-acabada); }
-.eb-val { white-space: nowrap; font-weight: 600; }
-.eb-salt { display: flex; align-items: center; gap: 8px; margin: 6px 0 10px 12px; padding-left: 12px; border-left: 2px solid var(--linia-forta); color: var(--tinta-2); font-size: 13px; }
-.eb-salt .sw { width: 20px; height: 20px; font-size: 12px; }
+.eb-val { white-space: nowrap; font: 500 21px/1 var(--serif); }
+.eb-salt { display: flex; align-items: center; gap: 8px; margin: 6px 0 10px 8px; padding: 6px 0 6px 16px; border-left: 1px dashed var(--linia-forta); color: var(--tinta-3); font-size: 13px; }
+.eb-salt .sw { width: 18px; height: 18px; font-size: 11px; }
 
-/* Taula d'etiquetes */
-.taula-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); }
-table { border-collapse: collapse; width: 100%; }
-th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--linia); }
-thead th { background: var(--sup-2); font-size: 13px; color: var(--tinta-2); font-weight: 600; white-space: nowrap; }
+/* Taules */
+.taula-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--linia); }
+th:first-child, td:first-child { padding-left: 0; }
+thead th { font-size: 12px; color: var(--tinta-3); font-weight: 600; white-space: nowrap; border-bottom: 1px solid var(--tinta); vertical-align: bottom; }
 tbody tr:last-child > * { border-bottom: 0; }
-.num { text-align: right; }
 .taula-etiq td, .taula-etiq th { vertical-align: middle; }
 .taula-etiq td { min-width: 92px; }
-.tc-v { display: block; font-weight: 600; }
+.tc-v { display: block; font: 500 18px/1.2 var(--serif); }
 .tc-n { display: block; font-size: 13px; color: var(--tinta-3); }
 .tc-files { display: none; }
-.mm { display: block; height: 6px; background: var(--sup-3); border-radius: 3px; margin-top: 4px; overflow: hidden; }
-.mm i { display: block; height: 100%; background: var(--barra); border-radius: 3px; }
-.etq { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 2px 10px 2px 2px; border-radius: 999px; background: var(--e-P-suau); color: var(--tinta); }
-.etq b { display: inline-grid; place-items: center; min-width: 26px; height: 22px; padding: 0 4px; border-radius: 999px; font-size: 12px; background: var(--e-P); color: var(--e-txt); }
+.mm { display: block; height: 4px; background: var(--sup-3); margin-top: 6px; overflow: hidden; }
+.mm i { display: block; height: 100%; background: var(--barra); }
+.etq { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 3px 11px 3px 3px; border-radius: 999px; background: var(--e-P-suau); color: var(--tinta); }
+.etq b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 4px; border-radius: 999px; font-size: 11px; background: var(--e-P); color: var(--e-txt); }
 .etq.e-F { background: var(--e-F-suau); color: var(--tinta); } .etq.e-F b { background: var(--e-F); }
 .etq.e-P { color: var(--tinta); }
 .etq.e-ND { background: var(--e-ND-suau); color: var(--tinta); } .etq.e-ND b { background: var(--e-ND); }
 .etq.e-NA { background: var(--e-NA-suau); color: var(--tinta); } .etq.e-NA b { background: var(--e-NA); }
-
-/* Taula any × estat */
 .taula-anys { table-layout: fixed; }
-.taula-anys th:first-child { width: 72px; }
-.taula-anys th:last-child { width: 80px; }
+.taula-anys th:first-child { width: 64px; }
+.taula-anys th:last-child { width: 72px; }
+.taula-anys tbody th { font: 600 16px var(--serif); }
 .taula-anys td.ta { text-align: right; }
 .taula-anys td.ta b { font-weight: 600; }
 .taula-anys td.ta small { color: var(--tinta-2); }
@@ -2663,27 +2940,33 @@ tbody tr:last-child > * { border-bottom: 0; }
 .curt { display: none; }
 
 /* Barres d'una sola sèrie (mancances, dubtes) */
-.bs { list-style: none; margin: 16px 0 8px; padding: 0; max-width: 860px; }
-.bs li { margin: 0 0 16px; }
+.bs { list-style: none; margin: 8px 0; padding: 0; max-width: 860px; }
+.bs li { margin: 0; padding: 16px 0; border-top: 1px solid var(--linia); }
+.bs li:first-child { border-top: 0; padding-top: 4px; }
 .bs-nom { display: block; font-weight: 600; }
-.bs-fila { display: flex; align-items: center; gap: 10px; margin: 4px 0; }
-.bs-barra { display: block; height: 18px; min-width: 3px; background: var(--barra); border-radius: 0 4px 4px 0; }
-.bs-val { font-weight: 600; white-space: nowrap; }
+.bs-fila { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+.bs-barra { display: block; height: 10px; min-width: 3px; background: var(--barra); border-radius: 1px; }
+.bs-val { font: 500 22px/1 var(--serif); white-space: nowrap; }
 .bs-det, .bs-que { display: block; font-size: 13px; color: var(--tinta-2); }
-.bs-link { display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; font-weight: 600; }
-.codi-petit { font-size: 12px; }
+.bs-link { display: inline-flex; align-items: center; min-height: 32px; font-size: 14px; font-weight: 600; }
+/* Dubtes: una línia per origen (nom, barra i enllaç). */
+#dubtes .bs li { display: grid; grid-template-columns: 190px minmax(0, 1fr) auto; gap: 0 16px; align-items: center; padding: 6px 0; }
+#dubtes .bs li:first-child { padding-top: 0; }
+#dubtes .bs-fila { margin: 0; }
 
 /* Passos de qualitat */
-.passos { list-style: none; margin: 16px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-.passos li { display: flex; flex-direction: column; gap: 8px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 16px; min-width: 0; }
-.pq-n { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--tinta); color: var(--sup); font-weight: 700; }
-.pq-t { display: flex; flex-direction: column; gap: 4px; overflow-wrap: anywhere; }
+.passos { list-style: none; margin: 8px 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--tinta); }
+.passos li { display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 0 0; min-width: 0; }
+.passos li + li { padding-left: 16px; border-left: 1px solid var(--linia); }
+.pq-n { font: italic 400 30px/1 var(--serif); color: var(--tinta-3); }
+.pq-t { display: flex; flex-direction: column; gap: 6px; overflow-wrap: anywhere; }
 .pq-nom { font-size: 15px; }
 .pq-t > span { font-size: 13px; color: var(--tinta-2); }
+.pq-t > span b { font: 500 20px/1.2 var(--serif); color: var(--tinta); }
 
 /* Gràfic de files F per any */
-.grafic { margin: 24px 0 0; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 16px; }
-.grafic figcaption { margin-bottom: 12px; }
+.grafic { margin: 28px 0 0; }
+.grafic figcaption { margin-bottom: 12px; font-family: var(--serif); }
 .barres { position: relative; height: 200px; margin: 8px 0 4px 30px; }
 .eix { position: absolute; inset: 0 0 40px 0; pointer-events: none; }
 .tick { position: absolute; left: 0; right: 0; border-top: 1px solid var(--linia); }
@@ -2691,162 +2974,240 @@ tbody tr:last-child > * { border-bottom: 0; }
 .bcols { position: absolute; inset: 0; display: flex; gap: 6px; }
 .bcol { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .barea { flex: 1; display: flex; align-items: flex-end; justify-content: center; }
-.bar { position: relative; display: block; width: min(24px, 70%); background: var(--e-F); border-radius: 4px 4px 0 0; min-height: 2px; }
-.bval { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--tinta-2); padding-bottom: 2px; }
-.bany { height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: var(--tinta-2); line-height: 1.2; }
+.bar { position: relative; display: block; width: min(32px, 70%); background: var(--e-F); border-radius: 2px 2px 0 0; min-height: 2px; }
+.bval { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font: 500 13px var(--serif); color: var(--tinta-2); padding-bottom: 2px; }
+.bany { height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: var(--tinta-2); line-height: 1.2; border-top: 1px solid var(--tinta); }
 .bany small { font-size: 11px; color: var(--tinta-3); }
-.tip { position: absolute; bottom: calc(100% - 30px); left: 50%; transform: translateX(-50%); background: var(--tinta); color: var(--sup); font-size: 13px; padding: 6px 9px; border-radius: 7px; white-space: nowrap; pointer-events: none; display: none; z-index: 5; }
+.tip { position: absolute; bottom: calc(100% - 30px); left: 50%; transform: translateX(-50%); background: var(--tinta); color: var(--fons); font-size: 13px; padding: 6px 9px; border-radius: 4px; white-space: nowrap; pointer-events: none; display: none; z-index: 5; }
 .bcol:hover .tip, .bcol:focus .tip { display: block; }
 .bcol:first-child .tip { left: 0; transform: none; }
 .bcol:last-child .tip { left: auto; right: 0; transform: none; }
-details.dades { margin-top: 8px; font-size: 13px; }
-details.dades summary { cursor: pointer; color: var(--enllac); min-height: 32px; display: flex; align-items: center; }
+details.dades { margin-top: 12px; font-size: 14px; }
+details.dades summary { cursor: pointer; color: var(--tinta-2); font-weight: 600; min-height: 32px; display: flex; align-items: center; }
 .taula-simple th, .taula-simple td { padding: 6px 12px; font-size: 13px; }
+.etiqueta-prov { display: inline-block; font: 600 13px var(--font); border: 1px solid var(--mk-dubte); padding: 2px 10px; border-radius: 2px; }
 
 /* Sobre aquestes dades */
-.versio .versio-linia { margin-bottom: 16px; }
-.versio-dl { display: grid; gap: 8px; margin: 0 0 12px; }
-.versio-dl div { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 4px 12px; }
-.versio-dl dt { font-size: 13px; color: var(--tinta-2); }
+.versio .versio-linia { margin: 0 0 16px; }
+.versio-dl { display: grid; gap: 8px; margin: 0 0 12px; font-size: 14px; }
+.versio-dl div { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 4px 16px; }
+.versio-dl dt { color: var(--tinta-3); }
 .versio-dl dd { margin: 0; min-width: 0; }
 .sha { font-size: 12px; }
 .docs { padding-left: 20px; }
 .docs li { margin-bottom: 4px; }
 .docs a, .text-llarg a, .versio-linia, .entradeta { overflow-wrap: anywhere; }
 
-/* Empreses */
-.filtres { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; align-items: end; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 16px; margin: 0 0 12px; }
-.camp { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--tinta-2); min-width: 0; }
-.camp small { font-weight: 400; color: var(--tinta-3); }
-.camp-cerca { grid-column: 1 / -1; }
-.camp-cerca input { font-size: 17px; }
+/* ---------- Botons ---------- */
+.boto { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 40px; max-width: 100%; white-space: normal; overflow-wrap: anywhere; font: 600 14px/1.25 var(--font); padding: 6px 14px; border: 1px solid var(--tinta); border-radius: 3px; background: var(--tinta); color: var(--fons); text-decoration: none; cursor: pointer; }
+.boto:hover { color: var(--fons); background: var(--tinta-2); border-color: var(--tinta-2); }
+.boto small { font-weight: 400; font-size: 12px; opacity: .8; overflow-wrap: anywhere; }
+.bt { white-space: nowrap; }
+.boto-wb { background: transparent; color: var(--tinta); border-color: var(--tinta); }
+.boto-wb:hover { background: var(--sup-2); color: var(--tinta); border-color: var(--tinta); }
+.boto-off { background: transparent; color: var(--tinta-3); border: 1px dashed var(--linia-forta); font-weight: 500; cursor: default; }
+.boto-off:hover { background: transparent; color: var(--tinta-3); border-color: var(--linia-forta); }
+.boto-mostra { min-height: 0; padding: 3px 10px; font-size: 13px; }
+.boto-sec { font: 600 14px var(--font); min-height: 40px; border: 1px solid var(--vora-camp); background: transparent; color: var(--tinta); border-radius: 3px; padding: 6px 14px; cursor: pointer; }
+.boto-sec:hover { background: var(--sup-2); }
+.ext { font-size: .85em; margin-left: 2px; }
+.copia { display: none; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; font: 500 13px var(--font); color: var(--tinta-2); background: transparent; border: 1px solid var(--linia-forta); border-radius: 3px; cursor: pointer; }
+.js .copia { display: inline-flex; }
+.copia:hover { color: var(--tinta); border-color: var(--tinta-3); }
+
+/* ---------- Empreses ---------- */
+.p-empreses .cap-pagina { padding-bottom: 8px; }
+.cb-llista-emp { margin: 8px 0 20px; }
+.cb-llista-emp .cb-et { font: 600 12px var(--font); color: var(--tinta-3); margin-bottom: 8px; }
+.cb-llista-emp .cb-lupa { left: 4px; width: 22px; height: 22px; margin-top: -11px; color: var(--tinta-2); }
+.cb-llista-emp input { height: 60px; padding: 0 4px 0 38px; font: 400 26px var(--serif); background: transparent; border: 0; border-bottom: 2px solid var(--tinta); border-radius: 0; }
+.cb-llista-emp input:focus-visible { outline-offset: 2px; }
+.filtres { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; padding-bottom: 8px; margin: 0 0 4px; }
+.filtres select { max-width: 320px; }
+.camp { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color: var(--tinta-3); min-width: 0; max-width: 100%; }
+.camp small { font-weight: 400; }
 .camp[hidden] { display: none; }
-.recompte { color: var(--tinta-2); margin: 0 0 8px; }
-.recompte b { color: var(--tinta); }
-.llegenda { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 13px; color: var(--tinta-2); margin: 8px 0 12px; }
+select { font: 400 14px var(--font); color: var(--tinta); background: var(--sup); border: 1px solid var(--vora-camp); border-radius: 3px; padding: 0 10px; min-height: 40px; max-width: 100%; }
+.filtres .boto-sec { border: 0; text-decoration: underline; text-underline-offset: 3px; padding: 0 4px; color: var(--tinta-2); }
+.recompte { padding: 18px 0 6px; margin: 12px 0 0; border-top: 1px solid var(--tinta); font: 400 18px var(--serif); color: var(--tinta-2); }
+.recompte b { color: var(--tinta); font-weight: 600; }
+.llegenda { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 12px; color: var(--tinta-3); margin: 6px 0 12px; }
 .ll { display: inline-flex; align-items: center; gap: 6px; }
-.ll-cap { font-weight: 600; color: var(--tinta); }
-.llegenda .sw { width: 20px; height: 20px; font-size: 11px; border: 0; }
+.llegenda .ll-cap { font-weight: 600; color: var(--tinta-2); }
+.llegenda .sw { width: 16px; height: 16px; font-size: 9px; }
 .ll-ajuda { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--linia-forta); text-decoration: none; font-weight: 700; }
-.taula-emp td { vertical-align: middle; }
+.taula-emp { border-top: 0; }
+.taula-emp td { vertical-align: middle; padding-top: 16px; padding-bottom: 16px; }
+.taula-emp thead th { border-bottom: 1px solid var(--linia-forta); }
 .taula-emp thead button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; min-height: 32px; }
-.taula-emp thead .ord::after { content: "↕"; opacity: .4; }
+.taula-emp thead .ord::after { content: "↕"; opacity: .45; }
 .taula-emp thead th[aria-sort="ascending"] .ord::after { content: "↑"; opacity: 1; }
 .taula-emp thead th[aria-sort="descending"] .ord::after { content: "↓"; opacity: 1; }
-.taula-emp tbody tr:hover { background: var(--sup-2); }
-.taula-emp td:first-child a { font-weight: 600; text-decoration: none; color: var(--tinta); }
-.taula-emp td:first-child a:hover { color: var(--enllac); text-decoration: underline; }
-.sub { display: block; font-size: 13px; color: var(--tinta-3); margin-top: 2px; }
+.taula-emp tbody tr:hover { background: color-mix(in srgb, var(--sup-2) 70%, transparent); }
+.taula-emp td:first-child a { font: 600 19px/1.25 var(--serif); text-decoration: none; color: var(--tinta); }
+.taula-emp td:first-child a:hover { text-decoration: underline; }
+.col-serie { width: 360px; }
+.serie-anys { display: grid; grid-template-columns: repeat(10, 30px); gap: 4px; text-align: center; }
+.sub { display: block; font-size: 13px; color: var(--tinta-3); margin-top: 3px; }
 .sub code { background: transparent; padding: 0; font-size: 12px; }
-.sr { display: inline-flex; gap: 2px; }
-.sr i { display: inline-grid; place-items: center; width: 20px; height: 27px; border-radius: 4px; font: 700 11px/1 var(--font); font-style: normal; background: transparent; border: 1px solid var(--linia-forta); color: var(--e-txt); padding-bottom: 7px; }
+.sr { display: inline-grid; grid-template-columns: repeat(10, 30px); gap: 4px; padding-bottom: 7px; }
+.sr i { position: relative; display: grid; place-items: center; height: 34px; border-radius: 3px; font: 700 12px/1 var(--font); font-style: normal; color: var(--e-txt); background: transparent; border: 1px dashed var(--linia-forta); }
 .sr i.F { background: var(--e-F); border: 0; } .sr i.P { background: var(--e-P); border: 0; }
-.sr i.ND { background: var(--e-ND); border: 0; } .sr i.NA { background: var(--e-NA); border: 0; }
-/* Franja d'estat de 5 px, separada de la lletra per una línia de superfície de 2 px. */
-.sr i.a { box-shadow: inset 0 -5px 0 var(--mk-acabada), inset 0 -7px 0 var(--sup); }
-.sr i.r { box-shadow: inset 0 -5px 0 var(--mk-arxiu), inset 0 -7px 0 var(--sup); }
-.sr i.d { box-shadow: inset 0 -5px 0 var(--mk-dubte), inset 0 -7px 0 var(--sup); }
-.sr i.f { box-shadow: inset 0 -5px 0 var(--mk-falta), inset 0 -7px 0 var(--sup); }
-.sw-ratlla { display: inline-block; width: 20px; height: 6px; border-radius: 2px; }
-.sw-ratlla.s-falta { background: var(--mk-falta); }
-.sw-fora { display: inline-block; width: 14px; height: 18px; border-radius: 3px; border: 1px solid var(--linia-forta); }
-.mb { display: flex; gap: 2px; width: 120px; height: 10px; padding: 1px; border: 1px solid var(--linia-forta); border-radius: 4px; background: var(--sup); }
-.mb i { flex-basis: 0; min-width: 2px; border-radius: 2px; }
-.mb .s-falta { background: var(--mk-falta); }
-.mb-gran { width: 200px; height: 14px; }
-.sense-resultat { text-align: center; padding: 24px; color: var(--tinta-2); background: var(--sup); border: 1px dashed var(--linia-forta); border-radius: var(--radi); margin-top: 12px; }
+.sr i.ND { background: var(--e-ND); border: 0; font-size: 10px; } .sr i.NA { background: var(--e-NA); border: 0; font-size: 10px; }
+/* Línia d'estat de 4 px sota la casella, separada per 3 px. */
+.sr i::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 4px; border-radius: 1px; }
+.sr i.a::after { background: var(--mk-acabada); }
+.sr i.r::after { background: var(--mk-arxiu); }
+.sr i.d::after { background: var(--mk-dubte); }
+.sr i.f::after { background: repeating-linear-gradient(135deg, var(--mk-falta) 0 3px, var(--mk-falta-ratlla) 3px 5px); }
+.sug .sr { grid-template-columns: repeat(10, 22px); gap: 3px; }
+.sug .sr i { height: 24px; font-size: 10px; }
+.sug .sr i.ND, .sug .sr i.NA { font-size: 8px; }
+.sw-ratlla { display: inline-block; width: 18px; height: 4px; border-radius: 1px; }
+.sw-ratlla.s-falta { background: var(--mk-falta); border: 0; }
+.sw-fora { display: inline-block; width: 14px; height: 18px; border-radius: 3px; border: 1px dashed var(--linia-forta); }
+.mb { display: flex; gap: 1px; width: 140px; height: 8px; border-radius: 1px; overflow: hidden; background: var(--sup-3); }
+.mb i { flex-basis: 0; min-width: 2px; }
+.mb .s-falta { background: var(--mk-falta); border: 0; }
+.mb-gran { width: 240px; height: 10px; }
+.sense-resultat { text-align: center; padding: 40px 16px; font: 400 20px var(--serif); color: var(--tinta-2); }
+.sense-resultat p { margin-bottom: 12px; }
 
-/* Fitxa */
-.fitxa-cap { margin-bottom: 24px; }
-.fitxa-cap h1 { overflow-wrap: anywhere; margin-bottom: 4px; }
-.fitxa-linia { color: var(--tinta-2); }
-.fitxa-linia code { background: transparent; padding: 0; font-size: 15px; font-weight: 600; color: var(--tinta); }
-.altres-noms { font-size: 13px; color: var(--tinta-3); }
-.fitxa-estat { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; font-size: 17px; }
-.caixa-dubte { display: flex; gap: 12px; align-items: flex-start; background: var(--nv-fons); color: var(--tinta); border: 1px solid var(--st-dubte); border-radius: var(--radi); padding: 12px 16px; margin: 0 0 32px; }
-.caixa-dubte ul { margin: 0; padding: 0; list-style: none; }
-.cd-icona { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--st-dubte); color: var(--st-dubte-txt); display: grid; place-items: center; font-weight: 700; }
-.seccio { margin-bottom: 48px; }
-.seccio > h2 { margin-bottom: 12px; }
-.tl-wrap { overflow-x: auto; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 16px; }
-.tl { min-width: 640px; display: flex; flex-direction: column; gap: 6px; }
-.tl-fila { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
-.tl-any { text-align: center; font-size: 13px; font-weight: 600; color: var(--tinta-3); text-decoration: none; }
-a.tl-any { color: var(--enllac); }
-.cel { display: inline-grid; place-items: center; width: 100%; min-width: 34px; height: 34px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; }
-.cel-p { width: 22px; min-width: 22px; height: 24px; border-radius: 4px; font-size: 11px; }
-.cel-buida { background: transparent; color: var(--tinta-3); border: 1px solid var(--linia-forta); }
-.tl-st { display: grid; place-items: center; height: 26px; border-radius: 6px; font-weight: 700; text-decoration: none; }
-.tl-st-buit { background: transparent; }
-.tl-st.s-falta { border: 1px solid var(--linia-forta); }
-.tl-fila-ceo { grid-auto-rows: minmax(52px, auto); }
-.tl-ceo { background: var(--sup-2); border: 1px solid var(--linia); border-left: 4px solid var(--tinta-2); border-radius: 8px; padding: 6px 9px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.tl-ceo b { font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; }
-.tl-ceo small { color: var(--tinta-3); }
-.tl-ceo-buit { font-style: italic; }
-.trams { display: none; list-style: none; margin: 0; padding: 0; }
-.tram { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; background: var(--sup); border: 1px solid var(--linia); border-left: 5px solid var(--tinta-2); border-radius: var(--radi-petit); padding: 10px 12px; margin-bottom: 8px; }
-.tram-anys { font-weight: 700; color: var(--tinta-2); }
-.tram-nom { overflow-wrap: anywhere; }
-.tram .serie { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px; }
-.tram .cel-p { width: 40px; height: 40px; font-size: 13px; padding-bottom: 6px; }
-.tram .b-acabada { box-shadow: inset 0 -5px 0 var(--mk-acabada), inset 0 -7px 0 var(--sup); }
-.tram .b-arxiu { box-shadow: inset 0 -5px 0 var(--mk-arxiu), inset 0 -7px 0 var(--sup); }
-.tram .b-dubte { box-shadow: inset 0 -5px 0 var(--mk-dubte), inset 0 -7px 0 var(--sup); }
-.tram .b-falta { box-shadow: inset 0 -5px 0 var(--mk-falta), inset 0 -7px 0 var(--sup); }
-.v-F { border-left-color: var(--e-F); } .v-P { border-left-color: var(--e-P); }
-.v-ND { border-left-color: var(--e-ND); } .v-NA { border-left-color: var(--e-NA); }
-
-/* Insígnia d'estat */
-.st { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+/* ---------- Insígnies ---------- */
+.st { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 3px 11px; border-radius: 999px; }
 .st-acabada { background: var(--st-acabada); color: var(--st-acabada-txt); }
 .st-arxiu { background: var(--st-arxiu); color: var(--st-arxiu-txt); }
 .st-dubte { background: var(--st-dubte); color: var(--st-dubte-txt); }
 .st-falta { background: repeating-linear-gradient(135deg, var(--st-falta) 0 5px, var(--st-falta-ratlla) 5px 7px); color: var(--st-falta-txt); }
-.st-falta, .s-falta { border: 1px solid var(--linia-forta); }
+.b { display: inline-flex; align-items: center; font: 700 12px/1.4 var(--font); padding: 2px 9px; border-radius: 3px; white-space: nowrap; }
+.b-v { background: var(--v-fons); color: var(--v); }
+.b-nv { background: var(--nv-fons); color: var(--nv); }
+.b-mal { background: var(--mal-fons); color: var(--mal); }
+.b-gris { background: var(--sup-3); color: var(--tinta-2); }
+.b-marca { background: transparent; border: 1px solid var(--linia-forta); color: var(--tinta-2); font-family: var(--font-mono); font-weight: 400; }
+.b-nivell { background: var(--e-P-suau); color: var(--tinta); }
 
-/* Any per any */
-.anys { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); overflow: hidden; }
-.anys-cap, .any > summary { display: grid; grid-template-columns: 56px minmax(0, 1.5fr) 140px minmax(0, 1.3fr) 200px 92px; gap: 8px 12px; align-items: center; padding: 8px 16px; }
-.anys-cap { background: var(--sup-2); font-size: 13px; font-weight: 600; color: var(--tinta-2); }
-.any { border-top: 1px solid var(--linia); }
-.any > summary { cursor: pointer; list-style: none; min-height: 48px; }
-.any > summary::-webkit-details-marker { display: none; }
-.any > summary:hover { background: var(--sup-2); }
-.a-any { font-weight: 700; }
-.a-ceo { font-weight: 600; overflow-wrap: anywhere; }
-.a-prova { font-size: 13px; color: var(--tinta-2); overflow-wrap: anywhere; }
-.a-pq { justify-self: end; font-size: 13px; font-weight: 600; color: var(--enllac); border: 1px solid var(--linia-forta); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
-.a-pq-f::after { content: " ▾"; }
-.any[open] .a-pq-f::after { content: " ▴"; }
-.any > summary:focus-visible { outline-offset: -3px; }
-.any[open] > summary { background: var(--sup-2); }
-.pq { padding: 12px 16px 16px; border-top: 1px dashed var(--linia); display: grid; gap: 12px; }
-.pq-regla { margin: 0; }
-.regla { margin-right: 6px; }
-.pq-bloc { border-left: 3px solid var(--linia-forta); padding-left: 12px; }
-.pq-bloc .pq-h { font-size: 15px; font-weight: 700; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 6px; }
+/* ---------- Fitxa ---------- */
+.fitxa-cap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 40px; align-items: end; padding: 16px 0 28px; border-bottom: 1px solid var(--linia-forta); }
+.fitxa-cap h1 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 10px; overflow-wrap: anywhere; }
+.fitxa-linia { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; color: var(--tinta-2); font-size: 14px; margin-bottom: 6px; }
+.isin { display: inline-flex; align-items: center; gap: 8px; }
+.isin code { font-size: 14px; font-weight: 600; color: var(--tinta); background: var(--sup); border: 1px solid var(--linia); padding: 3px 8px; }
+.altres-noms { font-size: 13px; color: var(--tinta-3); margin: 0 0 4px; }
+.fc-resum { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; text-align: right; }
+.fc-etq { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px 10px; margin: 0; font-size: 14px; color: var(--tinta-2); }
+.fitxa-estat { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin: 0; font-size: 14px; color: var(--tinta-2); }
+.caixa-dubte { display: flex; gap: 12px; align-items: flex-start; background: var(--nv-fons); color: var(--tinta); border: 1px solid var(--mk-dubte); border-radius: var(--radi); padding: 12px 16px; margin: 24px 0 0; }
+.caixa-dubte ul { margin: 0; padding: 0; list-style: none; }
+.cd-icona { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--st-dubte); color: var(--st-dubte-txt); display: grid; place-items: center; font-weight: 700; }
+.seccio { padding: 36px 0 0; }
+.seccio > h2 { margin-bottom: 6px; }
+.seccio > .nota { margin-bottom: 14px; }
+.com-llegir { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 13px; color: var(--tinta-2); padding: 10px 14px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); }
+.cl-cap { font-weight: 700; color: var(--tinta); }
+.com-llegir .sw { width: 20px; height: 20px; font-size: 10px; }
+.ll-sep { width: 1px; height: 18px; background: var(--linia-forta); }
+.ll-mes { font-weight: 600; display: inline-flex; align-items: center; min-height: 32px; }
+
+/* Franja d'anys */
+.rail-envol { position: sticky; top: 0; z-index: 15; background: var(--fons); padding: 12px 0; margin-top: 8px; }
+.rail { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; list-style: none; margin: 0; padding: 0; }
+.rl { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; padding: 9px 4px 11px; border-radius: var(--radi); background: var(--sup); border: 1px solid var(--linia); text-decoration: none; color: var(--tinta); overflow: hidden; }
+a.rl:hover { border-color: var(--tinta-3); color: var(--tinta); }
+.rl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; }
+.rl.b-acabada::after { background: var(--mk-acabada); }
+.rl.b-arxiu::after { background: var(--mk-arxiu); }
+.rl.b-dubte::after { background: var(--mk-dubte); }
+.rl.b-falta::after { background: repeating-linear-gradient(135deg, var(--mk-falta) 0 3px, var(--mk-falta-ratlla) 3px 5px); }
+.rl-a { font: 600 16px/1 var(--serif); }
+.rl-e { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 3px; border-radius: 3px; font: 700 12px/1 var(--font); }
+.rl-s { font-size: 12px; font-weight: 700; color: var(--tinta-3); line-height: 1; }
+.rl[aria-current="true"] { border: 2px solid var(--tinta); padding: 8px 3px 10px; }
+.rl-buit { background: transparent; border-style: dashed; border-color: var(--linia-forta); color: var(--tinta-3); justify-content: flex-start; }
+.trams-ceo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; font-size: 14px; color: var(--tinta-2); margin: 2px 0 8px; }
+.tc-cap { font: 600 13px var(--font); color: var(--tinta-3); margin: 0; }
+.trams-ceo ol { display: flex; flex-wrap: wrap; gap: 4px 18px; list-style: none; margin: 0; padding: 0; }
+.tc-anys { color: var(--tinta-3); }
+.trams-ceo b { color: var(--tinta); }
+
+/* Línia del temps vertical */
+.tl { list-style: none; margin: 20px 0 0; padding: 0; position: relative; }
+.tl::before { content: ""; position: absolute; left: 47px; top: 10px; bottom: 10px; width: 2px; background: var(--linia-forta); }
+.tl-any { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 0 20px; margin-bottom: 18px; scroll-margin-top: 112px; }
+.tl-marca { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 14px; position: relative; z-index: 1; }
+.tl-a { font: 600 24px/1 var(--serif); margin: 0; background: var(--fons); padding: 2px 4px; }
+.tl-punt { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font-size: 13px; font-weight: 700; box-shadow: 0 0 0 3px var(--fons); }
+.tl-cos { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); min-width: 0; }
+.tl-any:target .tl-cos { border-color: var(--tinta); box-shadow: 0 0 0 1px var(--tinta); }
+.tl-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 14px 20px; }
+.tl-ceo { flex: 1 1 240px; min-width: 0; margin: 0; }
+.tl-ceo small { display: block; font-size: 12px; color: var(--tinta-3); }
+.tl-ceo b { font: 600 22px/1.2 var(--serif); overflow-wrap: anywhere; }
+.tl-prova { font-size: 13px; color: var(--tinta-2); }
+.tl-prova a { font-weight: 600; }
+.tl-evid > summary { list-style: none; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; padding: 10px 20px; min-height: 48px; border-top: 1px solid var(--linia); background: var(--sup-2); cursor: pointer; font-size: 14px; }
+.tl-evid > summary::-webkit-details-marker { display: none; }
+.tl-evid > summary:hover .ev-titol { text-decoration: underline; }
+.fletxa { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--enllac); transition: transform .15s; }
+.tl-evid[open] > summary .fletxa { transform: rotate(90deg); }
+.ev-titol { font-weight: 700; color: var(--enllac); margin-right: 4px; }
+.previ { margin-left: auto; font: italic 400 14px var(--serif); color: var(--tinta-3); max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--linia); }
+.ev { padding: 20px 22px; min-width: 0; }
+.ev + .ev { border-left: 1px solid var(--linia); }
+.ev-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-bottom: 10px; }
+.ev-t { font: 700 14px/1.3 var(--font); margin: 0 6px 0 0; color: var(--tinta); }
+.ev-sub { font-size: 13px; color: var(--tinta-2); margin: -2px 0 12px; }
+.ev-sub-nd { font-size: 13px; color: var(--tinta-2); margin: 0 0 10px; }
+.ev-sub-t { font-size: 13px; font-weight: 600; color: var(--tinta-2); margin: 0 0 8px; }
 .regla-item { display: block; }
 .regla-item + .regla-item { margin-top: 4px; }
+.regla { font-weight: 600; margin-right: 6px; }
 .regla-frase { display: block; font-size: 13px; color: var(--tinta-2); max-width: 68ch; }
-.pq-ins { display: inline-flex; flex-wrap: wrap; gap: 4px; }
-.pq-cadena { font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 4px; }
-.pq-cadena a { display: inline-flex; align-items: center; min-height: 32px; }
-.pq-totes { margin: 0; font-weight: 600; }
+.ev-cita .cita { margin: 0; padding: 14px 18px 14px 34px; background: var(--cita-fons); border: 0; border-left: 3px solid var(--tinta); border-radius: 0 var(--radi-petit) var(--radi-petit) 0; }
+.ev + .ev .cita { border-left-color: var(--tinta-3); }
+.l-F .ev + .ev .cita { border-left-color: var(--e-F); }
+.l-P .ev + .ev .cita { border-left-color: var(--e-P); }
+.ev-cita .cita::before { left: 10px; top: 8px; }
+.ev-cita .cita p { font-size: 19px; line-height: 1.5; }
+.doc { font-size: 13px; color: var(--tinta-2); margin: 12px 0 0; line-height: 1.5; overflow-wrap: anywhere; }
+.doc-et { font-weight: 600; }
+.botons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.verif { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; margin: 12px 0 0; font-size: 13px; color: var(--tinta-2); }
+.verif code { font-size: 11px; color: var(--tinta-3); background: transparent; padding: 0; }
+.verif a { display: inline-flex; align-items: center; min-height: 32px; }
+.vf { display: inline-block; padding: 0 8px; border-radius: 3px; font-weight: 700; }
+.vf-si { background: var(--v-fons); color: var(--v); }
+.vf-no { background: var(--sup-3); color: var(--tinta-2); }
+.vf-pendent { background: var(--nv-fons); color: var(--nv); }
+.ev-ext + .ev-ext { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--linia-forta); }
+.ev-ext-t { font-size: 13px; font-weight: 600; color: var(--tinta-2); margin-right: 4px; }
+.ev-limit { margin: 14px 0 0; }
+.ev-falta { background: color-mix(in srgb, var(--mal-fons) 45%, transparent); }
+.ev-avisos { padding: 12px 22px; border-top: 1px solid var(--linia); display: grid; gap: 6px; }
+.ev-avisos p { margin: 0; }
 .falta-txt { margin: 0; font-weight: 600; color: var(--mal); }
+.tl-peu { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; align-items: center; padding: 12px 22px; border-top: 1px solid var(--linia); font-size: 14px; }
+.tl-peu a { font-weight: 600; display: inline-flex; align-items: center; gap: .3em; min-height: 32px; }
+.tl-peu-st { color: var(--tinta-3); font-size: 13px; max-width: 70ch; }
 
-/* Proves */
+/* Cites i proves */
+.cita { margin: 0 0 12px; padding: 12px 16px 12px 40px; background: var(--cita-fons); border-radius: var(--radi-petit); position: relative; border: 1px solid var(--linia); }
+.cita::before { content: "“"; position: absolute; left: 12px; top: 4px; font-family: var(--serif); font-size: 2.2rem; line-height: 1; color: var(--tinta-3); }
+.cita p { margin: 0; font-family: var(--serif); font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; max-width: 70ch; }
+.sense-cita { font-style: italic; color: var(--tinta-3); background: var(--sup-2); border-radius: var(--radi-petit); padding: 8px 12px; }
 .filtre-anys { display: none; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
 .js .filtre-anys { display: flex; }
-.xip { font: inherit; font-size: 13px; font-weight: 600; min-height: 36px; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta-2); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
-.xip:hover { background: var(--sup-2); }
-.xip[aria-pressed="true"] { background: var(--tinta); color: var(--sup); border-color: var(--tinta); }
+.xip { display: inline-flex; align-items: center; font: 500 13px var(--font); min-height: 36px; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta); border-radius: 999px; padding: 0 12px; cursor: pointer; }
+.xip:hover { border-color: var(--tinta-3); }
+.xip[aria-pressed="true"] { background: var(--tinta); color: var(--fons); border-color: var(--tinta); }
 .recompte-proves { font-size: 13px; color: var(--tinta-3); min-height: 1.3em; }
-.grup-proves { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 0 16px; margin: 0 0 12px; }
-.grup-proves > summary { cursor: pointer; min-height: 48px; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; }
-.grup-proves > summary .n { font-size: 13px; background: var(--sup-3); color: var(--tinta-2); padding: 2px 9px; border-radius: 999px; }
-.grup-proves[open] { padding-bottom: 8px; }
-.prova { background: var(--sup); border: 1px solid var(--linia); border-left: 4px solid var(--v); border-radius: var(--radi); padding: 16px; margin: 12px 0; }
+.grup-proves { border-top: 1px solid var(--linia); margin: 0; }
+.grup-proves:last-of-type { border-bottom: 1px solid var(--linia); }
+.grup-proves > summary { cursor: pointer; min-height: 52px; display: flex; align-items: center; gap: 8px; font: 600 19px var(--serif); }
+.grup-proves > summary .n { font: 600 12px var(--font); background: var(--sup-3); color: var(--tinta-2); padding: 2px 9px; border-radius: 999px; }
+.grup-proves[open] { padding-bottom: 12px; }
+.prova { background: var(--sup); border: 1px solid var(--linia); border-left: 3px solid var(--v); border-radius: var(--radi); padding: 16px 18px; margin: 12px 0; scroll-margin-top: 16px; }
 .prova-nv { border-left-color: var(--nv); }
 .prova-mal { border-left-color: var(--mal); }
 .prova-base { border-left-color: var(--linia-forta); }
@@ -2855,17 +3216,6 @@ a.tl-any { color: var(--enllac); }
 .prova:target { outline: 3px solid var(--focus); outline-offset: 2px; }
 .p-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
 .p-anys { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--tinta-2); background: var(--sup-2); padding: 2px 10px; border-radius: 999px; }
-.b { display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; line-height: 1.4; font-family: var(--font); }
-.b-v { background: var(--v-fons); color: var(--v); }
-.b-nv { background: var(--nv-fons); color: var(--nv); }
-.b-mal { background: var(--mal-fons); color: var(--mal); }
-.b-gris { background: var(--sup-3); color: var(--tinta-2); }
-.b-marca { background: transparent; border: 1px solid var(--linia-forta); color: var(--tinta-2); font-family: var(--font-mono); font-weight: 400; }
-.b-nivell { background: var(--e-P-suau); color: var(--tinta); }
-.cita { margin: 0 0 12px; padding: 12px 16px 12px 40px; background: var(--cita-fons); border-radius: var(--radi-petit); position: relative; border: 1px solid var(--linia); }
-.cita::before { content: "“"; position: absolute; left: 12px; top: 2px; font-family: var(--font-cita); font-size: 2.4rem; line-height: 1; color: var(--tinta-3); }
-.cita p { margin: 0; font-family: var(--font-cita); font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; max-width: 68ch; }
-.sense-cita { font-style: italic; color: var(--tinta-3); background: var(--sup-2); border-radius: var(--radi-petit); padding: 8px 12px; }
 .p-fonts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
 .domini { font-size: 13px; color: var(--tinta-2); overflow-wrap: anywhere; }
 details.tecnic > summary { cursor: pointer; font-size: 13px; color: var(--enllac); min-height: 32px; display: flex; align-items: center; }
@@ -2884,102 +3234,162 @@ details.tecnic > summary { cursor: pointer; font-size: 13px; color: var(--enllac
 .rastre summary { cursor: pointer; font-weight: 600; }
 .llista-urls { padding-left: 18px; font-size: 13px; }
 .url-llarga { overflow-wrap: anywhere; }
-.historial { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 0 16px; margin-bottom: 32px; }
-.historial > summary { cursor: pointer; min-height: 48px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-weight: 600; }
+.historial { border-top: 1px solid var(--linia); margin: 32px 0 0; font-size: 14px; }
+.historial > summary { cursor: pointer; min-height: 52px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-weight: 600; color: var(--tinta-2); }
 .historial[open] { padding-bottom: 16px; }
-.nav-fitxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.nav-fitxes a { display: flex; flex-direction: column; gap: 2px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 12px 16px; text-decoration: none; font-weight: 600; color: var(--tinta); min-width: 0; overflow-wrap: anywhere; }
-.nav-fitxes a small { color: var(--tinta-3); }
-.nav-fitxes a:hover { border-color: var(--enllac); }
+.nav-fitxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--linia); }
+.nav-fitxes a { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; text-decoration: none; font: 600 17px var(--serif); color: var(--tinta); min-width: 0; overflow-wrap: anywhere; border: 1px solid var(--linia); border-radius: var(--radi); background: var(--sup); }
+.nav-fitxes a small { font: 400 13px var(--font); color: var(--tinta-3); }
+.nav-fitxes a:hover { border-color: var(--tinta-3); }
 .nav-fitxes .seg { text-align: right; }
 
-/* Mètode */
+/* ---------- Mètode ---------- */
 .text-llarg { max-width: 860px; }
-.text-llarg p, .text-llarg li { max-width: 68ch; }
+.text-llarg p, .text-llarg li { max-width: 70ch; }
+.text-llarg .seccio { padding: 32px 0; border-top: 1px solid var(--linia); }
+.text-llarg h3 { margin-top: 24px; font: 600 19px var(--serif); }
 .def { display: grid; grid-template-columns: minmax(170px, max-content) 1fr; gap: 6px 16px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--linia); }
 .def p { margin: 0; }
 .def-cap { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .def:target { background: var(--nv-fons); }
-.prec { padding-left: 20px; }
-.text-llarg h3 { margin-top: 24px; }
-.condicions { padding-left: 20px; }
+.prec, .condicions { padding-left: 20px; }
 
 /* Peu */
-.peu { border-top: 1px solid var(--linia); background: var(--sup); }
-.peu-in { max-width: 1240px; margin: 0 auto; padding: 16px; font-size: 13px; color: var(--tinta-3); overflow-wrap: anywhere; }
+.peu { border-top: 1px solid var(--linia); }
+.peu-in { max-width: 1240px; margin: 0 auto; padding: 20px 24px 40px; font-size: 13px; color: var(--tinta-3); overflow-wrap: anywhere; }
 .peu-in code { background: transparent; padding: 0; }
 
-@media (max-width: 900px) {
-  .passos { grid-template-columns: 1fr; }
-  .passos li { flex-direction: row; align-items: flex-start; }
-  .pq-n { flex: none; }
+/* ---------- Responsiu ---------- */
+@media (max-width: 1100px) {
+  .dreceres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1000px) {
+  .obertura { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .bloc { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .passos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 16px; }
+  .passos li + li { border-left: 0; padding-left: 0; }
+  .passos li:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--linia); }
+  .col-serie { width: auto; }
+  .evid { grid-template-columns: minmax(0, 1fr); }
+  .ev + .ev { border-left: 0; border-top: 1px solid var(--linia); }
+  .previ { display: none; }
 }
 @media (max-width: 760px) {
-  .barra { position: static; }
-  html { scroll-padding-top: 12px; }
-  .barra-in { gap: 4px 8px; }
-  .marca { width: 100%; }
-  .nav a { padding: 0 12px; }
-  .pindola { margin-left: auto; }
-  .pagina { padding-top: 20px; }
-  .cerca-rapida { margin: 16px 0 40px; }
+  body { padding-bottom: 76px; }
+  .barra-in { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "marca tema" "pindola pindola" "cerca cerca"; padding: 12px 16px; gap: 8px 12px; }
+  .marca b { font-size: 19px; }
+  .marca small { font-size: 12px; }
+  .pindola { justify-self: start; font-size: 12px; min-height: 28px; padding: 2px 9px; }
+  .cb-cap { width: 100%; justify-self: stretch; }
+  .cb-kbd { display: none; }
+  .cb-pop, .cb-cap .cb-pop { left: 0; right: 0; min-width: 0; }
+  .sug { grid-template-columns: minmax(0, 1fr); }
+  .sug .sr { grid-row: auto; grid-column: 1; grid-template-columns: repeat(10, minmax(0, 1fr)); width: 100%; }
+  /* Pestanyes inferiors fixes */
+  .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--linia-forta); background: var(--sup); padding: 0 8px env(safe-area-inset-bottom); box-shadow: 0 -4px 16px rgba(0, 0, 0, .06); }
+  .nav a { flex-direction: column; justify-content: center; gap: 2px; min-height: 60px; padding: 6px 4px; font-size: 12px; border-bottom: 0; border-top: 3px solid transparent; }
+  .nav a[aria-current="page"] { border-top-color: var(--tinta); border-bottom: 0; }
+  .nav svg { display: block; }
+  .pagina { padding: 0 16px 40px; }
+  h1 { font-size: 32px; }
+  .obertura { padding: 28px 0 28px; }
+  .entradeta { font-size: 17px; }
+  .bloc { padding: 32px 0; }
+  .heroi-xifra b { font-size: 76px; }
+  .heroi-xifra span { font-size: 18px; }
+  .dreceres { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .drec { padding: 12px; }
+  .drec-n b { font-size: 26px; }
+  .ll-estats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ll-estats li { padding: 14px 12px 14px 0; border-bottom: 1px solid var(--linia); }
+  .ll-estats li + li { padding-left: 0; border-left: 0; }
+  .ll-estats li:nth-child(even) { padding-left: 12px; border-left: 1px solid var(--linia); }
+  .ll-xifra { font-size: 32px; }
+  .passos { grid-template-columns: minmax(0, 1fr); }
+  .passos li:nth-child(even) { padding-left: 0; border-left: 0; }
+  .passos li { flex-direction: row; align-items: flex-start; gap: 12px; padding: 14px 0 0; }
+  .passos li + li { border-top: 1px solid var(--linia); }
+  .pq-n { flex: none; width: 28px; }
   .llarg { display: none; }
   .curt { display: inline; }
-  .taula-anys th, .taula-anys td { padding: 6px 6px; }
+  .taula-anys th, .taula-anys td { padding: 6px 5px; }
+  .taula-anys { font-size: 13px; }
+  .taula-anys th:first-child { width: 46px; }
+  .taula-anys th:last-child { width: 46px; }
+  .taula-anys td.ta small { display: block; }
   .taula-etiq th, .taula-etiq td { padding: 6px 4px; }
   .taula-etiq td { min-width: 0; }
   .taula-etiq .tc-n, .taula-etiq .col-files { display: none; }
   .taula-etiq { table-layout: fixed; }
-  .taula-etiq thead th { white-space: normal; vertical-align: bottom; }
+  .taula-etiq thead th { white-space: normal; }
   .taula-etiq th:first-child { width: 86px; }
   .taula-etiq .etq { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; background: transparent; padding: 0; font-size: 12px; white-space: normal; }
   .taula-etiq .tc-files { display: block; font-size: 12px; font-weight: 400; color: var(--tinta-3); }
-  .taula-etiq .tc-v { font-size: 13px; white-space: nowrap; }
-  .taula-anys th:first-child { width: 48px; }
-  .taula-anys th:last-child { width: 48px; }
-  .taula-anys { font-size: 13px; }
-  .taula-anys td.ta small { display: block; }
+  .taula-etiq .tc-v { font-size: 15px; white-space: nowrap; }
   .a2, .bany small { display: none; }
-  .tl-wrap { display: none; }
-  .trams { display: block; }
-  .anys-cap { display: none; }
-  .any > summary { grid-template-columns: 56px 1fr; grid-template-areas: "any ceo" "any etq" "any prova" "any st" "any pq"; gap: 6px 10px; padding: 12px; align-items: start; }
-  .a-any { grid-area: any; font-size: 17px; }
-  .a-ceo { grid-area: ceo; } .a-etq { grid-area: etq; } .a-prova { grid-area: prova; } .a-st { grid-area: st; }
-  .a-pq { grid-area: pq; justify-self: start; min-height: 40px; display: inline-flex; align-items: center; }
-  .pq { padding: 12px; }
+  .versio-dl div { grid-template-columns: minmax(0, 1fr); }
+  #dubtes .bs li { grid-template-columns: minmax(0, 1fr); padding: 10px 0; }
+  /* Empreses */
+  .cb-llista-emp input { font-size: 21px; height: 54px; }
+  .filtres { gap: 12px; }
+  .filtres .camp { flex: 1 1 100%; }
+  .filtres select { width: 100%; }
   .taula-emp, .taula-emp tbody, .taula-emp thead { display: block; }
-  .taula-emp thead tr { display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 4px 12px; background: var(--sup-2); }
-  .taula-emp thead th { padding: 0; border: 0; background: transparent; }
-  .taula-emp thead th:nth-child(2) { display: none; }
-  .taula-emp tbody tr { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 12px; border-bottom: 1px solid var(--linia); position: relative; }
+  .taula-emp thead tr { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 4px 0; }
+  .taula-emp thead th { padding: 0; border: 0; }
+  .taula-emp thead th.col-serie { display: none; }
+  .taula-emp tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 16px 0; border-bottom: 1px solid var(--linia); position: relative; }
+  .taula-emp tbody tr[hidden] { display: none; }
+  .taula-emp td { padding: 0; border: 0; }
   /* Tota la targeta és l'enllaç a la fitxa (objectiu tàctil gran). */
   .taula-emp td:first-child a.emp-nom::after { content: ""; position: absolute; inset: 0; }
   .taula-emp td:first-child a.emp-nom { display: inline-flex; align-items: center; min-height: 40px; }
-  /* Objectius tàctils de 40 px com a mínim. */
-  .bs-link, .pq-cadena a, .pq-veure, .pq-totes a, a.regla, .regla-frase a, .caixa-dubte a, .falta-txt a,
-  .taula-emp thead button, .xip, .pindola, .docs a, .marca, .salta { min-height: 40px; display: inline-flex; align-items: center; }
-  a.regla { min-width: 40px; justify-content: center; }
-  details.dades > summary, details.tecnic > summary { min-height: 40px; }
-  .ll-ajuda { width: 40px; height: 40px; }
-  .taula-emp tbody tr[hidden] { display: none; }
-  .taula-emp td { padding: 0; border: 0; }
-  .taula-emp td:nth-child(3) { display: flex; align-items: center; gap: 8px; }
+  .taula-emp td:nth-child(3) { display: flex; align-items: center; gap: 10px; }
   .taula-emp td:nth-child(3) .sub { margin: 0; }
   .taula-emp td:nth-child(4) { display: none; }
-  .sr { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 2px; width: 100%; }
-  .sr i { width: auto; height: 26px; }
-  .def { grid-template-columns: 1fr; }
-  .versio-dl div { grid-template-columns: 1fr; }
+  .sr { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; width: 100%; }
+  .sr i { height: 34px; }
+  /* Fitxa */
+  .fitxa-cap { grid-template-columns: minmax(0, 1fr); }
+  .fc-resum, .fc-etq, .fitxa-estat { align-items: flex-start; justify-content: flex-start; text-align: left; }
+  .mb-gran { width: 100%; max-width: 320px; }
+  .rail-envol { position: static; }
+  .rail { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .rl { min-height: 76px; }
+  .tl::before { left: 21px; }
+  .tl-any { grid-template-columns: 44px minmax(0, 1fr); gap: 0 10px; scroll-margin-top: 12px; }
+  .tl-a { font-size: 15px; }
+  .tl-punt { width: 26px; height: 26px; font-size: 12px; }
+  .tl-fila { padding: 12px 14px; gap: 8px 10px; }
+  .tl-ceo { flex-basis: 100%; }
+  .tl-ceo b { font-size: 19px; }
+  .tl-evid > summary { padding: 10px 14px; }
+  .ev { padding: 16px 14px; }
+  .ev-cita .cita { padding: 12px 12px 12px 28px; }
+  .ev-cita .cita::before { left: 6px; }
+  .ev-cita .cita p { font-size: 17px; }
+  .ev-avisos, .tl-peu { padding: 12px 14px; }
+  .botons .boto { width: 100%; justify-content: flex-start; }
+  .def { grid-template-columns: minmax(0, 1fr); }
   .p-anys { margin-left: 0; }
   .prova { padding: 12px; }
   .cita { padding: 10px 12px 10px 32px; }
-  .nav-fitxes { grid-template-columns: 1fr; }
+  .nav-fitxes { grid-template-columns: minmax(0, 1fr); }
   .nav-fitxes .seg { text-align: left; }
-  .heroi-xifra b { font-size: 36px; }
+  /* Objectius tàctils de 40 px com a mínim. */
+  .bs-link, .verif a, .tl-peu a, a.regla, .regla-frase a, .caixa-dubte a, .falta-txt a, .exemples a, .ll-mes, .cb-peu a,
+  .taula-emp thead button, .xip, .pindola, .docs a, .salta, .tl-prova a, .copia, .molla a { min-height: 40px; display: inline-flex; align-items: center; gap: .3em; }
+  a.regla { min-width: 40px; }
+  details.dades > summary, details.tecnic > summary { min-height: 40px; }
+  .ll-ajuda { width: 40px; height: 40px; }
+}
+@media (max-width: 360px) {
+  .heroi-xifra b { font-size: 64px; }
+  .dreceres { grid-template-columns: minmax(0, 1fr); }
+  .rl-a { font-size: 14px; }
 }
 @media (forced-colors: active) {
-  .sb-s, .mb i, .eb-barra, .bs-barra, .bar, .mm i, .sw, .sw-ratlla, .tl-st, .sr i, .cel, .etq b, .pq-n, .marca-logo i { forced-color-adjust: none; }
+  .sb-s, .mb i, .eb-barra, .bs-barra, .bar, .mm i, .sw, .sw-ratlla, .sr i, .sr i::after, .rl::after, .rl-e, .tl-punt, .etq b, .cel { forced-color-adjust: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
@@ -3066,7 +3476,38 @@ details.tecnic > summary { cursor: pointer; font-size: 13px; color: var(--enllac
   .bs-det { display: inline; }
   .ll-def { line-height: 1.2; }
   .passos li { padding: 3pt 5pt; }
+  /* Marc editorial: una sola columna, sense elements interactius. */
+  body { padding-bottom: 0; }
+  .tema, .nav, .cb, .cerca-rapida, .dreceres, .dreceres + .nota, .exemples, .copia { display: none !important; }
+  .obertura { display: block; padding: 0 0 4pt; border: 0; }
+  .obertura .entradeta { font-size: 9pt; }
+  .bloc { display: block; padding: 0; border: 0; }
+  .bloc-n { display: none; }
+  .bloc-cap h2 { margin-bottom: 2pt; }
+  .heroi-xifra { margin: 0 0 4pt; gap: 0 6pt; }
+  .heroi-xifra b { font-size: 22pt; line-height: 1; }
+  .heroi-xifra span { font-size: 10pt; }
+  .ll-estats { margin-top: 3pt; border-top: 0; }
+  .ll-estats li, .ll-estats li + li { padding: 0 6pt 0 0; border: 0; }
+  .ll-cap { font-size: 8pt; }
+  .ll-n { margin: 1pt 0 0; }
+  .ll-xifra { font-size: 11pt; }
+  .ll-pc { font-size: 7.5pt; }
+  .resposta { font-family: var(--font); }
+  .eb-val, .bs-val { font-size: 9pt; }
+  .eb-nom { font-size: 8pt; margin-bottom: 1pt; }
+  .eb-salt { padding: 1pt 0 1pt 6pt; }
+  .bs li { padding: 0; border: 0; }
+  .tc-v { font-size: 8pt; }
+  .pq-n { font-size: 10pt; }
+  .pq-t > span b { font-size: 8pt; }
+  .passos li, .passos li + li { padding: 2pt 4pt; border-left: 0; }
+  .grafic { margin-top: 4pt; }
+  .bany { border-top-width: .5pt; }
+  .taula-anys tbody th { font-size: 7.5pt; }
+  .versio-linia { margin: 2pt 0; }
 }
+
 """
 
 JS_CERCA = r"""/* Cercador i filtres d'Empreses. Generat per dashboard/genera_dashboard.py. Sense dependències. */
@@ -3090,11 +3531,17 @@ JS_CERCA = r"""/* Cercador i filtres d'Empreses. Generat per dashboard/genera_da
   var IDX = { acabada: 0, arxiu: 1, dubte: 2, falta: 3 };
 
   function norm(s) {
-    return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function conte(llista, valor) { return (' ' + (llista || '') + ' ').indexOf(' ' + valor + ' ') >= 0; }
   function st(tr) { return (tr.dataset.st || '0 0 0 0').split(' ').map(Number); }
+  // Claus d'ordre: el nom normalitzat i el % de files acabades (no van a l'HTML).
+  files.forEach(function (tr) {
+    var a = tr.querySelector('.emp-nom'), s = st(tr), n = s[0] + s[1] + s[2] + s[3];
+    tr._ordre = { n: norm(a ? a.textContent : ''), pa: n ? Math.round(100 * s[0] / n) : 0 };
+  });
+  function clauOrdre(tr, clau) { return clau === 'f' ? +tr.dataset.f : tr._ordre[clau]; }
 
   function aplica() {
     var termes = norm(camps.q.value).split(' ').filter(Boolean);
@@ -3124,9 +3571,9 @@ JS_CERCA = r"""/* Cercador i filtres d'Empreses. Generat per dashboard/genera_da
     if (ordre.clau === clau) { ordre.dir = -ordre.dir; } else { ordre.clau = clau; ordre.dir = clau === 'n' ? 1 : -1; }
     var num = clau !== 'n';
     files.sort(function (a, b) {
-      var x = a.dataset[clau], y = b.dataset[clau], r;
-      if (num) { r = (+x) - (+y); } else { r = x < y ? -1 : x > y ? 1 : 0; }
-      if (r === 0) { return a.dataset.n < b.dataset.n ? -1 : a.dataset.n > b.dataset.n ? 1 : 0; }
+      var x = clauOrdre(a, clau), y = clauOrdre(b, clau), r;
+      if (num) { r = x - y; } else { r = x < y ? -1 : x > y ? 1 : 0; }
+      if (r === 0) { return a._ordre.n < b._ordre.n ? -1 : a._ordre.n > b._ordre.n ? 1 : 0; }
       return r * ordre.dir;
     });
     var frag = document.createDocumentFragment();
@@ -3184,8 +3631,8 @@ JS_CERCA = r"""/* Cercador i filtres d'Empreses. Generat per dashboard/genera_da
 })();
 """
 
-JS_FITXA = r"""/* Fitxa d'empresa: filtre de proves per any i obertura dels plegables segons el hash.
-   Generat per dashboard/genera_dashboard.py. Sense dependències. */
+JS_FITXA = r"""/* Fitxa d'empresa: franja d'anys (fletxes ←/→), obertura de l'any i de les proves
+   segons el hash i filtre de proves per any. Generat per dashboard/genera_dashboard.py. Sense dependències. */
 (function () {
   'use strict';
   var cont = document.getElementById('proves');
@@ -3214,19 +3661,59 @@ JS_FITXA = r"""/* Fitxa d'empresa: filtre de proves per any i obertura dels pleg
     }
   }
 
+  /* Franja d'anys: una sola parada de tabulació i fletxes per passar d'any. */
+  var rail = document.querySelector('.rail');
+  var anys = rail ? Array.prototype.slice.call(rail.querySelectorAll('a.rl')) : [];
+  function marcaAny(any) {
+    var actual = null;
+    anys.forEach(function (a) {
+      var on = a.getAttribute('href') === '#any-' + any;
+      if (on) { a.setAttribute('aria-current', 'true'); actual = a; } else { a.removeAttribute('aria-current'); }
+    });
+    anys.forEach(function (a) { a.tabIndex = a === (actual || anys[anys.length - 1]) ? 0 : -1; });
+  }
+  if (anys.length) {
+    var cur = rail.querySelector('a.rl[aria-current]');
+    anys.forEach(function (a) { a.tabIndex = a === (cur || anys[anys.length - 1]) ? 0 : -1; });
+    rail.addEventListener('keydown', function (ev) {
+      var i = anys.indexOf(document.activeElement);
+      if (i < 0) return;
+      var j = ev.key === 'ArrowRight' || ev.key === 'ArrowDown' ? i + 1 : ev.key === 'ArrowLeft' || ev.key === 'ArrowUp' ? i - 1 :
+        ev.key === 'Home' ? 0 : ev.key === 'End' ? anys.length - 1 : null;
+      if (j === null) return;
+      ev.preventDefault();
+      j = Math.max(0, Math.min(anys.length - 1, j));
+      anys.forEach(function (a, k) { a.tabIndex = k === j ? 0 : -1; });
+      anys[j].focus();
+    });
+  }
+
+  var inici = true;
   function obre() {
-    var id = decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (!id) return;
-    var el = document.getElementById(id);
-    if (!el) return;
-    if (el.tagName === 'DETAILS') { el.open = true; }
-    var pare = el.parentElement;
-    while (pare) {
-      if (pare.tagName === 'DETAILS') { pare.open = true; }
-      if (pare.hidden && pare.classList.contains('grup-proves')) { filtra(''); }
-      pare = pare.parentElement;
+    var id = '';
+    try { id = decodeURIComponent(location.hash.replace(/^#/, '')); } catch (e) { id = ''; }
+    var el = id ? document.getElementById(id) : null;
+    if (!el) { inici = false; return; }
+    if (/^any-\d{4}$/.test(id)) {
+      var plegable = el.querySelector('details.tl-evid');
+      if (plegable) plegable.open = true;
+      // En obrir la pàgina amb un any, es tanca l'any obert per defecte (l'últim).
+      if (inici) {
+        var def = document.querySelector('details.tl-evid[data-defecte]');
+        if (def && def !== plegable) def.open = false;
+      }
+      marcaAny(id.slice(4));
+    } else {
+      if (el.tagName === 'DETAILS') { el.open = true; }
+      var pare = el.parentElement;
+      while (pare) {
+        if (pare.tagName === 'DETAILS') { pare.open = true; }
+        if (pare.hidden && pare.classList.contains('grup-proves')) { filtra(''); }
+        pare = pare.parentElement;
+      }
+      if (el.hidden) { filtra(''); }
     }
-    if (el.hidden) { filtra(''); }
+    inici = false;
     el.scrollIntoView();
   }
 
@@ -3244,6 +3731,248 @@ JS_FITXA = r"""/* Fitxa d'empresa: filtre de proves per any i obertura dels pleg
   });
   window.addEventListener('hashchange', obre);
   obre();
+})();
+"""
+
+JS_COMU = r"""/* Comú a totes les pàgines: mode clar/fosc, cercador amb suggeriments (combobox)
+   i botons de copiar. Generat per dashboard/genera_dashboard.py. Sense dependències. */
+(function () {
+  'use strict';
+  var doc = document.documentElement;
+
+  /* ---------- Mode clar / fosc ---------- */
+  var SOL = '<svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+  var LLUNA = '<svg viewBox="0 0 20 20" focusable="false"><path d="M15.5 12.6A6.5 6.5 0 0 1 7.4 4.5a6.5 6.5 0 1 0 8.1 8.1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+  var botoTema = document.querySelector('.tema');
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function esFosc() {
+    var t = doc.getAttribute('data-theme');
+    return t ? t === 'dark' : !!(mq && mq.matches);
+  }
+  function pintaTema() {
+    if (!botoTema) return;
+    var f = esFosc();
+    botoTema.setAttribute('aria-pressed', f ? 'true' : 'false');
+    botoTema.title = f ? 'Passa al mode clar' : 'Passa al mode fosc';
+    botoTema.querySelector('.tema-i').innerHTML = f ? SOL : LLUNA;
+  }
+  if (botoTema) {
+    botoTema.addEventListener('click', function () {
+      var nou = esFosc() ? 'light' : 'dark';
+      doc.setAttribute('data-theme', nou);
+      try { localStorage.setItem('fc-tema', nou); } catch (e) { /* sense emmagatzematge: només aquesta pàgina */ }
+      pintaTema();
+    });
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', pintaTema);
+      else if (mq.addListener) mq.addListener(pintaTema);
+    }
+    pintaTema();
+  }
+
+  /* ---------- Cercador amb suggeriments ---------- */
+  function norm(s) {
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+  var NOM_ETQ = { F: 'F', P: 'P', D: 'ND', N: 'NA' };
+  var IDX = null, carregant = false, esperen = [];
+  function prepara(llista) {
+    return llista.map(function (r) {
+      var ceos = r[3] ? r[3].split('|') : [];
+      var darrer = 0;
+      for (var i = 0; i < 10; i++) { if (r[5].substr(2 * i, 2) !== '--') darrer = 2016 + i; }
+      return { isin: r[0], nom: r[1], nomN: norm(r[1]), ceos: ceos, ultim: (r[4] || '').split('|').join(' · '), serie: r[5], darrer: darrer,
+               tot: norm(r[1]) + ' ' + r[2] + ' ' + r[0].toLowerCase() + ' ' + norm(ceos.join(' ')) };
+    });
+  }
+  function ambIndex(prefix, fet) {
+    if (IDX) { fet(); return; }
+    if (window.CERCA_IDX) { IDX = prepara(window.CERCA_IDX); fet(); return; }
+    esperen.push(fet);
+    if (carregant) return;
+    carregant = true;
+    var s = document.createElement('script');
+    s.src = prefix + 'assets/index_cerca.js';
+    s.onload = function () { IDX = prepara(window.CERCA_IDX || []); var f = esperen; esperen = []; f.forEach(function (x) { x(); }); };
+    s.onerror = function () { carregant = false; esperen = []; };
+    document.head.appendChild(s);
+  }
+  function busca(q) {
+    var qn = norm(q), termes = qn.split(' ').filter(Boolean);
+    if (!termes.length || !IDX) return [];
+    var r = [];
+    IDX.forEach(function (e) {
+      for (var j = 0; j < termes.length; j++) { if (e.tot.indexOf(termes[j]) < 0) return; }
+      var p = e.nomN.indexOf(qn) === 0 ? 0 : (' ' + e.nomN).indexOf(' ' + qn) >= 0 ? 1 : e.nomN.indexOf(qn) >= 0 ? 2 :
+        e.isin.toLowerCase().indexOf(qn) === 0 ? 3 : 4;
+      r.push([p, e]);
+    });
+    r.sort(function (a, b) { return a[0] - b[0] || (a[1].nomN < b[1].nomN ? -1 : a[1].nomN > b[1].nomN ? 1 : 0); });
+    return r.slice(0, 7).map(function (x) { return x[1]; });
+  }
+  function resalta(text, termes) {
+    var n = norm(text), marques = [];
+    if (n.length !== text.length) return esc(text);
+    termes.forEach(function (t) { var i = n.indexOf(t); if (i >= 0) marques.push([i, i + t.length]); });
+    marques.sort(function (a, b) { return a[0] - b[0]; });
+    var out = '', pos = 0;
+    marques.forEach(function (m) {
+      if (m[0] < pos) return;
+      out += esc(text.slice(pos, m[0])) + '<mark>' + esc(text.slice(m[0], m[1])) + '</mark>';
+      pos = m[1];
+    });
+    return out + esc(text.slice(pos));
+  }
+  function serie(e) {
+    var h = '<span class="sr" aria-hidden="true">';
+    for (var i = 0; i < 10; i++) {
+      var c = e.serie.substr(2 * i, 2);
+      h += c === '--' ? '<i></i>' : '<i class="' + NOM_ETQ[c[0]] + ' ' + c[1] + '">' + NOM_ETQ[c[0]] + '</i>';
+    }
+    return h + '</span>';
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-combobox]'), function (form, nForm) {
+    var input = form.querySelector('input');
+    var llista = form.querySelector('[role="listbox"]');
+    var viu = form.querySelector('.cb-viu');
+    var local = form.hasAttribute('data-local');
+    var prefix = form.getAttribute('data-prefix') || '';
+    var pop = document.createElement('div');
+    pop.className = 'cb-pop';
+    pop.hidden = true;
+    llista.parentNode.insertBefore(pop, llista);
+    pop.appendChild(llista);
+    llista.hidden = false;
+    var peu = document.createElement('p');
+    peu.className = 'cb-peu';
+    pop.appendChild(peu);
+    var opcions = [], actiu = -1;
+
+    function tanca() {
+      pop.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      actiu = -1;
+    }
+    function mou(i) {
+      opcions.forEach(function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+      actiu = i;
+      if (i >= 0) {
+        input.setAttribute('aria-activedescendant', opcions[i].id);
+        if (opcions[i].scrollIntoView) opcions[i].scrollIntoView({ block: 'nearest' });
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    }
+    function pinta() {
+      var q = input.value.trim();
+      if (!q) { tanca(); if (viu) viu.textContent = ''; return; }
+      ambIndex(prefix, function () {
+        if (input.value.trim() !== q) return;
+        var termes = norm(q).split(' ').filter(Boolean);
+        var r = busca(q), h = '';
+        r.forEach(function (e, k) {
+          var ceosQ = e.ceos.filter(function (c) { var n = norm(c); return termes.some(function (t) { return t.length > 1 && n.indexOf(t) >= 0; }); });
+          var sub = '<code>' + resalta(e.isin, termes) + '</code> · ' +
+            (ceosQ.length ? 'CEO: ' + ceosQ.map(function (c) { return resalta(c, termes); }).join(', ')
+              : 'CEO ' + e.darrer + ': ' + esc(e.ultim || 'sense CEO'));
+          h += '<li role="option" class="sug" id="' + llista.id + '-o' + k + '" aria-selected="false" data-href="' + prefix + 'empreses/' + e.isin + '.html">' +
+            '<span class="sug-nom">' + resalta(e.nom, termes) + '</span>' + serie(e) + '<span class="sug-sub">' + sub + '</span></li>';
+        });
+        llista.innerHTML = h;
+        llista.hidden = !r.length;
+        peu.innerHTML = (r.length ? '' : '<span class="cb-buit">Cap empresa no coincideix. Prova amb part del nom, l\'ISIN o el cognom del CEO.</span>') +
+          (local ? '' : '<a href="' + prefix + 'empreses.html?q=' + encodeURIComponent(q) + '">Veure tots els resultats a Empreses <span aria-hidden="true">→</span></a>');
+        peu.hidden = !peu.innerHTML;
+        opcions = Array.prototype.slice.call(llista.querySelectorAll('.sug'));
+        opcions.forEach(function (o, k) {
+          o.addEventListener('mousedown', function (ev) { ev.preventDefault(); location.href = o.getAttribute('data-href'); });
+          o.addEventListener('mousemove', function () { if (actiu !== k) mou(k); });
+        });
+        actiu = -1;
+        input.removeAttribute('aria-activedescendant');
+        pop.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        if (viu) viu.textContent = r.length ? (r.length === 1 ? '1 suggeriment' : r.length + ' suggeriments') + '. Fes servir les fletxes per triar-ne un.' : 'Cap suggeriment.';
+      });
+    }
+    input.addEventListener('input', pinta);
+    input.addEventListener('focus', function () { ambIndex(prefix, function () {}); if (input.value.trim() && input.getAttribute('aria-expanded') !== 'true' && !local) pinta(); });
+    input.addEventListener('blur', function () { setTimeout(tanca, 150); });
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        if (pop.hidden) { pinta(); return; }
+        if (!opcions.length) return;
+        if (ev.key === 'ArrowDown') mou(actiu + 1 >= opcions.length ? 0 : actiu + 1);
+        else mou(actiu <= 0 ? opcions.length - 1 : actiu - 1);
+      } else if (ev.key === 'Escape') {
+        if (!pop.hidden) { ev.preventDefault(); tanca(); }
+      } else if (ev.key === 'Enter') {
+        if (!pop.hidden && actiu >= 0) { ev.preventDefault(); location.href = opcions[actiu].getAttribute('data-href'); }
+        else if (local) { ev.preventDefault(); tanca(); }
+      } else if (ev.key === 'Tab') {
+        tanca();
+      }
+    });
+  });
+
+  /* Drecera «/»: porta al cercador (a Empreses, al de la llista). */
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== '/' || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    var a = document.activeElement;
+    if (a && (/^(input|textarea|select)$/i.test(a.tagName) || a.isContentEditable)) return;
+    var camps = Array.prototype.slice.call(document.querySelectorAll('[data-combobox][data-local] input'))
+      .concat(Array.prototype.slice.call(document.querySelectorAll('[data-combobox]:not([data-local]) input')));
+    for (var i = 0; i < camps.length; i++) {
+      if (camps[i].offsetParent !== null) { ev.preventDefault(); camps[i].focus(); return; }
+    }
+  });
+
+  /* ---------- Botons de copiar ---------- */
+  var viuCopia = document.createElement('div');
+  viuCopia.className = 'vh';
+  viuCopia.setAttribute('aria-live', 'polite');
+  document.body.appendChild(viuCopia);
+  function copiaAntic(text) {
+    var t = document.createElement('textarea');
+    t.value = text;
+    t.setAttribute('readonly', '');
+    t.style.position = 'fixed';
+    t.style.opacity = '0';
+    document.body.appendChild(t);
+    t.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(t);
+    return ok;
+  }
+  function copia(text, boto, que) {
+    var original = boto.getAttribute('data-original') || boto.textContent;
+    boto.setAttribute('data-original', original);
+    function fet(ok) {
+      boto.textContent = ok ? 'Copiat ✓' : 'No s\'ha pogut copiar';
+      viuCopia.textContent = ok ? que + ' copiat al porta-retalls.' : 'No s\'ha pogut copiar.';
+      setTimeout(function () { boto.textContent = original; }, 1600);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { fet(true); }, function () { fet(copiaAntic(text)); });
+    } else {
+      fet(copiaAntic(text));
+    }
+  }
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-copia], [data-copia-cita]') : null;
+    if (!b) return;
+    if (b.hasAttribute('data-copia')) { copia(b.getAttribute('data-copia'), b, 'Text'); return; }
+    var bloc = b.closest('.ev-ext') || b.closest('.ev');
+    var p = bloc ? bloc.querySelector('.cita p') : null;
+    if (p) copia(p.textContent.replace(/\s*\[…\]$/, ''), b, 'Cita');
+  });
 })();
 """
 

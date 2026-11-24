@@ -1,5 +1,5 @@
-/* Fitxa d'empresa: filtre de proves per any i obertura dels plegables segons el hash.
-   Generat per dashboard/genera_dashboard.py. Sense dependències. */
+/* Fitxa d'empresa: franja d'anys (fletxes ←/→), obertura de l'any i de les proves
+   segons el hash i filtre de proves per any. Generat per dashboard/genera_dashboard.py. Sense dependències. */
 (function () {
   'use strict';
   var cont = document.getElementById('proves');
@@ -28,19 +28,59 @@
     }
   }
 
+  /* Franja d'anys: una sola parada de tabulació i fletxes per passar d'any. */
+  var rail = document.querySelector('.rail');
+  var anys = rail ? Array.prototype.slice.call(rail.querySelectorAll('a.rl')) : [];
+  function marcaAny(any) {
+    var actual = null;
+    anys.forEach(function (a) {
+      var on = a.getAttribute('href') === '#any-' + any;
+      if (on) { a.setAttribute('aria-current', 'true'); actual = a; } else { a.removeAttribute('aria-current'); }
+    });
+    anys.forEach(function (a) { a.tabIndex = a === (actual || anys[anys.length - 1]) ? 0 : -1; });
+  }
+  if (anys.length) {
+    var cur = rail.querySelector('a.rl[aria-current]');
+    anys.forEach(function (a) { a.tabIndex = a === (cur || anys[anys.length - 1]) ? 0 : -1; });
+    rail.addEventListener('keydown', function (ev) {
+      var i = anys.indexOf(document.activeElement);
+      if (i < 0) return;
+      var j = ev.key === 'ArrowRight' || ev.key === 'ArrowDown' ? i + 1 : ev.key === 'ArrowLeft' || ev.key === 'ArrowUp' ? i - 1 :
+        ev.key === 'Home' ? 0 : ev.key === 'End' ? anys.length - 1 : null;
+      if (j === null) return;
+      ev.preventDefault();
+      j = Math.max(0, Math.min(anys.length - 1, j));
+      anys.forEach(function (a, k) { a.tabIndex = k === j ? 0 : -1; });
+      anys[j].focus();
+    });
+  }
+
+  var inici = true;
   function obre() {
-    var id = decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (!id) return;
-    var el = document.getElementById(id);
-    if (!el) return;
-    if (el.tagName === 'DETAILS') { el.open = true; }
-    var pare = el.parentElement;
-    while (pare) {
-      if (pare.tagName === 'DETAILS') { pare.open = true; }
-      if (pare.hidden && pare.classList.contains('grup-proves')) { filtra(''); }
-      pare = pare.parentElement;
+    var id = '';
+    try { id = decodeURIComponent(location.hash.replace(/^#/, '')); } catch (e) { id = ''; }
+    var el = id ? document.getElementById(id) : null;
+    if (!el) { inici = false; return; }
+    if (/^any-\d{4}$/.test(id)) {
+      var plegable = el.querySelector('details.tl-evid');
+      if (plegable) plegable.open = true;
+      // En obrir la pàgina amb un any, es tanca l'any obert per defecte (l'últim).
+      if (inici) {
+        var def = document.querySelector('details.tl-evid[data-defecte]');
+        if (def && def !== plegable) def.open = false;
+      }
+      marcaAny(id.slice(4));
+    } else {
+      if (el.tagName === 'DETAILS') { el.open = true; }
+      var pare = el.parentElement;
+      while (pare) {
+        if (pare.tagName === 'DETAILS') { pare.open = true; }
+        if (pare.hidden && pare.classList.contains('grup-proves')) { filtra(''); }
+        pare = pare.parentElement;
+      }
+      if (el.hidden) { filtra(''); }
     }
-    if (el.hidden) { filtra(''); }
+    inici = false;
     el.scrollIntoView();
   }
 

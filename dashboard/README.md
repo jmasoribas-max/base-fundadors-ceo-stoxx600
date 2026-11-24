@@ -1,12 +1,26 @@
 # Dashboard Fundadors (lloc estàtic)
 
-Lloc HTML estàtic per consultar la base Fundadors (STOXX Europe 600, 2016-2025). Té tres seccions:
+Lloc HTML estàtic per consultar la base Fundadors (STOXX Europe 600, 2016-2025). Estil editorial (paper càlid, tinta, xifres i cites en serif), amb mode clar i fosc. Té tres seccions i un marc comú:
 
-- **Estat** (`index.html`): en quin punt és la base. Files acabades, embut de les quatre condicions (C1-C4), estat per etiqueta i per any, mancances i què s'hi fa, origen dels dubtes oberts, controls de qualitat, resultats provisionals i «Sobre aquestes dades» (`#versio`). Es pot imprimir en dues pàgines A4.
-- **Empreses** (`empreses.html`): cercador i filtres (etiqueta, estat, país d'emissió de l'ISIN) i una taula amb la sèrie FounderCEO 2016-2025 i l'estat de les files de cada empresa. Llegeix `?q=` i el hash (`q`, `e`, `t`, `p`, `m`).
+- **Marc comú**: capçalera amb la marca, el menú Estat / Empreses / Mètode, el **cercador amb suggeriments** (a totes les pàgines), la píndola «En revisió · dades del …» i el **botó de mode clar/fosc**. Al mòbil (≤ 760 px), el menú passa a **pestanyes inferiors fixes** i el cercador ocupa tota l'amplada a dalt.
+- **Estat** (`index.html`): en quin punt és la base, amb cada secció com una pregunta numerada i la resposta en una frase. Xifra protagonista de files acabades i, just a sota, **dreceres amb recompte** (acabades, només falta l'arxiu, amb dubte, falta evidència i fundadors-CEO): cada targeta diu les files i el nombre d'empreses que obre el filtre d'Empreses (`#t=…` o `#e=F`). Després, embut de les quatre condicions (C1-C4), estat per etiqueta i per any, mancances i què s'hi fa, origen dels dubtes oberts, controls de qualitat, resultats provisionals i «Sobre aquestes dades» (`#versio`). Es pot imprimir en dues pàgines A4.
+- **Empreses** (`empreses.html`): cercador gran (també amb suggeriments; filtra la llista mentre escrius) i filtres (etiqueta, estat, país d'emissió de l'ISIN) i una taula amb la sèrie FounderCEO 2016-2025 i l'estat de les files de cada empresa. Llegeix `?q=` i el hash (`q`, `e`, `t`, `p`, `m`).
 - **Mètode** (`metodologia.html`): la pregunta, la llegenda (`#llegenda`), quan una fila està acabada, fonts A/B/C, marques de prova (`#regla-…`), l'estat antic de l'auditoria i els criteris de la part pública.
 - Nom de les empreses: la columna `nom_panell` és la descripció del valor («Nestlé S.A. Namens-Aktien SF -,10»). Per mostrar-lo, `nom_visible()` en treu el sufix de classe d'acció i el nominal; el nom original surt al `title`, a la fitxa («Nom del valor a la base») i a la cerca. No es modifica `dades/`.
-- Una **fitxa** per ISIN (`empreses/{ISIN}.html`): estat de l'empresa, dubtes oberts, línia de temps (etiqueta i estat per any), «Any per any» amb «Per què?» (la cita de CEO i la de fundador de l'any, amb la font original, la còpia Wayback i si la cita s'ha comprovat a la còpia), totes les proves plegades per grup i l'historial de l'auditoria IA.
+- Una **fitxa** per ISIN (`empreses/{ISIN}.html`):
+  - Capçalera: nom, ISIN amb botó de copiar, país (prefix ISIN), anys, etiqueta dominant («x de N anys · CEO») i minibarra d'estat amb «x de N files acabades · …». Caixa de dubte si n'hi ha.
+  - **Franja d'anys**: deu targetes 2016-2025 amb l'any, la lletra de l'etiqueta, la icona d'estat i una línia de color d'estat a sota; l'any obert, remarcat. Els anys en què l'empresa no era a l'índex són targetes buides i no clicables (explicat a «Com es llegeix»). Amb el focus a la franja, les fletxes ←/→ (i Inici/Fi) passen d'any (una sola parada de tabulació). A l'escriptori la franja queda fixa a dalt en desplaçar-se. Sota, el CEO a 31/10 per períodes.
+  - **Línia del temps vertical**: un bloc per any amb l'any gran i un punt d'estat. Capçalera: «CEO a 31/10/AAAA» i el nom, l'etiqueta, «Prova: …» (enllaçada al Mètode) i l'estat. Plegable «Evidència de AAAA» amb insígnies («CEO [V]», «Fundador [V]» o «Prova [V]», la data de la còpia) i l'inici de la cita. Obert, **dues columnes**: «Qui era el CEO» i «Per què és fundador (F)» / «Per què no és fundador» (P, amb la frase de la prova a-e) / «Per què no hi ha CEO» (NA) / «Què falta» (ND). Cada columna mostra si la cita s'ha trobat al document ([V]), el nivell i l'allotjament, la cita en serif, el document (de la primera nota pública de l'entrada), «Font original · domini», «Còpia arxivada · data» (o «Còpia arxivada: pendent / encara no», desactivat), «Cita comprovada a la còpia: sí / no / pendent», l'ID, «Veure la prova» i «Copia la cita». Els intervals de CEO mostren els dos extrems i la limitació declarada (regla 28). Al peu, «Totes les proves d'aquest any (n) →» i la frase de l'estat de la fila.
+  - Per defecte s'obre l'últim any amb dades; `#any-AAAA` obre i porta a aquell any (i tanca el de per defecte); `#p-…` obre la prova. Sense JavaScript, l'últim any queda obert i els enllaços de la franja funcionen.
+  - Sota: totes les proves plegades per grup, l'historial de l'auditoria IA i Anterior / Següent.
+
+### Cercador amb suggeriments
+
+Patró *combobox* de l'ARIA APG: `role="combobox"`, `listbox`, `aria-activedescendant`, fletxes ↑/↓, Retorn i Esc; la drecera «/» porta al cercador (a Empreses, al de la llista). Busca per nom (sense accents ni majúscules), altres noms de la base, ISIN i nom de CEO. Cada suggeriment mostra el nom, l'ISIN, els CEO que coincideixen (o el de l'últim any) i la sèrie F/P de deu anys amb la línia d'estat. Retorn sense cap suggeriment triat porta a `empreses.html?q=…`. L'índex és a `assets/index_cerca.js` (≈ 160 kB, compartit per totes les pàgines i carregat només quan s'enfoca un cercador; és JS i no JSON perquè funcioni amb `file://`). Només conté dades que ja són a `empreses.html`, i el generador s'atura si hi troba un terme restringit.
+
+### Mode clar i fosc
+
+El botó de la capçalera canvia entre clar i fosc i desa l'opció a `localStorage` (clau `fc-tema`, dins un `try/catch`). Si no n'hi ha cap de desada, mana `prefers-color-scheme`. Un script petit al `<head>` aplica l'opció abans de pintar (atribut `data-theme` a `<html>`). Els tokens foscos són propis (no una inversió) i només s'apliquen a la pantalla: la impressió de l'Estat surt sempre en clar, en dues pàgines A4.
 
 **Publicat a GitHub Pages** (https://jmasoribas-max.github.io/base-fundadors-ceo-stoxx600/), des de la branca `gh-pages`. La primera publicació la va fer el compte de Jordi el 23/11/2026 a les 14:00 (commit `64ce9cc`, `main` `17b03df`). Des del 24/11/2026, la publicació és automàtica: cada cop que un PR que canvia `dashboard/` es fusiona a `main`, el flux [`publica_dashboard`](../.github/workflows/publica_dashboard.yml) en copia el contingut a `gh-pages`. També es pot llançar a mà des de la pestanya Actions.
 
@@ -20,7 +34,7 @@ python3 dashboard/genera_dashboard.py
 
 L'script només fa servir la biblioteca estàndard de Python (3.11 o posterior). No fa cap petició de xarxa. El resultat és determinista: amb les mateixes dades, els mateixos fitxers. Quan canviïn les dades de `main` (i el `MANIFEST_SHA256.csv`), n'hi ha prou de tornar-lo a executar.
 
-Per veure'l en local, obre `dashboard/index.html` al navegador (funciona amb `file://`). No cal cap servidor: la cerca i els filtres funcionen amb JavaScript al navegador, sense dependències externes.
+Per veure'l en local, obre `dashboard/index.html` al navegador (funciona amb `file://`). No cal cap servidor: la cerca, els suggeriments, els filtres i el mode fosc funcionen amb JavaScript al navegador, sense dependències externes ni fonts web (les serifs són les del sistema: Iowan Old Style, Palatino, Charter, Georgia…).
 
 Opcions:
 
@@ -50,7 +64,8 @@ No llegeix l'`.xlsx`, `empreses/*.md`, `INDEX.md`, `index.csv`, `docs/REGISTRE_C
 L'script s'atura sense escriure res si:
 
 - algun dels cinc fitxers no coincideix amb `MANIFEST_SHA256.csv`;
-- alguna fila acabada no mostra, al «Per què?», una cita de CEO i una de fundador amb «Cita comprovada a la còpia: sí»;
+- alguna fila acabada no mostra, a l'«Evidència de l'any» de la fitxa, una cita de CEO i una de fundador amb «Cita comprovada a la còpia: sí»;
+- l'índex del cercador conté un terme de la llista restringida, o un dels exemples del cercador de l'Estat (LVMH, Nestlé) no és a la base;
 - `estat/RESUM_ESTAT.md` no correspon a la base, el registre, `PENDENTS.md` i `estat/dubtes_tancats.csv` actuals (cal executar `python3 estat/estat_files.py`);
 - `estat/estat_files.csv` no té exactament les mateixes claus (isin, any) que la base, o hi apareix un estat desconegut;
 - la barra de quatre estats no quadra amb l'embut (C1∧C2 = total − falta evidència; C1∧C2∧C4 = C1∧C2 − dubte), o l'embut, la fila Total o les mancances no coincideixen amb `estat/RESUM_ESTAT.md`.
@@ -61,7 +76,7 @@ La constant `VERSIO_CONGELADA` de l'script és buida: el lloc diu «en revisió 
 
 ## Què escriu
 
-Només dins de `dashboard/`: `index.html`, `empreses.html`, `metodologia.html`, `empreses/{ISIN}.html` (una per ISIN; esborra les fitxes d'ISIN que ja no són a la base) i `assets/` (`style.css`, `cerca.js`, `fitxa.js`). No modifica cap altre fitxer del repositori.
+Només dins de `dashboard/`: `index.html`, `empreses.html`, `metodologia.html`, `empreses/{ISIN}.html` (una per ISIN; esborra les fitxes d'ISIN que ja no són a la base) i `assets/` (`style.css`; `comu.js`: mode clar/fosc, cercador amb suggeriments i botons de copiar; `index_cerca.js`: índex del cercador; `cerca.js`: filtres d'Empreses; `fitxa.js`: franja d'anys, obertura per hash i filtre de proves). No modifica cap altre fitxer del repositori.
 
 ## Criteris de la part pública
 
@@ -71,16 +86,17 @@ Només dins de `dashboard/`: `index.html`, `empreses.html`, `metodologia.html`, 
 - Sí que es mostren: FounderCEO oficial, CEO per any, l'estat de cada fila, marques de prova, `[V]` / `[NV]`, fonts no vàlides o sense còpia arxivada, `cita_verificada_a_captura` i, com a historial, `sim_estat_certificacio` i `sim_nivell`.
 - Del fitxer `PENDENTS.md` només es compten files i s'enllacen les seccions: no se'n mostra cap text (conté notes internes).
 - Les notes del registre es mostren (a «Detalls tècnics» de cada prova) amb els filtres de termes restringits i de noms de models, però **sense** filtrar les mencions a DF (p. ex. «correcció de DF»): hi ha 28 fitxes amb notes d'aquest tipus. Si Jordi vol el mateix criteri que per a `PENDENTS.md`, cal afegir `\bDF\b` al filtre de notes de `prepara_prova()`.
+- A l'«Evidència de l'any», la línia del document surt de la primera nota **pública** de l'entrada (el text que segueix «Document:», o la nota marcada «Nota:»), retallada a 230 caràcters; el nivell A/B/C, del camp d'origen o d'aquesta nota. Les notes ocultes pels filtres no s'hi fan servir mai.
 - Les cites de més de 600 caràcters es mostren com a fragment, marcat amb […], i s'indica que el text complet és al registre.
 - No s'inventa cap camp: no hi ha noms de fundadors de l'empresa, ni any de fundació, ni país com a camp de la base. El filtre «país d'emissió de l'ISIN» es deriva del prefix de l'ISIN i es marca com a derivat.
 
 ## Colors
 
-Els tokens són a `:root` de `assets/style.css` i es redefineixen per al mode fosc **només a la pantalla** (`@media screen and (prefers-color-scheme: dark)`): la impressió surt sempre en clar. Etiquetes (text blanc ≥ 4,5:1): F `#c2521f`, P `#1f66c1`, ND `#9b2f8f` (fosc `#a8399c`), NA `#6e6d68`. L'ND és pruna i no violeta perquè el violeta `#6b4fd8` quedava massa a prop del blau de P (ΔE 10,3 en visió normal i 3,5 en deuteranopia); amb la pruna, tots els parells passen.
+Els tokens són a `:root` de `assets/style.css` i es redefineixen per al mode fosc **només a la pantalla**: sota `@media screen and (prefers-color-scheme: dark)` amb `:root:not([data-theme="light"])` i sota `@media screen` amb `:root[data-theme="dark"]`. La impressió surt sempre en clar. Neutres (estil editorial): paper `#f7f4ec`, full `#fffdf8`, tinta `#1d1b16` (fosc: `#151411`, `#1c1a17`, `#efebe1`). Etiquetes (text blanc ≥ 4,5:1): F `#c2521f`, P `#1f66c1`, ND `#9b2f8f` (fosc `#a8399c`), NA `#6e6d68`. L'ND és pruna i no violeta perquè el violeta `#6b4fd8` quedava massa a prop del blau de P (ΔE 10,3 en visió normal i 3,5 en deuteranopia); amb la pruna, tots els parells passen.
 
 Estats, en dos jocs:
 
-- **Marques** (`--mk-*`: barra de quatre estats, franja de la sèrie d'Empreses, minibarres, embut, barres de la taula per any, mostres de llegenda): clar acabada `#1f7a3d`, només falta l'arxiu `#86c9a0`, amb dubte `#e9a93a`, falta evidència `#8a8882` (amb trama a les barres); fosc `#9be3b5`, `#3b9a6b`, `#d9a93a`, `#5a5954`. Validades amb `validate_palette.js --pairs all` (qualsevol estat pot quedar al costat de qualsevol altre): en clar sobre `#ffffff`, CVD ≥ 10,8 i visió normal ≥ 15,5; en fosc sobre `#1a1a19`, CVD ≥ 11,9 i visió normal ≥ 16,9. El gris de «falta» és un neutre volgut (no passa el llindar de croma, que és per a sèries categòriques). Els verds proposats a la revisió (`#3d8f63` per a l'arxiu) quedaven a ΔE 7,9 de l'acabada i no passaven. La franja de la sèrie fa 5 px i va separada de la lletra per una línia de 2 px del color de la superfície.
+- **Marques** (`--mk-*`: barra de quatre estats, franja de la sèrie d'Empreses, minibarres, embut, barres de la taula per any, mostres de llegenda): clar acabada `#1f7a3d`, només falta l'arxiu `#86c9a0`, amb dubte `#e9a93a`, falta evidència `#8a8882` (amb trama a les barres); fosc `#9be3b5`, `#3b9a6b`, `#d9a93a`, `#5a5954`. Validades amb `validate_palette.js --pairs all` (qualsevol estat pot quedar al costat de qualsevol altre): en clar, CVD ≥ 10,8 i visió normal ≥ 15,5; en fosc, CVD ≥ 11,9 i visió normal ≥ 16,9. Amb el paper nou es van tornar a validar sobre `#fffdf8` i `#f7f4ec` (clar) i `#1c1a17` i `#151411` (fosc), amb el mateix resultat. Els tons clars d'arxiu i dubte queden per sota de 3:1 contra el paper (1,8-2,0:1) i el gris fosc de «falta» a 2,5:1: per això les barres porten vora i separadors, cada marca porta icona o lletra i els números són a la llegenda (la regla de *relief* del validador). El gris de «falta» és un neutre volgut (no passa el llindar de croma, que és per a sèries categòriques). Els verds proposats a la revisió (`#3d8f63` per a l'arxiu) quedaven a ΔE 7,9 de l'acabada i no passaven. La franja de la sèrie fa 5 px i va separada de la lletra per una línia de 2 px del color de la superfície.
 - **Insígnies amb text** (`--st-*`, to suau): acabada `#1f7a3d` (text blanc), arxiu `#cfe8d6`, dubte `#e9a93a`, falta `#e7e5df` amb trama (text `#1a1a19`). Porten sempre icona i text.
 
 La taula «Com va cada any?» no fa servir intensitat de fons: cada cel·la porta el número, el % de l'any i una barra de longitud en el color de l'estat. Amb una escala de 5 graons, el validador (`--ordinal`) no podia separar els graons i alhora mantenir el text ≥ 4,5:1, i els talls de 20 en 20 punts creaven salts falsos (21 % vs 20 %).

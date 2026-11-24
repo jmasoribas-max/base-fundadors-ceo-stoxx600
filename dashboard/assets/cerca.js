@@ -19,11 +19,17 @@
   var IDX = { acabada: 0, arxiu: 1, dubte: 2, falta: 3 };
 
   function norm(s) {
-    return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function conte(llista, valor) { return (' ' + (llista || '') + ' ').indexOf(' ' + valor + ' ') >= 0; }
   function st(tr) { return (tr.dataset.st || '0 0 0 0').split(' ').map(Number); }
+  // Claus d'ordre: el nom normalitzat i el % de files acabades (no van a l'HTML).
+  files.forEach(function (tr) {
+    var a = tr.querySelector('.emp-nom'), s = st(tr), n = s[0] + s[1] + s[2] + s[3];
+    tr._ordre = { n: norm(a ? a.textContent : ''), pa: n ? Math.round(100 * s[0] / n) : 0 };
+  });
+  function clauOrdre(tr, clau) { return clau === 'f' ? +tr.dataset.f : tr._ordre[clau]; }
 
   function aplica() {
     var termes = norm(camps.q.value).split(' ').filter(Boolean);
@@ -53,9 +59,9 @@
     if (ordre.clau === clau) { ordre.dir = -ordre.dir; } else { ordre.clau = clau; ordre.dir = clau === 'n' ? 1 : -1; }
     var num = clau !== 'n';
     files.sort(function (a, b) {
-      var x = a.dataset[clau], y = b.dataset[clau], r;
-      if (num) { r = (+x) - (+y); } else { r = x < y ? -1 : x > y ? 1 : 0; }
-      if (r === 0) { return a.dataset.n < b.dataset.n ? -1 : a.dataset.n > b.dataset.n ? 1 : 0; }
+      var x = clauOrdre(a, clau), y = clauOrdre(b, clau), r;
+      if (num) { r = x - y; } else { r = x < y ? -1 : x > y ? 1 : 0; }
+      if (r === 0) { return a._ordre.n < b._ordre.n ? -1 : a._ordre.n > b._ordre.n ? 1 : 0; }
       return r * ordre.dir;
     });
     var frag = document.createDocumentFragment();
