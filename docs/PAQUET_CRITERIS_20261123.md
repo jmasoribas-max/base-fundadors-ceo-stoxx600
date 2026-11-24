@@ -14,6 +14,8 @@ N'hi ha deu, per ordre d'importància. **El punt 1 és el que més afecta el res
 
 ## 1. Què compta com a «prova de no fundador documentada» (C2 de les files P)
 
+> **Decidit per Jordi el 24/11/2026: opció b**, amb un matís. Si hi ha evidència de qui va fundar l'empresa i el CEO no hi és, la prova a ja és completa. Un «founder» en singular val com a fundador únic (P8). Amb escissions i fusions s'aplica la metodologia per triar l'empresa fundadora. Text a `CLAUDE.md`, «Decisió de Jordi del 24/11/2026».
+
 **Problema.** Ara, l'estat (`estat/`) dona per bona la C2 d'una fila P si hi ha **alguna** cita de fundador vàlida. Però les proves de la metodologia (regla 21) tenen parts:
 
 | Prova | Parts |

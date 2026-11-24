@@ -34,6 +34,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | 23/11/2026 | Claude té llibertat per vigilar els PR, crear una branca per lot i fer la feina proposada, sempre que tingui el control de tot i sigui correcte per a la base final amb evidència vàlida per al doctorat. |
 | 23/11/2026 | **DF ja no porta res de la base: ho porta tot Claude.** En acabar, es passarà a DF un document amb tots els passos seguits fins a la base final, perquè n'estigui al cas. |
 | 23/11/2026 | Punt 1 (permisos per editar `CLAUDE.md`, `AGENTS.md` i `docs/METODOLOGIA.md`): ho executarà Grok amb un prompt. Punt 3: sí a l'última entrega de DF (verificació Wayback). Punt 2: endavant amb el procés automàtic a GitHub per a Wayback. |
+| 24/11/2026 | **Punt 1 del paquet de criteris: opció b.** Un 0 necessita totes les parts de la prova, cadascuna amb cita. Si hi ha evidència de qui va fundar l'empresa i el CEO no hi és, la prova a ja és completa i no calen l'any de fundació ni el naixement. Un «founder» en singular val com a fundador únic (P8). Amb escissions i fusions es tria l'empresa fundadora segons la metodologia. |
 | 23/11/2026 | Fonts de LSEG, Bloomberg, LexisNexis i similars: tot el que és públic al web es pot fer servir, encara que provingui d'aquestes fonts. Mai no s'ha fet servir cap base de dades privada seva. Deixa sense efecte l'avís de la sessió 7. |
 
 ## Entrades
@@ -304,4 +305,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 
 - **Fusionats per Jordi:** #31 (correcció del Wayback: `lxml`) i #29 (lot 14). He incorporat `main` a la branca del #30 (lots 15-17 i paquet de criteris) i n'he canviat la base a `main`.
 - **Wayback:** la segona execució programada (run 45323146702, encara sense la correcció) va arxivar més URL: 4.603 de 7.599 tenen captura, i 1.511 parells són `cita_ok`. Però 2.579 parells van tornar a fallar per `FeatureNotFound`. Amb el #31 fusionat, he llançat a mà una execució nova, que torna a verificar aquests parells. Revisió programada a les 15:00 UTC.
+- **PR #30 fusionat per Jordi** (lots 15-17 i paquet de criteris). Primer va donar l'error «Base branch was modified», perquè jo havia canviat la base del PR mentre ell tenia la pàgina oberta; refrescant-la es va resoldre.
+- **Decisió de Jordi sobre el punt 1:** vegeu la taula de decisions. Ho he afegit a `CLAUDE.md` i `AGENTS.md` (secció «Decisió de Jordi del 24/11/2026»).
+- **Pla nou per a les files P (972 empreses, 5.631 files):** primer, la fitxa de fundació per empresa (fundadors o origen, i any de fundació, amb cita). L'auditoria només deixa la llista de fundadors de 44 empreses i l'origen de 21. Després, l'estat calcularà la C2 de les P per parts, i les dades de persona es buscaran per a les files on no es pugui tancar la prova a o la e.
 
