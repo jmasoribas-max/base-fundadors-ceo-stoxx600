@@ -220,6 +220,28 @@ Paraules de Jordi a la sessió de Claude del 24/11/2026, resumides (preguntes Q2
 
 Aquestes decisions no canvien `dades/` per si soles: s'apliquen en un lot de correcció, amb cita, registre i el flux vigent (secció 8).
 
+## Decisions de Jordi del 24/11/2026 (vespre): resta del paquet de criteris v2
+
+Paraules de Jordi a la sessió de Claude del 24/11/2026: «d'acord amb totes» les recomanacions de `docs/ANALISI_CRITERIS_v2_20261124.md`. L'anàlisi compara cada pregunta amb aquesta metodologia i amb la literatura (Adams, Almeida i Ferreira 2009; Fahlenbrach 2009; Villalonga i Amit 2006; Sraer i Thesmar 2007; Barontini i Caprio 2006; Andres 2008; Crespí i Pascual 2009; Stein i Gallego 2012; ExecuComp/SEC). Les cites literals són a `docs/literatura/`. Complementen la regla 25 i, si discrepen, manen aquestes.
+
+- **Q1. Fundador de la part absorbida.** En una «fusió» que és una adquisició (regla 26), la cita de fundador de la part absorbida no fa la persona fundadora de la cotitzada: 0, amb `dubte_D1` i robustesa D1 àmplia = 1.
+- **Q4 i Q5. Redacció i autoria.** «Prior to setting up X, [persona]» compta com a «set up» (P6). Una cita de fundador publicada pel grup successor després de la descotització compta com a font de l'emissor (`allotjament=successor`), amb la robustesa de la D37a.
+- **Q6. Font B sola.** Es manté la P6 (`si_font_B`, robustesa com a ND) i s'hi afegeix una robustesa de dues fonts (`n_A + n_B ≥ 2`).
+- **Q7. Criteri FT (fundador transformador).** És FT la persona que pren el control d'una empresa existent (n'és el primer accionista individual), n'és CEO o president executiu i en transforma el negoci de manera documentada en una font A/B (Andres 2008; Barontini i Caprio 2006). És 1 a l'anàlisi principal, amb la marca `ft`/`tipus_ft` i 0 a `founderceo_rob_sense_ft`. S'aplica igual a tots els casos (LVMH, CTS Eventim, ACS…). Abans d'aplicar-lo, es busca si l'emissor anomena la persona fundadora (D37).
+- **Q8b, Q9, Q9b i C1. President executiu i consejero delegado (regla única).**
+  1. Si dues persones tenen el càrrec legal de consejero delegado, són co-CEO (Q8).
+  2. Si hi ha un president executiu i un consejero delegado, el CEO és qui el document regulat **original** de l'emissor designa com a primer executiu («primer ejecutivo», «máximo responsable ejecutivo», CEO), amb `ceo_president_exec` si és el president. Si no en designa cap, mana el càrrec legal (R1).
+  3. La traducció de l'emissor només serveix de suport.
+  4. Robustesa amb l'altra persona.
+  5. A França, el CEO és el PDG o el DG, i el DGD no.
+  6. Conseqüència: la correcció C1 (BME 2017-2018) **no** s'aplica, perquè l'IAGC designa Zoido «primer ejecutivo».
+- **Q10, Q13 i Q15.** Un president que cobreix de manera informal una plaça de CEO no és co-CEO si hi ha un CEO amb títol (R1; robustesa R3). Un CEO impedit o de baixa continua sent el CEO mentre el càrrec no quedi vacant (robustesa R2 si hi ha nomenament formal en funcions). Un document de l'emissor de l'any *t* anterior al 31/10 compta com a document del mateix exercici si no consta cap canvi (D21).
+- **Q12 i Q12b. Gestió externa.** Cada any mana el document de l'emissor: R1 si designa un CEO de la cotitzada, R3 si atribueix literalment la direcció, R-SC si declara que no té direcció pròpia. Marca `gestio_externa` i robustesa que exclou aquestes empreses. Si l'emissor (A) declara que no té direcció pròpia, preval sobre la premsa (B).
+- **Q14. Títol funcional.** «Joint CEO» en documents de l'emissor del mateix exercici és co-CEO (R1), amb la marca `co_ceo_titol_funcional` i una robustesa sense aquesta persona.
+- **Correccions aprovades.** C2 (Sopra Steria 2025: ND → 0), C3 (Dassault Systèmes 2016-2020: 0 → 1) i C4 (Bridgepoint 2021-2022: 0 → 1), amb les marques i robusteses de l'anàlisi.
+
+Aquestes decisions no canvien `dades/` per si soles: s'apliquen en un lot de correcció, amb cita, registre i el flux vigent (secció 8). La metodologia v0.10.11 les incorporarà quan es congeli la base.
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. El text complet vigent és `docs/METODOLOGIA_3_Articles_v0.10.10.md` (SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`), afegit al repositori el 23/11/2026; `docs/METODOLOGIA.md` n'és la porta d'entrada. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
