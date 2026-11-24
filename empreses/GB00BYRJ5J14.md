@@ -65,3 +65,8 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 Entitat rellevant: Primary Health Properties PLC (negoci fundat el 1994) · origen: persones · fundadors: Harry Hyman · any: 1994.
 
 - **L18-GB00BYRJ5J14-F01** · [V] · `a`. «The business of PHP was founded by Harry Hyman in 1994 and listed on AIM in 1996 and was admitted to the Official List and to trading on the London Stock Exchange’s main market for listed securities on 5 November 1998 as a premium equity commercial company under Chapter 6 of the Listing Rules.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000015971.pdf).
+## Correcció de coherència (correccio2_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO2-457** · 2020 · `marques`: «de_facto;D37;r3_managing_director» → «de_facto;D37;r3_managing_director;gestio_externa». Primary Health 2020: gestionada per l'Adviser fins a la internalització del 5/1/2021

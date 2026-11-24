@@ -59,3 +59,32 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 - **L20-GB00BDZT6P94-X01** · context · 2016-2019 · [V] · `context`. «The Group was formed in 1999, with the backing of Nick Varney (the current Group Chief Executive Officer), Andrew Carr (the current Group Chief Financial Officer), a number of the other current senior management team and Apax Partners through a buy-out of Vardon Attractions Limited from Vardon plc.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/58499248.pdf).
 - **L20-GB00BDZT6P94-F01** · fundador · 2016-2019 · [V] · `D37`. «Sir Nick Varney, our former Chief Executive, has been awarded a Knighthood in the 2023 King’s Birthday Honours List for services to the visitor economy. Sir Nick played a vital role in building Merlin Entertainments into the incredible global success story it is today. Merlin’s family of 30,000 staff around the world feel proud that their founder has been recognised for his amazing achievement - not just for the company, but the wider industry sector too.» [Font original](https://backstage.merlinentertainments.biz/2023/nick-varney-awarded-knighthood-in-2023-king-s-birthday-honours-list/).
 - **L20-GB00BDZT6P94-F02** · fundador · 2016-2019 · [V] · `D37`. «Sir Nick Varney, our former Chief Executive, has been awarded a Knighthood in the 2023 King’s Birthday Honours List for services to the visitor economy. Sir Nick played a vital role in building Merlin Entertainments into the incredible global success story it is today. Merlin’s family of 30,000 staff around the world feel proud that their founder has been recognised for his amazing achievement - not just for the company, but the wider industry sector too.» [Font original](https://backstage.merlinentertainments.biz/2023/nick-varney-awarded-knighthood-in-2023-king-s-birthday-honours-list/).
+
+## Correcció de coherència (correccio2_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO2-480** · 2016 · `d37_cita_contemporania`: «» → «no». D37a: article del 2023, posterior a la descotització
+- **CO2-486** · 2017 · `d37_cita_contemporania`: «» → «no». D37a: article del 2023, posterior a la descotització
+- **CO2-492** · 2018 · `d37_cita_contemporania`: «» → «no». D37a: article del 2023, posterior a la descotització
+- **CO2-498** · 2019 · `d37_cita_contemporania`: «» → «no». D37a: article del 2023, posterior a la descotització
+- **CO2-479** · 2016 · `d37_data_cita`: «» → «2023-06-18». D37a: data de l'article de F01
+- **CO2-485** · 2017 · `d37_data_cita`: «» → «2023-06-18». D37a: data de l'article de F01
+- **CO2-491** · 2018 · `d37_data_cita`: «» → «2023-06-18». D37a: data de l'article de F01
+- **CO2-497** · 2019 · `d37_data_cita`: «» → «2023-06-18». D37a: data de l'article de F01
+- **CO2-481** · 2016 · `founderceo_rob_cita_contemporania`: «1» → «0». D37a: cerca negativa a l'AR 2013-2019 i al fullet del 2013 → 0 (regla 27, B&M; ANALISI, robustesa D37a = 0)
+- **CO2-487** · 2017 · `founderceo_rob_cita_contemporania`: «1» → «0». D37a: cerca negativa a l'AR 2013-2019 i al fullet del 2013 → 0 (regla 27, B&M; ANALISI, robustesa D37a = 0)
+- **CO2-493** · 2018 · `founderceo_rob_cita_contemporania`: «1» → «0». D37a: cerca negativa a l'AR 2013-2019 i al fullet del 2013 → 0 (regla 27, B&M; ANALISI, robustesa D37a = 0)
+- **CO2-499** · 2019 · `founderceo_rob_cita_contemporania`: «1» → «0». D37a: cerca negativa a l'AR 2013-2019 i al fullet del 2013 → 0 (regla 27, B&M; ANALISI, robustesa D37a = 0)
+- **CO2-478** · 2016 · `fundador_transformador`: «0» → «1». D37b: Varney va liderar l'MBO d'un negoci que ja existia (L10-F01): no era a la fundació
+- **CO2-484** · 2017 · `fundador_transformador`: «0» → «1». D37b: Varney va liderar l'MBO d'un negoci que ja existia (L10-F01): no era a la fundació
+- **CO2-490** · 2018 · `fundador_transformador`: «0» → «1». D37b: Varney va liderar l'MBO d'un negoci que ja existia (L10-F01): no era a la fundació
+- **CO2-496** · 2019 · `fundador_transformador`: «0» → «1». D37b: Varney va liderar l'MBO d'un negoci que ja existia (L10-F01): no era a la fundació
+- **CO2-477** · 2016 · `marques`: «origen_intern» → «origen_intern;fundacio_no_nova». P1: l'MBO de Vardon del 1999 no és fundació nova (L10-F01)
+- **CO2-483** · 2017 · `marques`: «origen_intern» → «origen_intern;fundacio_no_nova». P1: l'MBO de Vardon del 1999 no és fundació nova (L10-F01)
+- **CO2-489** · 2018 · `marques`: «origen_intern» → «origen_intern;fundacio_no_nova». P1: l'MBO de Vardon del 1999 no és fundació nova (L10-F01)
+- **CO2-495** · 2019 · `marques`: «origen_intern» → «origen_intern;fundacio_no_nova». P1: l'MBO de Vardon del 1999 no és fundació nova (L10-F01)
+- **CO2-476** · 2016 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)
+- **CO2-482** · 2017 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)
+- **CO2-488** · 2018 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)
+- **CO2-494** · 2019 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)

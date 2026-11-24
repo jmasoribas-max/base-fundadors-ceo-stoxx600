@@ -74,3 +74,8 @@ Entitat rellevant: Just Eat (Dinamarca, 2001); Just Eat plc es la holding consti
 - **L18-GB00BKX5CN86-F02** · [V] · `d`. «The first JUST EAT website was launched in Denmark on 1 August 2001 and, by the end of 2002, the Company was processing on average more than 250 orders per day.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
 - **L18-GB00BKX5CN86-F03** · [V] · `context`. «In 2006, JUST EAT launched in the UK under the leadership of David Buttress, who subsequently became Group CEO in 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
 - **L18-GB00BKX5CN86-F04** · [V] · `context`. «The Company was incorporated and registered in England and Wales on 30 June 2009 as a private company limited by shares with the name Just-Eat Group Holdings Limited and the registered number 06947854.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+## Correcció de coherència (correccio2_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO2-632** · 2016 · `marques`: «» → «conflicte_fonts». P6: conflicte entre la prova d (fonts A) i la font X01; robustesa amb el valor alternatiu 1
