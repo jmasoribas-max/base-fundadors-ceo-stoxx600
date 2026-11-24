@@ -48,6 +48,14 @@ ORIGEN = re.compile(IL.CONTINGUT["origen_entitat"].pattern
                     r"|bank of|banks|companies|savings banks|cooperative|co-operative|staat|etat|estado|stato|statens|valtion"
                     r"|regering|bund\b|land\b|cantons?|kanton)")
 PARTS = {"llista_fundadors": "a", "origen_entitat": "e"}
+# Verbs i expressions de fundació per a cites d'empresa (més amples que les de les biografies de CEO)
+FUND = re.compile(IL.FUND_VERB + r"|founder|foundation|formed|form(ed)? the company|started|began|set up|launched|costituit"
+                  r"|per iniziativa di|on the initiative of|a l'initiative de|grunnlagt|grundlagd|grundades|grundet|perustettiin"
+                  r"|perustett|perustam|zalozon|powstal|oprichter|opgericht|fundou|criad[ao]|nata|nato|creat|formation|opens|opened"
+                  r"|open(ed|s)? (his|her|a|the) (business|company|shop|firm)|begins|gründung|grundung|naci[oó]|nacque|nasce")
+ORIGEN_E = re.compile(ORIGEN.pattern + r"|statlig|statens|staatlich|statale|estatal|publique|public sector|side business"
+                      r"|division of|unit of|business unit|part of the|subsidiary|subsiduary|spun|spin|carved|demerged|joint venture"
+                      r"|gemeinschaftsunternehm|coentreprise|empresa conjunta|caisse des depots|beteiligten sich|a partir de")
 
 
 def files_p(base: list[dict]) -> dict[str, list[dict]]:
@@ -68,15 +76,19 @@ def comprova(part: str, cita: str, fundadors: list[str], ceos: list[str]) -> str
     if part == "llista_fundadors":
         if not any(EF.anomena(n, f) for f in fundadors):
             return "la cita no anomena cap dels fundadors indicats"
-        if not IL.FUNDACIO.search(IL.EXCLOU_P6.sub(" ", n)):
+        if not (IL.FUNDACIO.search(IL.EXCLOU_P6.sub(" ", n)) or FUND.search(n)):
             return "sense mot de fundació"
-        if any(EF.anomena(n, c) for c in ceos):
-            return "la cita anomena un CEO de l'empresa"
+        for c in ceos:
+            pila = EF.norm(c.split()[0]) if c.split() else ""
+            if EF.norm(c) in n or (EF.anomena(n, c) and pila and re.search(r"(?<![\w])" + re.escape(pila) + r"(?![\w])", n)):
+                return "la cita anomena un CEO de l'empresa"
         return ""
     if part == "origen_entitat":
-        return "" if ORIGEN.search(n) and (IL.FUNDACIO.search(n) or re.search(IL.FUND_VERB, n)) else "la cita no diu qui la va crear"
+        if re.search(r"\bmerg|joined forces|fusion|fusio|combination", n) and not re.search(r"state|statlig|government|staat|etat|estado", n):
+            return "fusió: és un cas de D1 (regla 26), no de prova e"
+        return "" if ORIGEN_E.search(n) and (IL.FUNDACIO.search(n) or FUND.search(n)) else "la cita no diu qui la va crear"
     if part == "any_fundacio":
-        return "" if IL.CONTINGUT["any_fundacio"].search(n) else "sense any i verb de fundació"
+        return "" if (IL.CONTINGUT["any_fundacio"].search(n) or (FUND.search(n) and re.search(IL.ANY_HIST, n))) else "sense any i verb de fundació"
     if part == "cadena":
         return ""
     return f"part desconeguda: {part}"
