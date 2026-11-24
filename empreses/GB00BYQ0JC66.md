@@ -49,3 +49,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00BYQ0JC66-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «David Andrew Horton Chief Executive» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/b/LSE_BEZ_2020.pdf).
+- **L14-GB00BYQ0JC66-C02** · 2022 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox was appointed Chief Executive Officer on 1 April 2021.» [Font original](https://www.beazley.com/globalassets/ir-documents/annual-reports/annual-report-2022/annual_report_22_1.pdf).
+- **L14-GB00BYQ0JC66-C03** · 2024 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox was appointed Group CEO in April 2021 having been an Executive Director at» [Font original](https://prod.dxp.beazley.com/globalassets/ir-documents/annual-reports/annual-report-2024/annual-report-2024.pdf).

@@ -32,3 +32,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `sense_sector` — cap PDF public de components amb supersector despres de juny 2023 (anys panell 2024-2025 sense font)
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00BF4HYT85-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Archil Gachechiladze CEO» [Font original](https://filings.xbrl.org/213800XKDG12NQG8VC53/2025-12-31/ESEF/GB/0/213800XKDG12NQG8VC53-2025-12-31/reports/213800XKDG12NQG8VC53-2025-12-31-T01.xhtml).

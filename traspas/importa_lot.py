@@ -179,6 +179,94 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
     return "no_trobada", f"{len(t)} caràcters de text"
 
 
+ANY_HIST = r"\b(1[5-9]\d\d|20[0-2]\d)\b"
+FUND_VERB = (r"(founded|founding|established|incorporated|was created|were created|formed|set up|dates? back|inception"
+             r"|gegrundet|grundung|fondee?|fondation|fundad[ao]|fundacion|fundada|fondata|fondato|costituit|constituid[ao]"
+             r"|opgericht|oprichting|grundad|grundlagt|stiftet|perustettu|zalozon)")
+CONTINGUT = {
+    "any_fundacio": re.compile(FUND_VERB + r".{0,80}" + ANY_HIST + "|" + ANY_HIST + r".{0,80}" + FUND_VERB),
+    "naixement_ceo": re.compile(r"(born|\bnee?\b|geboren|\bgeb\.|nacid|\bnato\b|\bnata\b|\bfodt|\bfodd|syntyn|urodz|year of birth"
+                                r"|date of birth|\baged? \d{2}|\d{2} years old|\(\d{2}\)|\bage:? \d{2})"),
+    "ocupador_anterior": re.compile(r"(joined|prior to|previously|before joining|before that|worked (at|for|as)|career (at|with|in)"
+                                    r"|spent \d+ years|served as|held (the )?(position|role|post)s?"
+                                    r"|was (the )?(ceo|cfo|coo|head|director|partner|president|managing|chief|vice|executive)"
+                                    r"|from \d{4} (to|until)|vorher|zuvor|davor|war .{0,60} bei|tatig|auparavant|precedemment|a rejoint"
+                                    r"|anteriormente|previamente|se incorporo|tidigare|tidligere|aiemmin|in precedenza|eerder|daarvoor)"),
+    "llista_fundadors": re.compile(r"(founded by|co-?founded|founders?\b|fondee? par|fondateurs?|gegrundet (von|durch)|grunder"
+                                   r"|fundad[ao] por|fundadores|opgericht door|oprichters?|grundades av|grundare|perustaja)"),
+    "origen_entitat": re.compile(r"(spin-? ?off|spun off|demerg|carve-? ?out|privatis|privatiz|state-owned|sole shareholder"
+                                 r"|created by|established by|formed by|set up by|subsidiary of|was part of|separation from"
+                                 r"|ausglieder|abspaltung|scission|escision|scissione|nationalised|nationalized"
+                                 r"|owned by the (state|government)|(state|government) (owned|holding))"),
+}
+EMPRESA_SUBJECTE = re.compile(r"(company|group|bank|firm|business|we|it|corporation|societe|gesellschaft|unternehmen|sociedad"
+                              r"|societa|bolaget|selskabet|selskapet|yhtio)\W+(was|were|has been|is|ist|wurde|a ete|fue|e stata|blev|ble)"
+                              r"\W+" + FUND_VERB + r"|^\W*" + FUND_VERB)
+ALTRA_PERSONA = re.compile(r"\b([A-Z][a-z]{2,})\s+(was|is|has|had|joined|served|held|spent|worked)\b")
+NO_NOMS = {"He", "She", "The", "It", "Prior", "Before", "In", "From", "Since", "After", "During", "This", "That", "Our",
+           "Mr", "Mrs", "Ms", "Dr", "Sir", "Group", "Company", "Board", "Bank", "Chief", "Executive", "Director", "Chairman", "There"}
+PARTS_DEL_CEO = {"naixement_ceo", "ocupador_anterior"}
+
+
+def nom_empresa_a(text: str, nom_panell: str) -> bool:
+    n = EF.norm(text)
+    toks = [EF.norm(t).strip(".,()&'") for t in re.split(r"[\s/]+", nom_panell)]
+    toks = [t for t in toks if len(t) >= 4 and t not in GENERICS and not re.match(r"^[\d,.-]+$", t)]
+    return any(re.search(r"(?<![\w])" + re.escape(t) + r"(?![\w])", n) for t in toks[:2])
+
+
+def tros_part(c: dict, part: str, fila: dict, prova: str = "") -> str:
+    """Fragment literal de la cita candidata que aporta aquesta part de la prova ('' si no n'aporta).
+
+    Parts sobre el CEO (naixement, ocupador anterior): frase que anomena el CEO i conté el patró.
+    Parts sobre l'empresa (any de fundació, origen, llista de fundadors): la frase més curta amb el
+    patró que esmenta l'empresa o hi fa referència («the company», «our», «we»…).
+    """
+    if c["font_traspas"].startswith("r4") and c["tipus_prova"] not in (part, "cas_especific", "cita_fundador"):
+        return ""
+    cita = c["cita_literal"]
+    noms = [n.strip() for n in (fila.get("ceos") or "").split("|") if n.strip()]
+    if part in PARTS_DEL_CEO:
+        if c.get("anomena_ceo") != "si":
+            return ""
+        w = retalla(cita, noms, CONTINGUT[part])
+        if w and persona_conflictiva(w, noms):
+            return ""
+        if w:
+            propis = {t for nm in noms for t in re.split(r"[\s.-]+", nm)}
+            for m in ALTRA_PERSONA.finditer(w):
+                if m.group(1) not in propis and m.group(1) not in NO_NOMS:
+                    return ""  # una altra persona és el subjecte (columnes barrejades)
+    else:
+        fs = frases(cita)
+        fs = fs + [fs[i] + " " + fs[i + 1] for i in range(len(fs) - 1)]
+        bons = [f for f in fs if len(f) <= 350 and CONTINGUT[part].search(EF.norm(f))
+                and esmenta_empresa(f, fila.get("nom_panell") or "")]
+        if part in ("any_fundacio", "llista_fundadors", "origen_entitat"):
+            # l'empresa ha de ser el subjecte o sortir pel nom (no n'hi ha prou amb «the company» en una bio)
+            bons = [f for f in bons if EMPRESA_SUBJECTE.search(EF.norm(f)) or nom_empresa_a(f, fila.get("nom_panell") or "")]
+        w = min(bons, key=len) if bons else ""
+    if not w:
+        return ""
+    if re.search(r"\b\d{1,3}[,.]\d{3}\b(?![,.]\d)", w) and part != "any_fundacio" or re.search(r"(\b[A-Z]{3,}\b\W+){4}", w):
+        return ""  # taules o text barrejat (xifres amb separador de milers, tirallongues en majúscules)
+    n = EF.norm(w)
+    if part == "naixement_ceo" and not (re.search(r"\b19[2-9]\d\b", n) or re.search(r"\b\d{2}\b", n)):
+        return ""
+    if part == "llista_fundadors":
+        if any(EF.anomena(n, x) for x in noms):
+            return ""  # una llista de fundadors que anomena el CEO no és una prova de no
+        if not (re.search(r"(?:\bby|\bpar|\bvon|\bpor|\bdoor|\bav|founders?(?: and \w+)?)\s+(?:(?:Mr|Sir|Dr)\.?\s+)?(?:[A-Z]{1,3}\.?\s+)?[A-Z][a-z]", w)
+                or re.search(r"[A-Z][a-z]+ [A-Z][a-z]+,? (?:who )?(?:co-)?found", w)):
+            return ""  # la llista ha d'anomenar els fundadors
+    if part == "any_fundacio" and prova.startswith("c"):
+        # prova c: 64 anys o més entre la fundació i l'inici del mandat; com a mínim, fins a l'any de la fila
+        anys_f = [int(x) for x in re.findall(ANY_HIST, n)]
+        if not anys_f or min(anys_f) > int(fila["any"]) - 64:
+            return ""
+    return w if len(w) >= 12 else ""
+
+
 ANY_RE = re.compile(r"\b(20[12]\d)\b")
 PARTIT_RE = re.compile(r"\b(20\d\d)\s*[/-]\s*(\d\d)\b(?![-/]\d)")
 
@@ -477,6 +565,7 @@ def main() -> int:
                 res["ceo_sense_candidata"] += 1
                 pendents.append((k, "ceo"))
         if "falta_fundador" in e["estat"].split("+") and r["FounderCEO"] in ("0", "1"):
+            millor_parcial = None
             if r["FounderCEO"] == "1":
                 noms = [n.strip() for n in (r.get("ceos") or "").split("|") if n.strip()]
                 cands = []
@@ -492,29 +581,35 @@ def main() -> int:
                 c, marca, model, det = tria(k, "fundador", cands, puntua_fund)
                 triades = [(c, marca, model, det)] if c and marca in ("[V]", "[NV]") else []
             else:
-                toks = {t for t in (r.get("regles") or "").replace("|", ";").split(";") if t}
+                # P: cada prova necessita totes les seves parts (NECESSITA), cadascuna amb una cita
+                # el contingut de la qual correspon a la part (CONTINGUT); r3e, v75 i r4 hi poden aportar.
+                toks = [t for t in (r.get("regles") or "").replace("|", ";").split(";") if t in NECESSITA]
                 triades = []
-                r3 = [c for c in cs if c["font_traspas"].startswith("r3e") and c["model_etiqueta"] == "0" and c["model_regla"] in toks]
-                v75 = [c for c in cs if c["font_traspas"] == "fonts_v75r2" and c["funcio"] == "fundador"]
-                for grup in (r3, v75):
-                    c, marca, model, det = tria(k, "fundador", grup, puntua_fund)
-                    if c and marca in ("[V]", "[NV]"):
-                        triades = [(c, marca, model, det)]
-                        break
-                if not triades:
-                    for t in toks:
-                        for conj in NECESSITA.get(t, []):
-                            parcial = []
-                            for tp in sorted(conj):
-                                grup = [c for c in cs if c["font_traspas"].startswith("r4") and c["tipus_prova"] == tp]
-                                c, marca, model, det = tria(k, "fundador", grup, puntua_fund)
-                                if c and marca in ("[V]", "[NV]"):
-                                    parcial.append((c, marca, model, det))
-                            if len(parcial) == len(conj):
-                                triades = parcial
-                                break
-                        if triades:
+                millor_parcial = None
+                for t in toks:
+                    for conj in NECESSITA[t]:
+                        parcial, falten = [], []
+                        for tp in sorted(conj):
+                            grup = []
+                            for c in cs:
+                                if c["funcio"] == "fundador":
+                                    w = tros_part(c, tp, r, prova=t)
+                                    if w:
+                                        grup.append(dict(c, cita_original=c["cita_literal"], cita_literal=w))
+                            c, marca, model, det = tria(k, "fundador", grup, puntua_fund)
+                            if c and marca in ("[V]", "[NV]"):
+                                parcial.append((dict(c, part_prova=tp), marca, model, det))
+                            else:
+                                falten.append(tp)
+                        if not falten:
+                            triades = parcial
                             break
+                        if parcial and (millor_parcial is None or len(parcial) > len(millor_parcial[0])):
+                            millor_parcial = (parcial, falten, t)
+                    if triades:
+                        break
+                if not triades and millor_parcial:
+                    res["fundador_prova_parcial"] += 1
             if triades:
                 for c, marca, model, det in triades:
                     t = tries.setdefault((k[0], "fundador", c["url"], c["cita_literal"]), {"c": c, "anys": [], "marca": marca, "model": model, "det": det})
@@ -522,7 +617,10 @@ def main() -> int:
                 res["fundador_" + ("[V]" if all(x[1] == "[V]" for x in triades) else "[NV]")] += 1
             else:
                 res["fundador_sense_candidata"] += 1
-                pendents.append((k, "fundador"))
+                falta = "fundador"
+                if r["FounderCEO"] == "0" and millor_parcial:
+                    falta = f"fundador (prova {millor_parcial[2]}: falta {'+'.join(millor_parcial[1])})"
+                pendents.append((k, falta))
 
     print(f"Lot {args.n}: {len(lot)} files.")
     for kk, v in sorted(res.items()):
@@ -560,7 +658,7 @@ def main() -> int:
             pref = EF.REGLES_SI if r.get("FounderCEO") == "1" else EF.REGLES_NO
             toks = [x for x in toks if x in pref] or toks
             marca_prova = toks[0] if toks else ""
-            exer = f"prova: {c['tipus_prova']}"
+            exer = f"part de la prova {marca_prova}: {c.get('part_prova') or c['tipus_prova']}"
         notes = [f"Traspàs de l'auditoria IA i de l'inventari antic ({c['font_traspas']}, {c['id_origen']}).",
                  f"Nivell {c['nivell_font'] or '?'}.", exer + "."]
         if c.get("data_document"):

@@ -49,3 +49,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-PTJMT0AE0001-C01** · 2024 · [V] · `evidencia_ceo` (`R1`). «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://reports.jeronimomartins.com/annual-report/2024/_assets/downloads/entire-jeronimomartins-ar24.pdf?h=-sb8wExq).

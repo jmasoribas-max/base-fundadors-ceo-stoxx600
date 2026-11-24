@@ -58,3 +58,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00BD3VFW73-C01** · 2019 · [V] · `evidencia_ceo` (`R1`). «Karim Bitar took up the role of Chief Executive Officer in September» [Font original](https://companiesmarketcap.com/annual-reports/56068.ar.en.2019.pdf).

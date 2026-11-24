@@ -53,3 +53,8 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
+
+- **L14-GB00BGDT3G23-F01** · 2018-2022 · [V] · `evidencia_fundador` (`d`). «Peter Brooks-Johnson Chief Operating Officer Peter joined Rightmove in 2006 and became Chief Operating Officer in April 2013 having been Managing Director of rightmove.co.uk» [Font original](https://plc.rightmove.co.uk/content/uploads/2023/09/2015-03-30-agm-notice.pdf).
+- **L14-GB00BGDT3G23-F02** · 2018-2022 · [V] · `evidencia_fundador` (`d`). «Rightmove.co.uk was established in 2000 and is the UK's largest property portal; it is free to consumers and is where home hunters turn to first» [Font original](https://plc.rightmove.co.uk/content/uploads/2024/03/msa-statement-2024.pdf).
