@@ -65,3 +65,9 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L20-GB00BKX5CN86-F03** · fundador · 2016 · [V] · `d`. «The first JUST EAT website was launched in Denmark on 1 August 2001 and, by the end of 2002, the Company was processing on average more than 250 orders per day.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
 - **L20-GB00BKX5CN86-F04** · fundador · 2016 · [V] · `d`. «Appointed Group Chief Executive and a director of the Company in 2013, Mr. Buttress joined JUST EAT in March 2006 to launch its UK business.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
 - **L20-GB00BKX5CN86-F05** · fundador · 2016 · [V] · `d`. «Mr. Buttress started his career with Coca-Cola Enterprises at the start of 1998. During his time at Coca-Cola he had a variety of senior sales roles before moving into the internet world with JUST EAT.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+
+## Correcció de coherència (correccio2_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO2-632** · 2016 · `marques`: «» → «conflicte_fonts». P6: conflicte entre la prova d (fonts A) i la font X01; robustesa amb el valor alternatiu 1
