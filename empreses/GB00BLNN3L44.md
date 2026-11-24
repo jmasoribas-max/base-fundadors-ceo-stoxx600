@@ -47,3 +47,8 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BLNN3L44-F01** · fundador · 2016 · [V] · `b`. «The origins of Compass PLC' business activities can be traced back to Factory Canteens Limited, which was founded in the United Kingdom in 1941 to feed munitions workers.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/135351956.pdf).
+- **L22-GB00BLNN3L44-F02** · fundador · 2016 · [V] · `b`. «COUSINS, Richard John Correspondence address Compass House, Guildford Street, Chertsey, Surrey, KT16 9BQ Role Resigned Director Date of birth March 1959 Appointed on 2 May 2006 Resigned on 31 December 2017» [Font original](https://find-and-update.company-information.service.gov.uk/company/04083914/officers).

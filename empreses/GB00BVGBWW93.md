@@ -60,3 +60,8 @@ Entitat rellevant: The Medical Property Investment Fund Limited (Guernsey, const
 ## Lot 21 · dades_persona
 
 - **L21-GB00BVGBWW93-F01** · fundador · 2020-2022 · [V] · `b`. «Spencer Kenyon has managed the Assura portfolio since Assura was incorporated in 2003.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BVGBWW93-F01** · fundador · 2020-2022 · [V] · `d`. «Jonathan Murphy (appointed in January 2013) is the Finance Director of Assura. Jonathan was previously finance director of the fund management business of Brooks Macdonald Group plc, having joined as a result of the acquisition of Braemar Group plc in 2010, where he was finance director for 4 years.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
+- **L22-GB00BVGBWW93-F02** · fundador · 2020-2022 · [V] · `b`. «MURPHY, Jonathan Stewart Correspondence address 3 Barrington Road, Altrincham, United Kingdom, WA14 1GY Role Resigned Director Date of birth June 1972» [Font original](https://find-and-update.company-information.service.gov.uk/company/09349441/officers).

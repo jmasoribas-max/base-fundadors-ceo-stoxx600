@@ -59,3 +59,8 @@ Entitat rellevant: Wolseley Sheep Shearing Machine Company (Sydney, 1887) · ori
 - **L21-JE00BFNWV485-F03** · [V] · `context`. «In 1958, the Wolseley Group acquired Geo H. Hughes Limited, a wheel manufacturer, and Wolseley’s name became Wolseley-Hughes Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/18462663.pdf).
 - **L21-JE00BFNWV485-F04** · [V] · `context`. «In 1958, the Group’s predecessor merged with Geo H Hughes and, in the 1960s, acquired a number of heating and oil burning companies in rapid succession in the UK.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
 - **L21-JE00BFNWV485-F05** · [V] · `a`. «The Group was founded in 1887, when Frederick York Wolseley launched the Wolseley Sheep Shearing Machine Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-JE00BFNWV485-F01** · fundador · 2016-2017 · [V] · `b`. «The Group was founded in 1887, when Frederick York Wolseley launched the Wolseley Sheep Shearing Machine Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
+- **L22-JE00BFNWV485-F02** · fundador · 2016-2017 · [V] · `b`. «John Walley MARTIN Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 21 Date of birth April 1966» [Font original](https://find-and-update.company-information.service.gov.uk/officers/x4GIPh8NAIrqHdOCIizR3aAY0L0/appointments).

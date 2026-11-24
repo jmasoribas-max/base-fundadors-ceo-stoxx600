@@ -66,3 +66,10 @@ Entitat rellevant: Micro Focus (negoci de programari COBOL; societat original Mi
 ## Lot 21 · dades_persona
 
 - **L21-GB00BD8YWM01-F01** · fundador · 2017-2018 · [V] · `b`. «Stephen Murdoch Chief Operating Officer, Age 47 As Chief Operating Officer, Stephen is responsible for the day to day execution of Micro Focus operations.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/76109077.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BD8YWM01-F01** · fundador · 2017-2018 · [V] · `b`. «Company status Dissolved Dissolved on 10 October 2026 Company type Private limited Company Incorporated on 12 August 1976» [Font original](https://find-and-update.company-information.service.gov.uk/company/01272886).
+- **L22-GB00BD8YWM01-F02** · fundador · 2017-2018 · [NV] · `b`. «Previous company names Previous company names Name Period MERANT INTERNATIONAL LIMITED 15 Feb 1999 - 10 Aug 2004 MICRO FOCUS LIMITED 12 Aug 1976 - 15 Feb 1999» [Font original](https://find-and-update.company-information.service.gov.uk/company/01272886).
+- **L22-GB00BD8YWM01-F03** · fundador · 2017 · [V] · `b`. «HSU, Christopher Paul Correspondence address The Lawn, Old Bath Road, Newbury, Berkshire, RG14 1QN Role Resigned Director Date of birth May 1970 Appointed on 1 September 2017 Resigned on 19 March 2018» [Font original](https://find-and-update.company-information.service.gov.uk/company/05134647/officers).
+- **L22-GB00BD8YWM01-F04** · fundador · 2018 · [V] · `b`. «MURDOCH, Stephen Edward Correspondence address The Lawn, Old Bath Road, Newbury, Berkshire, RG14 1QN Role Resigned Director Date of birth November 1966 Appointed on 19 March 2018 Resigned on 31 January 2023» [Font original](https://find-and-update.company-information.service.gov.uk/company/05134647/officers).

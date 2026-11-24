@@ -51,3 +51,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `revisar_pendent_extensio_2024_2025` — Empresa casada per via indirecta (nom_stoxx_via_llista_seleccio (al PDF casa amb GB00B1H0DZ51)); el sector queda marcat per revisar. No s'estén el sector de l'any de la font (any_font=2020) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-JE00BMDZN391-F01** · fundador · 2025 · [V] · `b`. «Tullett plc was originally founded as Tullett & Riley in 1971.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000017414.pdf).
+- **L22-JE00BMDZN391-F02** · fundador · 2025 · [V] · `d`. «Nicolas Breteau was appointed as Group Chief Executive Officer of TP ICAP in July 2018. He joined Tullett Prebon plc as Chief Commercial Officer in 2016, and ran the Group’s largest business, Global Broking. He started his career in 1993 on the listed derivatives exchange MATIF (later part of Euronext), and from 1993 to 1998 held several senior positions at derivatives broker FIMAT, including Deputy CEO of its Paris office, Head of Risk for EMEA, and Deputy CEO and then CEO of the London branch.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000017414.pdf).
+- **L22-JE00BMDZN391-F03** · fundador · 2025 · [V] · `b`. «BRETEAU, Nicolas Noel Andre Correspondence address 135 Bishopsgate, London, England, EC2M 3TP Role Active Director Date of birth June 1968 Appointed on 10 July 2018» [Font original](https://find-and-update.company-information.service.gov.uk/company/05807599/officers).
+- **L22-JE00BMDZN391-F04** · fundador · 2025 · [V] · `a`. «1971 Tullett & Riley founded by Derek Tullett.» [Font original](https://tpicap.com/tpicap/tp-icap-heritage).

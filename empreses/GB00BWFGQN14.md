@@ -114,3 +114,7 @@ Entitat rellevant: Spirax-Sarco (negoci fundat el 1888; holding Spirax-Sarco Eng
 ## Lot 21 · dades_persona
 
 - **L21-GB00BWFGQN14-F01** · fundador · 2016-2025 · [V] · `b`. «Since being founded in 1888, we&rsquo;ve become a world-leading global thermal energy and fluid technology solutions Group.» [Font original](https://www.spiraxgroup.com/en/about-us/who-we-are).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BWFGQN14-F01** · fundador · 2016-2023 · [V] · `b`. «ANDERSON, Nicholas John Correspondence address Charlton House, 15 Cirencester Road, Charlton Kings, Cheltenham, Glos, England, GL53 8ER Role Resigned Director Date of birth January 1961 Appointed on 15 March 2012» [Font original](https://find-and-update.company-information.service.gov.uk/company/00596337/officers).

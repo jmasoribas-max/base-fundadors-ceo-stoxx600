@@ -69,3 +69,7 @@ Entitat rellevant: Royal Dutch/Shell Group (Koninklijke/Shell Groep), combinacio
 - **L18-GB00BP6MXD84-F08** · [V] · `context`. «De twee bedrijven besluiten ieder zelfstandig te blijven maar een gemeenschappelijk moederbedrijf te stichten: de Koninklijke/Shell Groep. In deze houdstermaatschappij heeft de Nederlandse Koninklijke 60% terwijl het Britse Shell 40% van de aandelen bezit.» [Font original](https://www.shell.nl/over-ons/nieuws/shell-venster-2025/135-jaar-shell-mensen-van-het-eerste-uur.model.json).
 - **L18-GB00BP6MXD84-F09** · [V] · `a`. «Black and white photo of Marcus Samuel the founder of Shell Transport» [Font original](https://www.shell.com/who-we-are/our-history/our-company-history.model.json).
 - **L18-GB00BP6MXD84-F10** · [V] · `a`. «Ondanks zijn achtergrond als ingenieur en ruime werkervaring in Nederlands-Indië weigerde De Gelder dit, waarna August Kessler (1853-1900), een van de andere oprichters, naar Indië vertrok.» [Font original](https://www.shell.nl/over-ons/nieuws/shell-venster-2025/shell-als-start-up-in-1890.model.json).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BP6MXD84-F01** · fundador · 2022-2025 · [V] · `b`. «So, in 1907, the decision was taken to merge Shell Transport and Trading Company with Royal Dutch and form the Royal Dutch Shell Group.» [Font original](https://www.shell.com/who-we-are/our-history/our-company-history.model.json).

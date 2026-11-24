@@ -59,3 +59,10 @@ Entitat rellevant: Dowlais Group plc, creada per Melrose Industries PLC el 2023 
 ## Lot 21 · dades_persona
 
 - **L21-GB00BMWRZ071-F06** · fundador · 2023 · [V] · `b`. «Our origins go back to 1759 when an ironworks was established in Dowlais village in South Wales.» [Font original](https://www.aam.com/docs/default-source/uk-listing-prospectus/financial-documents/dowlais-annual-report-and-accounts-2023.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BMWRZ071-F01** · fundador · 2023 · [V] · `e`. «The Company was incorporated in anticipation of the Demerger and, as at 2 March 2023 (being the latest practicable date prior to publication of this Prospectus) (the “Latest Practicable Date”), is wholly owned by Melrose Industries PLC (“Melrose”).» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000069751/NI-000069751.pdf).
+- **L22-GB00BMWRZ071-F02** · fundador · 2023 · [V] · `d`. «Liam joined Delphi Automotive in 2012 and subsequently became CEO of Delphi Technologies in December 2017 leading its demerger and admission to the New York Stock Exchange. He subsequently joined GKN Automotive as CEO in 2018.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000069751/NI-000069751.pdf).
+- **L22-GB00BMWRZ071-F03** · fundador · 2023 · [V] · `d`. «Liam joined Delphi Automotive in 2012 and subsequently became CEO of Delphi Technologies in December 2017 leading its demerger and admission to the New York Stock Exchange. He subsequently joined GKN Automotive as CEO in 2018.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000069751/NI-000069751.pdf).
+- **L22-GB00BMWRZ071-F04** · fundador · 2023 · [V] · `b`. «Liam BUTTERWORTH Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 1 Date of birth December 1970 DOWLAIS GROUP LIMITED (14591224)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/Mmb5j-w5Bx9bQjul2OEVG9W3l5I/appointments).

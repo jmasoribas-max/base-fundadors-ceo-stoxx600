@@ -75,3 +75,9 @@ Entitat rellevant: Chrysaor (Chrysaor Holdings Limited, 2007), adquirent comptab
 
 - **L21-GB00BMBVGQ36-F01** · fundador · 2022-2023 · [V] · `b`. «History and development The Premier Group was founded in 1934 in Scotland to pursue oil and gas exploration and production activities in Trinidad.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
 - **L21-GB00BMBVGQ36-F02** · fundador · 2022-2023 · [V] · `b`. «2014 Harbour Energy was founded by private equity firm EIG Global Energy Partners with a goal to build a new global, independent oil and gas company by acquisition.» [Font original](https://www.harbourenergy.com/who-we-are/our-history/).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BMBVGQ36-F01** · fundador · 2022-2023 · [V] · `d`. «Chrysaor was founded in 2007 by Phil Kirk with a £96.5 million investment commitment from Barclays and a US private equity fund managed by NGP (“Natural Gas Partners'”).» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
+- **L22-GB00BMBVGQ36-F02** · fundador · 2022-2023 · [V] · `d`. «Linda Cook is chief executive officer (CEO) of Harbour Direct Holdings Ltd and managing director and member of the Investment and Executive Committees of EIG Global Energy Partners (“EIG”), positions she has held since 2014. Since 2017, Linda has also served as the Non-Executive Chairman of Chrysaor Holdings Limited. She retired from Royal Dutch Shell plc in 2010, at which time she was a member of the Board of Directors and the Executive Committee.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
+- **L22-GB00BMBVGQ36-F03** · fundador · 2022-2023 · [V] · `b`. «COOK, Linda Correspondence address 151 Buckingham Palace Road, London, England, SW1W 9SZ Role Active Director Date of birth June 1958 Appointed on 31 March 2021» [Font original](https://find-and-update.company-information.service.gov.uk/company/SC234781/officers).

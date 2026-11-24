@@ -80,3 +80,11 @@ Entitat rellevant: Rightmove.co.uk, formada el 2000 per Countrywide, Connells, H
 ## Lot 21 · dades_persona
 
 - **L21-GB00BGDT3G23-F01** · fundador · 2023 · [V] · `c`. «Peter Brooks-Johnson was appointed Chief Executive Officer on 9 May 2017.» [Font original](https://plc.rightmove.co.uk/content/uploads/2024/03/Rightmove-plc-Annual-Report-2023.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BGDT3G23-F01** · fundador · 2018-2022 · [V] · `d`. «Peter joined Rightmove in 2006 and became Chief Operating Officer in April 2013 having been Managing Director of rightmove.co.uk since 2011 and head of the Agency business since 2008. He was promoted to Chief Executive Officer in May 2017. Prior to joining Rightmove, Peter was a management consultant with Accenture and the Berkeley Partnership.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/217007773.pdf).
+- **L22-GB00BGDT3G23-F02** · fundador · 2018-2022 · [V] · `b`. «Date of birth October 1972» [Font original](https://find-and-update.company-information.service.gov.uk/officers/nvs1T2CNhcUFglG2pU18n6q6DPw/appointments).
+- **L22-GB00BGDT3G23-F03** · fundador · 2023-2025 · [V] · `d`. «A Swedish national based in the UK, Johan currently serves as a Partner, EQT Growth Advisory Team, which is part of EQT, the global investment organisation.» [Font original](https://data.fca.org.uk/artefacts/NSM/PRN/202210210200PR_NEWS_UKDISCLO_0013.html).
+- **L22-GB00BGDT3G23-F04** · fundador · 2023-2025 · [V] · `d`. «Johan will join Rightmove on 20 February 2023 as Executive Director and CEO designate» [Font original](https://data.fca.org.uk/artefacts/NSM/PRN/202210210200PR_NEWS_UKDISCLO_0013.html).
+- **L22-GB00BGDT3G23-F05** · fundador · 2023-2025 · [V] · `b`. «Date of birth November 1971» [Font original](https://find-and-update.company-information.service.gov.uk/officers/34i03i9uvyN4TodQqTMygFIpFIU/appointments).

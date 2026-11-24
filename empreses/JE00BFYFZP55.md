@@ -46,3 +46,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-JE00BFYFZP55-F01** · fundador · 2018 · [V] · `b`. «The Group was founded in 1887, when Frederick York Wolseley launched the Wolseley Sheep Shearing Machine Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
+- **L22-JE00BFYFZP55-F02** · fundador · 2018 · [V] · `d`. «Mr. Martin was appointed as Group Chief Financial Officer and Executive Director in 2010 and assumed management responsibility for the Group’s Canadian business between 2013 and 2016. Mr. Martin was appointed as Group Chief Executive in 2016 and is the chairman of the Group’s Executive Committee. Previously he was a partner at Alchemy Partners, and prior to that was Chief Financial Officer of Travelex Group and Hays Plc.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
+- **L22-JE00BFYFZP55-F03** · fundador · 2018 · [V] · `b`. «Date of birth April 1966» [Font original](https://find-and-update.company-information.service.gov.uk/officers/N2oMAVDixyTQwNus1FcPvwyrvkQ/appointments).

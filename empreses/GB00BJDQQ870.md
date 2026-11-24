@@ -58,3 +58,9 @@ Entitat rellevant: Goldsmiths (joieria de Newcastle, 1778), part adquirent de l 
 - **L21-GB00BJDQQ870-F04** · [V] · `context`. «The Company was incorporated on 20 February 2019 and became the parent of the Group on 24 May 2019 and, as at the date of this Prospectus, has no historical operations of its own.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
 - **L21-GB00BJDQQ870-F05** · [V] · `context`. «The Mappin & Webb, Goldsmiths and Watches of Switzerland brands were amalgamated within a single corporate group in 2005 following the acquisition of the Mappin & Webb and Watches of» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
 - **L21-GB00BJDQQ870-F06** · [V] · `context`. «Switzerland brands by the former owners of the Goldsmiths brand.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BJDQQ870-F01** · fundador · 2022-2023 · [V] · `b`. «Goldsmiths was founded in Newcastle, United Kingdom as a jeweller in 1778, and became the first authorised retailer of Rolex watches in the United Kingdom in 1919.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L22-GB00BJDQQ870-F02** · fundador · 2022-2023 · [V] · `b`. «Watches of Switzerland was formed in the United Kingdom as a specialist watch retailer in 1924 and has been selling luxury watches ever since.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L22-GB00BJDQQ870-F03** · fundador · 2022-2023 · [V] · `d`. «He has been the CEO of the Group since 2014, and has previously served on the boards of several subsidiaries of Ralph Lauren, as well as the boards of Celtic PLC, and Sara Lee Corporation.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).

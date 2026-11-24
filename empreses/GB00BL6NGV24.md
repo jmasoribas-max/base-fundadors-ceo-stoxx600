@@ -58,3 +58,7 @@ Entitat rellevant: Negoci Dr. Martens de R. Griggs Group (empresa familiar de Wo
 ## Lot 21 · dades_persona
 
 - **L21-GB00BL6NGV24-F01** · fundador · 2021 · [V] · `b`. «Key managing directors The Company’s Chief Executive Officer is Kenny Wilson, born in 1966 and its Chief Financial Officer is Jon Mortimore, born in 1967.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BL6NGV24-F01** · fundador · 2021 · [V] · `b`. «In 1959, British shoe manufacturer R. Griggs Group, co-owned by Bill Griggs, bought rights to manufacture the shoes in the United Kingdom.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).

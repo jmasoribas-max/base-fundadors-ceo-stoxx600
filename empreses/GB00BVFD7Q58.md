@@ -74,3 +74,7 @@ Entitat rellevant: The Life Insurance Company of Scotland (Edimburg, 1825), reba
 ## Lot 21 · dades_persona
 
 - **L21-GB00BVFD7Q58-F06** · fundador · 2016-2017 · [V] · `b`. «We were established in Edinburgh in 1825.» [Font original](https://www.rns-pdf.londonstockexchange.com/rns/7418X_1-2017-2-23.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BVFD7Q58-F01** · fundador · 2016 · [V] · `b`. «Norman Keith SKEOCH Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 62 Date of birth November 1956» [Font original](https://find-and-update.company-information.service.gov.uk/officers/D7s7zEFwHnTwx_xRxgXyUvY5gbM/appointments).

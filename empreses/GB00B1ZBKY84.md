@@ -65,3 +65,13 @@ Entitat rellevant: Negoci Mortgage 2000 / Moneysupermarket.com Financial Group L
 
 - **L21-GB00B1ZBKY84-F03** · fundador · 2017 · [V] · `c`. «Mark Lewis joined the Group as an Executive Director on 13 March 2017 and became Chief Executive Officer on 10 April 2017.» [Font original](https://www.monygroup.com/application/files/2417/1378/9087/annual-report-2017.pdf).
 - **L21-GB00B1ZBKY84-F04** · fundador · 2017 · [V] · `c`. «* Mark Lewis joined the Board on 13 March 2017 and, after a period of handover, was appointed Chief Executive Officer on 10 April 2017.» [Font original](https://www.monygroup.com/application/files/2417/1378/9087/annual-report-2017.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00B1ZBKY84-F01** · fundador · 2016 · [V] · `d`. «Term of Office: Peter was appointed to the Board in January 2009 and became Chief Executive Officer in February 2009.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/107853712.pdf).
+- **L22-GB00B1ZBKY84-F02** · fundador · 2016 · [V] · `d`. «He was previously UK managing director of dunnhumby Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/107853712.pdf).
+- **L22-GB00B1ZBKY84-F03** · fundador · 2016-2017,2019-2020 · [V] · `d`. «He co-founded the Group’s business in 1993 and in 1994 launched a mortgage comparison tool for brokers.» [Font original](https://www.monygroup.com/application/files/4717/1386/9450/annual-report-2007.pdf).
+- **L22-GB00B1ZBKY84-F04** · fundador · 2017,2019 · [V] · `d`. «Mark Lewis will take over from Peter Plumb as Chief Executive on or before 4 May 2017 and will join the Board of the Group as an Executive Director.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20161027070011_013014499.html).
+- **L22-GB00B1ZBKY84-F05** · fundador · 2017,2019 · [V] · `d`. «Mark Lewis is currently Retail Director of John Lewis.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20161027070011_013014499.html).
+- **L22-GB00B1ZBKY84-F06** · fundador · 2020 · [V] · `d`. «Peter Duffy will take up the position of CEO and join the Board on 1 September 2020» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/3596096.html).
+- **L22-GB00B1ZBKY84-F07** · fundador · 2020 · [V] · `d`. «Peter Duffy is currently CEO of Just Eat Limited» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/3596096.html).

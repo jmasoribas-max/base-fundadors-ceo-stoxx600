@@ -52,3 +52,11 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 Entitat rellevant: Streamline, sistema de pagaments electronics de NatWest Bank (1989), despres RBS WorldPay; Worldpay Group plc es la holding de l IPO del 2015 · origen: corporatiu · fundadors: - · any: 1989.
 
 - **L21-GB00BYYK2V80-F01** · [V] · `context`. «Since separating from RBS at the end of 2010, and through and after its subsequent initial public offering in October 2015, Worldpay has pursued a consistent strategy which has created a platform for growth, initially focused on existing customers inherited at the time of the separation from RBS, and in time growing into new market segments and with entirely independent customer relationships.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/154265263.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BYYK2V80-F01** · fundador · 2016-2017 · [V] · `d`. «Note: Philip Jansen is Chief Executive Officer. He joined the Worldpay Group in this role in April 2013 and was appointed to the Board of the Company in July 2015.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/130566711.pdf).
+- **L22-GB00BYYK2V80-F02** · fundador · 2016-2017 · [V] · `d`. «Philip was Chief Executive Officer of Brakes Group from July 2010 and later Chairman between April 2013 and October 2015.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/130566711.pdf).
+- **L22-GB00BYYK2V80-F03** · fundador · 2016-2017 · [V] · `b`. «JANSEN, Philip Eric Rene Correspondence address The Walbrook Building, 25 Walbrook, London, EC4N 8AF Role Resigned Director Date of birth January 1967» [Font original](https://find-and-update.company-information.service.gov.uk/company/08762327/officers).
+- **L22-GB00BYYK2V80-F04** · fundador · 2016-2017 · [V] · `d`. «WorldPay first started in 1989 as electronic payments system Streamline.» [Font original](https://www.bbc.com/news/business-47609536).
+- **L22-GB00BYYK2V80-F05** · fundador · 2016-2017 · [V] · `d`. «Worldpay traces its history back to 1989, when it was an electronic payments firm known as Streamline.» [Font original](https://www.independent.co.uk/news/business/news/worldpay-value-hits-ps5bn-on-market-debut-a6693166.html).

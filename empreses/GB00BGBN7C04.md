@@ -48,3 +48,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BGBN7C04-F01** · fundador · 2019,2023 · [V] · `b`. «The origins of SSP date back more than 50 years, with the founding of SAS Catering in Sweden in 1961. The business expanded organically and through acquisitions and was itself acquired by Compass in 1993 to be integrated with their contract catering operations.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/69900573.pdf).
+- **L22-GB00BGBN7C04-F02** · fundador · 2019 · [V] · `b`. «SMITH, Simon Mark Correspondence address Jamestown Wharf, 32 Jamestown Road, London, United Kingdom, NW1 7HW Role Resigned Director Date of birth January 1972 Appointed on 20 November 2018 Resigned on 24 December 2021» [Font original](https://find-and-update.company-information.service.gov.uk/company/05735966/officers).
+- **L22-GB00BGBN7C04-F03** · fundador · 2023 · [V] · `b`. «COVENEY, Patrick Francis Correspondence address Jamestown Wharf, 32 Jamestown Road, London, United Kingdom, NW1 7HW Role Active Director Date of birth October 1970 Appointed on 31 March 2022» [Font original](https://find-and-update.company-information.service.gov.uk/company/05735966/officers).

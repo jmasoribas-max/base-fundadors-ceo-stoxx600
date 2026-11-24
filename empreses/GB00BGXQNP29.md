@@ -139,3 +139,7 @@ Entitat rellevant: Pearl (Pearl Loan Company, 1857; Pearl Assurance), negoci ope
 - **L21-GB00BGXQNP29-F02** · fundador · 2019-2025 · [V] · `b`. «1857 Pearl Loan Company established.» [Font original](https://www.phoenixlife.co.uk/about-phoenix-life/our-history).
 - **L21-GB00BGXQNP29-F03** · fundador · 2020 · [V] · `c`. «1 Andy Briggs joined the Board of Phoenix Group Holdings plc on 10 February 2020 as Group CEO Designate and became CEO on 10 March 2020.» [Font original](https://library.standardlifeplc.com/fy-20-annual-report-and-accounts.pdf).
 - **L21-GB00BGXQNP29-F04** · fundador · 2021 · [V] · `c`. «Andy Briggs joined the Board of Phoenix Group Holdings plc on 10 February 2020 as Group CEO Designate and became CEO on 10 March 2020.» [Font original](https://library.standardlifeplc.com/phoenix-group-full-year-results-2021.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BGXQNP29-F01** · fundador · 2019 · [V] · `b`. «BANNISTER, Clive Christopher Roger Correspondence address 1 Wythall Green Way, Wythall, Birmingham, United Kingdom, B47 6WG Role Resigned Director Date of birth October 1958» [Font original](https://find-and-update.company-information.service.gov.uk/company/11606773/officers).

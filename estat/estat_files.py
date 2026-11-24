@@ -157,8 +157,33 @@ def ids(entries: list[dict]) -> str:
     return ";".join(vals[:MAX_IDS]) + extra
 
 
+RE_EDAT = re.compile(r"(?<![\d.,])([2-9]\d)(?![\d.,]?\d)")
+
+
+def a_la_cita(any_: int | None, cita: str) -> bool:
+    """L'any surt literalment a la cita (o la dècada, «1930s», si l'etiqueta en dona l'últim any)."""
+    if not any_:
+        return False
+    return bool(re.search(rf"(?<!\d){any_}(?!\d)", cita) or re.search(rf"(?<!\d){str(any_)[:3]}0\s?'?s\b", cita))
+
+
+def suportada(part: str, valor: str, cita: str) -> bool:
+    """La cita mateixa documenta el valor de l'etiqueta (control de literalitat, 24/11/2026).
+
+    any_fundacio, entrada i inici_mandat: l'any ha de sortir a la cita. naixement_ceo: l'any, o una
+    edat (un nombre de 20 a 99) si l'any s'ha calculat a partir de l'edat i la data del document.
+    ocupador_anterior: sempre (l'any d'entrada que porta es comprova a part a prova_P)."""
+    if part == "any_fundacio":
+        return a_la_cita(any_de(valor), cita)
+    if part in ("entrada", "inici_mandat"):
+        return a_la_cita(any_de(valor.split(":", 1)[-1]), cita)
+    if part == "naixement_ceo":
+        return a_la_cita(any_de(valor.split(":", 1)[-1]), cita) or bool(RE_EDAT.search(cita))
+    return True
+
+
 def etiquetes(e: dict) -> list[dict]:
-    """Etiquetes [part …] de les notes d'una entrada."""
+    """Etiquetes [part …] de les notes d'una entrada, només les que la cita mateixa documenta."""
     out = []
     for part, valor, resta in RE_ETIQUETA.findall(e.get("notes") or ""):
         d = {"part": part, "valor": valor.strip(), "_e": e}
@@ -166,7 +191,8 @@ def etiquetes(e: dict) -> list[dict]:
             if "=" in kv:
                 k, v = kv.split("=", 1)
                 d[k.strip()] = v.strip()
-        out.append(d)
+        if suportada(part, d["valor"], e.get("cita_literal") or ""):
+            out.append(d)
     return out
 
 
@@ -231,7 +257,8 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
             ocup = [t for t in persona("ocupador_anterior", n) if len(t["valor"].split(":")) >= 2
                     and t["valor"].split(":")[1].strip()]
             entr = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("entrada", n)]
-            entr += [(any_de(t["valor"].split(":")[2]) if len(t["valor"].split(":")) > 2 else None, t) for t in ocup]
+            entr += [(any_de(t["valor"].split(":")[2]) if len(t["valor"].split(":")) > 2 else None, t) for t in ocup
+                     if len(t["valor"].split(":")) > 2 and a_la_cita(any_de(t["valor"].split(":")[2]), t["_e"].get("cita_literal") or "")]
             entr = [(y, t) for y, t in entr if y]
             inici = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("inici_mandat", n)]
             inici = [(y, t) for y, t in inici if y]

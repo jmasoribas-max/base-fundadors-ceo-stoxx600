@@ -83,3 +83,10 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 ## Lot 21 · dades_persona
 
 - **L21-GB00BKX5CN86-F01** · fundador · 2016 · [V] · `c`. «In 2006, JUST EAT launched in the UK under the leadership of David Buttress, who subsequently became Group CEO in 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BKX5CN86-F01** · fundador · 2016-2019 · [V] · `d`. «Founded in Denmark in 2001 by five entrepreneurs, Just Eat is a FTSE 100 listed company and a world leader in online and mobile food ordering.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/248406951.pdf).
+- **L22-GB00BKX5CN86-F02** · fundador · 2016 · [V] · `d`. «Mr. Buttress joined JUST EAT in March 2006 to launch its UK business. Mr. Buttress started his career with Coca-Cola Enterprises at the start of 1998.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L22-GB00BKX5CN86-F03** · fundador · 2017-2018 · [V] · `d`. «Peter's most recent role was Chief Executive Officer of Moneysupermarket.com Group PLC, a position he held from February 2009 until he stepped down in May 2017.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166149259.pdf).
+- **L22-GB00BKX5CN86-F04** · fundador · 2019 · [V] · `d`. «Appointed Chief Customer Officer of Just Eat in June 2018, joining the Group from easyJet PLC, where he held a number of senior roles including Chief Commercial Officer.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/215797710.pdf).
