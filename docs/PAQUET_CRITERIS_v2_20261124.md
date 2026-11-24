@@ -1,6 +1,6 @@
 # Paquet de criteris v2 (24/11/2026)
 
-> **Estat:** Q2, Q3, Q8, Q9 (Telefónica) i Q11 decidides per Jordi el 24/11/2026 (vegeu la secció «Decisions ja preses»). La resta, oberta.
+> **Estat:** totes les preguntes i correccions decidides per Jordi el 24/11/2026. Q2, Q3, Q8, Q9 (Telefónica) i Q11: secció «Decisions ja preses». La resta: «d'acord amb totes» les recomanacions de [`ANALISI_CRITERIS_v2_20261124.md`](ANALISI_CRITERIS_v2_20261124.md), amb la regla única per al president executiu (C1 no s'aplica) i el criteri FT escrit.
 
 Preparat per Claude perquè Jordi decideixi. Substitueix els punts 2-10 de `docs/PAQUET_CRITERIS_20261123.md`. El punt 1 ja està decidit (24/11/2026, opció b) i aquí no es torna a obrir.
 
