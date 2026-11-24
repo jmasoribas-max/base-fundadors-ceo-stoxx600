@@ -198,6 +198,16 @@ Paraules de Jordi a la sessió de Claude del 23/11/2026, resumides. Detall i con
 - **CEO oficial.** La columna de CEO és `ceos`. Les decisions de Doctorat que només eren a `sim_ceo_aplicat` s'han copiat a `ceos` (lot de correcció 1, PR #23).
 - **Wayback.** L'arxivament i la verificació de la cita a la captura es fan amb el flux automàtic de GitHub (`.github/workflows/wayback.yml`), amb les claus d'Internet Archive com a secrets del repositori.
 
+## Decisió de Jordi del 24/11/2026: prova de no fundador documentada
+
+Paraules de Jordi a la sessió de Claude del 24/11/2026, resumides (punt 1 de `docs/PAQUET_CRITERIS_20261123.md`).
+
+- **Opció b.** Un 0 només compta com a documentat si la prova té **totes les parts**, i cada part té la seva cita A/B. Per exemple, la prova b necessita l'any de fundació i el naixement del CEO.
+- **Prova a amb la llista de fundadors.** Si hi ha evidència documentada de qui va fundar l'empresa, i també de qui és el CEO, i no són la mateixa persona, la prova ja és completa. No cal buscar l'any de fundació ni el naixement del CEO.
+- **Un sol fundador.** Si la font diu «founder» o «founded by X» en singular, s'assumeix un sol fundador. És la P8: llista tancada implícita, marques `llista_exhaustiva=implicita` i `a_fundador_unic`, i robustesa com a ND. Si una font A/B anomena cofundadors, la llista els ha d'incloure tots.
+- **Empresa fundadora que compta.** Amb escissions, fusions, holdings noves o redomiciliacions, s'aplica la metodologia vigent per triar l'empresa (P1-P4, D1 estricta de la regla 26, D10/D10b, D36 i D37).
+- **Ordre de treball.** Primer, la fitxa de fundació de cada empresa: fundadors o origen corporatiu o estatal (prova e), i any de fundació, cadascun amb cita. Les dades de persona (naixement, ocupador anterior) només es busquen per a les files on la prova a o la e no es puguin tancar.
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. El text complet vigent és `docs/METODOLOGIA_3_Articles_v0.10.10.md` (SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`), afegit al repositori el 23/11/2026; `docs/METODOLOGIA.md` n'és la porta d'entrada. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
