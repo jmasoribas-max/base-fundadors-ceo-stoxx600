@@ -101,6 +101,9 @@ MAX_IDS = 5
 #   [ceo_fundador=Nom Cognom]                            (la cita diu que el CEO va fundar l'empresa)
 RE_ETIQUETA = re.compile(r"\[part ([a-z_]+)=([^\];]*)((?:;[^\]]*)?)\]")
 RE_CEO_FUNDADOR = re.compile(r"\[ceo_fundador=([^\]]+)\]")
+# Un any de fundació registrat que no és una fundació vàlida (p. ex. holding o vehicle d'una compra, P1) es pot
+# anul·lar amb una etiqueta a les notes d'una entrada vàlida de l'ISIN: [anula any_fundacio=1998; motiu=P1 …]
+RE_ANULA = re.compile(r"\[anula any_fundacio=(\d{4})")
 ENTITATS_OK = {"emissor", "predecessora"}
 ORDRE_PERSONA = ("b", "d", "c")
 COLUMNES = [
@@ -200,7 +203,9 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
     llistes = [t for t in emp if t["part"] == "llista_fundadors" and t.get("tancada") == "si"
                and not any(mateixa_persona(f, n) for f in t["valor"].split("+") for n in noms)]
     origens = [t for t in emp if t["part"] == "origen_entitat"]
-    fundacions = [(any_de(t["valor"]), t) for t in emp if t["part"] == "any_fundacio" and any_de(t["valor"])]
+    anulats = {int(y) for e in es_isin for y in RE_ANULA.findall(e.get("notes") or "")}
+    fundacions = [(any_de(t["valor"]), t) for t in emp if t["part"] == "any_fundacio" and any_de(t["valor"])
+                  and any_de(t["valor"]) not in anulats]
     F = max((y for y, _ in fundacions), default=None)  # P7: la data plausible més recent
     t_F = [t for y, t in fundacions if y == F]
 
