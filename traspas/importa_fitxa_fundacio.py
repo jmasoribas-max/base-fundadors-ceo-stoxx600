@@ -94,6 +94,39 @@ def comprova(part: str, cita: str, fundadors: list[str], ceos: list[str]) -> str
     return f"part desconeguda: {part}"
 
 
+LLISTA_OBERTA = re.compile(r"one of the (co-?)?founders|among (others|the founders)|\bco-?founders?\b|co-?fondateur"
+                           r"|cofundador|mitgr[uü]nder|un des fondateurs|uno de los fundadores|tra i fondatori|en av grundarna",
+                           re.I)
+
+
+def any_de_la_cita(r: dict, entitat: str) -> str:
+    """Any de fundació que la mateixa cita dona (camp any_fundacio de la cerca), si el text de la cita el conté."""
+    m = re.search(r"\b(1[5-9]\d\d|20[0-2]\d)\b", r.get("any_fundacio") or "")
+    if m and m.group(1) in (r.get("cita_literal") or ""):
+        return f" [part any_fundacio={m.group(1)}; entitat={entitat}]"
+    return ""
+
+
+def etiqueta(r: dict, rm: dict) -> str:
+    """Etiqueta estructurada [part …] per a estat/estat_files.py (valors de la fitxa verificada)."""
+    entitat = "incert" if (rm.get("dubte") or "").strip() else "emissor"
+    part = r["part"]
+    if part == "llista_fundadors":
+        noms = " + ".join(n.strip() for n in re.split(r"[|;]", r.get("fundadors") or rm.get("fundadors") or "") if n.strip())
+        if not noms:
+            return ""
+        tancada = "no" if LLISTA_OBERTA.search(r.get("cita_literal") or "") else "si"
+        return f"[part llista_fundadors={noms}; entitat={entitat}; tancada={tancada}]" + any_de_la_cita(r, entitat)
+    if part == "origen_entitat":
+        return f"[part origen_entitat={rm.get('tipus_origen') or 'corporatiu'}; entitat={entitat}]" + any_de_la_cita(r, entitat)
+    if part == "any_fundacio":
+        for y in re.findall(r"\b(1[5-9]\d\d|20[0-2]\d)\b", (r.get("any_fundacio") or "") + " " + (rm.get("any_fundacio") or "")):
+            if y in (r.get("cita_literal") or ""):
+                return f"[part any_fundacio={y}; entitat={entitat}]"
+        return ""
+    return ""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--lot", required=True)
@@ -213,6 +246,9 @@ def main() -> int:
             notes.append("Raonament de la cerca: " + re.sub(r"\s+", " ", rm["notes"])[:400])
         if v[2]:
             notes.append(v[2])
+        etiq = etiqueta(r, rm)
+        if etiq:
+            notes.append(etiq)
         fila = {kk: "" for kk in rcap}
         fila.update({
             "tipus": "evidencia_fundador" if r["part"] != "cadena" else "evidencia_context",
