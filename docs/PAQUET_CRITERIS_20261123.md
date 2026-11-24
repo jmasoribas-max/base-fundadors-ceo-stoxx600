@@ -1,5 +1,7 @@
 # Decisions de criteri pendents (23/11/2026)
 
+> **24/11/2026:** el punt 1 està decidit (opció b). Els punts 2-10 continuen, actualitzats amb el triatge dels dubtes oberts, a [`PAQUET_CRITERIS_v2_20261124.md`](PAQUET_CRITERIS_v2_20261124.md).
+
 Preparat per Claude perquè Jordi decideixi, amb Doctorat si cal. Cada punt té:
 - el problema, amb dades del repositori;
 - les opcions;
