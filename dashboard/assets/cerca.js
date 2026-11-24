@@ -1,4 +1,4 @@
-/* Cercador i filtres de l'inici. Generat per dashboard/genera_dashboard.py. Sense dependències. */
+/* Cercador i filtres d'Empreses. Generat per dashboard/genera_dashboard.py. Sense dependències. */
 (function () {
   'use strict';
   var taula = document.getElementById('taula');
@@ -6,36 +6,41 @@
   var tbody = taula.tBodies[0];
   var files = Array.prototype.slice.call(tbody.rows);
   var camps = {
-    q: document.getElementById('f-cerca'),
-    e: document.getElementById('f-etiq'),
-    c: document.getElementById('f-cert'),
-    p: document.getElementById('f-pais'),
-    s: document.getElementById('f-sector'),
-    v: document.getElementById('f-proves')
+    q: document.getElementById('f-q'),
+    e: document.getElementById('f-e'),
+    t: document.getElementById('f-t'),
+    p: document.getElementById('f-p'),
+    m: document.getElementById('f-m')
   };
+  var campM = document.getElementById('camp-m');
   var nVis = document.getElementById('n-visibles');
   var cap = document.getElementById('cap-resultat');
-  var ordre = { clau: 'nom', dir: 1 };
+  var ordre = { clau: 'n', dir: 1 };
+  var IDX = { acabada: 0, arxiu: 1, dubte: 2, falta: 3 };
 
   function norm(s) {
     return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function conte(llista, valor) { return (' ' + (llista || '') + ' ').indexOf(' ' + valor + ' ') >= 0; }
+  function st(tr) { return (tr.dataset.st || '0 0 0 0').split(' ').map(Number); }
 
   function aplica() {
     var termes = norm(camps.q.value).split(' ').filter(Boolean);
-    var e = camps.e.value, c = camps.c.value, p = camps.p.value, v = camps.v.value;
-    var s = camps.s ? camps.s.value : '';
+    var e = camps.e.value, t = camps.t.value, p = camps.p.value, m = camps.m.value;
+    campM.hidden = !m;
     var n = 0;
     for (var i = 0; i < files.length; i++) {
       var tr = files[i], d = tr.dataset, ok = true;
-      for (var j = 0; j < termes.length && ok; j++) { if (d.cerca.indexOf(termes[j]) < 0) ok = false; }
-      if (ok && e && !conte(d.etiq, e)) ok = false;
-      if (ok && c && !conte(d.cert, c)) ok = false;
-      if (ok && p && d.pais !== p) ok = false;
-      if (ok && v && d.proves !== v) ok = false;
-      if (ok && s && d.sector !== s) ok = false;
+      for (var j = 0; j < termes.length && ok; j++) { if (d.c.indexOf(termes[j]) < 0) ok = false; }
+      if (ok && e && !conte(d.e, e)) ok = false;
+      if (ok && p && d.p !== p) ok = false;
+      if (ok && m && !conte(d.m, m)) ok = false;
+      if (ok && t) {
+        var s = st(tr);
+        if (t === 'totes') { ok = s[0] === s[0] + s[1] + s[2] + s[3]; }
+        else if (t in IDX) { ok = s[IDX[t]] > 0; }
+      }
       tr.hidden = !ok;
       if (ok) n++;
     }
@@ -45,12 +50,12 @@
   }
 
   function ordena(clau) {
-    if (ordre.clau === clau) { ordre.dir = -ordre.dir; } else { ordre.clau = clau; ordre.dir = (clau === 'nom' || clau === 'isin') ? 1 : -1; }
-    var num = !(clau === 'nom' || clau === 'isin');
+    if (ordre.clau === clau) { ordre.dir = -ordre.dir; } else { ordre.clau = clau; ordre.dir = clau === 'n' ? 1 : -1; }
+    var num = clau !== 'n';
     files.sort(function (a, b) {
       var x = a.dataset[clau], y = b.dataset[clau], r;
       if (num) { r = (+x) - (+y); } else { r = x < y ? -1 : x > y ? 1 : 0; }
-      if (r === 0) { r = a.dataset.nom < b.dataset.nom ? -1 : a.dataset.nom > b.dataset.nom ? 1 : 0; return r; }
+      if (r === 0) { return a.dataset.n < b.dataset.n ? -1 : a.dataset.n > b.dataset.n ? 1 : 0; }
       return r * ordre.dir;
     });
     var frag = document.createDocumentFragment();
@@ -64,33 +69,44 @@
 
   function desa() {
     var params = [];
-    ['q', 'e', 'c', 'p', 's', 'v'].forEach(function (k) {
+    ['q', 'e', 't', 'p', 'm'].forEach(function (k) {
       if (camps[k] && camps[k].value) params.push(k + '=' + encodeURIComponent(camps[k].value));
     });
     var hash = params.length ? '#' + params.join('&') : '';
-    if (location.hash !== hash) {
-      try { history.replaceState(null, '', hash || location.pathname + location.search); } catch (err) { /* res */ }
+    if (location.hash !== hash || location.search) {
+      try { history.replaceState(null, '', location.pathname + hash); } catch (err) { /* res */ }
     }
   }
-  function llegeix() {
-    var h = location.hash.replace(/^#/, '');
-    if (!h || h.indexOf('=') < 0) return;
+  function llegeix(text) {
+    var h = (text || '').replace(/^[#?]/, '');
+    if (!h || h.indexOf('=') < 0) return false;
+    var trobat = false;
     h.split('&').forEach(function (parell) {
-      var kv = parell.split('='), k = kv[0], val = decodeURIComponent(kv[1] || '');
-      if (camps[k]) camps[k].value = val;
+      var kv = parell.split('='), k = kv[0], val = '';
+      try { val = decodeURIComponent((kv[1] || '').replace(/\+/g, ' ')); } catch (err) { val = ''; }
+      if (camps[k]) { camps[k].value = val; trobat = true; }
     });
+    return trobat;
+  }
+  function esborra() {
+    ['q', 'e', 't', 'p', 'm'].forEach(function (k) { if (camps[k]) camps[k].value = ''; });
+    aplica();
+    camps.q.focus();
   }
 
   camps.q.addEventListener('input', aplica);
-  ['e', 'c', 'p', 's', 'v'].forEach(function (k) { if (camps[k]) camps[k].addEventListener('change', aplica); });
-  document.getElementById('f-reset').addEventListener('click', function () {
-    ['q', 'e', 'c', 'p', 's', 'v'].forEach(function (k) { if (camps[k]) camps[k].value = ''; });
-    aplica();
-    camps.q.focus();
-  });
+  ['e', 't', 'p', 'm'].forEach(function (k) { camps[k].addEventListener('change', aplica); });
+  document.getElementById('f-reset').addEventListener('click', esborra);
+  document.getElementById('f-reset-2').addEventListener('click', esborra);
   taula.querySelectorAll('thead button[data-ordre]').forEach(function (b) {
     b.addEventListener('click', function () { ordena(b.getAttribute('data-ordre')); });
   });
-  llegeix();
+  var deQ = llegeix(location.search);
+  llegeix(location.hash);
+  window.addEventListener('hashchange', function () {
+    ['q', 'e', 't', 'p', 'm'].forEach(function (k) { camps[k].value = ''; });
+    llegeix(location.hash); aplica();
+  });
   aplica();
+  if (deQ && camps.q.value) { camps.q.focus(); }
 })();
