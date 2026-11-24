@@ -94,3 +94,11 @@ Anys contrastats en aquesta passada 2016–2019, 2022–2024.
 - 2019. Comunicació de 05/03/2020 posterior al tall del 2019. La comunicació de juliol de 2019 confirma el mateix càrrec, sense relleus intermedis.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: empresa de Hugo Ferdinand Boss (Metzingen 1924), avui HUGO BOSS AG · origen: persones · fundadors: Hugo Ferdinand Boss · any: 1924.
+
+- **L18-DE000A1PHFF7-F01** · [V] · `b`. «Founded in 1924 in the town of Metzingen, Germany, HUGO BOSS has grown to include the two brands BOSS and HUGO with a range of high-quality women's and men's clothing, as well as shoes and accessories.» [Font original](https://group.hugoboss.com/en/company/history).
+- **L18-DE000A1PHFF7-F02** · [V] · `context`. «In 1985 essential changes take place regarding the company structure. HUGO BOSS is listed on the German Stock Exchange in Frankfurt.» [Font original](https://group.hugoboss.com/en/company/history).
+- **L18-DE000A1PHFF7-F03** · [V] · `a`. «Hugo Ferdinand Boss established his workshop in 1924, as a consequence of which his company operated during the Third Reich and the Second World War.» [Font original](https://group.hugoboss.com/en/company/history).

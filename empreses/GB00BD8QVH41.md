@@ -45,3 +45,13 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Bass (cervesera de Burton-on-Trent, 1777), predecessora directa de Six Continents plc i d InterContinental Hotels Group PLC (2003) · origen: persones · fundadors: William Bass · any: 1777.
+
+- **L18-GB00BD8QVH41-F01** · [V] · `context`. «story starts here, as Bass begins a journey from local brewery to global hospitality player, acquiring what would become world-famous hotel brands along the way.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+- **L18-GB00BD8QVH41-F02** · [V] · `context`. «Bass buys the remaining North American part of the Holiday Inn business and, owning the world-famous brand entirely, sets its sights on expansion.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+- **L18-GB00BD8QVH41-F03** · [V] · `context`. «2001 Bass gets a new name: Six Continents plc» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+- **L18-GB00BD8QVH41-F04** · [V] · `context`. «Six Continents plc splits into two, creating a separate hotels and soft drinks company named InterContinental Hotels Group plc (IHG), and a retail business called Mitchells & Butlers plc. The split completes in April 2003 and IHG becomes a standalone company.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+- **L18-GB00BD8QVH41-F05** · [V] · `a`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).

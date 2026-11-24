@@ -99,3 +99,13 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-PLOPTTC00011-C01** · 2023 · [V] · `R1`. «On 5 October 2023 Mr. Adam Kiciński, CEO of CD PROJEKT S.A. notified the Company of his intent to seek appointment as Member of the Supervisory Board of the Company in 2025» [Font original](https://www.cdprojekt.com/en/wp-content/uploads-en/2024/03/management-board-report-on-cd-projekt-group-activities-in-2023.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: CD Projekt (fundada el 1994 per Marcin Iwiński i Michał Kiciński), negoci operatiu del grup; la societat cotitzada es l antiga Optimus S.A. · origen: persones · fundadors: Marcin Iwiński|Michał Kiciński · any: 1994.
+
+- **L18-PLOPTTC00011-F01** · [V] · `context`. «In 2008 the Company underwent a reorganization. The newly established CDP Investment became the holding company of the CD PROJEKT Group, while the Group itself was composed of CD Projekt, CD Projekt RED and GOG Ltd.» [Font original](https://www.cdprojekt.com/en/capital-group/history/).
+- **L18-PLOPTTC00011-F02** · [V] · `context`. «On 21 October 2009 CDP Investment concluded an investment agreement with Optimus S.A. – a company listed on the Warsaw Stock Exchange since 1994. As a result, on 1 May 2010 Optimus purchased 100% of CDP Investment shares. Since the 2008/2009 crisis Optimus had not carried out production and distribution of IT equipment – consequently, the activities of CDP Investment group companies became the new core business of Optimus.» [Font original](https://www.cdprojekt.com/en/capital-group/history/).
+- **L18-PLOPTTC00011-F03** · [V] · `a`. «In 1994, together with Michał Kiciński, Marcin Iwiński founded a company named CD Projekt, which eventually morphed into the CD PROJEKT RED Group.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
+- **L18-PLOPTTC00011-F04** · [V] · `a`. «In mid-1994, he joined CD PROJEKT RED as the first employee of the newly established company founded by his brother Michał and Marcin Iwiński.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
+- **L18-PLOPTTC00011-F05** · [V] · `a`. «Key shareholders of CD PROJEKT S.A. are its co-founders – Marcin Iwiński (incumbent Chairman of the Supervisory Board) and Michał Kiciński.» [Font original](https://www.cdprojekt.com/en/wp-content/uploads-en/2024/03/management-board-report-on-cd-projekt-group-activities-in-2023.pdf).

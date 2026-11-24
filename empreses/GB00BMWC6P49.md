@@ -49,3 +49,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `revisar` — Sector estès des del PDF de components de juny 2023 (sector_estes_des_2023=1). El supòsit de no reclassificació 2023-2025 és [NV].
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Mondi (negoci creat per Anglo American plc el 1967; Main Paper Company Limited, 1967) · origen: corporatiu · fundadors: - · any: 1967.
+
+- **L18-GB00BMWC6P49-F01** · [V] · `b`. «Mondi Limited was incorporated as Main Paper Company Limited under the Republic of South Africa’s Companies Act 1926, in the Republic of South Africa as a company limited by shares with registered number 1967/013038/06 on 11 December 1967.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/shareholder-information/simplification-of-corporate-structure/mondi-plc-prospectus-2019.pdf).
+- **L18-GB00BMWC6P49-F02** · [V] · `context`. «On 3 July 2007, Mondi was demerged from Anglo American plc as an integrated corporate group established under a DLC structure with dual holding companies, Mondi plc, with a premium listing on the LSE and a secondary listing on the JSE, and Mondi Limited, with a primary listing on the JSE.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/shareholder-information/simplification-of-corporate-structure/mondi-plc-prospectus-2019.pdf).
+- **L18-GB00BMWC6P49-F03** · [V] · `context`. «Mondi plc was incorporated as HACKPLIMCO No.119 PLC under the Companies Act 1985 on 11 April 2007 in England and Wales as a public limited company with registered number 6209386» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/shareholder-information/simplification-of-corporate-structure/mondi-plc-prospectus-2019.pdf).

@@ -65,3 +65,12 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L20-GB00BKX5CN86-F03** · fundador · 2016 · [V] · `d`. «The first JUST EAT website was launched in Denmark on 1 August 2001 and, by the end of 2002, the Company was processing on average more than 250 orders per day.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
 - **L20-GB00BKX5CN86-F04** · fundador · 2016 · [V] · `d`. «Appointed Group Chief Executive and a director of the Company in 2013, Mr. Buttress joined JUST EAT in March 2006 to launch its UK business.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
 - **L20-GB00BKX5CN86-F05** · fundador · 2016 · [V] · `d`. «Mr. Buttress started his career with Coca-Cola Enterprises at the start of 1998. During his time at Coca-Cola he had a variety of senior sales roles before moving into the internet world with JUST EAT.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Just Eat (Dinamarca, 2001); Just Eat plc es la holding constituida el 2009 (Just-Eat Group Holdings Limited) · origen: persones · fundadors: - · any: 2001.
+
+- **L18-GB00BKX5CN86-F01** · [V] · `d`. «Founded in Denmark in 2001 by five entrepreneurs, Just Eat is a FTSE 100 listed company and a world leader in online and mobile food ordering.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/248406951.pdf).
+- **L18-GB00BKX5CN86-F02** · [V] · `d`. «The first JUST EAT website was launched in Denmark on 1 August 2001 and, by the end of 2002, the Company was processing on average more than 250 orders per day.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L18-GB00BKX5CN86-F03** · [V] · `context`. «In 2006, JUST EAT launched in the UK under the leadership of David Buttress, who subsequently became Group CEO in 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L18-GB00BKX5CN86-F04** · [V] · `context`. «The Company was incorporated and registered in England and Wales on 30 June 2009 as a private company limited by shares with the name Just-Eat Group Holdings Limited and the registered number 06947854.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).

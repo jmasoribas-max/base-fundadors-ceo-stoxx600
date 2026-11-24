@@ -101,3 +101,12 @@ Proposta posterior (lot 3, pendent del flux DF → Doctorat → Jordi):
 - **L17-GB00BWFGQN14-C04** · 2017 · [V] · `R1`. «Nicholas Anderson, Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20180315070004_13567513.html).
 - **L17-GB00BWFGQN14-C05** · 2018 · [V] · `R1`. «Nicholas Anderson, Group Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20190307070007_13993120.html).
 - **L17-GB00BWFGQN14-C06** · 2019 · [V] · `R1`. «Nicholas Anderson, Group Chief Executive, commenting on the results said» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20200311070004_3522210.html).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Spirax-Sarco (negoci fundat el 1888; holding Spirax-Sarco Engineering plc constituida el 1958, avui Spirax Group plc) · origen: no_trobat · fundadors: - · any: 1888.
+
+- **L18-GB00BWFGQN14-F01** · [V] · `b`. «Since being founded in 1888, we’ve become a world-leading global thermal energy and fluid technology solutions Group.» [Font original](https://www.spiraxgroup.com/en/about-us/who-we-are).
+- **L18-GB00BWFGQN14-F02** · [V] · `b`. «Von unserer Gründung im Jahr 1888 bis hin zu unserer Schlüsselrolle bei der Unterstützung der britischen Regierung während des Zweiten Weltkriegs und der raschen Expansion nach dem Krieg in Übersee liegt eine faszinierende Erfolgsgeschichte hinter uns.» [Font original](https://www.spiraxsarco.com/global/de-DE/ueber-uns/geschichte).
+- **L18-GB00BWFGQN14-F03** · [V] · `context`. «The share consolidation will replace every 28 existing Ordinary shares of 25 25 / 26 pence each with 27 new Ordinary shares of 26 12 / 13 pence each.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20150611123701_012386013.html).
+- **L18-GB00BWFGQN14-F04** · [V] · `context`. «Incorporated on 1 January 1958» [Font original](https://find-and-update.company-information.service.gov.uk/company/00596337).

@@ -69,3 +69,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-GB00BGDT3G23-C01** · 2021 · [V] · `R1`. «Peter Brooks-Johnson, Chief Executive Officer, said:» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4283149.html).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Rightmove.co.uk, formada el 2000 per Countrywide, Connells, Halifax i Royal and Sun Alliance (amb executius cofundadors); Rightmove plc cotitza des del 2006 · origen: corporatiu · fundadors: Nick McKittrick · any: 2000.
+
+- **L18-GB00BGDT3G23-F01** · [V] · `context`. «Rightmove plc floated on the London Stock Exchange in 2006» [Font original](https://plc.rightmove.co.uk/our-history/).
+- **L18-GB00BGDT3G23-F02** · [V] · `e`. «Rightmove.co.uk was formed in 2000 by the top four corporate estate agencies at the time: Countrywide, Connells, Halifax and Royal and Sun Alliance, and was initially free to list with charging introduced in 2002.» [Font original](https://plc.rightmove.co.uk/our-history/).

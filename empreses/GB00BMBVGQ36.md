@@ -60,3 +60,13 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-GB00BMBVGQ36-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «Cook Chief Executive» [Font original](https://filings.xbrl.org/213800YPC42DYBKVPF97/2023-12-31/ESEF/GB/0/213800YPC42DYBKVPF97-2023-12-31/reports/213800YPC42DYBKVPF97-2023-12-31-T01.html).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Chrysaor (Chrysaor Holdings Limited, 2007), adquirent comptable en la fusio inversa amb Premier Oil del 2021 que crea Harbour Energy plc · origen: persones · fundadors: Phil Kirk · any: 2007.
+
+- **L18-GB00BMBVGQ36-F01** · [V] · `context`. «Harbour Energy is an energy investment vehicle formed by EIG Global Energy Partners and is the Chrysaor Group’s primary private equity investor.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
+- **L18-GB00BMBVGQ36-F02** · [V] · `context`. «it has been assumed that the Merger will represent a reverse acquisition under the requirements of IFRS 3 and that, from an accounting perspective, Premier will be the legal acquirer and accounting acquiree and Chrysaor will be the legal acquiree and accounting acquirer.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
+- **L18-GB00BMBVGQ36-F03** · [V] · `context`. «At Completion, the shares in Harbour Energy plc were owned approximately as follows: · EIG Global Energy Partners 36%; · Former EIG shareholders 33%; · Former Premier creditors 18%; · Chrysaor legacy investors 8%; and · Former Premier shareholders 5%.» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/3930143.html).
+- **L18-GB00BMBVGQ36-F04** · [V] · `context`. «Through a reverse takeover, Chrysaor merged with Premier Oil to create Harbour Energy plc.» [Font original](https://www.harbourenergy.com/who-we-are/our-history/).
+- **L18-GB00BMBVGQ36-F05** · [V] · `a`. «Chrysaor was founded in 2007 by Phil Kirk with a £96.5 million investment commitment from Barclays and a US private equity fund managed by NGP (“Natural Gas Partners'”). Phil Kirk, together with some of the CH4 Energy Limited management team, founded the new start-up to focus on UK oil and natural gas development opportunities.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).

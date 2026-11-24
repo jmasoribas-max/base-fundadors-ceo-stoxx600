@@ -48,3 +48,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `revisar` — Sector estès des del PDF de components de juny 2023 (sector_estes_des_2023=1). El supòsit de no reclassificació 2023-2025 és [NV].
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Berkeley (Berkeley Homes / Berkeley Group, 1976) · origen: persones · fundadors: Tony Pidgley|Jim Farrer · any: 1976.
+
+- **L18-GB00BP0RGD03-F01** · [V] · `context`. «Incorporated on 7 July 2004» [Font original](https://find-and-update.company-information.service.gov.uk/company/05172586).
+- **L18-GB00BP0RGD03-F02** · [V] · `a`. «It is with the greatest sadness that the Company announces the sudden death of its founder and Chairman, Tony Pidgley CBE.» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/3639059.html).
+- **L18-GB00BP0RGD03-F03** · [V] · `a`. «Pidgley helped set up Berkeley Group in 1976 and became chairman more than a decade ago.» [Font original](https://www.cityam.com/tony-pidgley-self-made-co-founder-of-ftse-100-homebuilder-berkeley-dies-at-72/).
+- **L18-GB00BP0RGD03-F04** · [V] · `a`. «That is where he met Jim Farrer, a Crest director at the time who he later founded Berkeley Group with.» [Font original](https://www.cityam.com/tony-pidgley-self-made-co-founder-of-ftse-100-homebuilder-berkeley-dies-at-72/).

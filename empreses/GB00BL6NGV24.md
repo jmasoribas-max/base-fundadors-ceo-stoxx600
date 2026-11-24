@@ -45,3 +45,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Negoci Dr. Martens de R. Griggs Group (empresa familiar de Wollaston), que compra els drets el 1959 i llança la bota 1460 el 1960; Dr. Martens plc es la holding del 2020 · origen: no_trobat · fundadors: - · any: 1960 (llançament de la 1460; no hi ha cita de fundacio).
+
+- **L18-GB00BL6NGV24-F01** · [V] · `context`. «In 1959, British shoe manufacturer R. Griggs Group, co-owned by Bill Griggs, bought rights to manufacture the shoes in the United Kingdom.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
+- **L18-GB00BL6NGV24-F02** · [V] · `context`. «The Company “perfectly” invented and launched its first boot in 1960, the eight-holed 1460 boot, with a yellow welt stitch, grooved sole and black and yellow heel loop, which remains largely unchanged today.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
+- **L18-GB00BL6NGV24-F03** · [V] · `context`. «Dr. Maertens made a prototype shoe and showed it to a friend and engineer, Dr. Herbert Funck. The two went into partnership and by 1947 they began formal production of their unique shoe.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
+- **L18-GB00BL6NGV24-F04** · [V] · `context`. «The Company is a public limited company with registered number 12960219, incorporated in England and Wales on 19 October 2020 as Ampholdco Limited, a private company limited by shares in the United Kingdom, renamed Dr. Martens Limited on 22 December 2020 and re-registered as a public» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).

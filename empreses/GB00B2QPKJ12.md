@@ -52,3 +52,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `pendent_extensio_2024_2025` — No s'estén el sector de l'any de la font (any_font=2017) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Fresnillo plc, creada per Industrias Peñoles (escissio parcial de la divisio de metalls preciosos, 2008; societat constituida el 15/8/2007) · origen: corporatiu · fundadors: - · any: 2008.
+
+- **L18-GB00B2QPKJ12-F01** · [V] · `b`. «Incorporated on 15 August 2007» [Font original](https://find-and-update.company-information.service.gov.uk/company/06344120).
+- **L18-GB00B2QPKJ12-F02** · [V] · `context`. «Industrias Peñoles S.A.B. de C.V. (‘Peñoles’) currently owns 75% of the shares of the Company and the ultimate controlling party of the Company is the Baillères family, whose beneficial interest is held through Peñoles.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/169505149.pdf).

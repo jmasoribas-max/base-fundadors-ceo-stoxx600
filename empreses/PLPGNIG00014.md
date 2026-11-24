@@ -46,3 +46,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Przedsiębiorstwo Państwowe PGNiG (empresa estatal creada l 1/12/1982), transformada el 1996 en PGNiG S.A. · origen: estat · fundadors: - · any: 1982.
+
+- **L18-PLPGNIG00014-F01** · [V] · `context`. «W dniu 30 października 1996 r. Przedsiębiorstwo Państwowe PGNiG zostało przekształcone w spółkę akcyjną ze 100% udziałem Skarbu Państwa.» [Font original](https://myorlen.pl/documents/10184/251886/05_ProsEmisPGNiGRozVStr111-234.pdf/fd65ebc7-4ccc-4b13-9c22-48bfcf6734b7).

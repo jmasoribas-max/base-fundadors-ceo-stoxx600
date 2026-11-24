@@ -45,3 +45,14 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: OneSavings Bank (negoci de la Kent Reliance Building Society, arrels el 1847), part absorbent de la combinacio amb Charter Court (2019); OSB GROUP PLC es la holding del 2020 · origen: no_trobat · fundadors: - · any: 1847 (KRBS; OneSavings Bank Plc 2011).
+
+- **L18-GB00BLDRH360-F01** · [V] · `d`. «The Kent and Canterbury Building Society was established in 1847 as a traditional building society and grew through a series of mergers with the Chatham Reliance (established 1898), Dover District (established 1861) and Herne Bay (established 1888) to form the Kent Reliance Building Society.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/67068436.pdf).
+- **L18-GB00BLDRH360-F02** · [V] · `context`. «The Group has a history of purchasing acquired books including the Combination with CCFS, where acquisition accounting is applied.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046730/NI-000046730.pdf).
+- **L18-GB00BLDRH360-F03** · [V] · `context`. «These dates reflect the date that each NED joined OneSavings Bank plc (prior to the insertion of OSB GROUP PLC as the holding company and listed entity).» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046730/NI-000046730.pdf).
+- **L18-GB00BLDRH360-F04** · [V] · `context`. «On 14 March 2019, the OSB Board and the Charter Court Board jointly announced that they had reached agreement on the terms of a recommended all-share combination pursuant to which OSB will acquire the entire issued and to be issued ordinary share capital of Charter Court to form the Combined Group.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/221806058.pdf).
+- **L18-GB00BLDRH360-F05** · [V] · `context`. «OSB Shareholders and former Charter Court Shareholders will own approximately 55 per cent. and 45 per cent., respectively, of the outstanding OSB Shares.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/221806058.pdf).
+- **L18-GB00BLDRH360-F06** · [V] · `context`. «The Group was formed on 1 February 2011 and, following a capital investment of £50 million by funds advised by J.C. Flowers & Co. LLC acting through the Major Shareholder, the Kent Reliance Building Society transferred its business to a new entity, OneSavings Bank Plc.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/67068436.pdf).

@@ -43,3 +43,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: TalkTalk, negoci creat dins Carphone Warehouse (2002/2003) i escindit el 2010 (TalkTalk Telecom Group PLC, constituida el 15/12/2009) · origen: corporatiu · fundadors: Charles Dunstone · any: 2002.
+
+- **L18-GB00B4YCDF59-F01** · [V] · `context`. «In March 2010 we demerged from The Carphone Warehouse Group PLC and listed on the London Stock Exchange as TalkTalk Telecom Group PLC, and are now a constituent of the FTSE 250.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).
+- **L18-GB00B4YCDF59-F02** · [V] · `context`. «The Company was incorporated on 15 December 2009 and on 29 March 2010 the Group became a separately listed entity on the London Stock Exchange, under a court approved scheme of arrangement under part 26 of the Companies Act.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).

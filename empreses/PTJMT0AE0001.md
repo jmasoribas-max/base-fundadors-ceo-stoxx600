@@ -68,3 +68,11 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L17-PTJMT0AE0001-C05** · 2019 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2019/EN/Chapter-4-Corporate-governance-AnnualReportJeronimoMartins2019.pdf).
 - **L17-PTJMT0AE0001-C06** · 2020 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2020/EN/AnnualReportJM2020-Cap4.pdf).
 - **L17-PTJMT0AE0001-C07** · 2021 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2021/EN/AnnualReportJM2021nonESEF.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Jerónimo Martins (botiga del Chiado, Lisboa, 1792), avui Jerónimo Martins SGPS · origen: persones · fundadors: Jerónimo Martins · any: 1792.
+
+- **L18-PTJMT0AE0001-F01** · [V] · `b`. «In 1792, a young Galician with a strong entrepreneurial spirit opened a modest store in Chiado. More than 230 years later, his name lives on through a food specialist with a presence in six countries across three continents.» [Font original](https://www.jeronimomartins.com/en/about-us/who-we-are/our-history/).
+- **L18-PTJMT0AE0001-F02** · [V] · `context`. «In 1989, the opening of Jerónimo Martins to the capital markets would pave the way for a remarkable growth in the following decades.» [Font original](https://www.jeronimomartins.com/en/investors/30-years-stock-exchange/).
+- **L18-PTJMT0AE0001-F03** · [V] · `a`. «It was in the Chiado of the 18th century that the history of Jerónimo Martins and of Bertrand first crossed paths. In 1732, the French bookseller Pedro Faure opened a bookshop in Rua Direita do Loreto. Sixty years later, it was Jerónimo Martins’ turn to open his small store.» [Font original](https://www.jeronimomartins.com/en/230-years-of-history/).

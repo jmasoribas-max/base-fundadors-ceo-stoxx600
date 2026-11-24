@@ -44,3 +44,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: SAS Catering (Suecia, 1961, part del grup aeri SAS), adquirida per Compass el 1993 i organitzada com a divisio SSP de Compass el 2004; avui SSP Group plc (vehicle EQT del 2006) · origen: corporatiu · fundadors: - · any: 1961.
+
+- **L18-GB00BNGWY422-F01** · [V] · `context`. «The Company was incorporated and registered in England and Wales on 9 March 2006 as a private company limited by shares under the Companies Act 1985 with the name HACKREMCO (NO. 2347) LIMITED and with the registered number 5735966.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/69900573.pdf).
+- **L18-GB00BNGWY422-F02** · [V] · `context`. «2004 Further international acquisitions follow including Mitropa AG and Creative Host Services in the US. SSP is set up as a specialist division within Compass» [Font original](https://www.foodtravelexperts.com/who-we-are/our-evolution/).
+- **L18-GB00BNGWY422-F03** · [V] · `e`. «1961 SAS catering, part of the SAS airline group, is founded» [Font original](https://www.foodtravelexperts.com/who-we-are/our-evolution/).

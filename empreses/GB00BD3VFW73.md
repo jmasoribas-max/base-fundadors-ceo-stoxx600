@@ -73,3 +73,11 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-GB00BD3VFW73-C01** · 2021 · [V] · `R1`. «Karim Bitar, Chief Executive Officer, commented:» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4295232.html).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: ConvaTec (negoci creat el 1978 com a divisio d E.R. Squibb & Sons; avui ConvaTec Group Plc) · origen: corporatiu · fundadors: E.R. Squibb & Sons, Inc. (empresa) · any: 1978.
+
+- **L18-GB00BD3VFW73-F01** · [V] · `context`. «In August 2008, the Principal Shareholders acquired the ConvaTec business from Bristol-Myers Squibb.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/120184268.pdf).
+- **L18-GB00BD3VFW73-F02** · [V] · `context`. «The Company was incorporated in anticipation of the Offer and Admission. Upon determination of the Offer Price, the Company will become the holding company of the Group as the result of a group reorganisation» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/120184268.pdf).
+- **L18-GB00BD3VFW73-F03** · [V] · `e`. «ConvaTec was founded in 1978 as a division of E.R. Squibb & Sons, Inc.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/120184268.pdf).

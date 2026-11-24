@@ -93,3 +93,15 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 ## Lot 16 · Cerca nova de cites de fundador
 
 - **L16-GB00BNGDN821-F01** · 2023 · [V] · `D37`. «As announced last year, our executive Directors and co‑founders, Christopher Miller and Simon Peckham, together with longstanding executive Director Geoffrey Martin, will not stand for re‑election at the 2024 AGM.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000093406/NI-000093406.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Melrose (fundada el 2003; avui Melrose Industries PLC, holding del 2015) · origen: persones · fundadors: Christopher Miller|Simon Peckham|David Roper · any: 2003.
+
+- **L18-GB00BNGDN821-F01** · [V] · `d`. «The current team founded Melrose in 2003 with a view to buying and improving underperforming businesses.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/272359471.pdf).
+- **L18-GB00BNGDN821-F02** · [V] · `context`. «A one for three share consolidation was performed by the Group on the eve of the demerger of Dowlais, which resulted in the number of shares in issue reducing from 4,054 million to 1,351 million.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000093406/NI-000093406.pdf).
+- **L18-GB00BNGDN821-F03** · [V] · `context`. «After a busy eight months following the acquisition of GKN, our first full year of ownership has proved to be equally significant as our investments and improvement plans have gained momentum.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/272359471.pdf).
+- **L18-GB00BNGDN821-F04** · [V] · `context`. «Incorporated on 29 September 2015» [Font original](https://find-and-update.company-information.service.gov.uk/company/09800044).
+- **L18-GB00BNGDN821-F05** · [V] · `a`. «Co‑founder of Melrose, appointed as Executive Vice‑Chairman on 1 January 2019, having previously served as Executive Chairman from May 2003. Mr Miller stepped down from the Board on 7 March 2024 and therefore will not be standing for re‑election at the 2024 AGM.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000093406/NI-000093406.pdf).
+- **L18-GB00BNGDN821-F06** · [V] · `a`. «Co‑founder of Melrose, appointed as Chief Executive on 9 May 2012, having previously served as Chief Operating Officer from May 2003. Mr Peckham stepped down from the Board on 7 March 2024, and therefore will not be standing for re‑election at the 2024 AGM.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000093406/NI-000093406.pdf).
+- **L18-GB00BNGDN821-F07** · [V] · `a`. «As announced last year, co-founder and Executive Vice Chairman Mr David Roper will retire at the end of May. His period of service, first as inaugural Chief Executive and then as Executive Vice Chairman, has been one of great success for the business he helped found in 2003.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/272359471.pdf).

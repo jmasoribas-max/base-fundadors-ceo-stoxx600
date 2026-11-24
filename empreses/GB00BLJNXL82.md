@@ -47,3 +47,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: The Berkeley Group (Weybridge, Surrey, 1976); Berkeley Group Holdings plc es la societat holding · origen: persones · fundadors: Tony Pidgley|Jim Farrer · any: 1976.
+
+- **L18-GB00BLJNXL82-F01** · [V] · `a`. «Tony with Berkeley co-founder Jim Farrer.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000030591/NI-000030591.pdf).
+- **L18-GB00BLJNXL82-F02** · [V] · `a`. «Berkeley began in Weybridge, Surrey in 1976, founded by Tony Pidgley CBE and Jim Farrer.» [Font original](https://www.berkeleygroup.co.uk/about-us/celebrating-berkeley-at-50).
+- **L18-GB00BLJNXL82-F03** · [V] · `a`. «The Berkeley Group was established in 1976 by Tony Pidgley CBE and Jim Farrer, in Weybridge, Surrey.» [Font original](https://www.berkeleygroup.co.uk/about-us/who-we-are).

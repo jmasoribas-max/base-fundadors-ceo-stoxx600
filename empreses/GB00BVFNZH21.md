@@ -72,3 +72,13 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L15-GB00BVFNZH21-C02** · 2019 · [V] · `evidencia_ceo` (`R1`). «Kevin Hostetler Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/272002576.pdf).
 - **L15-GB00BVFNZH21-C03** · 2020 · [V] · `evidencia_ceo` (`R1`). «CEO Kevin Hostetler» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000022510/NI-000022510.pdf).
 - **L15-GB00BVFNZH21-C04** · 2021 · [V] · `evidencia_ceo` (`R1`). «Kevin Hostetler, Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046470/NI-000046470.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Rotork (Rotork Engineering Company Ltd, constituida el 12/2/1957, avui Rotork P.L.C., num. 00578327) · origen: persones · fundadors: Jeremy Fry · any: 1957.
+
+- **L18-GB00BVFNZH21-F01** · [V] · `b`. «Incorporated on 12 February 1957» [Font original](https://find-and-update.company-information.service.gov.uk/company/00578327).
+- **L18-GB00BVFNZH21-F02** · [V] · `b`. «In 1957 Rotork Engineering Company Ltd first began trading with the launch of our first actuator; the 100A.» [Font original](https://www.rotork.com/en/about-us/our-history).
+- **L18-GB00BVFNZH21-F03** · [V] · `context`. «Registered Office Rotork plc Rotork House Brassmill Lane Bath BA1 3JQ Company Number 00578327» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166553757.pdf).
+- **L18-GB00BVFNZH21-F04** · [V] · `context`. «Given the current share price, the Board believes that it is appropriate to propose the subdivision of each Existing Ordinary Share into 10 new ordinary shares of 0.5 pence each (“New Ordinary Shares”) (the “Subdivision”).» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/87329960.pdf).
+- **L18-GB00BVFNZH21-F05** · [V] · `a`. «The idea came from Rotork founder Jeremy Fry’s trip to the Middle East; he noticed that moisture formed inside actuators because temperatures were very hot during the day and cold during the night.» [Font original](https://www.rotork.com/en/about-us/our-history).

@@ -64,3 +64,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L15-GB00BYQ0JC66-C04** · 2019 · [V] · `evidencia_ceo` (`R1`). «CEO Andrew Horton» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/266590506.pdf).
 - **L15-GB00BYQ0JC66-C05** · 2023 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000092322/NI-000092322.pdf).
 - **L15-GB00BYQ0JC66-C06** · 2025 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/DirectUpload/NI-000140926/NI-000140926.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Beazley Furlonge & Hiscox Limited (agent gestor de Lloyd's, 1986), origen del grup Beazley · origen: persones · fundadors: Andrew Beazley|Nicholas Furlonge · any: 1986.
+
+- **L18-GB00BYQ0JC66-F01** · [V] · `context`. «In 1993, Beazley Furlonge Holdings Limited, purchased the Hiscox Group’s stake. Following completion of the buy-out, the managing agent was renamed Beazley Furlonge Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/106608638.pdf).
+- **L18-GB00BYQ0JC66-F02** · [V] · `context`. «In 2009, following a review of the Group’s organisational, operating and capital structure, Beazley, a company incorporated and registered in Jersey, became the new holding company of the Group by way of a scheme of arrangement and Beazley Re was incorporated in Ireland to underwrite insurance business from Dublin.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/106608638.pdf).

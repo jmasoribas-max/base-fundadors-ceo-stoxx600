@@ -63,3 +63,11 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L15-GB00B2PDGW16-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Stephen Clarke Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/150740806.pdf).
 - **L15-GB00B2PDGW16-C02** · 2018 · [V] · `evidencia_ceo` (`R1`). «STEPHEN CLARKE GROUP CHIEF» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/252918160.pdf).
 - **L15-GB00B2PDGW16-C03** · 2019 · [V] · `evidencia_ceo` (`R1`). «Group Chief Executive on 31 October 2019. Stephen Clarke» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000015863.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: WHSmith (negoci obert el 1792 per Henry Walton Smith i la seva esposa Anna; WH Smith PLC continua el negoci Retail despres de l escissio del 2006) · origen: persones · fundadors: Henry Walton Smith|Anna (esposa de Henry Walton Smith) · any: 1792.
+
+- **L18-GB00B2PDGW16-F01** · [V] · `context`. «Demerger of Retail and News Distribution businesses becomes effective with the creation of two separately listed entities - WH Smith PLC (formerly the Retail business) and Smiths News PLC (formerly WHSmith News).» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
+- **L18-GB00B2PDGW16-F02** · [V] · `a`. «Established in 1792, WHSmith’s first store was opened by Henry Walton Smith and his wife Anna in Little Grosvenor Street, London.» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
+- **L18-GB00B2PDGW16-F03** · [V] · `a`. «Henry Walton Smith and his wife Anna opened a small newsvendors in Little Grosvenor Street, London. Henry Smith dies a few months later leaving Anna to run the business.» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).

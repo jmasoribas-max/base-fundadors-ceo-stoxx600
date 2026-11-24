@@ -56,3 +56,13 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: TechnipFMC: fusio entre iguals (2017) de Technip (1958) i FMC Technologies (escissio de FMC Corporation, 2001); Douglas Pferdehirt venia de la part FMC Technologies (J1) · origen: fusio_iguals · fundadors: FMC Technologies: FMC Corporation (empresa; matriu fundada per John Bean el 1883) | Technip: creador no documentat amb font A/B · any: 2001.
+
+- **L18-GB00BDSFG982-F01** · [V] · `b`. «Since the inception of Technip Energies in 1958, we have taken pride to engineer the future while consistently expanding our capabilities in engineering, technologies, project management, products and services» [Font original](https://www.ten.com/sites/energies/files/2023-02/Technip%20Energies_2021%20Annual%20report.pdf).
+- **L18-GB00BDSFG982-F02** · [V] · `context`. «Immediately following consummation of the Mergers, it is expected that former Technip stockholders will own approximately 51.1% of TechnipFMC and former FMCTI stockholders will own approximately 48.9% of TechnipFMC, on a fully diluted basis as of January 4, 2017» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/124840192.pdf).
+- **L18-GB00BDSFG982-F03** · [V] · `context`. «Based on the success of the Forsys joint venture and its innovative approach to integrate solutions, Technip and FMC Technologies announced in May 2016 that the companies would combine through a merger of equals to create a global leader, TechnipFMC, that would drive change by redefining the production and transformation of oil and gas. The business combination was completed on January 16, 2017 (the “Merger”)» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/167136360.pdf).
+- **L18-GB00BDSFG982-F04** · [V] · `a`. «FMC's Spirit of Invention was born in 1883 when founder John Bean created an innovative insecticide spray pump to combat scale, an infestation that was ravaging California's orchards and endangering the livelihood of growers.» [Font original](https://www.fmc.com/en/company/our-history).
+- **L18-GB00BDSFG982-F05** · [V] · `e`. «2001 FMC Technologies, Inc. begins trading on the New York Stock Exchange — Ticker Symbol: FTI — on June 14. FMC Corporation completes spin-off of FMC Technologies, Inc.» [Font original](https://www.fmc.com/en/company/our-history).

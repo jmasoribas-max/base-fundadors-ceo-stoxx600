@@ -65,3 +65,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: EDP - Electricidade de Portugal, E.P. (empresa publica creada el 1976), avui EDP - Energias de Portugal, S.A. · origen: estat · fundadors: - · any: 1976.
+
+- **L18-PTEDP0AM0009-F01** · [V] · `context`. «Subsequently, EDP was transformed into a limited liability company (“sociedade anónima”) pursuant to Decree-Law no. 7/91, of 8 January, and Decree-Law no. 78-A/97, of 7 April.» [Font original](https://www.edp.com/sites/default/files/document/2025-04/icm-31887244-v1-edp_-_prospectus_final_28.1.2019.pdf).

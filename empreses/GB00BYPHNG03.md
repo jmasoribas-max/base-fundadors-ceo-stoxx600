@@ -46,3 +46,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Countryside Properties (negoci de promocio residencial fundat el 1958 a Essex); Countryside Properties PLC es la holding de l IPO del 2016 · origen: no_trobat · fundadors: - · any: 1958.
+
+- **L18-GB00BYPHNG03-F01** · [V] · `b`. «Countryside Properties was founded in 1958 and in its early years focused on small residential developments, primarily in Essex and East London.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/104611490.pdf).
+- **L18-GB00BYPHNG03-F02** · [V] · `b`. «Since Countryside was founded in 1958, we have maintained a belief that placemaking is more than geography.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/123061519.pdf).
+- **L18-GB00BYPHNG03-F03** · [V] · `context`. «Countryside Properties plc was a listed company traded on the LSE from 1972 until 2005, when it was acquired by Copthorn Holdings Limited, at that time a 50/50 joint venture between the Cherry family and Bank of Scotland (part of Lloyds Banking Group plc). Countryside Properties underwent a restructuring of its balance sheet in 2010, and in 2013, the Principal Shareholder acquired control of the Group from a consortium of banks.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/104611490.pdf).
+- **L18-GB00BYPHNG03-F04** · [V] · `context`. «The insertion of the Company as a new holding company constitutes a group reorganisation and will be accounted for using merger accounting principles.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/104611490.pdf).

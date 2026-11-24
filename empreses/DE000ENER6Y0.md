@@ -78,3 +78,12 @@ Fonts incorporades en aquesta revisió.
 - [V] `R13-C02` · 2025 · ceo · «says Christian Bruch, CEO of Siemens Energy.». El comunicat de marca del 14/07/2026 identifica Bruch com a CEO de Siemens Energy. Confirma el càrrec després del 31/10/2025. Data del document 2026-07-14. URL original https://www.siemens-energy.com/global/en/home/press-releases/omterra-brand-announcement.html. Wayback https://web.archive.org/web/20260807112008id_/https://www.siemens-energy.com/global/en/home/press-releases/omterra-brand-announcement.html (Cita verificada al document original de la captura id_.).
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Siemens Energy AG, escindida de Siemens AG el 2020 (matriu Siemens & Halske, fundada el 1847 per Werner von Siemens i Johann Georg Halske) · origen: corporatiu · fundadors: - · any: 2020.
+
+- **L18-DE000ENER6Y0-F01** · [V] · `context`. «The present Siemens Energy AG was established with articles of association dated 27 July 2016 by Blitzstart Holding AG, with its registered office in Munich» [Font original](https://assets.new.siemens.com/siemens/assets/api/uuid:7f7157d6-3d30-4e40-b6d3-60122892d7c9/Joint-Spin-off-Report-Convenience-Translation-22-May-2020.pdf).
+- **L18-DE000ENER6Y0-F02** · [V] · `context`. «Preparations for spinning off the company’s energy activities began shortly thereafter. The spin-off was approved in July 2020 and Siemens Energy AG was listed on the stock exchange on September 28, 2020.» [Font original](https://www.siemens.com/en-us/company/history-heritage/history-timeline/).
+- **L18-DE000ENER6Y0-F03** · [V] · `a`. «Werner von Siemens laid the foundation for today’s Siemens AG in 1847 with his design for the pointer telegraph. Together with precision mechanic Johann Georg Halske, he established “Telegraphen-Bauanstalt von Siemens & Halske” to manufacture his new device.» [Font original](https://www.siemens.com/en-us/company/history-heritage/history-timeline/).
+- **L18-DE000ENER6Y0-F04** · [V] · `e`. «55 % of the shares in Siemens Energy AG ("Siemens Energy Shares") are to be transferred to the shareholders of Siemens AG by way of a spin-off in accordance with the German Transformation Act (Umwandlungsgesetz, "UmwG").» [Font original](https://assets.new.siemens.com/siemens/assets/api/uuid:7f7157d6-3d30-4e40-b6d3-60122892d7c9/Joint-Spin-off-Report-Convenience-Translation-22-May-2020.pdf).
