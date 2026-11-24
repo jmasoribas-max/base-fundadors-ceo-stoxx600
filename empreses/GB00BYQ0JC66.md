@@ -55,3 +55,12 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L14-GB00BYQ0JC66-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «David Andrew Horton Chief Executive» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/b/LSE_BEZ_2020.pdf).
 - **L14-GB00BYQ0JC66-C02** · 2022 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox was appointed Chief Executive Officer on 1 April 2021.» [Font original](https://www.beazley.com/globalassets/ir-documents/annual-reports/annual-report-2022/annual_report_22_1.pdf).
 - **L14-GB00BYQ0JC66-C03** · 2024 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox was appointed Group CEO in April 2021 having been an Executive Director at» [Font original](https://prod.dxp.beazley.com/globalassets/ir-documents/annual-reports/annual-report-2024/annual-report-2024.pdf).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BYQ0JC66-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Andrew Horton Chief executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/130776623.pdf).
+- **L15-GB00BYQ0JC66-C02** · 2017 · [V] · `evidencia_ceo` (`R1`). «Andrew Horton Chief executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/163500189.pdf).
+- **L15-GB00BYQ0JC66-C03** · 2018 · [V] · `evidencia_ceo` (`R1`). «CEO Andrew Horton.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/212186436.pdf).
+- **L15-GB00BYQ0JC66-C04** · 2019 · [V] · `evidencia_ceo` (`R1`). «CEO Andrew Horton» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/266590506.pdf).
+- **L15-GB00BYQ0JC66-C05** · 2023 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000092322/NI-000092322.pdf).
+- **L15-GB00BYQ0JC66-C06** · 2025 · [V] · `evidencia_ceo` (`R1`). «Adrian Cox Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/DirectUpload/NI-000140926/NI-000140926.pdf).

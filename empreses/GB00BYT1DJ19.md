@@ -54,3 +54,18 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BYT1DJ19-C01** · 2021 · [V] · `evidencia_ceo` (`R1`). «Benoît Durteste CEO» [Font original](https://filings.xbrl.org/549300OGASR5WRKJ8R68/2022-03-31/ESEF/GB/0/549300OGASR5WRKJ8R68-2022-03-31/reports/549300OGASR5WRKJ8R68-2022-03-31-T01.xhtml).
+- **L15-GB00BYT1DJ19-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Benoît Durteste has been ICG’ s Chief Executive» [Font original](https://filings.xbrl.org/549300OGASR5WRKJ8R68/2024-03-31/ESEF/GB/0/549300OGASR5WRKJ8R68-2024-03-31/reports/549300OGASR5WRKJ8R68-2024-03-31-T01.xhtml).
+- **L15-GB00BYT1DJ19-C03** · 2024 · [V] · `evidencia_ceo` (`R1`). «Benoît Durteste CEO» [Font original](https://filings.xbrl.org/549300OGASR5WRKJ8R68/2025-03-31/ESEF/GB/0/549300OGASR5WRKJ8R68-2025-03-31/reports/549300OGASR5WRKJ8R68-2025-03-31-T01.xhtml).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-GB00BYT1DJ19-C01** · 2020 · [V] · `R1`. «Benoît Durteste Chief Executive Officer and Chief Investment Officer» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000028322/NI-000028322.pdf).
+- **L17-GB00BYT1DJ19-C02** · 2019 · [V] · `R1`. «Benoît Durteste is CEO» [Font original](https://www.icgam.com/wp-content/uploads/2022/02/ICGAnnualReport-Complete-2020.pdf).
+- **L17-GB00BYT1DJ19-C03** · 2018 · [V] · `R1`. «Benoît Durteste, CEO/CIO» [Font original](https://www.icgam.com/wp-content/uploads/2022/02/ICGAnnualReportAccounts2019.pdf).
+- **L17-GB00BYT1DJ19-C04** · 2017 · [V] · `R1`. «BENOÎT DURTESTE CHIEF INVESTMENT OFFICER AND CHIEF EXECUTIVE OFFICER» [Font original](https://www.icgam.com/wp-content/uploads/2022/02/icg-ar18-web.pdf).
+- **L17-GB00BYT1DJ19-C05** · 2022 · [V] · `R1`. «Benoît Durteste Chief Executive Officer and Chief Investment Officer» [Font original](https://www.icgam.com/wp-content/uploads/2023/06/Governance-Report-ICG-2023-Annual-Report.pdf).
+- **L17-GB00BYT1DJ19-C06** · 2025 · [V] · `R1`. «Benoît Durteste Chief Executive Officer and Chief Investment Officer» [Font original](https://www.icgam.com/wp-content/uploads/2026/06/ICG-Annual-Report-and-Accounts-2026_BW.pdf).

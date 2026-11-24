@@ -53,3 +53,18 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-PTJMT0AE0001-C01** · 2024 · [V] · `evidencia_ceo` (`R1`). «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://reports.jeronimomartins.com/annual-report/2024/_assets/downloads/entire-jeronimomartins-ar24.pdf?h=-sb8wExq).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-PTJMT0AE0001-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Pedro Soares dos Santos Presidente e CEO» [Font original](https://filings.xbrl.org/259400A8SZP10GB5IB19/2022-12-31/ESEF/PT/0/000320-2022-12-31/reports/000320-2022-12-31.xhtml).
+- **L15-PTJMT0AE0001-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Pedro Soares dos Santos Presidente e CEO» [Font original](https://filings.xbrl.org/259400A8SZP10GB5IB19/2023-12-31/ESEF/PT/0/000320-2023-12-31/reports/000320-2023-12-31.xhtml).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-PTJMT0AE0001-C01** · 2025 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://reports.jeronimomartins.com/annual-report/2025/_assets/downloads/gov-corporate-governance-jeronimomartins-ar25.pdf).
+- **L17-PTJMT0AE0001-C02** · 2018 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/AnnualReportJeronimoMartins2018.pdf).
+- **L17-PTJMT0AE0001-C03** · 2016 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2016/EN/JM2016_Integral_en.pdf).
+- **L17-PTJMT0AE0001-C04** · 2017 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2017/EN/JM2017_Integral_en.pdf).
+- **L17-PTJMT0AE0001-C05** · 2019 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2019/EN/Chapter-4-Corporate-governance-AnnualReportJeronimoMartins2019.pdf).
+- **L17-PTJMT0AE0001-C06** · 2020 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2020/EN/AnnualReportJM2020-Cap4.pdf).
+- **L17-PTJMT0AE0001-C07** · 2021 · [V] · `R1`. «The role of Chief Executive Officer is performed by Pedro Soares dos Santos.» [Font original](https://www.jeronimomartins.com/wp-content/uploads/01-DOCUMENTS/Investor/Reports/year-in-review-2021/EN/AnnualReportJM2021nonESEF.pdf).

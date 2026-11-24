@@ -175,7 +175,10 @@ def main() -> int:
                 resultat_ver[clau] = ("[V]", "Claude (cita literal comprovada al fitxer baixat per la cerca, 23/11/2026)",
                                       f"La re-descàrrega de Claude no ha pogut confirmar-la ({est}: {det}); la cita és al fitxer baixat de la mateixa URL durant la cerca.")
             else:
-                resultat_ver[clau] = ("[NV]", "Claude (23/11/2026)", f"pendent_arxiu: re-descàrrega {est} ({det}).")
+                if est == "no_trobada":
+                    resultat_ver[clau] = ("[NV]", "Claude (23/11/2026)", f"no_valida: la cita no s'ha trobat literalment al document tornat a baixar ({det}) ni al fitxer de la cerca.")
+                else:
+                    resultat_ver[clau] = ("[NV]", "Claude (23/11/2026)", f"pendent_arxiu: re-descàrrega {est} ({det}).")
 
     c = collections.Counter(resultat_ver[(r["url"], r["cita_literal"])][0] for r in acceptades)
     files_cobertes = {(r["isin"], r["any"]) for r in acceptades if resultat_ver[(r["url"], r["cita_literal"])][0] == "[V]"}

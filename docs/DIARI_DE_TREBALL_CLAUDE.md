@@ -10,10 +10,10 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | | Valor |
 |---|---|
 | Última actualització | 23/11/2026, sessió 14 |
-| `main` de referència | `0ad59fc` (PR #27) |
+| `main` de referència | `46dd024` (PR #29) |
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %): falta sobretot l'arxiu a Wayback (C3) |
-| Files amb evidència de CEO i de fundador (C1 i C2) | 4.361 de 6.012 (72,5 %), amb el lot 13 |
-| Files F | 349 de 349 amb cita de CEO; 292 amb cita de fundador (falten 57, de 22 empreses) |
+| Files amb evidència de CEO i de fundador (C1 i C2) | 4.941 de 6.012 (82,2 %), amb els lots 13-17 (C1: 5.995, 99,7 %) |
+| Files F | 349 de 349 amb cita de CEO; 329 amb cita de fundador i amb les dues |
 | Fase del pla | Fase 1: grup F gairebé tancat (falta la cita de fundador de 57 files). Fase 2 en curs: files P (lot 14, traspàs de l'auditoria; lot 15, informes ESEF de l'exercici) |
 | Pendent de Jordi | Fusionar el PR del lot 13. Dubtes de criteri (paquet en preparació) |
 | Flux nou | Claude prepara, valida (scripts i comprovació independent) i obre els PR; Jordi aprova i fusiona. Wayback, a GitHub Actions. DF queda fora (document final per a DF quan s'acabi) |
@@ -271,4 +271,37 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 - **Revisió del lot 11 (tasca de l'exercici):** 18 entrades de CEO usaven un document d'un altre exercici per a algun any. 8 passen a `[NV]` `no_valida` i 10 redueixen els anys, amb la nota corresponent. El grup F passa a 331 de 349 files amb cita de CEO fins que es trobin les noves.
 - **Cerca de fundadors F (dos agents):** el primer ha acabat (8 de 11 empreses amb cita vàlida; contradiccions a Cellnex, Merlin i la co-CEO de Rubis 2023-2024). Queda pendent el segon.
 - **Per a Jordi (paquet de criteris):** la condició C2 de les files P compta ara la columna antiga `font_classificacio_cita`. Sovint és una sola cita que no conté totes les parts de la prova. Cal decidir si s'exigeixen les parts (com al lot 14) a tota la base.
+- **PR #28 (lot 13) fusionat per Jordi.** He obert el [PR #29](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/29) (lot 14), després de fusionar-hi `main` en un arbre de treball a part.
+- **Lot 16 (cites de fundador del grup F), a la branca `cas/lot15-esef`:**
+  - 19 entrades `[V]`: 18 `D37` i 1 `si_font_B`, la d'Actelion, que ve del prospecte de l'oferent.
+  - Quatre cites que només deien el nom de pila s'han ampliat cap enrere, amb text contigu del document, fins al nom complet.
+  - 17 dubtes del lot 10 tancats a `estat/dubtes_tancats.csv`, perquè ja hi ha cita vàlida.
+  - Secció nova a `PENDENTS.md`, «Dubtes del lot 16», amb 27 files: predecessores, P6, contradiccions i casos sense font.
+  - Grup F: 329 de 349 files amb cita de fundador.
+  - Importador nou: `traspas/importa_fundador.py`. A més, `FUNDACIO` admet «fonder» i «setting up».
+- **Lot 15 (ESEF):** en execució. Informe de l'exercici trobat per a 415 de les 793 files 2020-2025 sense cita de CEO.
+- **Paquet de criteris per a Jordi:** [`docs/PAQUET_CRITERIS_20261123.md`](PAQUET_CRITERIS_20261123.md), amb 10 punts. El més important és el primer. Un control estricte mostra que, de les 4.224 files P amb C2 per registre, només unes 420 tenen cites amb totes les parts de la prova (el control té falsos negatius). Proposo calcular la C2 de les P per parts i completar-les per empresa (any de fundació) i per persona (naixement, carrera).
+- **Wayback:** escrit `scripts/wayback/porta_al_registre.py`, que portarà els resultats de la branca `wayback-dades` al registre quan acabi la primera execució.
+- **Lot 15 (cites de CEO dels informes oficials), a la branca `cas/lot15-esef`:**
+  - Fonts: ESEF (filings.xbrl.org, 2020-2025, amb l'exercici de les metadades) i FCA NSM (emissors britànics, amb la data de tancament llegida a l'informe).
+  - 508 entrades `[V]` i 502 files més amb cita de CEO.
+  - He afinat els filtres en tres rondes de revisió de mostres: un cognom dins el nom d'una altra societat, taules, una altra persona entre el nom i el títol, text amb les lletres separades, i «does» com a verb.
+  - Queden 804 files sense cita de CEO (411 del 2016-2019 i 393 del 2020-2025).
+- **Lot 17 (cerca de CEO de les 804 files restants), a la branca `cas/lot15-esef`:**
+  - 12 agents, uns 67 files cadascun. Tots van acabar: 790 files trobades, 3 intervals, discrepàncies a BME i Vifor, i Inditex 2016 sense trobar.
+  - Verificació independent: 794 entrades `[V]` i 4 `[NV]` `no_valida` (la cita no és al document tornat a baixar).
+  - Ampliats els títols equivalents a CEO (Chairman of the Executive Board, President of the Executive Committee, Spokesman, máximo responsable ejecutivo…) i normalitzats els apòstrofs.
+  - **La cita de CEO cobreix ara 5.995 de 6.012 files (99,7 %).** 12 files en dubte a `PENDENTS.md` (secció «Dubtes del lot 17»).
+  - **Incidència:** un agent va provar una capçalera Referer en un servidor de Bakkafrost. El control de seguretat ho va aturar, l'agent no en va fer servir el resultat, i als agents següents se'ls va prohibir.
+  - **Error propi corregit:** vaig escriure de memòria l'ISIN de Clariant a `PENDENTS.md` (n'hi vaig posar el de Novartis). Ho vaig detectar en recalcular l'estat i ho vaig corregir.
+- **Wayback, primera execució (run 45204845355, 15:24-20:45 UTC):**
+  - Arxivament: 993 captures noves; 3.893 de 7.287 URL amb cita ja en tenen.
+  - Verificació: 2.545 parells. 733 `cita_ok`, 140 `cita_no_trobada`, 10 `cita_parcial` i 1.662 `captura_no_llegible`, dels quals 1.537 per `FeatureNotFound`: faltava `lxml` al flux.
+  - Corregit al [PR #31](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/31), independent dels PR #29 i #30. Instal·la `lxml`, i l'script torna a verificar els parells amb error intern.
+  - Prova en sec de `porta_al_registre.py`: 128 entrades del registre passarien a `cita_verificada_a_captura=si`. S'escriurà quan hi hagi més resultats.
+
+### 24/11/2026 · Sessió 15 · Fusions i Wayback amb la correcció
+
+- **Fusionats per Jordi:** #31 (correcció del Wayback: `lxml`) i #29 (lot 14). He incorporat `main` a la branca del #30 (lots 15-17 i paquet de criteris) i n'he canviat la base a `main`.
+- **Wayback:** la segona execució programada (run 45323146702, encara sense la correcció) va arxivar més URL: 4.603 de 7.599 tenen captura, i 1.511 parells són `cita_ok`. Però 2.579 parells van tornar a fallar per `FeatureNotFound`. Amb el #31 fusionat, he llançat a mà una execució nova, que torna a verificar aquests parells. Revisió programada a les 15:00 UTC.
 

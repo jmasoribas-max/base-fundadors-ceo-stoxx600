@@ -56,3 +56,7 @@ Cap entrada anterior al registre per als anys del lot.
 
 - **L12-GB00BVFD7Q58-C01** · 2017 · [V] · `R1`. «Keith Skeoch Co-Chief Executive Keith was appointed Co-Chief Executive on 14 August 2017.» [Font original](https://www.aberdeenplc.com/docs?documentId=GB-270720-122140-1).
 - **L12-GB00BVFD7Q58-C02** · 2017 · [V] · `R1`. «Martin Gilbert Co-Chief Executive Martin was appointed Director and Co-Chief Executive on 14 August 2017.» [Font original](https://www.aberdeenplc.com/docs?documentId=GB-270720-122140-1).
+
+## Lot 16 · Cerca nova de cites de fundador
+
+- **L16-GB00BVFD7Q58-F01** · 2017 · [V] · `D37`. «Martin Gilbert Co-Chief Executive Martin was appointed Director and Co-Chief Executive on 14 August 2017. He is co-founder (and former chief executive) of Aberdeen Asset Management PLC and has been a director since 1983.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166306782.pdf).

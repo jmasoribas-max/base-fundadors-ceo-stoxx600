@@ -57,3 +57,9 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-GB00B2PDGW16-C01** · 2017 · [V] · `evidencia_ceo` (`R1`). «Stephen Clarke is Group Chief Executive and joined the Board of WH Smith in June» [Font original](https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/21119-whsmiths-ar17-web-2017-10-25.pdf).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00B2PDGW16-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Stephen Clarke Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/150740806.pdf).
+- **L15-GB00B2PDGW16-C02** · 2018 · [V] · `evidencia_ceo` (`R1`). «STEPHEN CLARKE GROUP CHIEF» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/252918160.pdf).
+- **L15-GB00B2PDGW16-C03** · 2019 · [V] · `evidencia_ceo` (`R1`). «Group Chief Executive on 31 October 2019. Stephen Clarke» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000015863.pdf).

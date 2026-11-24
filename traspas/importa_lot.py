@@ -64,7 +64,7 @@ PLATAFORMES = ("cision.com", "globenewswire.com", "eqs.com", "eqs-news.com", "bu
                "investis.com", "q4cdn.com", "rns-pdf", "emarketstorage", "1info.it", "lsegissuerservices.com",
                "ritzau.dk", "pressetext.com")
 FUNDACIO = re.compile(r"found|fundad|fundat|fundador|grunder|grundare|grundlag|grundet|grunnla|gegrund|grunde"
-                      r"|fondat|fondateur|fondatrice|fondee|fonde par|oprichter|opgericht|perustaja|perusti"
+                      r"|fondat|fondateur|fondatrice|fondee|fonde par|fonder\b|setting up|oprichter|opgericht|perustaja|perusti"
                       r"|zalozyciel|zalozyl|stiftet|stifter|set up|established|started the|launched the"
                       r"|created the company|creat(ed|or) of")
 # P6: expressions que no compten com a fundador
@@ -125,6 +125,14 @@ def verifica(url: str, cita: str) -> tuple[str, str]:
             code = p.stdout.strip()
         except Exception as ex:  # noqa: BLE001
             return "no_accessible", f"error {str(ex)[:60]}"
+        if (code != "200" or not fn.exists() or fn.stat().st_size == 0) and ua:
+            # alguns servidors (p. ex. lindt, lanxess) refusen l'agent de navegador i accepten el de curl
+            try:
+                p = subprocess.run(["curl", "-sSL", "--max-time", "120", "--max-filesize", "150000000",
+                                    "-o", str(fn), "-w", "%{http_code}", url], capture_output=True, text=True, timeout=150)
+                code = p.stdout.strip()
+            except Exception:  # noqa: BLE001
+                pass
         if code != "200" or not fn.exists() or fn.stat().st_size == 0:
             txt.write_text(f"#ERROR HTTP {code}", encoding="utf-8")
         else:

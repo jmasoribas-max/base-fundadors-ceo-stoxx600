@@ -57,3 +57,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BVYVFW23-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «Nathan Coe Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000029074/NI-000029074.pdf).
+- **L15-GB00BVYVFW23-C02** · 2021 · [V] · `evidencia_ceo` (`R1`). «N/A CEO Nathan Coe» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000054233/NI-000054233.pdf).
+- **L15-GB00BVYVFW23-C03** · 2022 · [V] · `evidencia_ceo` (`R1`). «Nathan Coe CEO» [Font original](https://filings.xbrl.org/213800QLK9BZILB1DI86/2023-03-31/ESEF/GB/0/213800QLK9BZILB1DI86-2023-03-31/reports/213800QLK9BZILB1DI86-2023-03-31-T01.html).
+- **L15-GB00BVYVFW23-C04** · 2023 · [V] · `evidencia_ceo` (`R1`). «Nathan Coe CEO» [Font original](https://filings.xbrl.org/213800QLK9BZILB1DI86/2024-03-31/ESEF/GB/0/213800QLK9BZILB1DI86-2024-03-31/reports/213800QLK9BZILB1DI86-2024-03-31-T01.html).
+- **L15-GB00BVYVFW23-C05** · 2024 · [V] · `evidencia_ceo` (`R1`). «Nathan Coe Chief Executive» [Font original](https://filings.xbrl.org/213800QLK9BZILB1DI86/2025-03-31/ESEF/GB/0/213800QLK9BZILB1DI86-2025-03-31/reports/213800QLK9BZILB1DI86-2025-03-31-T01.html).
+- **L15-GB00BVYVFW23-C06** · 2025 · [V] · `evidencia_ceo` (`R1`). «Nathan Coe Chief Executive» [Font original](https://filings.xbrl.org/213800QLK9BZILB1DI86/2026-03-31/ESEF/GB/0/213800QLK9BZILB1DI86-2026-03-31/reports/213800QLK9BZILB1DI86-2026-03-31-T01.html).

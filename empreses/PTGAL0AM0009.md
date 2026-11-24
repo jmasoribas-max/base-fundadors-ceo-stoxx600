@@ -67,3 +67,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-PTGAL0AM0009-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «O presidente executivo da Galp, Carlos Gomes da Silva» [Font original](https://www.galp.com/corp/pt/media/comunicados-de-imprensa/comunicado/id/853).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-PTGAL0AM0009-C01** · 2017 · [V] · `R1`. «Chairman: Carlos Gomes da Silva (CEO)» [Font original](https://www.galp.com/corp/Portals/0/Recursos/Governo-Societario/SharedResources/Documentos/EN/Annual_Report_and_Accounts_Galp_2017.pdf).
+- **L17-PTGAL0AM0009-C02** · 2016 · [V] · `R1`. «Chairman: Carlos Gomes da Silva (CEO)» [Font original](https://www.galp.com/corp/Portals/0/Recursos/Investidores/SharedResources/Relatorios/EN/2016RA/Annual-Report-and-Accounts-2016-en.pdf).
+- **L17-PTGAL0AM0009-C03** · 2019 · [V] · `R1`. «Carlos Gomes da Silva (CEO, Vice-Chairman)» [Font original](https://www.galp.com/corp/Portals/0/Recursos/Investidores/SharedResources/Relatorios/EN/2019/Galp_PartII_GovernanceReport_2019_ENG.pdf).
+- **L17-PTGAL0AM0009-C04** · 2020 · [V] · `R1`. «Carlos Gomes da Silva (CEO)» [Font original](https://www.galp.com/corp/Portals/0/Recursos/Investidores/SharedResources/Relatorios/EN/2020/GalpRC20corporategovernancereport.pdf).

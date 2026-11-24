@@ -64,3 +64,11 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 
 - **L10-GB00BDVZYZ77-F01** · 2021-2022 · [V] · `evidencia_context`. «With origins dating back to 1516, Royal Mail is one of the oldest organisations in the world.» La pàgina corporativa d’International Distribution Services, a la qual redirigeix l’adreça original de Royal Mail, data el negoci postal i descriu la xarxa reial de 1516. Evidència de context. En tots dos anys l’etiqueta és NA_sense_ceo i el camp ceos és buit. No hi ha CEO a classificar. Our History, presentació i cronologia de 1516, s. d. Candidatura 1 (identitat_empresa). Font A. Etiqueta oficial NA_sense_ceo; sense CEO a classificar. Consulta del 23/11/2026. [Font original](https://www.royalmailgroup.com/en/about-us/our-history/).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BDVZYZ77-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Rico Back - Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/225698683.pdf).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-GB00BDVZYZ77-C01** · 2019 · [V] · `R1`. «Rico Back, Group Chief Executive Officer, commented:» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20191121070015_14316895.html).

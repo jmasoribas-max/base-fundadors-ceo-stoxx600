@@ -74,3 +74,7 @@ Anys contrastats en aquesta passada 2022–2023.
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-DE000DTR0CK8-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Karin Rådström President & CEO» [Font original](https://www.daimlertruck.com/fileadmin/user_upload/documents/investors/reports/annual-reports/2025/daimler-truck-ir-annual-report-2025-incl-combined-management-report-dth-ag.pdf).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-DE000DTR0CK8-C01** · 2024 · [V] · `R1`. «Karin Rådström Chairwoman of the Board of Management of Daimler Truck Holding AG» [Font original](https://ir-api.eqs.com/media/document/560e140c-d54f-424d-9315-496862d2c50f/assets/DE000DTR0CK8-JA-2024-EQ-E-00.pdf?disposition=inline).

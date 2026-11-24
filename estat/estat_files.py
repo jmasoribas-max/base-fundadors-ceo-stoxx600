@@ -50,6 +50,8 @@ SECCIONS_DUBTES = (
     "Dubtes del lot ceo_pendent (lot 9)",
     "Dubtes del lot traspàs de cites (lot 10)",
     "Dubtes del lot 12 (cerca de CEO del grup F)",
+    "Dubtes del lot 16 (cites de fundador del grup F)",
+    "Dubtes del lot 17 (cerca de CEO)",
 )
 REGLES_SI = {"cita_fundador", "D37", "FT", "D10b_prelacio", "D10"}
 REGLES_NO = {"a", "b", "c_AAF64_reserva", "d", "e", "d_per_part", "b_per_part"}
@@ -66,9 +68,15 @@ CARRECS = re.compile(
     r"|directeur generaal|generaldirektor|chief executive officer|presidente e ceo"
     r"|\bgerant(e|s|es)?\b|\bgerance\b|president of the [\w .]{0,30}management board|president du directoire"
     r"|management board.{0,100}president of the board|presidente del consiglio di gestione"
+    r"|chair(man|woman|person)? of [\w .'’-]{0,45}(board of management|management board|executive board)"
+    r"|executive board.{0,160}\(chair(man|woman|person)?\)|executive board.{0,80}its chair(man|woman|person)?"
+    r"|president of the (executive committee|ec|management committee)\b|voorzitter van het directiecomite"
+    r"|president du comite de direction|maximo responsable ejecutivo"
+    r"|spokes(man|woman|person) of the (executive|management) board|chair(man|woman|person)? of the board of executive directors"
 )
 TRANSLIT = str.maketrans({"ø": "o", "Ø": "o", "æ": "ae", "Æ": "ae", "ß": "ss", "ł": "l",
-                          "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe"})
+                          "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe",
+                          "’": "'", "‘": "'", "´": "'", "`": "'"})
 MAX_IDS = 5
 COLUMNES = [
     "isin", "any", "nom", "FounderCEO", "ceos", "regles", "estat_certificacio_antic",
@@ -147,7 +155,8 @@ def dubtes_pendents(tancats: set[tuple[str, str]]) -> dict[tuple[str, str], set[
             continue
         isin = cel[0].strip("` ")
         ref = ("regla29" if "regla 29" in seccio else "lot9" if "lot 9" in seccio
-               else "lot12" if "lot 12" in seccio else "lot10")
+               else "lot12" if "lot 12" in seccio else "lot16" if "lot 16" in seccio
+               else "lot17" if "lot 17" in seccio else "lot10")
         for y in anys(re.sub(r"<[^>]+>", "", cel[1])):
             oberts[(isin, y)].add(ref)
     for k in tancats:

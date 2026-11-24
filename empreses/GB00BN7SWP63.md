@@ -41,3 +41,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BN7SWP63-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «CEO Emma Walmsley» [Font original](https://filings.xbrl.org/5493000HZTVUYLO1D793/2022-12-31/ESEF/GB/0/5493000HZTVUYLO1D793-2022-12-31/reports/5493000HZTVUYLO1D793-2022-12-31-T01.html).
+- **L15-GB00BN7SWP63-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Emma Walmsley Chief Executive» [Font original](https://filings.xbrl.org/5493000HZTVUYLO1D793/2023-12-31/ESEF/GB/0/5493000HZTVUYLO1D793-2023-12-31/reports/5493000HZTVUYLO1D793-2023-12-31-T01.html).
+- **L15-GB00BN7SWP63-C03** · 2024 · [V] · `evidencia_ceo` (`R1`). «Emma Walmsley Chief Executive» [Font original](https://filings.xbrl.org/5493000HZTVUYLO1D793/2024-12-31/ESEF/GB/0/5493000HZTVUYLO1D793-2024-12-31/reports/5493000HZTVUYLO1D793-2024-12-31-T01.html).
+- **L15-GB00BN7SWP63-C04** · 2025 · [V] · `evidencia_ceo` (`R1`). «In 2025: – CEO (Emma Walmsley)» [Font original](https://filings.xbrl.org/5493000HZTVUYLO1D793/2025-12-31/ESEF/GB/0/5493000HZTVUYLO1D793-2025-12-31/reports/5493000HZTVUYLO1D793-2025-12-31-T01.html).

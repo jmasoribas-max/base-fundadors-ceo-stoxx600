@@ -58,3 +58,14 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 
 - **L14-GB00BGDT3G23-F01** · 2018-2022 · [V] · `evidencia_fundador` (`d`). «Peter Brooks-Johnson Chief Operating Officer Peter joined Rightmove in 2006 and became Chief Operating Officer in April 2013 having been Managing Director of rightmove.co.uk» [Font original](https://plc.rightmove.co.uk/content/uploads/2023/09/2015-03-30-agm-notice.pdf).
 - **L14-GB00BGDT3G23-F02** · 2018-2022 · [V] · `evidencia_fundador` (`d`). «Rightmove.co.uk was established in 2000 and is the UK's largest property portal; it is free to consumers and is where home hunters turn to first» [Font original](https://plc.rightmove.co.uk/content/uploads/2024/03/msa-statement-2024.pdf).
+
+## Lot 15 · Cites de CEO extretes dels documents de l'exercici
+
+- **L15-GB00BGDT3G23-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Peter Brooks-Johnson Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/217007773.pdf).
+- **L15-GB00BGDT3G23-C02** · 2019 · [V] · `evidencia_ceo` (`R1`). «Peter Brooks-Johnson Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/271391419.pdf).
+- **L15-GB00BGDT3G23-C03** · 2020 · [V] · `evidencia_ceo` (`R1`). «Peter Brooks-Johnson Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000022247/NI-000022247.pdf).
+- **L15-GB00BGDT3G23-C04** · 2022 · [V] · `evidencia_ceo` (`R1`). «Contacts Chief Executive Officer: Peter Brooks-Johnson» [Font original](https://filings.xbrl.org/2138001JXGCFKBXYB828/2022-12-31/ESEF/GB/0/2138001JXGCFKBXYB828-2022-12-31/reports/2138001JXGCFKBXYB828-2022-12-31-T01.html).
+
+## Lot 17 · Cerca nova de cites de CEO
+
+- **L17-GB00BGDT3G23-C01** · 2021 · [V] · `R1`. «Peter Brooks-Johnson, Chief Executive Officer, said:» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4283149.html).
