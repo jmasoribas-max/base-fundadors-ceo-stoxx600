@@ -8,17 +8,22 @@
 
 Què fa:
 
-- Comprova el SHA-256 de `dades/base_isin_any_v8r3.csv` i de
-  `docs/REGISTRE_CANVIS.csv` contra `MANIFEST_SHA256.csv` del mateix commit.
-  Si no coincideixen, s'atura i no escriu res.
+- Comprova el SHA-256 de `dades/base_isin_any_v8r3.csv`, `docs/REGISTRE_CANVIS.csv`,
+  `estat/estat_files.csv`, `PENDENTS.md` i `estat/dubtes_tancats.csv` contra
+  `MANIFEST_SHA256.csv` del mateix commit, i que `estat/RESUM_ESTAT.md` s'ha
+  generat amb aquestes mateixes dades. Si no coincideixen, s'atura i no escriu res.
+- Totes les xifres de progrés surten de `estat/estat_files.csv` (un sol
+  comptador). Si l'embut no quadra amb l'estat de les files, s'atura.
 - Llegeix només fitxers del repositori (csv, pathlib, hashlib). No fa cap
   petició de xarxa ni consulta Wayback ni les fonts originals.
-- Reescriu només fitxers dins de `dashboard/`: `index.html`, `metodologia.html`,
-  `empreses/{ISIN}.html` i `assets/` (CSS i JS).
+- Reescriu només fitxers dins de `dashboard/`: `index.html` (Estat),
+  `empreses.html`, `metodologia.html`, `empreses/{ISIN}.html` i `assets/`.
 - El resultat és determinista: amb les mateixes dades, els mateixos fitxers.
 
 No llegeix l'`.xlsx`, ni `empreses/*.md`, ni `INDEX.md`, ni
-`docs/REGISTRE_CANVIS.md`, ni cap fitxer de fora del repositori.
+`docs/REGISTRE_CANVIS.md`, ni cap fitxer de fora del repositori. De
+`PENDENTS.md` només en comprova els encapçalaments i les àncores: mai no en
+mostra el text.
 """
 from __future__ import annotations
 
@@ -26,6 +31,7 @@ import argparse
 import csv
 import hashlib
 import html
+import json
 import re
 import subprocess
 import sys
@@ -48,17 +54,134 @@ ANYS_PANELL = list(range(2016, 2026))
 # Cites: fragments curts. Si una cita passa d'aquesta llargada, es mostra un
 # fragment marcat amb […] i s'indica que el text complet és al registre.
 LONGITUD_MAX_CITA = 600
-# Notes més llargues que això es mostren plegades (es poden desplegar senceres).
-LONGITUD_NOTA_PLEGADA = 700
 
 ROOT = Path(__file__).resolve().parent.parent
 SORTIDA = ROOT / "dashboard"
 BASE = ROOT / "dades" / "base_isin_any_v8r3.csv"
 REGISTRE = ROOT / "docs" / "REGISTRE_CANVIS.csv"
 MANIFEST = ROOT / "MANIFEST_SHA256.csv"
+ESTAT_CSV = ROOT / "estat" / "estat_files.csv"
+RESUM_ESTAT = ROOT / "estat" / "RESUM_ESTAT.md"
+DUBTES_TANCATS = ROOT / "estat" / "dubtes_tancats.csv"
+URLS_ARXIU = ROOT / "estat" / "urls_per_arxivar.csv"
+# Funcions de cita que entren a la cua d'arxiu (estat/llista_urls_arxiu.py).
+FUNCIONS_CUA = {"ceo", "fundador", "context", "datacio"}
+PENDENTS = ROOT / "PENDENTS.md"
 # CSV opcional (no existeix ara): id_document_o_font,url_wayback[,timestamp]
 # Només s'usa si existeix; no s'inventa mai.
 WAYBACK_EXTRA = SORTIDA / "fonts_wayback_extra.csv"
+
+# Nom de la versió congelada. Buit mentre Jordi no el confirmi: el text diu
+# només «la versió congelada», sense número.
+VERSIO_CONGELADA = ""
+GH_BLOB = f"{REPO_GITHUB}/blob/main"
+METODOLOGIA_COMPLETA = "docs/METODOLOGIA_3_Articles_v0.10.10.md"
+
+# Estat exclusiu de cada fila (ordre de l'embut). Clau: (icona, nom, nom curt, definició).
+ESTATS = {
+    "acabada": ("✓", "Acabada", "Acab.",
+                "Té cita de CEO i de fundador, coherent amb la base i sense dubtes, i la cita s'ha "
+                "verificat per script a la còpia de Wayback."),
+    "arxiu": ("◷", "Només falta l'arxiu", "Arxiu",
+              "L'evidència és completa i coherent; falta verificar la cita a una còpia de Wayback."),
+    "dubte": ("?", "Amb dubte o incoherència", "Dubte",
+              "Té cita de CEO i de fundador, però hi ha un dubte obert a PENDENTS.md o no quadra amb la base."),
+    "falta": ("–", "Falta evidència", "Falta",
+              "Encara no hi ha cita vàlida de CEO o de fundador."),
+}
+ORDRE_ESTATS = ["acabada", "arxiu", "dubte", "falta"]
+# Mancances (no excloents): nom planer i «què s'hi fa». {cua} = URL a la cua d'arxiu.
+MANCANCES = {
+    "falta_arxiu": ("Falta la cita verificada a la còpia de Wayback",
+                    "Flux automàtic de Wayback a GitHub; {cua} URL a la cua."),
+    "falta_fundador": ("Falta la prova de fundador",
+                       "Fitxa de fundació per empresa (lot 18, en preparació)."),
+    "dubte_obert": ("Dubte obert",
+                    "Cerca sense límit d'intents (A.4) i decisió de Jordi."),
+    "falta_ceo": ("Falta la cita de CEO", "Cerca de la cita de CEO."),
+    "incoherent": ("No quadra amb la base", "Revisió de la fila contra l'evidència."),
+}
+# Origen dels dubtes oberts: (nom planer, encapçalament de PENDENTS.md).
+ORIGENS_DUBTE = {
+    "regla29": ("Regla 29 (triatge de lots)", "Dubtes dels lots fora_mostra_auditoria (regla 29)"),
+    "lot9": ("Lot 9", "Dubtes del lot ceo_pendent (lot 9)"),
+    "lot10": ("Lot 10", "Dubtes del lot traspàs de cites (lot 10)"),
+    "lot12": ("Lot 12", "Dubtes del lot 12 (cerca de CEO del grup F)"),
+    "lot16": ("Lot 16", "Dubtes del lot 16 (cites de fundador del grup F)"),
+    "lot17": ("Lot 17", "Dubtes del lot 17 (cerca de CEO)"),
+    "ND_obert": ("ND obert", "1. Casos oberts"),
+}
+# Problemes de coherència (c4_coherencia), en paraules (estat/README.md).
+PROBLEMES_C4 = {
+    "ceos_diferent_de_sim_ceo_aplicat": "El CEO de la base no coincideix amb el CEO aplicat a l'auditoria.",
+    "F_sense_regla_de_si": "Etiqueta F sense cap regla de «sí» registrada a la base.",
+    "P_sense_prova_de_no": "Etiqueta P sense cap regla de prova de no fundador registrada a la base.",
+    "P_amb_regla_de_si": "Etiqueta P amb una regla de «sí» registrada a la base.",
+    "motiu_nd_residual": "Hi ha un motiu de ND en una fila que no és ND.",
+    "NA_sense_motiu_na": "Fila NA sense motiu registrat.",
+}
+# Regles de la columna `regles`, en paraules. Els codis que no hi són es mostren
+# tal com són, enllaçats al glossari del Mètode (no s'inventa cap descripció).
+REGLES_TEXT = {
+    "b": "b · edat a la fundació",
+    "d": "d · incorporació posterior",
+    "c_AAF64_reserva": "c · 64 anys o més (reserva)",
+    "a": "a · llista de fundadors",
+    "e": "e · origen no personal",
+    "c": "c · 64 anys o més (reserva)",
+    "cita_fundador": "l'anomena fundador",
+    "D37": "l'anomena fundador",
+    "cap": "sense regla registrada",
+    # Codis sense resum aprovat: només el codi en forma llegible (cap definició nova).
+    "d_per_part": "d (per parts) · vegeu el Mètode",
+    "b_per_part": "b (per parts) · vegeu el Mètode",
+    "holding_interposada": "holding interposada · vegeu el Mètode",
+    "D10b_prelacio": "D10b (prelació) · vegeu el Mètode",
+    "D10": "D10 · vegeu el Mètode",
+    "FT": "FT · vegeu el Mètode",
+    # Regles del CEO.
+    "R1": "R1 · títol de CEO",
+    "R2": "R2 · CEO interí",
+    "R2b": "R2b · direcció col·legiada transitòria",
+    "R3": "R3 · primer executiu (càrrec de CEO vacant)",
+    "R-SC": "R-SC · sense CEO individual",
+    "ceo_interval": "CEO per interval",
+}
+# Àncora del glossari per a cada codi de regla.
+REGLA_ANCORA = {"cita_fundador": "D37", "c_AAF64_reserva": "c"}
+# Codis de prova de fundador (columna `regles` i `marca_prova`), en tres grups.
+CODIS_SI = {"cita_fundador", "D37", "FT", "D10", "D10b_prelacio"}
+CODIS_NO = {"a", "b", "c", "c_AAF64_reserva", "d", "e", "d_per_part", "b_per_part"}
+CODIS_ALTRES = {"holding_interposada"}
+CODIS_CEO = {"R2", "R2b", "R3", "ceo_interval"}
+# Equivalències per comparar la regla d'una cita amb la de la fila.
+CODI_CANON = {"cita_fundador": "D37", "c": "c_AAF64_reserva", "d_per_part": "d", "b_per_part": "b"}
+# Frase curta de cada prova (la mateixa que el Mètode). Una sola font per als dos llocs.
+REGLES_FRASE = {
+    "R1": "Títol de CEO o càrrec legal equivalent (Vorstandsvorsitzender, consejero delegado, PDG, directeur général…).",
+    "R2": "CEO interí.",
+    "R2b": "Direcció col·legiada transitòria.",
+    "R3": "Persona descrita literalment com a primer executiu quan el càrrec de CEO és vacant (el president executiu, només per aquesta via).",
+    "R-SC": "Sense CEO individual a 31/10 (NA), un cop aplicades R1-R3.",
+    "ceo_interval": "Interval: un document de nomenament amb data igual o anterior al 31/10 i un altre que anomena la persona CEO en una data igual o posterior.",
+    "D37": "Cita de l'emissor que anomena la persona fundadora o cofundadora de la cotitzada, del grup o d'una predecessora documentada.",
+    "a": "Llista tancada de fundadors en què el CEO no hi és.",
+    "b": "Edat: l'any de la fundació rellevant més recent, el CEO tenia menys de 18 anys.",
+    "c": "64 anys o més entre la fundació rellevant i l'inici del mandat, només si no hi ha dada d'edat.",
+    "d": "Incorporació tardana: el CEO entra 3 anys o més després de la fundació, amb cita de l'ocupador anterior.",
+    "e": "Origen no personal: l'entitat la va crear l'Estat o una altra empresa, sense persona fundadora.",
+}
+# Codis sense resum aprovat en aquest lloc: on són a la metodologia vigent. El
+# número de línia es busca en generar el lloc (patró de la línia); si el patró
+# no hi és, l'enllaç va al fitxer sencer. No s'hi afegeix cap descripció pròpia.
+REGLES_REF = {
+    "FT": (r"^6\. \*\*Raiders o refundadors", "secció 2.3, regla 6 (raiders o refundadors)"),
+    "D10": (r"^\*\*Pas B: estatus de fundador", "secció 2.1, pas B (predecessores D1/D10 del PROTOCOL)"),
+    "D10b_prelacio": (r"^4\. \*\*Spin-off:", "secció 2.3, regla 4 (spin-off; prelació D10b)"),
+    "d_per_part": (r"^21\. \*\*Proves de l'estatus de fundador", "secció 2.3, regla 21 (proves a-e)"),
+    "b_per_part": (r"^21\. \*\*Proves de l'estatus de fundador", "secció 2.3, regla 21 (proves a-e)"),
+    "holding_interposada": (r"^- \*\*D36 ", "alineació del 15/11/2026, D36 (holding interposada)"),
+}
 
 # Criteris de la part pública ------------------------------------------------
 # Termes que no es mostren mai (fitxers interns i columnes o notes de decisió).
@@ -250,6 +373,62 @@ def te_restringit(s: str) -> bool:
     return bool(RE_RESTRINGIT.search(s or ""))
 
 
+# Nom de visualització: la columna `nom_panell` és la descripció del valor
+# («Nestlé S.A. Namens-Aktien SF -,10»). Es treu el sufix de classe d'acció i el
+# nominal. El nom original es manté al `title` i a la cerca; dades/ no es toca.
+RE_SUFIX_VALOR = re.compile(
+    r"(?:\s+|(?<=[a-z]\.)|(?<=PLC)|(?<=Group))"
+    r"(?:vink\.|z\.\s?Umtausch|Reg(?:ist(?:ered|\.)|\.|(?!\w))|Bearer|Namens\w*|Namen-\w*|Nam\.|Nam-|Navne-?\w*|Namn-?\w*|"
+    r"Inhaber-?\w*|Inh\.|Indehaver\w*|Ihændehaver\w*|Actions?(?!\w)|Act\.|Azioni|Acciones|Acç\w*|Acções\w*|Ações|Aand\.|Aandelen|"
+    r"Aktier|Aktien(?!\w)|Akt\.|Aksjer|Shares\w*|Shs|Sh\.|Stamm\w*|Vorzug\w*|Port\.|Nom\.|Ordinary|Ord\.|Units?(?!\w)|Uts|"
+    r"Depositary|Anrechte|o\.N\.|Cert\.v\.|Parts\s+Sociales|Stapled)"
+    r".*$", re.I)
+
+
+def nom_visible(nom: str) -> str:
+    s = RE_SUFIX_VALOR.sub("", nom).strip()
+    s = re.sub(r"[\s,;:/(\-]+$", "", s)
+    m = re.match(r"^(.*?),\s*(The|L')$", s)
+    if m:
+        s = ("The " if m.group(2) == "The" else m.group(2)) + m.group(1)
+    return s or nom
+
+
+_LINIES_METODOLOGIA: list[str] | None = None
+
+
+def ref_metodologia(codi: str) -> tuple[str, str] | None:
+    """(URL a la línia de la metodologia vigent, text de la referència) per als
+    codis sense resum aprovat. Si no troba la línia, l'URL és el fitxer sencer."""
+    global _LINIES_METODOLOGIA
+    if codi not in REGLES_REF:
+        return None
+    patro, text = REGLES_REF[codi]
+    if _LINIES_METODOLOGIA is None:
+        p = ROOT / METODOLOGIA_COMPLETA
+        _LINIES_METODOLOGIA = p.read_text(encoding="utf-8").splitlines() if p.exists() else []
+    url = f"{GH_BLOB}/{METODOLOGIA_COMPLETA}"
+    for i, linia in enumerate(_LINIES_METODOLOGIA, start=1):
+        if re.search(patro, linia):
+            return f"{url}?plain=1#L{i}", text
+    return url, text
+
+
+def carrega_anomena():
+    """La mateixa regla que estat/estat_files.py per decidir si una cita anomena
+    el CEO (s'importa el mòdul, sense escriure bytecode a estat/)."""
+    import importlib.util
+    prev = sys.dont_write_bytecode
+    sys.dont_write_bytecode = True
+    try:
+        spec = importlib.util.spec_from_file_location("estat_files_dashboard", ROOT / "estat" / "estat_files.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+    finally:
+        sys.dont_write_bytecode = prev
+    return lambda cita, nom: mod.anomena(mod.norm(cita), nom)
+
+
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as f:
@@ -282,7 +461,7 @@ def comprova_integritat(sha_esperat: str | None) -> dict[str, str]:
     with MANIFEST.open(encoding="utf-8", newline="") as f:
         manifest = {r["fitxer"]: r["sha256"] for r in csv.DictReader(f)}
     shas = {}
-    for p in (BASE, REGISTRE):
+    for p in (BASE, REGISTRE, ESTAT_CSV, PENDENTS, DUBTES_TANCATS):
         rel = p.relative_to(ROOT).as_posix()
         if not p.exists():
             atura(f"no trobo {rel}")
@@ -296,6 +475,21 @@ def comprova_integritat(sha_esperat: str | None) -> dict[str, str]:
     if sha_esperat and shas[rel_base] != sha_esperat:
         atura(f"el SHA-256 de {rel_base} ({shas[rel_base]}) no és l'esperat ({sha_esperat})")
     return shas
+
+
+def comprova_resum_estat(shas: dict[str, str]) -> str:
+    """Comprova que les quatre línies SHA-256 de la capçalera de RESUM_ESTAT.md
+    corresponen als fitxers actuals (és a dir, que l'estat és d'aquestes dades).
+    Retorna el text del resum per a les comprovacions de xifres."""
+    if not RESUM_ESTAT.exists():
+        atura("no trobo estat/RESUM_ESTAT.md: executa python3 estat/estat_files.py")
+    text = RESUM_ESTAT.read_text(encoding="utf-8")
+    trobats = dict(re.findall(r"^- `([^`]+)` SHA-256 `([0-9a-f]{64})`", text, re.M))
+    for p in (BASE, REGISTRE, PENDENTS, DUBTES_TANCATS):
+        rel = p.relative_to(ROOT).as_posix()
+        if trobats.get(rel) != shas[rel]:
+            atura(f"estat/RESUM_ESTAT.md no correspon a {rel} actual: executa python3 estat/estat_files.py")
+    return text
 
 
 def commit_referencia(commit_arg: str | None) -> tuple[str, str]:
@@ -397,6 +591,32 @@ def carrega_model(stats: Counter) -> dict:
         g["n_files"] += 1
     stats["registre_files"] = len(registre)
     stats["registre_proves_agrupades"] = len(grups)
+    # Recomptes d'entrades del registre (cicle de qualitat): entrades, no files.
+    reg = Counter()
+    for r in registre:
+        reg["entrades"] += 1
+        reg[r["marca_veritat"].strip() or "(buida)"] += 1
+        wb = (r["url_wayback"] or "").strip()
+        if re.match(r"^https?://web\.archive\.org/web/", wb, re.I):
+            reg["wb_url"] += 1
+        elif wb.lower() == "pendent_verificacio_externa":
+            reg["wb_pendent"] += 1
+        if (r["cita_verificada_a_captura"] or "").strip() == "si":
+            reg["capt_si"] += 1
+    # URL a la cua d'arxiu, calculades del registre actual amb la mateixa regla
+    # que estat/llista_urls_arxiu.py (així no depèn que el CSV estigui al dia).
+    urls_info: set[str] = set()
+    urls_verif: set[str] = set()
+    for r in registre:
+        url = (r.get("url_font") or "").strip()
+        if not url.lower().startswith(("http://", "https://")) or not (r.get("cita_literal") or "").strip():
+            continue
+        if r.get("funcio_cita") not in FUNCIONS_CUA:
+            continue
+        if r.get("cita_verificada_a_captura") == "si":
+            urls_verif.add(url)
+        urls_info.add(url)
+    reg["urls_cua"] = len(urls_info - urls_verif)
 
     proves_per_isin: dict[str, list[dict]] = defaultdict(list)
     for g in grups.values():
@@ -409,7 +629,7 @@ def carrega_model(stats: Counter) -> dict:
     empreses = {}
     for isin in sorted(files_per_isin):
         empreses[isin] = construeix_empresa(isin, files_per_isin[isin], proves_per_isin.get(isin, []), stats)
-    return {"empreses": empreses, "n_files": len(base)}
+    return {"empreses": empreses, "n_files": len(base), "registre": reg}
 
 
 def prepara_prova(g: dict, wb_extra: dict, stats: Counter) -> None:
@@ -473,38 +693,30 @@ def prepara_prova(g: dict, wb_extra: dict, stats: Counter) -> None:
     g["origen_pub"] = orig
     joined = " ".join(g["notes"])
     g["no_valida"] = "no_valida" in joined
-    g["pendent_df"] = "pendent_DF" in joined
+    # «Pendent d'arxiu»: pendent_arxiu (abans pendent_DF).
+    g["pendent_arxiu"] = "pendent_DF" in joined or "pendent_arxiu" in joined
+    g["capt_si"] = "si" in g["capt"]
 
 
 def construeix_empresa(isin: str, files: list[dict], proves: list[dict], stats: Counter) -> dict:
     anys_base = [int(r["any"]) for r in files]
     set_anys = set(anys_base)
-    nom = files[-1]["nom_panell"].replace("​", "").strip()
-    altres_noms = []
+    nom_base = files[-1]["nom_panell"].replace("​", "").strip()
+    nom = nom_visible(nom_base)
+    altres_noms = []       # noms originals de la base (per a la cerca)
+    altres_visibles = []   # els mateixos, nets, si són diferents del nom que es mostra
     for r in files:
         n = r["nom_panell"].replace("​", "").strip()
-        if n != nom:
+        if n != nom_base:
             afegeix(altres_noms, n)
+            if nom_visible(n) != nom:
+                afegeix(altres_visibles, nom_visible(n))
 
     # Anys de cada prova que no són al panell de l'ISIN (es mostren igualment).
     for p in proves:
         p["anys_fora"] = [a for a in p["anys"] if a not in set_anys]
         if p["anys_fora"]:
             stats["proves_amb_anys_fora_panell"] += 1
-
-    # Indicadors per any (funcio_cita estricta, com demana l'encàrrec).
-    prova_ceo: dict[int, str] = {}
-    prova_fund: dict[int, str] = {}
-    cobert: set[int] = set()
-    for p in proves:
-        for a in p["anys"]:
-            cobert.add(a)
-            for funcio, dest in (("ceo", prova_ceo), ("fundador", prova_fund)):
-                if funcio in p["funcio"]:
-                    if p["es_v"]:
-                        dest[a] = "V"
-                    else:
-                        dest.setdefault(a, "NV")
 
     # Cites que només són al CSV de la base.
     reg_index = defaultdict(list)
@@ -575,10 +787,7 @@ def construeix_empresa(isin: str, files: list[dict], proves: list[dict], stats: 
             "cert": r["sim_estat_certificacio"],
             "nivell": (r["sim_nivell"] or "").strip(),
             "aplicat": aplicat if aplicat and aplicat != (r["ceos"] or "").strip() else "",
-            "prova_ceo": prova_ceo.get(a, ""),
-            "prova_fund": prova_fund.get(a, ""),
             "base_fund": a in base_fund_anys,
-            "cobert": a in cobert or a in base_fund_anys,
             "supersector": (r["supersector_fix"] or "").strip(),
             "estat_sector": r["estat_sector"],
         })
@@ -596,7 +805,9 @@ def construeix_empresa(isin: str, files: list[dict], proves: list[dict], stats: 
     return {
         "isin": isin,
         "nom": nom,
+        "nom_base": nom_base,
         "altres_noms": altres_noms,
+        "altres_visibles": altres_visibles,
         "pais_codi": pais_codi,
         "pais": PAISOS_ISIN.get(pais_codi, f"prefix {pais_codi}"),
         "anys": anys_base,
@@ -613,6 +824,179 @@ def construeix_empresa(isin: str, files: list[dict], proves: list[dict], stats: 
 
 
 # ---------------------------------------------------------------------------
+# Estat de cada fila (estat/estat_files.csv): l'únic comptador de progrés
+# ---------------------------------------------------------------------------
+
+
+def estat_exclusiu(estat: str) -> str:
+    """Estat exclusiu de la fila, en l'ordre de l'embut (§1.1 de l'especificació)."""
+    toks = {t for t in (estat or "").split("+") if t}
+    if toks & {"falta_ceo", "falta_fundador"}:
+        return "falta"
+    if toks & {"dubte_obert", "incoherent"}:
+        return "dubte"
+    if "falta_arxiu" in toks:
+        if toks != {"falta_arxiu"}:
+            atura(f"estat desconegut a estat_files.csv: {estat!r}")
+        return "arxiu"
+    if toks == {"acabada"}:
+        return "acabada"
+    atura(f"estat desconegut a estat_files.csv: {estat!r}")
+    return ""
+
+
+def carrega_estat(model: dict) -> None:
+    """Uneix cada fila de la base amb la seva fila d'estat per (isin, any)."""
+    files = llegeix_csv(ESTAT_CSV)
+    estat = {}
+    for r in files:
+        k = (r["isin"].strip(), r["any"].strip())
+        if k in estat:
+            atura(f"clau duplicada a estat/estat_files.csv: {k}")
+        estat[k] = r
+    claus_base = {(e["isin"], str(f["any"])) for e in model["empreses"].values() for f in e["files"]}
+    if len(estat) != model["n_files"] or set(estat) != claus_base:
+        atura("estat/estat_files.csv no té les mateixes claus (isin, any) que la base: "
+              "executa python3 estat/estat_files.py")
+    for e in model["empreses"].values():
+        for f in e["files"]:
+            r = estat[(e["isin"], str(f["any"]))]
+            f["est"] = r
+            f["cat"] = estat_exclusiu(r["estat"])
+            f["mancances"] = [t for t in r["estat"].split("+") if t in MANCANCES]
+            f["dubtes"] = [t for t in r["dubtes_oberts"].split(";") if t]
+            f["regles"] = [t for t in re.split(r"[;|]", r["regles"] or "") if t]
+        e["st"] = Counter(f["cat"] for f in e["files"])
+        e["mancances"] = sorted({m for f in e["files"] for m in f["mancances"]}, key=list(MANCANCES).index)
+
+
+def compta_files_csv(path: Path) -> int | None:
+    if not path.exists():
+        return None
+    return len(llegeix_csv(path))
+
+
+def xifres_resum(text: str) -> dict:
+    """Llegeix de RESUM_ESTAT.md l'embut, la fila Total i les mancances, per
+    comprovar que l'Estat mostra exactament les mateixes xifres."""
+    def num(s: str) -> int:
+        return int(s.replace(".", ""))
+    out: dict = {}
+    m = re.search(r"^## Embut\n(.*?)\n## ", text, re.S | re.M)
+    if m:
+        out["embut"] = [num(x) for x in re.findall(r"^\|[^|\n]+\|\s*([\d.]+)", m.group(1), re.M)]
+    m = re.search(r"^\| \*\*Total\*\* \|(.*)$", text, re.M)
+    if m:
+        out["total"] = [num(x) for x in re.findall(r"([\d.]+) \(", m.group(1))]
+    m = re.search(r"^## Què falta, per condició\n(.*?)\n## ", text, re.S | re.M)
+    if m:
+        out["mancances"] = {k: num(v) for k, v in re.findall(r"^\| `(\w+)` \|.*\|\s*([\d.]+) \|$", m.group(1), re.M)}
+    return out
+
+
+def calcula_estat(model: dict, resum_text: str) -> dict:
+    emp = model["empreses"]
+    files = [f for e in emp.values() for f in e["files"]]
+    tot = len(files)
+    cat = Counter(f["cat"] for f in files)
+    toks = [set(f["est"]["estat"].split("+")) for f in files]
+    c1 = sum("falta_ceo" not in t for t in toks)
+    c2 = sum("falta_fundador" not in t for t in toks)
+    c4 = sum(not (t & {"incoherent", "dubte_obert"}) for t in toks)
+    c3 = sum("falta_arxiu" not in t for t in toks)
+    c12 = sum(not (t & {"falta_ceo", "falta_fundador"}) for t in toks)
+    c124 = sum(not (t & {"falta_ceo", "falta_fundador", "incoherent", "dubte_obert"}) for t in toks)
+    acab = cat["acabada"]
+    # Assercions de §1.1: la barra de quatre estats ha de quadrar amb l'embut.
+    if c12 != tot - cat["falta"]:
+        atura(f"l'embut no quadra: C1∧C2 = {c12}, total − falta evidència = {tot - cat['falta']}")
+    if c124 != c12 - cat["dubte"]:
+        atura(f"l'embut no quadra: C1∧C2∧C4 = {c124}, C1∧C2 − dubte = {c12 - cat['dubte']}")
+    if acab != c124 - cat["arxiu"] or sum(cat.values()) != tot:
+        atura("l'embut no quadra amb els quatre estats")
+    embut = [tot, c12, c124, acab]
+    mancances = Counter(m for f in files for m in f["mancances"])
+
+    # Les xifres han de ser les de estat/RESUM_ESTAT.md.
+    ref = xifres_resum(resum_text)
+    if ref.get("embut") != embut:
+        atura(f"l'embut ({embut}) no coincideix amb estat/RESUM_ESTAT.md ({ref.get('embut')})")
+    if ref.get("total") != [c1, c2, c12, c4, c3, acab]:
+        atura(f"la fila Total no coincideix amb estat/RESUM_ESTAT.md ({ref.get('total')})")
+    if ref.get("mancances") != {k: mancances[k] for k in ref.get("mancances", {})} or \
+            set(ref.get("mancances", {})) != set(MANCANCES):
+        atura(f"les mancances no coincideixen amb estat/RESUM_ESTAT.md ({ref.get('mancances')})")
+
+    per_etiq = {}
+    for l in ["F", "P", "NA", "ND"]:
+        fl = [(f, t) for f, t in zip(files, toks) if f["lletra"] == l]
+        per_etiq[l] = {
+            "files": len(fl),
+            "C1": sum("falta_ceo" not in t for _, t in fl),
+            "C2": sum("falta_fundador" not in t for _, t in fl),
+            "C4": sum(not (t & {"incoherent", "dubte_obert"}) for _, t in fl),
+            "C3": sum("falta_arxiu" not in t for _, t in fl),
+            "acabada": sum(f["cat"] == "acabada" for f, _ in fl),
+        }
+    per_any: dict[int, Counter] = defaultdict(Counter)
+    etiq_any: dict[int, Counter] = defaultdict(Counter)
+    for f in files:
+        per_any[f["any"]][f["cat"]] += 1
+        per_any[f["any"]]["total"] += 1
+        etiq_any[f["any"]][f["lletra"]] += 1
+        etiq_any[f["any"]]["total"] += 1
+    dubtes = Counter(d for f in files for d in f["dubtes"])
+    # Repartiment de cada mancança entre els quatre estats exclusius (conciliació).
+    manc_cat = {k: Counter(f["cat"] for f in files if k in f["mancances"]) for k in MANCANCES}
+    dubte_cat = Counter(f["cat"] for f in files if f["dubtes"])
+    return {
+        "n_isin": len(emp), "tot": tot, "cat": cat, "embut": embut,
+        "c1": c1, "c2": c2, "c3": c3, "c4": c4,
+        "per_etiq": per_etiq, "per_any": dict(sorted(per_any.items())),
+        "etiq_any": dict(sorted(etiq_any.items())),
+        "etiq": Counter(f["lletra"] for f in files),
+        "mancances": mancances,
+        "manc_cat": manc_cat,
+        "dubte_cat": dubte_cat,
+        "dubtes": dubtes,
+        "files_amb_dubte": sum(bool(f["dubtes"]) for f in files),
+        "dubtes_tancats": compta_files_csv(DUBTES_TANCATS) or 0,
+        "urls_cua": model["registre"]["urls_cua"],
+        "urls_cua_fitxer": compta_files_csv(URLS_ARXIU),
+        "columna_antiga": sum(f["est"]["c2_fundador"] == "ok_columna_antiga" for f in files),
+        "interval": sum("interval" in f["est"]["c1_tipus"] for f in files),
+        "registre": model["registre"],
+        "emp_totes_acabades": sum(e["st"]["acabada"] == len(e["files"]) for e in emp.values()),
+        "emp_estat": Counter(k for e in emp.values() for k in ORDRE_ESTATS if e["st"][k]),
+        "emp_etiq": Counter(l for e in emp.values() for l in ORDRE_ETIQ if e["recompte"][l]),
+    }
+
+
+def pendents_info() -> dict:
+    """Només els encapçalaments «## …» i les àncores <a id> de PENDENTS.md."""
+    text = PENDENTS.read_text(encoding="utf-8")
+    return {
+        "titols": {l[3:].strip() for l in text.splitlines() if l.startswith("## ")},
+        "ancores": set(re.findall(r'<a id="([^"]+)"', text)),
+    }
+
+
+def slug_github(titol: str) -> str:
+    s = titol.strip().lower()
+    s = re.sub(r"[^\w\- ]", "", s)
+    return s.replace(" ", "-")
+
+
+def url_pendents(pend: dict, origen: str | None = None, ancora: str | None = None) -> str:
+    url = f"{GH_BLOB}/PENDENTS.md"
+    if ancora and ancora in pend["ancores"]:
+        return f"{url}#{ancora}"
+    if origen in ORIGENS_DUBTE and ORIGENS_DUBTE[origen][1] in pend["titols"]:
+        return f"{url}#{slug_github(ORIGENS_DUBTE[origen][1])}"
+    return url
+
+
+# ---------------------------------------------------------------------------
 # HTML comú
 # ---------------------------------------------------------------------------
 
@@ -621,35 +1005,77 @@ class Context:
     def __init__(self, commit: str, data_commit: str, shas: dict[str, str]):
         self.commit = commit
         self.data_commit = data_commit
+        self.shas = shas
         self.sha_base = shas[BASE.relative_to(ROOT).as_posix()]
         self.sha_registre = shas[REGISTRE.relative_to(ROOT).as_posix()]
+        self.sha_estat = shas[ESTAT_CSV.relative_to(ROOT).as_posix()]
+        self.pend = pendents_info()
+        self.anomena = carrega_anomena()
 
 
 def curt(sha: str, n: int = 7) -> str:
     return sha[:n] if len(sha) > n else sha
 
 
-def avis(ctx: Context) -> str:
-    return (
-        '<aside class="avis" role="note">'
-        '<span class="avis-icona" aria-hidden="true">!</span>'
-        '<p><strong>Base en revisió final.</strong> '
-        f'Dades de <code>main</code> (commit <code title="{esc(ctx.commit)}">{esc(curt(ctx.commit))}</code>, '
-        f'CSV <code title="{esc(ctx.sha_base)}">{esc(curt(ctx.sha_base, 12))}…</code>). '
-        "Encara no és la v9 congelada. Algunes files tenen etiqueta però no tenen cita estructurada al registre.</p>"
-        "</aside>"
-    )
+def data_ca(d: str) -> str:
+    m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})", d or "")
+    return f"{m.group(3)}/{m.group(2)}/{m.group(1)}" if m else (d or "data desconeguda")
+
+
+def nom_versio() -> str:
+    return f"la versió congelada ({VERSIO_CONGELADA})" if VERSIO_CONGELADA else "la versió congelada"
+
+
+# Icones de la navegació (decoratives; al mòbil, a les pestanyes inferiors).
+ICONES_NAV = {
+    "estat": '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 16h14M5 13V9m4 4V5m4 8v-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "empreses": '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 4h12M4 8h12M4 12h12M4 16h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "metode": '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 3h8l3 3v11H5zM8 9h5M8 12h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+}
+ICONA_LUPA = ('<svg class="cb-lupa" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5" fill="none" '
+              'stroke="currentColor" stroke-width="1.8"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>')
+# Tema: l'opció desada (clar o fosc) s'aplica abans de pintar; si no n'hi ha, mana prefers-color-scheme.
+SCRIPT_TEMA = ("<script>(function(d){d.className+=' js';try{var t=localStorage.getItem('fc-tema');"
+               "if(t==='dark'||t==='light'){d.setAttribute('data-theme',t);}"
+               "if(localStorage.getItem('fc-drecera')==='off'){d.className+=' sense-drecera';}}catch(e){}})(document.documentElement);</script>")
+
+
+def combobox(id_: str, prefix: str, etiqueta: str, placeholder: str, *, local: bool = False,
+             cls: str = "", boto: bool = False, etiqueta_visible: bool = False, valor_nom: str = "q") -> str:
+    """Cercador amb suggeriments (patró combobox de l'ARIA APG). Sense JS, és un
+    formulari normal que porta a empreses.html?q=…; amb `local`, filtra la llista
+    de la mateixa pàgina i el Retorn no navega."""
+    lab_cls = "cb-et" if etiqueta_visible else "vh"
+    accio = "" if local else f' action="{prefix}empreses.html" method="get"'
+    nom = "" if local else f' name="{valor_nom}"'
+    submit = '<button type="submit" class="boto cb-boto">Cerca</button>' if boto else ""
+    kbd = '' if local or boto else '<kbd class="cb-kbd" aria-hidden="true">/</kbd>'
+    extra = ' data-local onsubmit="return false"' if local else ""
+    # Cada regió «search» té nom: la de la capçalera, «Cerca a tot el lloc»; les
+    # altres, la seva etiqueta visible.
+    nom_regio = (' aria-label="Cerca a tot el lloc"' if cls == "cb-cap" else f' aria-labelledby="{id_}-et"')
+    return (f'<form class="cb {cls}" role="search"{nom_regio}{accio} data-combobox{extra} data-prefix="{prefix}">'
+            f'<label class="{lab_cls}" id="{id_}-et" for="{id_}">{esc(etiqueta)}</label>'
+            f'<div class="cb-camp">{ICONA_LUPA}<input type="search" id="{id_}"{nom} autocomplete="off" spellcheck="false" '
+            f'placeholder="{esc(placeholder)}" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="{id_}-llista">'
+            f'{kbd}{submit}</div>'
+            f'<ul class="cb-llista" id="{id_}-llista" role="listbox" aria-label="Suggeriments" hidden></ul>'
+            f'<span class="vh cb-viu" aria-live="polite"></span></form>')
 
 
 def pagina(ctx: Context, *, titol: str, descripcio: str, cos: str, prefix: str,
-           actiu: str, scripts: tuple[str, ...] = ()) -> str:
+           actiu: str, scripts: tuple[str, ...] = (), ample: bool = False, cap_extra: str = "",
+           cls_body: str = "") -> str:
     nav = []
-    for clau, href, text in (("inici", "index.html", "Empreses"),
-                             ("metodologia", "metodologia.html", "Metodologia i llegenda")):
+    for clau, href, text in (("estat", "index.html", "Estat"),
+                             ("empreses", "empreses.html", "Empreses"),
+                             ("metode", "metodologia.html", "Mètode")):
         cur = ' aria-current="page"' if clau == actiu else ""
-        nav.append(f'<a href="{prefix}{href}"{cur}>{text}</a>')
-    js = "".join(f'<script src="{prefix}assets/{s}" defer></script>' for s in scripts)
-    data = f" ({esc(ctx.data_commit)})" if ctx.data_commit else ""
+        nav.append(f'<a href="{prefix}{href}"{cur}>{ICONES_NAV[clau]}<span>{text}</span></a>')
+    js = "".join(f'<script src="{prefix}assets/{s}" defer></script>' for s in ("comu.js", *scripts))
+    data = data_ca(ctx.data_commit)
+    body = f' class="{cls_body}"' if cls_body else ""
+    cerca = combobox("cerca-cap", prefix, "Busca una empresa, un ISIN o un CEO", "Busca empresa, ISIN o CEO", cls="cb-cap")
     return f"""<!doctype html>
 <html lang="ca">
 <head>
@@ -658,27 +1084,27 @@ def pagina(ctx: Context, *, titol: str, descripcio: str, cos: str, prefix: str,
 <meta name="robots" content="noindex">
 <title>{esc(titol)}</title>
 <meta name="description" content="{esc(descripcio)}">
+{SCRIPT_TEMA}
 <link rel="stylesheet" href="{prefix}assets/style.css">
-<script>document.documentElement.className+=' js';</script>
-{js}
+{cap_extra}{js}
 </head>
-<body>
+<body{body}>
 <a class="salta" href="#contingut">Salta al contingut</a>
 <header class="barra">
 <div class="barra-in">
-<a class="marca" href="{prefix}index.html"><span class="marca-logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="marca-text">Dashboard Fundadors<small>STOXX Europe 600 · 2016–2025</small></span></a>
+<a class="marca" href="{prefix}index.html"><b>Fundadors-CEO · STOXX Europe 600</b><small>Base de dades de doctorat · 2016–2025</small></a>
+{cerca}
+<a class="pindola" href="{prefix}index.html#versio">En revisió · dades del {esc(data)}</a>
+<button type="button" class="tema" aria-pressed="false" title="Canvia entre el mode clar i el mode fosc"><span class="tema-i" aria-hidden="true"></span><span class="vh">Mode fosc</span></button>
 <nav class="nav" aria-label="Navegació principal">{''.join(nav)}</nav>
 </div>
 </header>
-<main id="contingut" class="pagina">
+<main id="contingut" class="pagina{' ample' if ample else ''}">
 {cos}
 </main>
 <footer class="peu">
-<div class="peu-in">
-<p>Generat per <code>dashboard/genera_dashboard.py</code> a partir del repositori. Commit de referència de <code>main</code>: <code>{esc(ctx.commit)}</code>{data}.</p>
-<p><code>dades/base_isin_any_v8r3.csv</code> SHA-256 <code>{esc(ctx.sha_base)}</code> · <code>docs/REGISTRE_CANVIS.csv</code> SHA-256 <code>{esc(ctx.sha_registre)}</code></p>
-<p>Versió provisional, publicada a GitHub Pages mentre la base està en revisió final. La metodologia que mana és la del <a href="{REPO_GITHUB}" target="_blank" rel="noopener noreferrer">repositori</a>; aquest lloc no la substitueix.</p>
-</div>
+<p class="peu-in">Generat a partir del repositori · commit <code title="{esc(ctx.commit)}">{esc(curt(ctx.commit))}</code> · {esc(data)} · Detalls a <a href="{prefix}index.html#versio">Sobre aquestes dades</a>
+<button type="button" class="drecera" title="La tecla «/» porta al cercador; Ctrl+K (⌘K) també, i no es desactiva">Desactiva la drecera «/»</button></p>
 </footer>
 </body>
 </html>
@@ -696,9 +1122,13 @@ def cel_buida(titol: str, petita: bool = False) -> str:
     return f'<span class="cel cel-buida" title="{esc(titol)}"><span class="vh">{esc(titol)}</span></span>'
 
 
+NOM_ETIQ = {v[0]: v[1] for v in ETIQUETES.values()}
+DEF_ND = "Hi ha un CEO identificat però cap prova concloent de sí ni de no, o les proves es contradiuen."
+NOM_ETIQ_MIN = {"F": "fundador-CEO", "P": "professional", "ND": "no determinat", "NA": "sense CEO"}
+
+
 def badge_etiq(lletra: str) -> str:
-    nom = {v[0]: v[1] for v in ETIQUETES.values()}[lletra]
-    return f'<span class="etq e-{lletra}"><b>{lletra}</b> {esc(nom)}</span>'
+    return f'<span class="etq e-{lletra}"><b>{lletra}</b> <span class="etq-nom">{esc(NOM_ETIQ[lletra])}</span></span>'
 
 
 def enllac_ext(url: str, text: str, cls: str = "") -> str:
@@ -709,134 +1139,490 @@ def enllac_ext(url: str, text: str, cls: str = "") -> str:
     return f'<a{c} href="{esc(u)}" target="_blank" rel="noopener noreferrer">{esc(text)}<span class="ext" aria-hidden="true">↗</span></a>'
 
 
+def insignia_estat(cat: str, curt_: bool = False) -> str:
+    icona, nom, nom_curt, defi = ESTATS[cat]
+    return (f'<span class="st st-{cat}" title="{esc(defi)}"><span aria-hidden="true">{icona}</span> '
+            f'{esc(nom_curt if curt_ else nom)}</span>')
+
+
+def minibarra_estat(st: Counter, total: int, cls: str = "mb") -> str:
+    """Minibarra de quatre segments (decorativa: el text del costat porta les xifres)."""
+    segs = "".join(
+        f'<i class="s-{k}" style="flex-grow:{st[k]}"></i>' for k in ORDRE_ESTATS if st[k]
+    )
+    return f'<span class="{cls}" aria-hidden="true">{segs}</span>'
+
+
+def pct_txt(n: int, d: int) -> str:
+    return fmt_pct(n, d)
+
+
+def dades_taula(cap: list[str], files: list[list[str]], caption: str, resum: str = "Mostra les dades en una taula") -> str:
+    th = "".join(f'<th scope="col"{" class=num" if i else ""}>{c}</th>' for i, c in enumerate(cap))
+    cos = "".join(
+        "<tr>" + "".join((f'<th scope="row">{c}</th>' if i == 0 else f'<td class="num">{c}</td>') for i, c in enumerate(fila)) + "</tr>"
+        for fila in files
+    )
+    return (f'<details class="dades"><summary>{esc(resum)}</summary>'
+            f'<div class="taula-wrap"><table class="taula-simple"><caption class="vh">{esc(caption)}</caption>'
+            f'<thead><tr>{th}</tr></thead><tbody>{cos}</tbody></table></div></details>')
+
+
 # ---------------------------------------------------------------------------
-# Pàgina d'inici
+# Components de l'Estat
 # ---------------------------------------------------------------------------
 
 
-def calcula_resum(model: dict) -> dict:
-    emp = model["empreses"]
-    rec = Counter()
-    per_any = defaultdict(Counter)
-    files_ceo = files_fund = files_coberts = 0
-    amb_registre = sense_cita = 0
-    for e in emp.values():
-        if e["proves"]:
-            amb_registre += 1
-        if not e["proves"] and not e["cites_base"]:
-            sense_cita += 1
-        for f in e["files"]:
-            rec[f["lletra"]] += 1
-            per_any[f["any"]][f["lletra"]] += 1
-            per_any[f["any"]]["total"] += 1
-            files_ceo += bool(f["prova_ceo"])
-            files_fund += bool(f["prova_fund"])
-            files_coberts += bool(f["cobert"])
-    return {
-        "n_isin": len(emp), "n_files": model["n_files"], "rec": rec, "per_any": per_any,
-        "amb_registre": amb_registre, "sense_cita": sense_cita,
-        "files_ceo": files_ceo, "files_fund": files_fund,
-        "files_sense_cita": model["n_files"] - files_coberts,
-    }
+def barra_apilada(segs: list[tuple[str, int, str]], total: int, etiqueta: str, cls: str) -> str:
+    """Barra al 100 % de segments (clau, n, nom). Els segments a 0 no es pinten.
+    Les xifres són a la llegenda (amb la mateixa precisió), no dins dels segments."""
+    parts = []
+    for clau, n, nom in segs:
+        if not n:
+            continue
+        parts.append(f'<span class="sb-s {cls}-{clau}" style="flex-grow:{n}" title="{esc(nom)}: {fmt_int(n)} ({fmt_pct(n, total)})"></span>')
+    aria = etiqueta + ": " + "; ".join(f"{nom} {fmt_int(n)} ({fmt_pct(n, total)})" for _, n, nom in segs)
+    return f'<div class="sb" role="img" aria-label="{esc(aria)}">{"".join(parts)}</div>'
 
 
-def grafic_f_per_any(resum: dict) -> str:
-    per_any = resum["per_any"]
-    anys = sorted(per_any)
+def llegenda_estats(cat: Counter, total: int) -> str:
+    items = []
+    for k in ORDRE_ESTATS:
+        icona, nom, _, defi = ESTATS[k]
+        items.append(
+            f'<li><span class="ll-cap"><span class="sw s-{k}" aria-hidden="true">{icona}</span><b>{esc(nom)}</b></span>'
+            f'<span class="ll-n ll-n-imp"><span class="ll-xifra">{fmt_int(cat[k])}</span> <span class="ll-pc">{fmt_pct(cat[k], total)}</span></span>'
+            f'<span class="ll-def">{esc(defi)}</span></li>'
+        )
+    # Les xifres ja són a les dreceres: a la pantalla, la llegenda només diu què vol
+    # dir cada estat; a la impressió (sense dreceres), també porta les xifres.
+    return f'<ul class="ll-estats">{"".join(items)}</ul>'
+
+
+def embut(E: dict) -> str:
+    tot, c12, c124, acab = E["embut"]
+    passos = [
+        ("Panell", tot, ""),
+        ("Amb cita de CEO i de fundador", c12, "falta"),
+        ("… i coherents, sense dubtes oberts", c124, "dubte"),
+        ("… i amb la cita verificada a la còpia de Wayback, és a dir, acabades", acab, "arxiu"),
+    ]
+    codis = ["", "C1 i C2", "C4", "C3"]
+    items = []
+    salts = []
+    prev = None
+    for i, (nom, n, perd) in enumerate(passos):
+        if prev is not None:
+            caiguda = prev - n
+            salts.append((caiguda, perd))
+            items.append(
+                f'<li class="eb-salt"><span class="sw s-{perd}" aria-hidden="true">{ESTATS[perd][0]}</span>'
+                f'−{fmt_int(caiguda)} {esc(ESTATS[perd][1].lower())}</li>'
+            )
+        pct = 100 * n / tot if tot else 0
+        val = fmt_int(n) + (f" ({fmt_pct(n, tot)})" if i else "")
+        cls = " eb-final" if i == len(passos) - 1 else ""
+        tit = f' title="Condicions {codis[i]}"' if codis[i] else ""
+        items.append(
+            f'<li class="eb-pas{cls}"><span class="eb-nom"{tit}>{esc(nom)}</span>'
+            f'<span class="eb-fila"><span class="eb-barra" aria-hidden="true" style="width:{pct:.2f}%"></span><span class="eb-val">{val}</span></span></li>'
+        )
+        prev = n
+    gran = max(salts, key=lambda x: x[0]) if salts else (0, "")
+    frase = ""
+    if gran[0]:
+        nom_pas = {"falta": "el de l'evidència", "dubte": "el dels dubtes", "arxiu": "el de l'arxiu"}[gran[1]]
+        frase = (f'<p class="resposta">El pas on es queden més files és <b>{esc(nom_pas)}</b>: '
+                 f'{fmt_int(gran[0])} files ({esc(ESTATS[gran[1]][1].lower())}).</p>')
+    taula = dades_taula(["Pas", "Files", "% del panell"],
+                        [[esc(nom), fmt_int(n), fmt_pct(n, tot)] for nom, n, _ in passos],
+                        "Files que superen cada pas de l'embut")
+    return f'{frase}<ol class="embut">{"".join(items)}</ol>{taula}'
+
+
+def taula_etiquetes(E: dict) -> str:
+    # (clau, nom planer, nom curt per al mòbil, codi i definició per al title)
+    cols = [("C1", "Cita de CEO", "Cita CEO", "C1: té cita vàlida de CEO"),
+            ("C2", "Prova de fundador", "Prova fund.", "C2: té prova de fundador o de no fundador"),
+            ("C4", "Sense dubtes", "Sense dubtes", "C4: coherent amb la base i sense dubtes oberts"),
+            ("C3", "Verificada a Wayback", "Wayback", "C3: cita verificada a la còpia de Wayback"),
+            ("acabada", "Acabades", "Acab.", "Compleix les quatre condicions")]
+    th = "".join(f'<th scope="col" class="num" title="{esc(t)}"><span class="llarg">{esc(n)}</span><span class="curt">{esc(c)}</span></th>'
+                 for k, n, c, t in cols)
+    files = []
+    for l in ["F", "P", "NA", "ND"]:
+        d = E["per_etiq"][l]
+        n = d["files"]
+        cel = []
+        for k, _, _, _ in cols:
+            v = d[k]
+            pct = 100 * v / n if n else 0
+            cel.append(f'<td class="num"><span class="tc-v"><span class="llarg">{fmt_pct(v, n)}</span><span class="curt">{fmt_pct(v, n, 0)}</span></span><span class="tc-n">{fmt_int(v)}</span>'
+                       f'<span class="mm" aria-hidden="true"><i style="width:{pct:.1f}%"></i></span></td>')
+        files.append(f'<tr><th scope="row">{badge_etiq(l)}<span class="tc-files">{fmt_int(n)} {"fila" if n == 1 else "files"}</span></th>'
+                     f'<td class="num col-files">{fmt_int(n)}</td>{"".join(cel)}</tr>')
+    return (f'<div class="taula-wrap"><table class="taula-etiq"><caption class="vh">Condicions complertes per etiqueta FounderCEO</caption>'
+            f'<thead><tr><th scope="col">Etiqueta</th><th scope="col" class="num col-files">Files</th>{th}</tr></thead>'
+            f'<tbody>{"".join(files)}</tbody></table></div>'
+            '<p class="nota-clara">Cada columna es compta per separat; l\'última és la combinació de totes.</p>')
+
+
+def taula_anys(E: dict) -> str:
+    """Taula any × estat: el número i el % de l'any, amb una barra de longitud en
+    el color de l'estat (sense intensitat de fons: el text queda sempre sobre la
+    superfície i la comparació es fa per longitud)."""
+    th = "".join(
+        f'<th scope="col" class="num"><span aria-hidden="true">{ESTATS[k][0]}</span> '
+        f'<span class="llarg">{esc(ESTATS[k][1])}</span><abbr class="curt" title="{esc(ESTATS[k][1])}">{esc(ESTATS[k][2])}</abbr></th>'
+        for k in ORDRE_ESTATS
+    )
+    files = []
+    for a, c in E["per_any"].items():
+        tot = c["total"]
+        cel = []
+        for k in ORDRE_ESTATS:
+            n = c[k]
+            pct = 100 * n / tot if tot else 0
+            cel.append(f'<td class="num ta"><b>{fmt_int(n)}</b> <small>{fmt_pct(n, tot, 0)}</small>'
+                       f'<span class="mm mk-{k}" aria-hidden="true"><i style="width:{pct:.1f}%"></i></span></td>')
+        files.append(f'<tr><th scope="row">{a}</th>{"".join(cel)}<td class="num">{fmt_int(tot)}</td></tr>')
+    return (f'<div class="taula-wrap"><table class="taula-anys"><caption class="vh">Files de cada any segons l\'estat (nombre i % de l\'any)</caption>'
+            f'<thead><tr><th scope="col">Any</th>{th}<th scope="col" class="num">Total</th></tr></thead>'
+            f'<tbody>{"".join(files)}</tbody></table></div>'
+            '<p class="nota">Sota cada xifra, una barra amb el % de les files de l\'any, en el color de l\'estat.</p>')
+
+
+def resposta_anys(E: dict) -> str:
+    per_any = E["per_any"]
+    if not per_any:
+        return ""
+    maxim = max(c["acabada"] for c in per_any.values())
+    if not maxim:
+        return '<p class="resposta">Encara cap any no té cap fila acabada.</p>'
+    millors = [a for a, c in per_any.items() if c["acabada"] == maxim]
+    if len(millors) == 1:
+        a = millors[0]
+        c = per_any[a]
+        return (f'<p class="resposta">L\'any amb més files acabades és el {a}: {fmt_int(c["acabada"])} de {fmt_int(c["total"])} '
+                f'({fmt_pct(c["acabada"], c["total"])}).</p>')
+    noms = ", ".join(f"el {a}" for a in millors[:-1]) + f" i el {millors[-1]}"
+    totals = {per_any[a]["total"] for a in millors}
+    if len(totals) == 1:
+        t = totals.pop()
+        detall = f"{fmt_int(maxim)} de {fmt_int(t)} cadascun ({fmt_pct(maxim, t)})"
+    else:
+        detall = f"{fmt_int(maxim)} cadascun (" + "; ".join(f"{a}: {fmt_pct(maxim, per_any[a]['total'])}" for a in millors) + ")"
+    return f'<p class="resposta">Els anys amb més files acabades són {noms}: {detall}.</p>'
+
+
+def barres_simples(files: list[tuple[str, int, str]], maxim: int, etiqueta: str) -> str:
+    """Barres horitzontals d'una sola sèrie: (nom en HTML, valor, detall en HTML)."""
+    items = []
+    for nom, n, detall in files:
+        pct = 100 * n / maxim if maxim else 0
+        items.append(
+            f'<li><span class="bs-nom">{nom}</span>'
+            f'<span class="bs-fila"><span class="bs-barra" aria-hidden="true" style="width:{pct:.2f}%"></span><span class="bs-val">{fmt_int(n)}</span></span>'
+            f'{detall}</li>'
+        )
+    return f'<ul class="bs" aria-label="{esc(etiqueta)}">{"".join(items)}</ul>'
+
+
+def conciliacio(n: int, per_cat: Counter) -> str:
+    """«5.733 = 4.472 només falta l'arxiu + 1.261 falta evidència»: reparteix les
+    files d'una mancança entre els quatre estats exclusius de la barra principal."""
+    parts = [f"{fmt_int(per_cat[k])} {ESTATS[k][1].lower()}" for k in ORDRE_ESTATS if per_cat[k]]
+    if sum(per_cat.values()) != n:
+        atura("la conciliació de les mancances no quadra amb els quatre estats")
+    if len(parts) < 2:
+        return f"Les {fmt_int(n)} files són a l'estat «{ESTATS[next(k for k in ORDRE_ESTATS if per_cat[k])][1]}»." if parts else ""
+    return f"Per estat de la fila: {fmt_int(n)} = " + " + ".join(parts) + "."
+
+
+def barres_mancances(E: dict) -> str:
+    tot = E["tot"]
+    cua = fmt_int(E["urls_cua"])
+    files = []
+    for k, (nom, que) in MANCANCES.items():
+        n = E["mancances"][k]
+        conc = conciliacio(n, E["manc_cat"][k]) if n else ""
+        detall = (f'<span class="bs-det">{fmt_int(n)} files ({fmt_pct(n, tot)}). {esc(conc)}</span>'
+                  f'<span class="bs-que"><b>Què s\'hi fa:</b> {esc(que.format(cua=cua))}</span>'
+                  f'<a class="bs-link" href="empreses.html#m={k}">Mostra les empreses</a>')
+        files.append((f'<span title="{esc(k)}">{esc(nom)}</span>', n, detall))
+    return barres_simples(files, tot, "Files amb cada mancança, sobre el total de files")
+
+
+def barres_dubtes(E: dict, pend: dict) -> str:
+    if not E["dubtes"]:
+        return '<p class="resposta">No hi ha dubtes oberts.</p>'
+    # De més a menys files; «ND obert» al final.
+    ordre = sorted((k for k in E["dubtes"] if k != "ND_obert"), key=lambda k: (-E["dubtes"][k], k))
+    if E["dubtes"]["ND_obert"]:
+        ordre.append("ND_obert")
+    maxim = max(E["dubtes"].values())
+    files = []
+    for k in ordre:
+        nom = ORIGENS_DUBTE.get(k, (k, ""))[0]
+        sec = ORIGENS_DUBTE.get(k, ("", ""))[1]
+        url = url_pendents(pend, k)
+        link = (f'<a class="bs-link" href="{esc(url)}" target="_blank" rel="noopener noreferrer" title="Secció «{esc(sec)}»">'
+                f'Veure la secció al fitxer de dubtes<span class="ext" aria-hidden="true">↗</span></a>') if sec else ""
+        files.append((f'<span title="{esc(k)}">{esc(nom)}</span>', E["dubtes"][k], link))
+    return barres_simples(files, maxim, "Files amb dubte obert, per origen")
+
+
+def passos_qualitat(E: dict) -> str:
+    R = E["registre"]
+    passos = [
+        ("Font A/B i cita literal", f'<b>{fmt_int(R["entrades"])}</b> entrades al registre'),
+        ("Document obert sencer i cita trobada",
+         f'<b>{fmt_int(R["[V]"])}</b> amb la cita trobada al document obert <span title="marca_veritat = [V]">([V])</span> · '
+         f'{fmt_int(R["[NV]"])} encara no comprovades <span title="marca_veritat = [NV]">([NV])</span>'),
+        ("Còpia a Wayback",
+         f'<b>{fmt_int(R["wb_url"])}</b> entrades amb URL Wayback'
+         + (f' (i {fmt_int(R["wb_pendent"])} marcades «pendent de verificació externa»)' if R["wb_pendent"] else "")
+         + f'; <b>{fmt_int(R["capt_si"])}</b> amb la cita verificada per script a la còpia arxivada'
+         + f'; {fmt_int(R["urls_cua"])} URL a la cua d\'arxiu'),
+        ("Validadors automàtics a cada PR", '<span title="valida_pr.py, comprova_enllacos_cites.py, estat_files.py --comprova">Tres scripts: format del registre, enllaços de les cites i estat de les files</span>'),
+        ("Revisió i fusió de Jordi", "i de Doctorat, si cal"),
+    ]
+    items = "".join(f'<li><span class="pq-n" aria-hidden="true">{i}</span><span class="pq-t"><b class="pq-nom">{esc(t)}</b><span>{x}</span></span></li>'
+                    for i, (t, x) in enumerate(passos, start=1))
+    return f'<ol class="passos">{items}</ol><p class="nota-clara">Xifres d\'entrades del registre, no de files.</p>'
+
+
+def grafic_f_per_any(E: dict) -> str:
+    per_any = E["etiq_any"]
+    anys = list(per_any)
     maxim = max((per_any[a]["F"] for a in anys), default=0)
     pas = 10 if maxim <= 60 else 20
     sostre = max(pas, -(-maxim // pas) * pas)
-    ticks = list(range(0, sostre + 1, pas))
     eix = "".join(
-        f'<span class="tick" style="bottom:{100 * t / sostre:.2f}%"><span>{t}</span></span>' for t in ticks
+        f'<span class="tick{"" if t in (0, sostre) or 2 * t == sostre else " tick-menor"}" style="bottom:{100 * t / sostre:.2f}%"><span>{t}</span></span>'
+        for t in range(0, sostre + 1, pas)
     )
     cols = []
-    files_taula = []
+    tips = []
     for a in anys:
         f, tot = per_any[a]["F"], per_any[a]["total"]
         alt = 100 * f / sostre if sostre else 0
         tip = f"{a}: {fmt_int(f)} files F de {fmt_int(tot)} ({fmt_pct(f, tot)})"
+        tips.append(f"{a} {fmt_int(f)} ({fmt_pct(f, tot)})")
         cols.append(
-            f'<div class="bcol" tabindex="0" aria-label="{esc(tip)}">'
-            f'<div class="barea"><span class="bar" style="height:{alt:.2f}%"></span></div>'
-            f'<span class="bany">{a}</span><span class="tip" role="tooltip">{esc(tip)}</span></div>'
+            f'<div class="bcol" tabindex="0" role="img" aria-label="{esc(tip)}">'
+            f'<div class="barea" aria-hidden="true"><span class="bar" style="height:{alt:.2f}%"><span class="bval">{fmt_int(f)}</span></span></div>'
+            f'<span class="bany" aria-hidden="true"><span><span class="a2">{str(a)[:2]}</span>{str(a)[2:]}</span><small>{fmt_pct(f, tot)}</small></span><span class="tip" aria-hidden="true">{esc(tip)}</span></div>'
         )
-        files_taula.append(
-            f"<tr><td>{a}</td><td class='num'>{fmt_int(f)}</td><td class='num'>{fmt_int(tot)}</td><td class='num'>{fmt_pct(f, tot)}</td></tr>"
-        )
-    return f"""<figure class="panell grafic">
-<figcaption><h2 class="h-panell">Files F per any</h2><p class="nota">Files amb FounderCEO = 1 (fundador-CEO) cada any. Passa el cursor o el focus per sobre d'una barra per veure'n el detall.</p></figcaption>
-<div class="barres" role="img" aria-label="Files F per any, de {anys[0] if anys else ''} a {anys[-1] if anys else ''}">
-<div class="eix">{eix}</div>
-<div class="bcols">{''.join(cols)}</div>
-</div>
-<details class="dades"><summary>Mostra les dades en una taula</summary>
-<table class="taula-simple"><thead><tr><th>Any</th><th class="num">Files F</th><th class="num">Files al panell</th><th class="num">% F</th></tr></thead><tbody>{''.join(files_taula)}</tbody></table>
-</details>
-</figure>"""
+    taula = dades_taula(["Any", "Files F", "Files al panell", "% F"],
+                        [[str(a), fmt_int(per_any[a]["F"]), fmt_int(per_any[a]["total"]), fmt_pct(per_any[a]["F"], per_any[a]["total"])] for a in anys],
+                        "Files F per any")
+    aria = "Files F per any: " + "; ".join(tips)
+    return (f'<figure class="grafic"><figcaption class="h3">Files F per any <span class="nota llarg">(sota cada any, el % de files F)</span></figcaption>'
+            f'<div class="barres" role="group" aria-label="{esc(aria)}">'
+            f'<div class="eix" aria-hidden="true">{eix}</div><div class="bcols">{"".join(cols)}</div></div>{taula}</figure>')
 
 
-def mesurador(etiqueta: str, valor: int, total: int, nota: str = "") -> str:
-    pct = 100 * valor / total if total else 0
-    nota_html = f'<span class="m-nota">{esc(nota)}</span>' if nota else ""
-    return (
-        '<div class="mesura">'
-        f'<div class="m-cap"><span class="m-etq">{esc(etiqueta)}</span>'
-        f'<span class="m-val"><b>{fmt_int(valor)}</b> de {fmt_int(total)} · {fmt_pct(valor, total)}</span></div>'
-        f'<div class="m-pista" aria-hidden="true"><span style="width:{pct:.2f}%"></span></div>{nota_html}</div>'
-    )
+def linia_versio(ctx: Context) -> str:
+    return (f'<p class="versio-linia"><span class="pv-icona" aria-hidden="true">!</span><span>Versió de treball, en revisió fins a {nom_versio()}. '
+            f'Dades de <code>main</code> del {esc(data_ca(ctx.data_commit))} (commit <code title="{esc(ctx.commit)}">{esc(curt(ctx.commit))}</code>). '
+            "Les xifres i les etiquetes poden canviar a cada lot que es fusiona.</span></p>")
 
 
-def pagina_inici(ctx: Context, model: dict, resum: dict) -> str:
-    emp = model["empreses"]
-    rec = resum["rec"]
-    nf = resum["n_files"]
-    tiles = [
-        ('<span class="k-etq">Empreses (ISIN)</span>', fmt_int(resum["n_isin"]), "al panell 2016–2025", ""),
-        ('<span class="k-etq">Files ISIN-any</span>', fmt_int(nf), "unitat d'anàlisi", ""),
+def sobre_dades(ctx: Context) -> str:
+    fitxers = [
+        ("dades/base_isin_any_v8r3.csv", ctx.sha_base),
+        ("docs/REGISTRE_CANVIS.csv", ctx.sha_registre),
+        ("estat/estat_files.csv", ctx.sha_estat),
     ]
-    for lletra in ORDRE_ETIQ:
-        nom = {v[0]: v[1] for v in ETIQUETES.values()}[lletra]
-        tiles.append((
-            f'<span class="k-etq"><span class="punt e-{lletra}" aria-hidden="true"></span>{lletra} · {esc(nom)}</span>',
-            fmt_int(rec[lletra]), f"{fmt_pct(rec[lletra], nf)} de les files", f" k-{lletra}",
-        ))
-    tiles_html = "".join(
-        f'<div class="kpi{cls}">{etq}<span class="k-val">{val}</span><span class="k-sub">{esc(sub)}</span></div>'
-        for etq, val, sub, cls in tiles
-    )
-    cobertura = f"""<section class="panell cobertura" aria-labelledby="h-cob">
-<h2 class="h-panell" id="h-cob">Cobertura de proves</h2>
-<p class="nota">Calculada a partir de <code>docs/REGISTRE_CANVIS.csv</code> i dels camps de cita de la base.</p>
-{mesurador("Empreses amb almenys una entrada al registre", resum["amb_registre"], resum["n_isin"])}
-{mesurador("Files amb prova de CEO al registre", resum["files_ceo"], nf, "funcio_cita = ceo")}
-{mesurador("Files amb prova de classificació al registre", resum["files_fund"], nf, "funcio_cita = fundador")}
-{mesurador("Files sense cap cita estructurada", resum["files_sense_cita"], nf, "ni al registre ni als camps de cita de la base")}
-<p class="nota">{fmt_int(resum["sense_cita"])} empreses no tenen cap cita estructurada en aquests fitxers d'origen; la seva fitxa ho indica.</p>
-</section>"""
+    dl = "".join(f'<div><dt><code>{esc(p)}</code></dt><dd><code class="sha">{esc(h)}</code></dd></div>' for p, h in fitxers)
+    docs = [("estat/RESUM_ESTAT.md", "resum de l'estat per fila"), ("estat/README.md", "definició de les condicions C1-C4"),
+            ("docs/PLA_FINALITZACIO_20261123.md", "pla de finalització"), ("estat/estat_files.csv", "estat de cada fila (CSV)")]
+    links = "".join(f'<li>{enllac_ext(f"{GH_BLOB}/{d}", d)} · {esc(t)}</li>' for d, t in docs)
+    return (f'<dl class="versio-dl"><div><dt>Commit de <code>main</code></dt><dd><code class="sha">{esc(ctx.commit)}</code></dd></div>'
+            f'<div><dt>Data</dt><dd>{esc(data_ca(ctx.data_commit))}</dd></div>{dl}</dl>'
+            '<p class="nota">SHA-256 comprovats contra <code>MANIFEST_SHA256.csv</code> en generar el lloc. El generador també comprova '
+            "que <code>estat/RESUM_ESTAT.md</code> correspon a la base, al registre, a <code>PENDENTS.md</code> i a "
+            "<code>estat/dubtes_tancats.csv</code> actuals, i s'atura si les xifres no quadren.</p>"
+            f'<ul class="docs">{links}</ul>')
 
-    # Opcions de filtre
-    certs = Counter()
-    paisos = Counter()
-    sectors = Counter()
-    for e in emp.values():
-        for c in e["certs"]:
-            certs[c] += 1
-        paisos[(e["pais_codi"], e["pais"])] += 1
-        if MOSTRA_SECTOR:
-            sectors[e["supersector"] or "sense sector"] += 1
-    opt_cert = "".join(
-        f'<option value="{esc(c)}">{esc(CERTIFICACIO.get(c, c))} ({fmt_int(n)})</option>'
-        for c, n in sorted(certs.items(), key=lambda x: list(CERTIFICACIO).index(x[0]) if x[0] in CERTIFICACIO else 99)
-    )
+
+def seccio(id_: str, titol: str, resposta: str, cos: str, cls: str = "", n: int | None = None) -> str:
+    num = f'<span class="bloc-n" aria-hidden="true">{n}</span>' if n else ""
+    return (f'<section class="bloc{(" " + cls) if cls else ""}" id="{id_}" aria-labelledby="h-{id_}">'
+            f'<header class="bloc-cap">{num}<h2 id="h-{id_}">{esc(titol)}</h2></header>'
+            f'<div class="bloc-cos">{resposta}{cos}</div></section>')
+
+
+def dreceres(E: dict) -> str:
+    """Targetes clicables amb el recompte de files i el d'empreses del filtre
+    que obren (Empreses filtra per empresa: «amb alguna fila així»)."""
+    cat, ee, et = E["cat"], E["emp_estat"], E["emp_etiq"]
+    targetes = [(k, f"#t={k}", ESTATS[k][0], ESTATS[k][1], cat[k], ee[k], "amb alguna fila així") for k in ORDRE_ESTATS]
+    targetes.append(("F", "#e=F", "F", "Fundadors-CEO (F)", E["etiq"]["F"], et["F"], "amb algun any F"))
+    items = []
+    for k, hash_, icona, nom, files, emps, que in targetes:
+        sw = f'<span class="sw e-F" aria-hidden="true">F</span>' if k == "F" else f'<span class="sw s-{k}" aria-hidden="true">{icona}</span>'
+        items.append(
+            f'<li><a class="drec" href="empreses.html{hash_}">'
+            f'<span class="drec-cap">{sw}<span class="drec-nom">{esc(nom)}</span></span>'
+            f'<span class="drec-n"><b>{fmt_int(files)}</b> {"fila" if files == 1 else "files"} <span class="drec-pc">· {fmt_pct(files, E["tot"])}</span></span>'
+            f'<span class="drec-emp"><b>{fmt_int(emps)}</b> {"empresa" if emps == 1 else "empreses"} {esc(que)} <span aria-hidden="true">→</span></span></a></li>')
+    return ('<h3 class="vh">Dreceres a Empreses</h3>'
+            f'<ul class="dreceres">{"".join(items)}</ul>'
+            '<p class="nota">Cada targeta compta files (i el % del total); l\'enllaç obre Empreses amb el filtre aplicat, que compta empreses. '
+            "Sota la barra, què vol dir cada estat.</p>")
+
+
+REDIRECCIO_HASH = ("<script>(function(){var h=location.hash;"
+                   "if(/^#(?:.*&)?(?:q|e|c|p|s|v|t|m)=/.test(h)){location.replace('empreses.html'+h);}})();</script>\n")
+
+
+ISIN_EXEMPLES = ("FR0000121014", "CH0038863350")
+
+
+def pagina_estat(ctx: Context, E: dict) -> str:
+    tot = E["tot"]
+    cat = E["cat"]
+    acab = cat["acabada"]
+    # 3. Quantes files estan acabades
+    segs = [(k, cat[k], ESTATS[k][1]) for k in ORDRE_ESTATS]
+    if acab:
+        heroi = (f'<p class="heroi-xifra"><b>{fmt_int(acab)}</b> <span>de {fmt_int(tot)} files acabades '
+                 f'({fmt_pct(acab, tot)})</span></p>')
+    else:
+        heroi = '<p class="heroi-xifra">Encara cap fila no compleix les quatre condicions.</p>'
+    acabades = (heroi + dreceres(E) + barra_apilada(segs, tot, "Files segons l'estat", "s")
+                + llegenda_estats(cat, tot)
+                + '<p class="nota">Cada fila compta en un sol estat: el primer pas de l\'embut que no supera.</p>')
+    # 4. Embut
+    detall = (f'<p class="nota-clara">Comptades per separat: <span title="C1">cita de CEO</span> {fmt_int(E["c1"])} ({fmt_pct(E["c1"], tot)}) · '
+              f'<span title="C2">prova de fundador</span> {fmt_int(E["c2"])} '
+              f'({fmt_pct(E["c2"], tot)}), de les quals {fmt_int(E["columna_antiga"])} només amb la cita antiga de la base '
+              "(sense còpia arxivada).</p>")
+    # 5. Etiquetes
+    F = E["per_etiq"]["F"]
+    resp_etiq = (f'<p class="resposta">Per exemple, de les {fmt_int(F["files"])} files F, {fmt_pct(F["C2"], F["files"])} tenen prova de fundador '
+                 f'però {fmt_pct(F["C3"], F["files"])} tenen la cita verificada a la còpia de Wayback; acabades: {fmt_int(F["acabada"])}.</p>')
+    # 6. Any per any
+    resp_any = resposta_anys(E)
+    # 7. Mancances
+    resp_m = (f'<p class="resposta">La mancança més freqüent és «{esc(MANCANCES[E["mancances"].most_common(1)[0][0]][0])}»: '
+              f'{fmt_int(E["mancances"].most_common(1)[0][1])} files.</p>' if E["mancances"] else
+              '<p class="resposta">No hi ha cap mancança.</p>')
+    nota_m = ('<p class="nota-clara">Una fila pot tenir més d\'una mancança. Sota cada barra, les files es reparteixen '
+              "segons el seu estat a la barra de dalt («Quantes files estan acabades?»), on cada fila compta una sola vegada.</p>")
+    # 8. Dubtes
+    resp_d = ""
+    if E["dubtes"]:
+        resp_d = (f'<p class="resposta">{fmt_int(E["files_amb_dubte"])} files tenen algun dubte obert. '
+                  f'Dubtes tancats: <b>{fmt_int(E["dubtes_tancats"])}</b>.</p>'
+                  f'<p class="nota-clara">{esc(conciliacio(E["files_amb_dubte"], E["dubte_cat"]))} '
+                  "A la barra de dalt, les files que també tenen falta d'evidència compten a «Falta evidència».</p>")
+    nota_d = ('<p class="nota-clara">Una fila pot tenir dubtes de més d\'un origen. Aquí només es compten les files: el text dels dubtes '
+              f'és al fitxer de dubtes de la base ({enllac_ext(f"{GH_BLOB}/PENDENTS.md", "PENDENTS.md")}, a GitHub).</p>') if E["dubtes"] else ""
+    # 10. Resultats provisionals
+    et = E["etiq"]
+    segs_e = [(l, et[l], f"{l} · {NOM_ETIQ[l]}") for l in ["F", "P", "NA", "ND"]]
+    ll_e = "".join(f'<li><span class="sw e-{l}" aria-hidden="true">{l}</span><b>{esc(NOM_ETIQ[l])}</b> '
+                   f'<span class="ll-n">{fmt_int(et[l])} · {fmt_pct(et[l], tot)}</span></li>' for l in ["F", "P", "NA", "ND"])
+    resultats = (barra_apilada(segs_e, tot, "Files segons l'etiqueta FounderCEO", "e")
+                 + f'<ul class="ll-etiq">{ll_e}</ul>' + grafic_f_per_any(E))
+
+    cerca = combobox("q", "", "Troba l'evidència d'una empresa", "LVMH, Nestlé, Arnault…", cls="cb-gran", boto=True, etiqueta_visible=True)
+    exemples = ('<p class="exemples">Exemples: <a href="empreses/FR0000121014.html">LVMH</a> '
+                '<a href="empreses/CH0038863350.html">Nestlé</a> <a href="empreses.html?q=Arnault">Arnault</a></p>')
+    cos = f"""<section class="obertura">
+<div class="ob-text">
+<h1>En quin punt és la base</h1>
+<p class="entradeta">{fmt_int(tot)} files empresa-any ({fmt_int(E["n_isin"])} empreses, 2016–2025). Per a cada fila: qui era el CEO el 31 d'octubre i si era fundador, amb una cita literal, l'URL original i una còpia a Wayback Machine.</p>
+{linia_versio(ctx)}
+</div>
+<div class="cerca-rapida">
+{cerca}
+<p class="cr-ajuda">Busca per nom, ISIN o CEO. Des de la fitxa, la cita i la còpia arxivada són a un clic.</p>
+{exemples}
+</div>
+</section>
+{seccio("acabades", "Quantes files estan acabades?", "", acabades, n=1)}
+{seccio("embut", "On es queden les files?", "", embut(E) + detall, n=2)}
+{seccio("etiquetes", "Com està cada etiqueta?", resp_etiq, taula_etiquetes(E), n=3)}
+{seccio("anys", "Com va cada any?", resp_any, taula_anys(E), n=4)}
+{seccio("mancances", "Què falta i què s'hi fa?", resp_m, nota_m + barres_mancances(E), n=5)}
+{seccio("dubtes", "D'on venen els dubtes oberts?", resp_d, barres_dubtes(E, ctx.pend) + nota_d, n=6)}
+{seccio("qualitat", "Com es controla la qualitat?", '<p class="resposta">Cada cita passa per cinc controls abans de comptar com a acabada.</p>', passos_qualitat(E), n=7)}
+{seccio("resultats", "Resultats provisionals", '<p class="resposta etiqueta-prov">Provisional: pot canviar fins a ' + nom_versio() + '.</p>', resultats, n=8)}
+{seccio("versio", "Sobre aquestes dades", linia_versio(ctx), sobre_dades(ctx), "versio", n=9)}"""
+    return pagina(ctx, titol="Estat de la base · Fundadors-CEO STOXX Europe 600",
+                  descripcio="En quin punt és la base Fundadors-CEO: files acabades, embut, mancances, dubtes i control de qualitat.",
+                  cos=cos, prefix="", actiu="estat", cap_extra=REDIRECCIO_HASH, cls_body="p-estat")
+
+
+# ---------------------------------------------------------------------------
+# Empreses
+# ---------------------------------------------------------------------------
+
+LLETRA_ESTAT = {"acabada": "a", "arxiu": "r", "dubte": "d", "falta": "f"}
+
+
+# Nom de cada estat amb concordança de nombre (singular, plural).
+ESTAT_NOMBRE = {
+    "acabada": ("acabada", "acabades"),
+    "arxiu": ("només falta l'arxiu", "només falten l'arxiu"),
+    "dubte": ("amb dubte", "amb dubte"),
+    "falta": ("falta evidència", "falta evidència"),
+}
+
+
+def estat_n(k: str, v: int) -> str:
+    sing, plur = ESTAT_NOMBRE[k]
+    return f"{fmt_int(v)} {sing if v == 1 else plur}"
+
+
+def text_estat_empresa(e: dict) -> str:
+    n = len(e["files"])
+    parts = [f'{fmt_int(e["st"]["acabada"])} de {fmt_int(n)} {"fila acabada" if n == 1 and e["st"]["acabada"] == 1 else "files acabades"}']
+    for k in ("arxiu", "dubte", "falta"):
+        v = e["st"][k]
+        if v:
+            parts.append(estat_n(k, v))
+    return " · ".join(parts)
+
+
+def aria_serie(e: dict) -> str:
+    """Un sol aria-label per a la sèrie: etiquetes, recompte per estat (amb les
+    acabades encara que siguin 0) i l'estat per trams d'anys."""
+    r, st, n = e["recompte"], e["st"], len(e["files"])
+    etiq = ", ".join(f"{l} {r[l]} de {n} {'any' if n == 1 else 'anys'}" for l in ORDRE_ETIQ if r[l])
+    estats = ", ".join([estat_n("acabada", st["acabada"])] + [estat_n(k, st[k]) for k in ("arxiu", "dubte", "falta") if st[k]])
+    trams: list[list] = []
+    for f in e["files"]:
+        clau = (f["lletra"], f["cat"])
+        if trams and trams[-1][2] == clau and trams[-1][1] == f["any"] - 1:
+            trams[-1][1] = f["any"]
+        else:
+            trams.append([f["any"], f["any"], clau])
+    una = len({f["lletra"] for f in e["files"]}) == 1  # amb una sola etiqueta, no cal repetir-la
+    per_anys = "; ".join(f"{a if a == b else f'{a}–{b}'}{'' if una else ' ' + c[0] + ','} {ESTATS[c[1]][1].lower()}"
+                         for a, b, c in trams)
+    return f"{etiq}; {estats}. Per anys: {per_anys}"
+
+
+def pagina_empreses(ctx: Context, model: dict, E: dict) -> str:
+    emp = model["empreses"]
+    paisos = Counter((e["pais_codi"], e["pais"]) for e in emp.values())
     opt_pais = "".join(
         f'<option value="{esc(codi)}">{esc(nom)} · {esc(codi)} ({fmt_int(n)})</option>'
         for (codi, nom), n in sorted(paisos.items(), key=lambda x: clau_ordre(x[0][1]))
     )
-    filtre_sector = ""
-    if MOSTRA_SECTOR:
-        opt_sec = "".join(f'<option value="{esc(s)}">{esc(s)} ({fmt_int(n)})</option>' for s, n in sorted(sectors.items()))
-        filtre_sector = f'<label class="camp"><span>Supersector</span><select id="f-sector"><option value="">Tots</option>{opt_sec}</select></label>'
+    etq_emp = Counter(l for e in emp.values() for l in ORDRE_ETIQ if e["recompte"][l])
+    opt_etiq = "".join(f'<option value="{l}">Amb algun any {l} · {esc(NOM_ETIQ_MIN[l])} ({fmt_int(etq_emp[l])})</option>'
+                       for l in ORDRE_ETIQ)
+    st_emp = Counter(k for e in emp.values() for k in ORDRE_ESTATS if e["st"][k])
+    opt_estat = "".join(f'<option value="{k}">Amb alguna fila: {esc(ESTATS[k][1].lower())} ({fmt_int(st_emp[k])})</option>'
+                        for k in ORDRE_ESTATS)
+    opt_estat += f'<option value="totes">Totes les files acabades ({fmt_int(E["emp_totes_acabades"])})</option>'
+    noms_m = "".join(f'<option value="{k}">{esc(v[0])}</option>' for k, v in MANCANCES.items())
 
     files_html = []
     for e in sorted(emp.values(), key=lambda e: (clau_ordre(e["nom"]), e["isin"])):
@@ -844,94 +1630,66 @@ def pagina_inici(ctx: Context, model: dict, resum: dict) -> str:
         cel = []
         for a in ANYS_PANELL:
             f = per_any.get(a)
-            if f:
-                ceo = f["ceos_text"].replace("|", " · ") or "sense CEO"
-                cel.append(cel_etiq(f["lletra"], f"{a} · {f['lletra']} · {ceo}", petita=True))
-            else:
-                cel.append(cel_buida(f"{a}: no és al panell", petita=True))
+            # Casella sense classe = l'empresa no era a l'índex aquell any (pesa menys).
+            cel.append(f'<i class="{f["lletra"]} {LLETRA_ESTAT[f["cat"]]}">{f["lletra"]}</i>' if f else '<i></i>')
         r = e["recompte"]
+        n = len(e["files"])
+        st = e["st"]
         darrer = e["files"][-1]
         ceo_darrer = darrer["ceos_text"].replace("|", " · ") or "sense CEO"
-        if e["proves"]:
-            proves = "registre"
-        elif e["cites_base"]:
-            proves = "base"
-        else:
-            proves = "cap"
-        n_proves = len(e["proves"]) + len(e["cites_base"])
-        cerca = norm_cerca(" ".join([e["nom"], *e["altres_noms"], e["isin"], *e["ceos_noms"]]))
-        etiq = " ".join(l for l in ORDRE_ETIQ if r[l])
-        sec_attr = f' data-sector="{esc(e["supersector"] or "sense sector")}"' if MOSTRA_SECTOR else ""
-        sec_td = f'<td class="c-sec">{esc(e["supersector"] or "sense sector")}</td>' if MOSTRA_SECTOR else ""
-        proves_txt = fmt_int(n_proves) if n_proves else '<span class="buit" title="Sense cita estructurada">—</span>'
+        noms_c = [e["nom_base"], *e["altres_noms"]]
+        if norm_cerca(e["nom"]) not in norm_cerca(" ".join(noms_c)):
+            noms_c.insert(0, e["nom"])
+        cerca = norm_cerca(" ".join([*noms_c, e["isin"], *e["ceos_noms"]]))
+        st_curt = f'{st["acabada"]}/{n} acabades' + "".join(f' · {estat_n(k, st[k])}' for k in ("dubte", "falta") if st[k])
         files_html.append(
-            f'<tr data-cerca="{esc(cerca)}" data-etiq="{etiq}" data-cert="{esc(" ".join(e["certs"]))}" '
-            f'data-pais="{esc(e["pais_codi"])}" data-proves="{proves}"{sec_attr} data-nom="{esc(clau_ordre(e["nom"]))}" '
-            f'data-isin="{esc(e["isin"])}" data-nanys="{len(e["anys"])}" data-f="{r["F"]}" data-np="{n_proves}">'
-            f'<td class="c-nom"><a href="empreses/{esc(e["isin"])}.html">{esc(e["nom"])}</a>'
-            f'<span class="sub">CEO {darrer["any"]}: {esc(ceo_darrer)}</span></td>'
-            f'<td class="c-isin"><code>{esc(e["isin"])}</code></td>'
-            f'<td class="c-pais">{esc(e["pais"])}</td>{sec_td}'
-            f'<td class="c-anys">{esc(comprimeix_anys(e["anys"]))}<span class="sub">{len(e["anys"])} anys</span></td>'
-            f'<td class="c-serie"><span class="serie" aria-label="Sèrie FounderCEO 2016–2025">{"".join(cel)}</span></td>'
-            f'<td class="num c-f">{r["F"] or ""}</td><td class="num c-p">{r["P"] or ""}</td>'
-            f'<td class="num c-nd">{r["ND"] or ""}</td><td class="num c-na">{r["NA"] or ""}</td>'
-            f'<td class="num c-proves">{proves_txt}</td></tr>'
+            f'<tr data-c="{esc(cerca)}" data-e="{" ".join(l for l in ORDRE_ETIQ if r[l])}" '
+            f'data-st="{" ".join(str(st[k]) for k in ORDRE_ESTATS)}" data-m="{" ".join(e["mancances"])}" '
+            f'data-p="{e["pais_codi"]}" data-f="{r["F"]}">'
+            f'<td><a class="emp-nom" href="empreses/{e["isin"]}.html" title="{esc(e["nom_base"])}">{esc(e["nom"])}</a>'
+            f'<span class="sub"><code>{e["isin"]}</code> · CEO {darrer["any"]}: {esc(ceo_darrer)}</span></td>'
+            f'<td><span class="sr" role="img" aria-label="{esc(aria_serie(e))}">{"".join(cel)}</span></td>'
+            f'<td>{minibarra_estat(st, n)}<span class="sub">{esc(st_curt)}</span></td>'
+            f'<td class="num">{r["F"]}</td></tr>'
         )
-    th_sec = '<th scope="col" class="c-sec">Supersector</th>' if MOSTRA_SECTOR else ""
-    llegenda = "".join(
-        f'<span class="ll"><span class="cel cel-p e-{l}" aria-hidden="true">{l}</span>{esc(n)}</span>'
-        for l, n in (("F", "fundador-CEO"), ("P", "professional"), ("ND", "no determinat"), ("NA", "sense CEO"))
-    ) + '<span class="ll"><span class="cel cel-p cel-buida" aria-hidden="true"></span>no és al panell</span>'
-
-    cos = f"""<section class="heroi">
-<p class="eyebrow">STOXX Europe 600 · 2016–2025</p>
-<h1>Dashboard Fundadors</h1>
-<p class="entradeta">Qui era el CEO de cada empresa el 31 d'octubre de cada any, si era fundador de l'empresa, i amb quina cita i quina font es documenta.</p>
+    ll_etq = "".join(f'<span class="ll"><i class="sw e-{l}" aria-hidden="true">{l}</i>{esc(NOM_ETIQ_MIN[l])}</span>' for l in ORDRE_ETIQ)
+    ll_st = "".join(f'<span class="ll"><i class="sw-ratlla s-{k}" aria-hidden="true"></i>'
+                    f'<span aria-hidden="true">{ESTATS[k][0]}</span> {esc(ESTATS[k][1].lower())}</span>' for k in ORDRE_ESTATS)
+    ll_st += '<span class="ll"><i class="sw-fora" aria-hidden="true"></i>casella buida: l\'empresa no era a l\'índex aquell any</span>'
+    n_emp = len(emp)
+    cos = f"""<section class="cap-pagina">
+<h1>Empreses</h1>
+<p class="entradeta">{fmt_int(n_emp)} empreses i {fmt_int(model["n_files"])} files. Cerca per nom, ISIN o CEO, o filtra per etiqueta i estat.</p>
 </section>
-{avis(ctx)}
-<section class="kpis" aria-label="Xifres principals">{tiles_html}</section>
-<div class="dos-panells">
-{grafic_f_per_any(resum)}
-{cobertura}
-</div>
-<section class="cercador" id="empreses" aria-labelledby="h-emp">
-<div class="cap-seccio"><h2 id="h-emp">Empreses</h2><p class="recompte" aria-live="polite">Es mostren <b id="n-visibles">{fmt_int(len(emp))}</b> de {fmt_int(len(emp))} empreses</p></div>
-<form class="filtres" id="filtres" role="search" onsubmit="return false">
-<label class="camp camp-cerca"><span>Cerca per nom, ISIN o CEO</span><input type="search" id="f-cerca" placeholder="p. ex. Nestlé, DE000A0D9PT0, Arora…" autocomplete="off"></label>
-<label class="camp"><span>Etiqueta FounderCEO</span><select id="f-etiq"><option value="">Totes</option><option value="F">Amb algun any F</option><option value="P">Amb algun any P</option><option value="ND">Amb algun any ND</option><option value="NA">Amb algun any NA</option></select></label>
-<label class="camp"><span>Certificació</span><select id="f-cert"><option value="">Totes</option>{opt_cert}</select></label>
-<label class="camp"><span>País d'emissió de l'ISIN <small>(derivat)</small></span><select id="f-pais"><option value="">Tots</option>{opt_pais}</select></label>
-{filtre_sector}
-<label class="camp"><span>Proves</span><select id="f-proves"><option value="">Totes</option><option value="registre">Amb entrades al registre</option><option value="base">Només cites de la base</option><option value="cap">Sense cita estructurada</option></select></label>
+{combobox("f-q", "", "Cerca per nom, ISIN o CEO", "Nom, ISIN o CEO…", local=True, cls="cb-llista-emp", etiqueta_visible=True)}
+<form class="filtres" id="filtres" aria-label="Filtres" onsubmit="return false">
+<label class="camp"><span>Etiqueta</span><select id="f-e"><option value="">Totes</option>{opt_etiq}</select></label>
+<label class="camp"><span>Estat</span><select id="f-t"><option value="">Tots</option>{opt_estat}</select></label>
+<label class="camp"><span>País d'emissió de l'ISIN <small>(derivat)</small></span><select id="f-p"><option value="">Tots</option>{opt_pais}</select></label>
+<label class="camp camp-m" id="camp-m" hidden><span>Mancança</span><select id="f-m"><option value="">Totes</option>{noms_m}</select></label>
 <button type="button" class="boto-sec" id="f-reset">Esborra els filtres</button>
 </form>
-<p class="nota">El país d'emissió es deriva del prefix de l'ISIN (GB, FR, DE…). No és la seu social ni un camp de la base. Els filtres d'etiqueta i de certificació mostren les empreses amb almenys un any amb aquell valor.</p>
-<div class="llegenda" aria-label="Llegenda de la sèrie">{llegenda}</div>
+<p class="recompte" aria-live="polite">Es mostren <b id="n-visibles">{fmt_int(n_emp)}</b> de {fmt_int(n_emp)} empreses</p>
+<div class="llegenda"><span class="ll-cap">Etiqueta:</span>{ll_etq}<span class="ll-cap">Estat (franja inferior):</span>{ll_st}<a class="ll-ajuda" href="metodologia.html#llegenda" aria-label="Què vol dir cada etiqueta i cada estat">?</a></div>
 <div class="taula-wrap">
 <table class="taula-emp" id="taula">
+<caption class="vh">Empreses, sèrie FounderCEO 2016–2025 i estat de les files</caption>
 <thead><tr>
-<th scope="col" class="c-nom"><button type="button" data-ordre="nom" aria-sort="ascending">Empresa</button></th>
-<th scope="col" class="c-isin"><button type="button" data-ordre="isin">ISIN</button></th>
-<th scope="col" class="c-pais">País ISIN</th>{th_sec}
-<th scope="col" class="c-anys"><button type="button" data-ordre="nanys">Anys</button></th>
-<th scope="col" class="c-serie">Sèrie 2016–2025</th>
-<th scope="col" class="num c-f"><button type="button" data-ordre="f" title="Nombre d'anys F">F</button></th>
-<th scope="col" class="num c-p" title="Nombre d'anys P">P</th>
-<th scope="col" class="num c-nd" title="Nombre d'anys ND">ND</th>
-<th scope="col" class="num c-na" title="Nombre d'anys NA">NA</th>
-<th scope="col" class="num c-proves"><button type="button" data-ordre="np" title="Proves del registre i cites de la base">Proves</button></th>
+<th scope="col" aria-sort="ascending"><button type="button" data-ordre="n">Empresa<span class="ord" aria-hidden="true"></span></button></th>
+<th scope="col" class="col-serie"><span class="vh">Sèrie 2016–2025</span><span class="serie-anys" aria-hidden="true">{"".join(f"<span>{str(a)[2:]}</span>" for a in ANYS_PANELL)}</span></th>
+<th scope="col"><button type="button" data-ordre="pa">Estat<span class="ord" aria-hidden="true"></span></button></th>
+<th scope="col" class="num"><button type="button" data-ordre="f">Anys F<span class="ord" aria-hidden="true"></span></button></th>
 </tr></thead>
 <tbody>
 {chr(10).join(files_html)}
 </tbody>
 </table>
 </div>
-<p class="sense-resultat" id="cap-resultat" hidden>Cap empresa no coincideix amb la cerca i els filtres.</p>
-</section>"""
-    return pagina(ctx, titol="Dashboard Fundadors · STOXX Europe 600, 2016-2025",
-                  descripcio="Base Fundadors: CEO a 31/10 de cada any, etiqueta FounderCEO i proves amb cita i font.",
-                  cos=cos, prefix="", actiu="inici", scripts=("cerca.js",))
+<div class="sense-resultat" id="cap-resultat" hidden><p>Cap empresa no coincideix amb la cerca i els filtres.</p><button type="button" class="boto-sec" id="f-reset-2">Esborra els filtres</button></div>
+<p class="nota">El país d'emissió es deriva del prefix de l'ISIN (GB, FR, DE…): no és la seu social ni un camp de la base. Els filtres d'etiqueta i d'estat mostren les empreses amb almenys una fila amb aquell valor.</p>"""
+    return pagina(ctx, titol="Empreses · Fundadors-CEO STOXX Europe 600",
+                  descripcio="Cerca i filtra les 1.040 empreses de la base: sèrie FounderCEO 2016-2025 i estat de les files.",
+                  cos=cos, prefix="", actiu="empreses", scripts=("cerca.js",), ample=True, cls_body="p-empreses")
 
 
 # ---------------------------------------------------------------------------
@@ -939,113 +1697,95 @@ def pagina_inici(ctx: Context, model: dict, resum: dict) -> str:
 # ---------------------------------------------------------------------------
 
 
-def linia_temps(e: dict) -> str:
+def franja_anys(e: dict, obert: int) -> str:
+    """Franja de deu targetes 2016-2025 (any, etiqueta, icona d'estat i línia de
+    color d'estat). Els anys fora de l'índex són targetes buides i no clicables.
+    El JS hi afegeix el patró «roving tabindex» (fletxes ←/→)."""
     per_any = {f["any"]: f for f in e["files"]}
-    anys_cel = []
-    cels = []
-    for i, a in enumerate(ANYS_PANELL, start=1):
-        anys_cel.append(f'<span class="tl-any" style="grid-column:{i}">{a}</span>')
-        f = per_any.get(a)
-        if f:
-            ceo = f["ceos_text"].replace("|", " · ") or "sense CEO"
-            titol = f"{a} · {f['etiqueta']} · {ceo}"
-            cels.append(f'<span class="tl-cel" style="grid-column:{i}">{cel_etiq(f["lletra"], titol)}</span>')
-        else:
-            cels.append(f'<span class="tl-cel" style="grid-column:{i}">{cel_buida(f"{a}: no és al panell")}</span>')
-    # Trams de CEO: anys consecutius del panell amb el mateix valor de `ceos`.
-    trams = []
-    for i, a in enumerate(ANYS_PANELL, start=1):
+    items = []
+    for a in ANYS_PANELL:
         f = per_any.get(a)
         if not f:
+            items.append(f'<li><span class="rl rl-buit"><span class="rl-a">{a}</span>'
+                         f'<span class="vh">: l\'empresa no era a l\'índex</span></span></li>')
             continue
-        clau = f["ceos_text"]
-        if trams and trams[-1]["clau"] == clau and trams[-1]["fi"] == a - 1:
-            trams[-1]["fi"] = a
-            trams[-1]["span"] += 1
-            trams[-1]["lletres"].append(f["lletra"])
+        icona, nom_st = ESTATS[f["cat"]][0], ESTATS[f["cat"]][1]
+        cur = ' aria-current="true"' if a == obert else ""
+        items.append(
+            f'<li><a class="rl b-{f["cat"]}" href="#any-{a}"{cur} aria-describedby="franja-ajuda"><span class="rl-a">{a}</span>'
+            f'<span class="rl-e e-{f["lletra"]}" aria-hidden="true">{f["lletra"]}</span>'
+            f'<span class="rl-s" aria-hidden="true">{icona}</span>'
+            f'<span class="vh">: {esc(NOM_ETIQ[f["lletra"]])}, {esc(nom_st.lower())}</span></a></li>')
+    return (f'<nav class="franja" aria-label="Anys de l\'empresa"><ol class="rail">{"".join(items)}</ol>'
+            '<p class="franja-ajuda" id="franja-ajuda">Fes servir les fletxes ← → per canviar d\'any.</p></nav>')
+
+
+def trams_ceo(e: dict) -> str:
+    """Qui era el CEO per períodes (trams d'anys consecutius amb el mateix `ceos`)."""
+    trams: list[dict] = []
+    for f in e["files"]:
+        if trams and trams[-1]["clau"] == f["ceos_text"] and trams[-1]["fi"] == f["any"] - 1:
+            trams[-1]["fi"] = f["any"]
         else:
-            trams.append({"clau": clau, "ini": a, "fi": a, "col": i, "span": 1, "ceos": f["ceos"],
-                          "lletres": [f["lletra"]]})
-    noms = []
-    llista = []
+            trams.append({"clau": f["ceos_text"], "ini": f["any"], "fi": f["any"], "ceos": f["ceos"]})
+    items = []
     for t in trams:
         nom = " · ".join(t["ceos"]) if t["ceos"] else "Sense CEO"
         rang = str(t["ini"]) if t["ini"] == t["fi"] else f"{t['ini']}–{t['fi']}"
-        cls = "tl-ceo" + (" tl-ceo-buit" if not t["ceos"] else "")
-        if len(set(t["lletres"])) == 1:
-            cls += f" v-{t['lletres'][0]}"
-        noms.append(
-            f'<span class="{cls}" style="grid-column:{t["col"]} / span {t["span"]}" title="{esc(nom)} · {rang}">'
-            f'<b>{esc(nom)}</b><small>{rang}</small></span>'
-        )
-        cels_t = "".join(
-            cel_etiq(l, f"{a} · {l}", petita=True) for a, l in zip(range(t["ini"], t["fi"] + 1), t["lletres"])
-        )
-        llista.append(
-            f'<li class="{cls.replace("tl-ceo", "tram")}"><span class="tram-anys">{rang}</span>'
-            f'<b class="tram-nom">{esc(nom)}</b><span class="serie">{cels_t}</span></li>'
-        )
-    return (
-        '<div class="tl-wrap"><div class="tl" role="group" aria-label="CEO i etiqueta per any">'
-        f'<div class="tl-fila">{"".join(anys_cel)}</div>'
-        f'<div class="tl-fila">{"".join(cels)}</div>'
-        f'<div class="tl-fila tl-fila-ceo">{"".join(noms)}</div>'
-        "</div></div>"
-        f'<ol class="trams" aria-label="CEO per períodes">{"".join(llista)}</ol>'
-    )
+        items.append(f'<li><span class="tc-anys">{rang}</span> <b{"" if t["ceos"] else " class=buit"}>{esc(nom)}</b></li>')
+    return f'<div class="trams-ceo"><h3 class="tc-cap">CEO a 31/10 per períodes</h3><ol>{"".join(items)}</ol></div>'
 
 
-def cel_prova(estat: str, any_: int, base: bool = False) -> str:
-    if estat == "V":
-        return f'<a class="pv pv-v" href="#proves" data-filtre-any="{any_}" title="Hi ha almenys una prova [V] al registre per a {any_}"><span aria-hidden="true">✓</span> Sí</a>'
-    if estat == "NV":
-        return f'<a class="pv pv-nv" href="#proves" data-filtre-any="{any_}" title="Només hi ha proves [NV] al registre per a {any_}">Només [NV]</a>'
-    if base:
-        return f'<a class="pv pv-base" href="#proves" data-filtre-any="{any_}" title="Cita als camps de la base, no al registre">Base</a>'
-    return '<span class="pv pv-no">No consta</span>'
+# Idioma de les cites (WCAG 3.1.2): recompte de paraules buides freqüents, sense
+# xarxa i determinista. Només s'hi posa `lang` si un idioma guanya clarament.
+PARAULES_IDIOMA = {
+    "en": "the of and to in is was has have been as for with by on from at his her its which that this are were be an our",
+    "fr": "le la les de des du et est un une dans pour par sur au aux qui que il elle son sa ses ont été avec en ce cette",
+    "de": "der die das und ist ein eine des den dem von zu mit im für auf als wurde seit sich bei nach er sie aus wird sind",
+    "es": "el la los las de del y es un una en por para con que se su sus fue ha al como desde",
+    "it": "il lo la gli le di del della dei e è un una in per con che si suo sua sono stato dal nel alla",
+    "nl": "de het een en van is op voor met als bij zijn werd door aan dat die ook naar heeft",
+    "sv": "och är en ett av på för med som till har var den det att vid från sedan hans",
+    "da": "og er en et af på for med som til har var den det at ved fra siden hans blev",
+    "no": "og er en et av på for med som til har var den det at ved fra siden hans ble",
+    "fi": "ja on oli ovat hän sen joka kuin myös tai että vuonna",
+    "pt": "o os de do da dos das é um uma em por para com que se seu sua foi no na pelo pela ao não",
+    "pl": "i w z na jest się do od oraz był jako dla przez że",
+    "ca": "el la els les de del i és un una en per amb que es seu seva va ha al com",
+}
+PARAULES_IDIOMA_SET = {k: set(v.split()) for k, v in PARAULES_IDIOMA.items()}
 
 
-def taula_anys(e: dict) -> str:
-    files = []
-    for f in e["files"]:
-        if f["ceos"]:
-            ceo = "<br>".join(esc(c) for c in f["ceos"])
-            if len(f["ceos"]) > 1:
-                ceo += f' <span class="mini">({len(f["ceos"])} CEO)</span>'
-        else:
-            ceo = '<span class="buit">Sense CEO</span>'
-        if f["aplicat"]:
-            ceo += (f'<span class="aplicat">CEO aplicat (columna de simulació): {esc(f["aplicat"])}. '
-                    "No substitueix <code>ceos</code>.</span>")
-        cert = CERTIFICACIO.get(f["cert"], f["cert"])
-        nivell = esc(f["nivell"]) if f["nivell"] else '<span class="buit">—</span>'
-        files.append(
-            f'<tr><th scope="row">{f["any"]}</th><td class="t-ceo" data-l="CEO">{ceo}</td>'
-            f'<td data-l="FounderCEO">{badge_etiq(f["lletra"])}</td>'
-            f'<td data-l="Certificació"><span class="cert cert-{esc(f["cert"])}">{esc(cert)}</span></td>'
-            f'<td data-l="Nivell">{nivell}</td>'
-            f'<td data-l="Prova de CEO">{cel_prova(f["prova_ceo"], f["any"])}</td>'
-            f'<td data-l="Prova de classificació">{cel_prova(f["prova_fund"], f["any"], f["base_fund"])}</td></tr>'
-        )
-    return f"""<div class="taula-wrap"><table class="taula-anys">
-<caption class="vh">Resum per any</caption>
-<thead><tr><th scope="col">Any</th><th scope="col">CEO a 31/10</th><th scope="col">FounderCEO</th><th scope="col">Certificació</th><th scope="col">Nivell</th><th scope="col">Prova de CEO</th><th scope="col">Prova de classificació</th></tr></thead>
-<tbody>{''.join(files)}</tbody></table></div>"""
+def idioma_cita(text: str) -> str:
+    paraules = re.findall(r"[a-zàâäçéèêëîïôöùûüÿñæøåœóíúãõąćęłńśźż]+", (text or "").lower())
+    if len(paraules) < 4:
+        return ""
+    punts = sorted(((sum(w in s for w in paraules), k) for k, s in PARAULES_IDIOMA_SET.items()), reverse=True)
+    (p1, l1), (p2, _) = punts[0], punts[1]
+    if p1 < 3 or p1 < 1.5 * p2 or l1 == "ca":
+        return ""
+    return l1
 
 
-def html_cita(text: str, ident: str) -> str:
+def atribut_lang(text: str) -> str:
+    l = idioma_cita(text)
+    return f' lang="{l}"' if l else ""
+
+
+def html_cita(text: str, ident: str, maxim: int = LONGITUD_MAX_CITA) -> str:
     if not text:
         return '<p class="sense-cita">Aquesta entrada no té cita literal.</p>'
-    if len(text) <= LONGITUD_MAX_CITA:
-        return f'<blockquote class="cita"><p>{esc(text)}</p></blockquote>'
-    tall = text[:LONGITUD_MAX_CITA]
+    lang = atribut_lang(text)
+    if len(text) <= maxim:
+        return f'<blockquote class="cita"{lang}><p>{esc(text)}</p></blockquote>'
+    tall = text[:maxim]
     m = list(re.finditer(r"[.;:!?](\s|$)", tall))
-    if m and m[-1].end() > LONGITUD_MAX_CITA * 0.5:
+    if m and m[-1].end() > maxim * 0.5:
         tall = tall[: m[-1].end()].rstrip()
     else:
         tall = tall.rsplit(" ", 1)[0]
     return (
-        f'<blockquote class="cita"><p>{esc(tall)} […]</p></blockquote>'
+        f'<blockquote class="cita"{lang}><p>{esc(tall)} <span lang="ca">[…]</span></p></blockquote>'
         f'<p class="mini">Fragment: la cita completa té {fmt_int(len(text))} caràcters i és a '
         f"<code>docs/REGISTRE_CANVIS.csv</code> amb l'identificador <code>{esc(ident)}</code>.</p>"
     )
@@ -1071,63 +1811,70 @@ def anys_html(p: dict) -> str:
     return f'<span class="p-anys" title="Anys que cobreix">{esc(txt)}</span>{extra}'
 
 
+def insignies_prova(p: dict) -> list[str]:
+    b = []
+    if "[V]" in p["veritat"]:
+        b.append('<span class="b b-v" title="marca_veritat = [V]: document obert sencer i cita trobada">[V]</span>')
+    if "[NV]" in p["veritat"]:
+        b.append('<span class="b b-nv" title="marca_veritat = [NV]: no verificada">[NV]</span>')
+    if p["no_valida"]:
+        b.append('<span class="b b-mal" title="La nota de l\'entrada diu no_valida">Font no vàlida</span>')
+    elif p["capt_si"]:
+        b.append('<span class="b b-v" title="cita_verificada_a_captura = si">Cita comprovada a la còpia</span>')
+    elif p["pendent_arxiu"]:
+        b.append('<span class="b b-nv" title="La nota diu pendent_arxiu (abans pendent_DF)">Pendent d\'arxiu</span>')
+    for m in p["marca_prova"]:
+        if len(m) <= 14:
+            b.append(f'<span class="b b-marca" title="marca_prova">{esc(m)}</span>')
+    for o, ocult in p["origen_pub"]:
+        if not ocult and re.fullmatch(r"Nivell [ABC]", o):
+            b.append(f'<span class="b b-nivell" title="origen_cita">Font {esc(o[-1])}</span>')
+    return b
+
+
+def wayback_prova(p: dict) -> tuple[str, str]:
+    """(URL de la còpia, data) o ("", motiu)."""
+    if p["wb_urls"]:
+        u = p["wb_urls"][0]
+        return u, data_wayback(ts_de_url_wayback(u))
+    if p["wb_extra"]:
+        return p["wb_extra"]["url"], data_wayback(p["wb_extra"]["timestamp"] or ts_de_url_wayback(p["wb_extra"]["url"]))
+    if p["wb_pendent"]:
+        return "", "pendent de verificació externa"
+    return "", "encara no"
+
+
+def botons_fonts(p: dict) -> str:
+    fonts = [boto_font(p["url"])]
+    for u in p["wb_urls"]:
+        if url_segura(u):
+            fonts.append(boto_copia(u, data_wayback(ts_de_url_wayback(u))))
+    if not p["wb_urls"]:
+        wu, d = wayback_prova(p)
+        if wu:
+            fonts.append(boto_copia(wu, d, " (fitxer extra)"))
+        else:
+            fonts.append(boto_sense_copia("pendent" if p["wb_pendent"] else "encara no"))
+    return f'<div class="p-fonts">{"".join(fonts)}</div>'
+
+
 def html_prova(p: dict) -> str:
     anys_attr = " ".join(str(a) for a in p["anys"])
     funcions = [FUNCIONS.get(f, f) for f in p["funcio"]] or ["(buida)"]
     if p["ocult"]:
-        return (
-            f'<article class="prova prova-oculta" id="{p["ancora"]}" data-anys="{anys_attr}">'
-            f'<header class="p-cap"><span class="b b-gris">No mostrada</span><code>{esc(p["id"])}</code>'
-            f'<span class="mini">{esc(", ".join(funcions))}</span>{anys_html(p)}</header>'
-            + ("<p>Prova de la classificació sectorial: el sector no es mostra en aquesta versió, pendent d'aclarir-ne la "
-               "llicència. L'entrada consta al registre.</p></article>" if p["ocult"] == "sector" else
-               "<p>La cita o l'URL contenen un terme de la llista restringida (columnes o documents "
-               "interns). Criteri de la part pública; l'entrada consta al registre.</p></article>")
-        )
-    badges = []
-    if "[V]" in p["veritat"]:
-        badges.append('<span class="b b-v" title="marca_veritat = [V]">[V] Verificada</span>')
-    if "[NV]" in p["veritat"]:
-        badges.append('<span class="b b-nv" title="marca_veritat = [NV]">[NV] No verificada</span>')
-    if p["no_valida"]:
-        badges.append('<span class="b b-mal" title="La nota de l\'entrada diu no_valida">Font no vàlida</span>')
-    if p["pendent_df"]:
-        badges.append('<span class="b b-nv" title="La nota de l\'entrada diu pendent_DF">Pendent de DF</span>')
-    curtes = [m for m in p["marca_prova"] if len(m) <= 14]
+        motiu = ("Prova de la classificació sectorial: el sector no es mostra en aquesta versió, pendent d'aclarir-ne la llicència."
+                 if p["ocult"] == "sector" else
+                 "La cita o l'URL contenen un terme de la llista restringida (columnes o documents interns).")
+        return (f'<article class="prova prova-oculta" id="{p["ancora"]}" data-anys="{anys_attr}">'
+                f'<header class="p-cap"><span class="b b-gris">Prova no mostrada</span><code>{esc(p["id"])}</code>'
+                f'<span class="mini">{esc(", ".join(funcions))}</span>{anys_html(p)}</header>'
+                f"<p>{motiu} Criteri de la part pública; l'entrada consta al registre.</p></article>")
     llargues = [m for m in p["marca_prova"] if len(m) > 14]
-    for m in curtes:
-        badges.append(f'<span class="b b-marca" title="marca_prova">{esc(m)}</span>')
-    for o, ocult in p["origen_pub"]:
-        if not ocult and re.fullmatch(r"Nivell [ABC]", o):
-            badges.append(f'<span class="b b-nivell" title="origen_cita">Font {esc(o[-1])}</span>')
-
-    # Fonts
-    url = url_segura(p["url"])
-    fonts = []
-    if url:
-        fonts.append(f'<span class="domini">{esc(domini(url))}</span>')
-        fonts.append(enllac_ext(url, "Font original", "boto"))
-    elif p["url"]:
-        fonts.append(f'<span class="domini">URL no vàlida: {esc(p["url"])}</span>')
-    else:
-        fonts.append('<span class="domini buit">Sense URL de la font</span>')
-    if p["wb_urls"]:
-        for u in p["wb_urls"]:
-            d = data_wayback(ts_de_url_wayback(u))
-            fonts.append(enllac_ext(u, "Còpia Wayback" + (f" · {d}" if d else ""), "boto boto-wb"))
-    elif p["wb_extra"]:
-        d = data_wayback(p["wb_extra"]["timestamp"] or ts_de_url_wayback(p["wb_extra"]["url"]))
-        fonts.append(enllac_ext(p["wb_extra"]["url"], "Còpia Wayback (fitxer extra)" + (f" · {d}" if d else ""), "boto boto-wb"))
-    elif p["wb_pendent"]:
-        fonts.append('<span class="boto boto-off">Wayback: pendent de verificació externa</span>')
-    else:
-        fonts.append('<span class="boto boto-off">Wayback: no consta</span>')
-
-    # Metadades
-    m = []
-    m.append(meta("Funció (funcio_cita)", llista_valors(p["funcio"]) if p["funcio"] else
-                  f'<span class="buit">buida</span> · agrupada pel tipus {llista_valors(p["tipus"])}'))
-    m.append(meta("Tipus d'entrada", llista_valors(p["tipus"])))
+    curtes = [m for m in p["marca_prova"] if len(m) <= 14]
+    m = [meta("Identificador", f'<code>{esc(p["id"])}</code>'),
+         meta("Funció (funcio_cita)", llista_valors(p["funcio"]) if p["funcio"] else
+              f'<span class="buit">buida</span> · agrupada pel tipus {llista_valors(p["tipus"])}'),
+         meta("Tipus d'entrada", llista_valors(p["tipus"]))]
     if p["marca_prova"]:
         if llargues:
             items = "".join(f"<li><code>{esc(x)}</code></li>" for v in llargues for x in v.split(";") if x.strip())
@@ -1136,11 +1883,9 @@ def html_prova(p: dict) -> str:
             m.append(meta("Marca de prova", llista_valors(curtes)))
     m.append(meta("Marca de veritat", llista_valors(p["veritat"])))
     m.append(meta("Allotjament", llista_valors(p["allotjament"])))
-    orig = []
-    for o, ocult in p["origen_pub"]:
-        orig.append('<span class="buit">valor no mostrat (criteri de la part pública)</span>' if ocult else f"<code>{esc(o)}</code>")
+    orig = ['<span class="buit">valor no mostrat (criteri de la part pública)</span>' if oc else f"<code>{esc(o)}</code>"
+            for o, oc in p["origen_pub"]]
     m.append(meta("Origen de la cita", " ".join(orig) if orig else '<span class="buit">—</span>'))
-    m.append(meta("Identificador", f'<code>{esc(p["id"])}</code>'))
     if p["marques"]:
         m.append(meta("Marques de fundador", llista_valors(p["marques"])))
     estat = [f'{esc(ESTAT_WAYBACK.get(s, s))} <code>{esc(s)}</code>' for s in p["wb_estat"]]
@@ -1151,33 +1896,25 @@ def html_prova(p: dict) -> str:
     m.append(meta("Estat Wayback", wb_txt))
     capt = {"si": "sí", "no": "no"}
     m.append(meta("Cita verificada a la captura",
-                  ", ".join(esc(capt.get(c, c)) for c in p["capt"]) if p["capt"] else '<span class="buit">no consta</span>'))
-
+                  ", ".join(esc(capt.get(c, c)) for c in p["capt"]) if p["capt"] else '<span class="buit">pendent</span>'))
     notes = []
     for n, motiu in p["notes_pub"]:
         if motiu:
             notes.append('<p class="nota-oculta">Nota no mostrada: conté noms de models o referències internes '
                          "(criteri de la part pública).</p>")
-        elif len(n) > LONGITUD_NOTA_PLEGADA:
-            notes.append(f'<details class="nota-llarga"><summary>{esc(n[:280].rsplit(" ", 1)[0])}… '
-                         f'<span class="mini">(mostra la nota completa, {fmt_int(len(n))} caràcters)</span></summary>'
-                         f"<p>{esc(n)}</p></details>")
         else:
             notes.append(f"<p>{esc(n)}</p>")
-    notes_html = f'<div class="p-notes"><h4>Notes</h4>{"".join(notes)}</div>' if notes else ""
-
+    notes_html = f'<div class="p-notes"><h3 class="pn-h">Notes</h3>{"".join(notes)}</div>' if notes else ""
     cls = "prova"
     if "[V]" not in p["veritat"]:
         cls += " prova-nv"
     if p["no_valida"]:
         cls += " prova-mal"
-    return f"""<article class="{cls}" id="{p["ancora"]}" data-anys="{anys_attr}">
-<header class="p-cap">{''.join(badges)}{anys_html(p)}</header>
-{html_cita(p["cita"], p["id"])}
-<div class="p-fonts">{''.join(fonts)}</div>
-<dl class="p-meta">{''.join(m)}</dl>
-{notes_html}
-</article>"""
+    return (f'<article class="{cls}" id="{p["ancora"]}" data-anys="{anys_attr}">'
+            f'<header class="p-cap">{"".join(insignies_prova(p))}{anys_html(p)}</header>'
+            f'{html_cita(p["cita"], p["id"])}{botons_fonts(p)}'
+            f'<details class="tecnic"><summary>Detalls tècnics</summary><dl class="p-meta">{"".join(m)}</dl>{notes_html}</details>'
+            "</article>")
 
 
 def html_cita_base(d: dict, idx: int) -> str:
@@ -1186,7 +1923,7 @@ def html_cita_base(d: dict, idx: int) -> str:
     origen = "base (font_classificacio)" if d["tipus"] == "font_classificacio" else "base (d37)"
     if d["ocult"]:
         return (f'<article class="prova prova-oculta" id="b-{idx}" data-anys="{anys_attr}"><header class="p-cap">'
-                f'<span class="b b-gris">No mostrada</span><span class="p-anys">{rang}</span></header>'
+                f'<span class="b b-gris">Prova no mostrada</span><span class="p-anys">{rang}</span></header>'
                 f"<p>Cita de la {esc(origen)} no mostrada (terme de la llista restringida).</p></article>")
     if d["tipus"] == "font_classificacio":
         cita = html_cita(d["cita"], f"font_classificacio_cita ({rang})")
@@ -1195,62 +1932,660 @@ def html_cita_base(d: dict, idx: int) -> str:
                 f'<code>d37_cita_contemporania</code> = <code>{esc(d["cita"])}</code>.</p>')
     else:
         cita = html_cita(d["cita"], f"d37_cita_contemporania ({rang})")
-    url = url_segura(d["url"])
-    fonts = []
-    if url:
-        fonts.append(f'<span class="domini">{esc(domini(url))}</span>')
-        fonts.append(enllac_ext(url, "Font original", "boto"))
-    else:
-        fonts.append('<span class="domini buit">Sense URL de la font</span>')
-    fonts.append('<span class="boto boto-off">Wayback: no consta en aquest camp de la base</span>')
+    fonts = [boto_font(d["url"]), boto_sense_copia("no n'hi ha")]
     m = [meta("Origen", f"<code>{esc(origen)}</code>")]
     if d["tipus"] == "d37" and d["dada"]:
         m.append(meta("Data de la cita (d37_cita_contemp_data)", esc(d["dada"])))
     if d["tipus"] == "font_classificacio":
-        if d["ids_registre"]:
-            m.append(meta("Registre", "La mateixa cita i URL també consten al registre: " + llista_valors(d["ids_registre"])))
+        m.append(meta("Registre", ("La mateixa cita i URL també consten al registre: " + llista_valors(d["ids_registre"]))
+                      if d["ids_registre"] else "No consta al registre amb el mateix text i URL."))
+    return (f'<article class="prova prova-base" id="b-{idx}" data-anys="{anys_attr}">'
+            f'<header class="p-cap"><span class="b b-gris">Cita de la base</span><span class="p-anys" title="Anys en què el camp té aquest valor">{rang}</span></header>'
+            f'{cita}<div class="p-fonts">{"".join(fonts)}</div>'
+            f'<details class="tecnic"><summary>Detalls tècnics</summary><dl class="p-meta">{"".join(m)}</dl></details></article>')
+
+
+SUFIX_METODE = " · vegeu el Mètode"
+
+
+def text_regla(tok: str, curt: bool = False) -> str:
+    """Nom llegible del codi (el de REGLES_TEXT; si no hi és, el codi tal com és)."""
+    t = REGLES_TEXT.get(tok, tok)
+    return t[: -len(SUFIX_METODE)] if curt and t.endswith(SUFIX_METODE) else t
+
+
+def regla_html(tok: str, prefix: str = "../", curt: bool = False) -> str:
+    if tok == "cap":
+        return f'<span class="regla regla-cap" title="cap: sense regla registrada">{esc(REGLES_TEXT[tok])}</span>'
+    ref = ref_metodologia(tok)
+    tit = f' title="Metodologia vigent, {esc(ref[1])}"' if ref else ""
+    if tok in REGLES_TEXT:
+        anc = REGLA_ANCORA.get(tok, tok)
+        return f'<a class="regla" href="{prefix}metodologia.html#regla-{slug(anc)}"{tit}>{esc(text_regla(tok, curt))}</a>'
+    return f'<a class="regla" href="{prefix}metodologia.html#regla-{slug(tok)}"{tit}><code>{esc(tok)}</code></a>'
+
+
+# Frase de cada codi de la columna `regles` (la del Mètode).
+FRASE_REGLA = {"a": "a", "b": "b", "c_AAF64_reserva": "c", "c": "c", "d": "d", "e": "e", "D37": "D37", "cita_fundador": "D37",
+               "R-SC": "R-SC", "R2": "R2", "R2b": "R2b", "R3": "R3", "ceo_interval": "ceo_interval"}
+
+
+def regla_detall(tok: str) -> str:
+    """La regla enllaçada i, al costat, la frase curta del Mètode o la
+    referència a la secció de la metodologia (codis sense resum aprovat)."""
+    if tok in FRASE_REGLA:
+        extra = f'<span class="regla-frase">{esc(REGLES_FRASE[FRASE_REGLA[tok]])}</span>'
+    elif ref_metodologia(tok):
+        url, text = ref_metodologia(tok)
+        extra = (f'<span class="regla-frase">Sense resum aprovat en aquest lloc: vegeu la metodologia, '
+                 f'{enllac_ext(url, text)}.</span>')
+    else:
+        extra = ""
+    return f'<span class="regla-item">{regla_html(tok, curt=True)}{extra}</span>'
+
+
+def regles_visibles(regles: list[str]) -> list[str]:
+    """«cap» només es mostra si és l'únic codi (si no, es contradiu amb l'altre).
+    Sense codis repetits (ni dos codis amb el mateix nom, com cita_fundador i D37)."""
+    toks: list[str] = []
+    vistos: set[str] = set()
+    for t in regles:
+        if t == "cap" or text_regla(t) in vistos:
+            continue
+        vistos.add(text_regla(t))
+        toks.append(t)
+    return toks or ["cap"]
+
+
+def codis_prova(p: dict) -> list[str]:
+    """Codis de prova de fundador de la `marca_prova` d'una entrada (a, b, d, D37…)."""
+    out: list[str] = []
+    for m in p["marca_prova"]:
+        for t in re.split(r"[\s,;|]+", m):
+            if t in CODIS_SI | CODIS_NO | CODIS_ALTRES and t not in out:
+                out.append(t)
+    return out
+
+
+def codis_ceo(p: dict) -> list[str]:
+    """Codis de regla del CEO de la `marca_prova` (R2, R2b, R3, ceo_interval); R1 no es mostra."""
+    out: list[str] = []
+    for m in p["marca_prova"]:
+        for t in re.split(r"[\s,;|]+", m):
+            if t in CODIS_CEO and t not in out:
+                out.append(t)
+    return out
+
+
+def canon(toks) -> set[str]:
+    return {CODI_CANON.get(t, t) for t in toks}
+
+
+def primer_id(ids: str) -> list[str]:
+    return [i for i in (ids or "").split(";") if i and not i.startswith("(+") and i != "(sense id)"]
+
+
+TITOL_COMPROVADA = {
+    "sí": "La cita s'ha verificat per script a la captura de Wayback.",
+    "no": "S'ha intentat verificar la cita a la captura i no s'ha pogut comprovar.",
+    "pendent": "Encara no s'ha intentat verificar la cita a la captura.",
+}
+RE_NIVELL = re.compile(r"\bNivell ([ABC])\b")
+
+
+def nivell_font(p: dict) -> str:
+    """Nivell A/B/C que declara la mateixa entrada (origen de la cita o nota pública)."""
+    for o, ocult in p["origen_pub"]:
+        m = None if ocult else re.fullmatch(r"Nivell ([ABC])", o)
+        if m:
+            return m.group(1)
+    for n, motiu in p["notes_pub"]:
+        m = None if motiu else RE_NIVELL.search(n)
+        if m:
+            return m.group(1)
+    return ""
+
+
+# Fragments tècnics de les notes que no van al text principal (la nota sencera
+# és a «Veure la prova»).
+RE_NOTA_SOROLL = [
+    re.compile(r"Resultat anterior de Wayback «.*?»\.?", re.S),
+    re.compile(r"Desada sol·licitada a Wayback:[^.]*(?:\.\s*|$)"),
+    re.compile(r"Cita literal comprovada al document baixat:[^.]*?caràcters de text\.?"),
+    re.compile(r"\b\d[\d.]* caràcters(?: de text)?\.?"),
+    re.compile(r"Nota de la cerca:.*$", re.S),
+    re.compile(r"Cerca nova de la cita de CEO \([^)]*\)\.\s*"),
+    re.compile(r"Traspàs de l'auditoria IA[^.]*\([^)]*\)\.\s*"),
+    re.compile(r"Captura coneguda:\s*\S+"),
+    re.compile(r"Cita verificada literalment per script.*$", re.S),
+    re.compile(r"Candidatura \d+ \([^)]*\)\.\s*"),
+    re.compile(r"Contrast del PR #\d+.*$", re.S),
+    re.compile(r"\b(?:Nivell|Font) [ABC]\.\s*"),
+    re.compile(r"\bFunció: [\w ]+?(?:\([^)]*\))?\.\s*"),
+]
+# Tipus de document en format de codi → nom llegible.
+TIPUS_DOCUMENT = {
+    "informe_anual": "Informe anual", "document_registre": "Document de registre", "comunicat": "Comunicat",
+    "informe_exercici": "Informe de l'exercici", "informe_semestral": "Informe semestral",
+    "informe_govern": "Informe de govern corporatiu", "fullet": "Fullet", "acta": "Acta",
+    "web_emissor": "Web de l'emissor", "registre_mercantil": "Registre mercantil",
+}
+RE_DATA_ISO = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b")
+RE_PAGINA = re.compile(r"(?:\bPDF p\.|\bp\.(?: PDF)?|\bP\. PDF|\bpàgina(?: PDF| impresa)?|\bPàgina(?: PDF| impresa)?)\s*\d[\d–-]*", re.I)
+RE_DOC_PARAULES = re.compile(
+    r"\b(?:informe|report|document|comunicat|memòria|secció|apartat|perfil|web|història|cronologia|registre|"
+    r"acta|fullet|carta|taula|item|form|annual|prospect|entrevista|article|comptes|URD|cv|biografia|"
+    r"nota de premsa|pàgina|p\.)", re.I)
+
+
+def neteja_nota(n: str) -> str:
+    t = norm_ws(n)
+    # «Frase extreta per script del document original de l'exercici AAAA (informe … (ESEF…))».
+    t = re.sub(r"Frase extreta per script del document original de l'exercici \d{4} \((informe anual de l'exercici tancat el [\d-]+)[^.]*\.",
+               lambda m: m.group(1)[0].upper() + m.group(1)[1:] + ".", t)
+    for rx in RE_NOTA_SOROLL:
+        t = rx.sub(" ", t)
+    t = re.sub(r"\b([a-z]+(?:_[a-z]+)+)\b", lambda m: TIPUS_DOCUMENT.get(m.group(1), m.group(1).replace("_", " ")), t)
+    t = RE_DATA_ISO.sub(lambda m: f"{m.group(3)}/{m.group(2)}/{m.group(1)}", t)
+    return norm_ws(re.sub(r"\s+([.,;:])", r"\1", t)).strip(" .;,")
+
+
+def descripcio_document(p: dict) -> str:
+    """El document i la localització (pàgina, secció), segons la primera nota
+    pública de l'entrada, sense els fragments tècnics. Si no queda res net, la
+    pàgina sola o res. Sense inventar: només text de la nota."""
+    for n, motiu in p["notes_pub"]:
+        if motiu:
+            continue
+        t = neteja_nota(n)
+        if not t:
+            continue
+        m = re.search(r"Document:\s*(.+?)(?:\.\s+Prova:|\.\s+[A-Z][^.]{0,40}:|$)", t)
+        if m:
+            doc = m.group(1)
         else:
-            m.append(meta("Registre", "No consta al registre amb el mateix text i URL."))
-    return f"""<article class="prova prova-base" id="b-{idx}" data-anys="{anys_attr}">
-<header class="p-cap"><span class="b b-base">Cita de la base</span><span class="p-anys" title="Anys en què el camp té aquest valor">{rang}</span></header>
-{cita}
-<div class="p-fonts">{''.join(fonts)}</div>
-<dl class="p-meta">{''.join(m)}</dl>
-</article>"""
+            frases = [f.strip() for f in re.split(r"(?<=[.;])\s+(?=[A-ZÀ-ÚÉÈÍÒÓÚ§«])", t) if f.strip()]
+            primera = frases[0] if frases else ""
+            loc = next((f for f in frases if re.match(r"Localització\b", f)), "")
+            parts = []
+            if primera and RE_DOC_PARAULES.search(primera) and not re.match(r"Localització\b", primera):
+                parts.append(primera)
+            if loc:
+                parts.append(re.sub(r"^Localització\s*", "Localització: ", loc))
+            if not parts:
+                pag = RE_PAGINA.search(t)
+                parts = [pag.group(0)] if pag else []
+            doc = " ".join(x if x.endswith((".", ";")) else x + "." for x in parts).rstrip(".")
+        doc = doc.strip(" .;,")
+        if not doc:
+            continue
+        if len(doc) > 230:
+            doc = doc[:230].rsplit(" ", 1)[0].rstrip(",;:(") + "…"
+        return esc(doc)
+    return ""
+
+
+def boto_font(url_txt: str) -> str:
+    """Botó «Font original ↗» amb el domini petit (estil de la maqueta A)."""
+    url = url_segura(url_txt)
+    if url:
+        return (f'<a class="boto" href="{esc(url)}" target="_blank" rel="noopener noreferrer">'
+                f'<span class="bt">Font original <span aria-hidden="true">↗</span></span> <small>{esc(domini(url))}</small></a>')
+    if url_txt:
+        return f'<span class="domini">URL no vàlida: {esc(url_txt)}</span>'
+    return '<span class="boto boto-off">Sense URL de la font</span>'
+
+
+def boto_copia(url: str, data: str, extra: str = "") -> str:
+    """Botó «Còpia arxivada · dd/mm/aaaa ↗» (contorn)."""
+    return (f'<a class="boto boto-wb" href="{esc(url)}" target="_blank" rel="noopener noreferrer">'
+            f'<span class="bt">Còpia arxivada{extra}{" · " + esc(data) if data else ""} <span aria-hidden="true">↗</span></span></a>')
+
+
+def boto_sense_copia(motiu: str) -> str:
+    return f'<span class="boto boto-off">Còpia arxivada: {esc(motiu)}</span>'
+
+
+def comprovada_txt(p: dict) -> str:
+    return "sí" if p["capt_si"] else ("no" if "no" in p["capt"] else "pendent")
+
+
+def ev_prova(p: dict | None, ident: str) -> tuple[str, str]:
+    """(insígnies, cos) d'una prova a la columna d'evidència: cita en serif, document,
+    «Font original», «Còpia arxivada» i si la cita s'ha comprovat a la còpia."""
+    if p is None:
+        return "", (f'<p class="mini">Identificador <code>{esc(ident)}</code> '
+                    "(no trobat entre les proves d'aquesta empresa).</p>")
+    if p["ocult"]:
+        return "", (f'<p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
+                    f'<code>{esc(p["id"])}</code></p>')
+    ins = []
+    if p["es_v"]:
+        ins.append('<span class="b b-v" title="marca_veritat = [V]: document obert sencer i cita trobada">[V] cita trobada al document</span>')
+    elif "[NV]" in p["veritat"]:
+        ins.append('<span class="b b-nv" title="marca_veritat = [NV]">[NV] no comprovada al document</span>')
+    if p["no_valida"]:
+        ins.append('<span class="b b-mal" title="La nota de l\'entrada diu no_valida">Font no vàlida</span>')
+    niv = nivell_font(p)
+    allot = ", ".join(p["allotjament"])
+    if niv or allot:
+        nom_niv = f"Font {niv}" if niv else '<span title="La mateixa entrada no declara el nivell A/B de la font">Font (nivell no declarat)</span>'
+        ins.append(f'<span class="b b-gris" title="Nivell de la font i allotjament del document">'
+                   f'{nom_niv}{chr(160) + "· " + esc(allot) if allot else ""}</span>')
+    wu, d = wayback_prova(p)
+    if wu:
+        copia = boto_copia(wu, d, " (fitxer extra)" if not p["wb_urls"] else "")
+    else:
+        copia = boto_sense_copia("pendent" if p["wb_pendent"] else "encara no")
+    comp = comprovada_txt(p)
+    doc = descripcio_document(p)
+    sencera = ""
+    if p["cita"] and len(p["cita"]) > 420:
+        sencera = f' data-cita="{esc(p["cita"])}"'
+    cos = (f'<div class="ev-cita">{html_cita(p["cita"], p["id"], 420)}</div>'
+           + (f'<p class="doc">{doc}</p>' if doc else "")
+           + f'<div class="botons">{boto_font(p["url"])}{copia}</div>'
+           f'<p class="verif"><span title="{esc(TITOL_COMPROVADA[comp])}">Cita comprovada a la còpia: '
+           f'<b class="vf vf-{"si" if comp == "sí" else comp}">{comp}</b></span>'
+           f'<span>ID <code>{esc(p["id"])}</code></span>'
+           f'<a href="#{p["ancora"]}">Veure la prova</a>'
+           + (f'<button type="button" class="copia" data-copia-cita{sencera}>Copia la cita</button>' if p["cita"] else "")
+           + '</p>')
+    return "".join(ins), cos
+
+
+def columna(titol: str, ins: str, cos: str, sub: str = "", cls: str = "") -> str:
+    return (f'<div class="ev{(" " + cls) if cls else ""}"><div class="ev-cap"><h4 class="ev-t">{titol}</h4>{ins}</div>'
+            f'{sub}{cos}</div>')
+
+
+def prova_valida(p: dict) -> bool:
+    """La definició de cita vàlida d'estat/estat_files.py, sobre la prova agrupada."""
+    return (p["es_v"] and bool(p["cita"]) and p["url"].lower().startswith(("http://", "https://"))
+            and not p["no_valida"])
+
+
+def es_extrem(p: dict) -> bool:
+    """Extrem d'interval: el mateix criteri que `c1_tipus` (marca_prova amb «interval»)."""
+    return any("interval" in m for m in p["marca_prova"])
+
+
+def tipus_extrem(p: dict) -> str:
+    """«inici» o «final» si la nota ho diu al principi (format de la regla 28)."""
+    for n in p["notes"]:
+        t = n.strip().lower()
+        if t.startswith("inici"):
+            return "inici"
+        if t.startswith("final"):
+            return "final"
+    return ""
+
+
+def candidats(e: dict, ids_txt: str, a: int, funcions: set[str], noms: list[str], anomena) -> list[dict]:
+    """Proves que sostenen la condició a l'any `a`, en l'ordre de `c1_ids`/`c2_ids`.
+    Si la llista està truncada («(+n)»), s'hi afegeixen les proves de la fitxa que
+    compleixen la mateixa regla que estat/estat_files.py."""
+    ids = primer_id(ids_txt)
+    out = []
+    for i in ids:
+        out.extend(p for p in e["proves"] if p["id"] == i and a in p["anys"] and prova_valida(p) and set(p["funcio"]) & funcions)
+    if "(+" in (ids_txt or ""):
+        for p in e["proves"]:
+            if p["id"] in ids or a not in p["anys"] or not prova_valida(p) or not set(p["funcio"]) & funcions:
+                continue
+            if noms and not any(anomena(p["cita"], n) for n in noms):
+                continue
+            out.append(p)
+    return out
+
+
+def tria(cands: list[dict], regles: list[str] | None = None) -> dict | None:
+    """La primera prova amb la cita verificada a la còpia; si no n'hi ha, la primera.
+    Amb `regles` (columna 2), dins de cada nivell, primer la que és de la mateixa
+    prova que la fila: coincident i comprovada > comprovada > coincident > primera.
+    Així una fila acabada continua mostrant «comprovada a la còpia: sí»."""
+    if not cands:
+        return None
+    if regles:
+        rc = canon(regles)
+        coinc = [p for p in cands if canon(codis_prova(p)) & rc]
+        for grup in ([p for p in coinc if p["capt_si"]], [p for p in cands if p["capt_si"]], coinc):
+            if grup:
+                return grup[0]
+        return cands[0]
+    return next((p for p in cands if p["capt_si"]), cands[0])
+
+
+# Files on la cita de fundador que es mostra és d'una altra prova que la de la
+# fila (es llisten a la consola perquè es revisin les dades).
+DESQUADRES: list[tuple[str, int, str, str]] = []
+
+
+def frase_codis(toks: list[str]) -> str:
+    return " i ".join(f"«{text_regla(t, curt=True)}»" for t in toks)
+
+
+def altres_parts(parts: list[dict], codi: str, lletra: str) -> str:
+    """Les altres cites de c2_ids que cobreixen l'any (les altres parts d'una prova
+    de diverses parts, com la b o la d, o altres cites de la mateixa prova), en
+    format compacte."""
+    if not parts:
+        return ""
+    items = []
+    for p in parts[:3]:
+        if p["ocult"]:
+            items.append(f'<li><span class="part-t">Prova no mostrada (criteri de la part pública)</span> <code>{esc(p["id"])}</code></li>')
+            continue
+        t = p["cita"]
+        t = t if len(t) <= 150 else t[:150].rsplit(" ", 1)[0] + "…"
+        cp = "comprovada a la còpia" if p["capt_si"] else "còpia pendent"
+        items.append(f'<li><q class="part-cita"{atribut_lang(p["cita"])}>{esc(t)}</q> '
+                     f'<span class="part-meta">{cp} · <a href="#{p["ancora"]}">Veure la prova</a></span></li>')
+    mes = (f'<li class="part-mes">I {len(parts) - 3} més a «Totes les proves».</li>' if len(parts) > 3 else "")
+    ajuda = ""
+    if lletra == "F":
+        titol = "Altres cites de fundador d'aquest any"
+    elif lletra == "P":
+        titol = "Altres cites de la prova" + (f" ({esc(text_regla(codi, curt=True))})" if codi else "")
+        # Proves de diverses parts (decisió de Jordi del 24/11/2026: cada part amb la seva cita).
+        if CODI_CANON.get(codi, codi) == "b":
+            ajuda = "La prova b té dues parts (l'any de fundació i el naixement del CEO), cadascuna amb la seva cita."
+        elif CODI_CANON.get(codi, codi) == "d":
+            ajuda = "La prova d té tres parts (la fundació, l'entrada del CEO i l'ocupador anterior), cadascuna amb la seva cita."
+    else:
+        titol = "Altres documents de la cerca"
+    return (f'<div class="ev-parts"><p class="ev-parts-t">{titol}:</p>'
+            + (f'<p class="mini">{esc(ajuda)}</p>' if ajuda else "")
+            + f'<ul>{"".join(items)}{mes}</ul></div>')
+
+
+def tria_extrems(exts: list[dict]) -> list[tuple[str, dict]]:
+    """Un extrem d'inici i un de final; si no es distingeixen, «extrem 1» i «extrem 2»."""
+    inici = tria([p for p in exts if tipus_extrem(p) == "inici"])
+    final = tria([p for p in exts if tipus_extrem(p) == "final"])
+    if inici and final:
+        return [("inici (nomenament)", inici), ("final", final)]
+    ordenats = sorted(exts, key=lambda p: not p["capt_si"])[:2]
+    return [(f"extrem {n}", p) for n, p in enumerate(ordenats, start=1)]
+
+
+def linia_vertical(e: dict, index_proves: dict[str, dict], pend: dict, anomena, obert: int) -> str:
+    """Un bloc per any, del més recent al més antic: capçalera (CEO, etiqueta,
+    prova, estat) i un plegable «Evidència de l'any» amb dues columnes: qui era el
+    CEO i per què és (o no és) fundador. La prova que es mostra és la que fa
+    complir la condició (la primera amb la cita comprovada a la còpia), amb la
+    mateixa regla que estat_files.py; a la columna 2, si n'hi ha, la de la mateixa
+    prova que la fila."""
+    blocs_any = []
+    for f in reversed(e["files"]):
+        a = f["any"]
+        est = f["est"]
+        l = f["lletra"]
+        if f["ceos"]:
+            ceo = " · ".join(esc(c) for c in f["ceos"])
+        else:
+            ceo = '<span class="buit">Sense CEO</span>'
+        regles = regles_visibles(f["regles"])
+        es_na, es_nd = l == "NA", l == "ND"
+        sense_etiq = es_na or es_nd
+        # Funcions i noms que fan servir les condicions C1 i C2 (estat/estat_files.py).
+        if sense_etiq and not (es_nd and f["ceos"]):
+            f1, noms1 = {"ceo", "fundador", "context"}, []
+        else:
+            f1, noms1 = {"ceo"}, f["ceos"]
+        f2 = {"ceo", "fundador", "context"} if sense_etiq else {"fundador"}
+
+        # --- Columna 1: qui era el CEO ---------------------------------------
+        t1 = "Documentació de la fila sense CEO (R-SC)" if es_na else "Qui era el CEO"
+        nom1 = "Sense CEO" if es_na else "CEO"
+        mostrades1: list[dict] = []
+        ids1 = primer_id(est["c1_ids"])
+        estat1 = "falta"
+        ceo_regles = [] if es_na else [t for t in f["regles"] if t in {"R2", "R2b", "R3"}]
+
+        def sub1(mostrades: list[dict]) -> str:
+            codis = list(ceo_regles)
+            for p in mostrades:
+                for c in codis_ceo(p):
+                    if c not in codis:
+                        codis.append(c)
+            return ('<p class="ev-sub">' + "".join(regla_detall(t) for t in codis) + "</p>") if codis else ""
+
+        if est["c1_ceo"] in ("ok", "rsc_documentat") and ids1:
+            cands = candidats(e, est["c1_ids"], a, f1, noms1, anomena)
+            docs = [p for p in cands if not es_extrem(p)]
+            exts = [p for p in cands if es_extrem(p)]
+            doc = tria(docs)
+            if doc and (doc["capt_si"] or not any(p["capt_si"] for p in exts)):
+                mostrades1 = [doc]
+                ins, cos = ev_prova(doc, doc["id"])
+                col1 = columna(t1, ins, cos, sub1(mostrades1))
+            elif exts:
+                parts = []
+                for nom_ext, p in tria_extrems(exts):
+                    mostrades1.append(p)
+                    ins, cos = ev_prova(p, p["id"])
+                    parts.append(f'<div class="ev-ext"><div class="ev-cap"><span class="ev-ext-t">Extrem de l\'interval: {esc(nom_ext)}</span>{ins}</div>{cos}</div>')
+                parts.append('<p class="mini ev-limit">Limitació declarada (regla 28): a les files amb '
+                             '<abbr title="marca ceo_interval">CEO per interval</abbr> no s\'ha verificat '
+                             "l'absència de canvis de CEO entre els dos extrems.</p>")
+                col1 = columna(f"{t1} (per interval)", "", "".join(parts), sub1(mostrades1))
+            else:
+                ins, cos = ev_prova(index_proves.get(ids1[0]), ids1[0])
+                col1 = columna(t1, ins, cos, sub1([]))
+            estat1 = "v" if mostrades1 else "ok"
+        else:
+            col1 = columna(t1, "", f'<p class="falta-txt">Falta: {"documentació de la fila sense CEO" if es_na else "cita de CEO"}.</p>',
+                           sub1([]), cls="ev-falta")
+
+        # --- Columna 2: per què és (o no és) fundador -------------------------
+        t2 = {"F": "Per què és fundador (F)", "P": "Per què no és fundador",
+              "NA": "Per què no hi ha CEO", "ND": "Què falta"}[l]
+        nom2 = {"F": "Fundador", "P": "Prova", "NA": "Cerca", "ND": "Cerca"}[l]
+        # Regles de la fila que expliquen aquesta columna (les del CEO van a la columna 1).
+        nota_altres = ""
+        if sense_etiq:
+            regles2 = regles
+        elif l == "F":
+            regles2 = [t for t in regles if t not in CODIS_NO and t not in CODIS_CEO] or ["cap"]
+            no_f = [t for t in regles if t in CODIS_NO]
+            if no_f:
+                if len(f["ceos"]) > 1:
+                    nota_altres = (f'<p class="ev-nota">La fila també registra una prova de no fundador ({frase_codis(no_f)}). '
+                                   "Amb diversos CEO, la base no indica a quin s'aplica; no canvia l'etiqueta F.</p>")
+                else:
+                    nota_altres = (f'<p class="ev-nota">La fila també registra una prova de no fundador ({frase_codis(no_f)}); '
+                                   "l'etiqueta F ve de la regla de dalt.</p>")
+        else:
+            regles2 = [t for t in regles if t not in CODIS_CEO] or ["cap"]
+            regles2 = sorted(regles2, key=lambda t: t not in CODIS_NO)
+        regles_fila = [t for t in regles2 if t != "cap"]
+
+        def sub2(codis: list[str], extra: str = "") -> str:
+            out = '<p class="ev-sub">' + "".join(regla_detall(t) for t in codis) + "</p>" + extra + nota_altres
+            if es_nd:
+                out += f'<p class="ev-sub-nd">{esc(DEF_ND)}</p>'
+            if sense_etiq:
+                out += '<p class="ev-sub-t">Documentació de la cerca:</p>'
+            return out
+
+        mostrada2 = None
+        ids2 = primer_id(est["c2_ids"])
+        estat2 = "falta"
+        if est["c2_fundador"] == "ok_columna_antiga":
+            estat2 = "base"
+            d = next((d for d in e["cites_base"] if d["tipus"] == "font_classificacio" and a in d["anys"]), None)
+            if d and not d["ocult"]:
+                cos = (f'<div class="ev-cita">{html_cita(d["cita"], "font_classificacio_cita", 420)}</div>'
+                       f'<div class="botons">{boto_font(d["url"])}{boto_sense_copia("no n'hi ha")}</div>')
+                col2 = columna(t2, '<span class="b b-gris">Cita de la base</span>', cos, sub2(regles2))
+            else:
+                col2 = columna(t2, "", '<p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
+                               "<code>font_classificacio_cita</code></p>", sub2(regles2))
+        elif est["c2_fundador"] in ("ok_registre", "rsc_documentat", "cerca_documentada") and ids2:
+            cands2 = candidats(e, est["c2_ids"], a, f2, [], anomena)
+            mostrada2 = tria(cands2, None if sense_etiq else regles_fila)
+            codis2: list[str] = regles2
+            avis = ""
+            if mostrada2 is not None and not sense_etiq:
+                propis = [t for t in codis_prova(mostrada2) if t not in CODIS_ALTRES]
+                if l == "F":
+                    propis = [t for t in propis if t not in CODIS_NO] or propis
+                if propis and regles_fila and not canon(propis) & canon(regles_fila):
+                    # La cita és d'una altra prova: s'explica la regla de la cita i es diu.
+                    codis2 = propis
+                    avis = (f'<p class="ev-nota">La base classifica la fila per la regla {frase_codis(regles_fila)}; '
+                            f"aquesta cita és de la prova {frase_codis(propis)}.</p>")
+                    DESQUADRES.append((e["isin"], a, ";".join(regles_fila), ";".join(propis)))
+                elif propis and not regles_fila:
+                    codis2 = propis
+            if mostrada2 is not None and any(mostrada2 is p for p in mostrades1):
+                col2 = columna(t2, "", f'<p class="mini">La mateixa prova de la columna «{esc(t1)}».</p>', sub2(codis2, avis))
+            elif mostrada2 is not None:
+                ins, cos = ev_prova(mostrada2, mostrada2["id"])
+                vistos = {id(mostrada2)} | {id(p) for p in mostrades1}
+                parts = []
+                for p in cands2:
+                    if id(p) not in vistos and p["id"] != mostrada2["id"]:
+                        vistos.add(id(p))
+                        parts.append(p)
+                codi_part = next((t for t in codis2 if t != "cap"), "")
+                col2 = columna(t2, ins, cos + altres_parts(parts, codi_part, l), sub2(codis2, avis))
+            else:
+                ins, cos = ev_prova(index_proves.get(ids2[0]), ids2[0])
+                col2 = columna(t2, ins, cos, sub2(codis2))
+            estat2 = "v" if mostrada2 is not None else "ok"
+        else:
+            col2 = columna(t2, "", f'<p class="falta-txt">Falta: {"documentació de la cerca" if sense_etiq else "prova de fundador"}.</p>',
+                           sub2(regles2), cls="ev-falta")
+        # Una fila acabada ha de mostrar, a les dues cites, «comprovada a la còpia: sí».
+        if f["cat"] == "acabada":
+            if not any(p["capt_si"] for p in mostrades1) or mostrada2 is None or not mostrada2["capt_si"]:
+                atura(f"{e['isin']} {a}: fila acabada sense cita comprovada a la còpia a l'evidència de l'any")
+
+        # --- Avisos de la fila ------------------------------------------------
+        avisos = []
+        if est["c4_coherencia"] != "ok":
+            probs = [PROBLEMES_C4.get(x, x) for x in est["c4_coherencia"].split(";") if x]
+            avisos.append(f'<p class="falta-txt">No quadra amb la base: {esc(" ".join(probs))}</p>')
+        for dub in f["dubtes"]:
+            nom = ORIGENS_DUBTE.get(dub, (dub, ""))[0]
+            url = url_pendents(pend, dub, f"l10-{e['isin'].lower()}-{a}" if dub == "lot10" else None)
+            avisos.append(f'<p class="falta-txt">Dubte obert ({esc(nom)}): {enllac_ext(url, "veure al fitxer de dubtes")}</p>')
+        if "carrec_no_detectat_a_la_cita" in est["avisos"]:
+            avisos.append('<p class="mini">Avís (no bloqueja): el càrrec no es detecta automàticament a la cita de CEO.</p>')
+        n_proves = sum(a in p["anys"] for p in e["proves"]) + sum(a in d["anys"] for d in e["cites_base"])
+
+        # --- Resum del plegable: insígnies, còpia de cada prova i inici de la cita
+        def ins_resum(nom: str, estat: str) -> str:
+            if estat == "v":
+                return f'<span class="b b-v">{esc(nom)} [V]</span>'
+            if estat == "ok":
+                return f'<span class="b b-gris">{esc(nom)}</span>'
+            if estat == "base":
+                return f'<span class="b b-gris">{esc(nom)}: cita de la base</span>'
+            return f'<span class="b b-mal">{esc(nom)}: falta</span>'
+
+        def data_copia(ps: list[dict]) -> str:
+            return next((wayback_prova(p)[1] or "sense data" for p in ps if not p["ocult"] and wayback_prova(p)[0]), "")
+        c1 = data_copia(mostrades1) if mostrades1 else ""
+        c2 = data_copia([mostrada2]) if mostrada2 is not None else ""
+        if mostrades1 and mostrada2 is not None and any(mostrada2 is p for p in mostrades1):
+            copia_txt = f'còpia {c1}' if c1 else "sense còpia arxivada"
+        elif c1 and c2 and c1 == c2:
+            copia_txt = f"còpia {c1}"
+        elif c1 or c2:
+            # La data només val per a la prova que té còpia: es diu de quina és.
+            copia_txt = " · ".join(f"{nom}: còpia {c}" if c else f"{nom}: sense còpia" for nom, c in ((nom1, c1), (nom2, c2)))
+        else:
+            copia_txt = "sense còpia arxivada"
+        copia_html = f'<span class="b b-gris">{esc(copia_txt)}</span>'
+        previ = ""
+        p_previ = next((p for p in mostrades1 if not p["ocult"] and p["cita"]), None)
+        if p_previ:
+            t = p_previ["cita"]
+            t = t if len(t) <= 90 else t[:90].rsplit(" ", 1)[0] + "…"
+            previ = f'<span class="previ" aria-hidden="true">«{esc(t)}»</span>'
+        resum = (f'<summary><span class="fletxa" aria-hidden="true"></span><span class="ev-titol">Evidència de {a}</span>'
+                 f'{ins_resum(nom1, estat1)}{ins_resum(nom2, estat2)}{copia_html}{previ}</summary>')
+        # Capçalera: les regles de l'etiqueta primer (de «sí» a les F, de «no» a les P).
+        ordre_cap = sorted(regles, key=lambda t: (t not in CODIS_SI) if l == "F" else (t not in CODIS_NO) if l == "P" else 0)
+        prova_curta = '<span class="regla-sep">; </span>'.join(regla_html(t) for t in ordre_cap)
+        defecte = ' open data-defecte' if a == obert else ""
+        blocs_any.append(
+            f'<li class="tl-any l-{l}" id="any-{a}">'
+            f'<div class="tl-marca"><h3 class="tl-a">{a}</h3><span class="tl-punt s-{f["cat"]}" aria-hidden="true">{ESTATS[f["cat"]][0]}</span></div>'
+            f'<div class="tl-cos">'
+            f'<div class="tl-fila"><p class="tl-ceo"><small>CEO a 31/10/{a}</small><b>{ceo}</b></p>'
+            f'<span class="tl-etq"><span class="vh">Etiqueta: </span>{badge_etiq(l)}</span>'
+            f'<span class="tl-prova">Prova: {prova_curta}</span>'
+            f'<span class="tl-st"><span class="vh">Estat: </span>{insignia_estat(f["cat"])}</span></div>'
+            f'<details class="tl-evid"{defecte} data-any="{a}">{resum}'
+            f'<div class="evid">{col1}{col2}</div>'
+            + (f'<div class="ev-avisos">{"".join(avisos)}</div>' if avisos else "")
+            + f'<div class="tl-peu"><a href="#proves" data-filtre-any="{a}">Totes les proves d\'aquest any ({n_proves}) <span aria-hidden="true">→</span></a>'
+            f'<span class="tl-peu-st">Estat: {esc(ESTATS[f["cat"]][3])}</span></div>'
+            "</details></div></li>")
+    return f'<ol class="tl" reversed>{"".join(blocs_any)}</ol>'
+
+
+def caixa_dubte(e: dict, pend: dict) -> str:
+    per_origen: dict[str, list[int]] = defaultdict(list)
+    for f in e["files"]:
+        for d in f["dubtes"]:
+            per_origen[d].append(f["any"])
+    if not per_origen:
+        return ""
+    items = []
+    ordre = [k for k in ORIGENS_DUBTE if k in per_origen] + sorted(k for k in per_origen if k not in ORIGENS_DUBTE)
+    for k in ordre:
+        anys = per_origen[k]
+        nom = ORIGENS_DUBTE.get(k, (k, ""))[0]
+        amb_ancora = [a for a in anys if k == "lot10" and f"l10-{e['isin'].lower()}-{a}" in pend["ancores"]]
+        if amb_ancora:
+            enll = ", ".join(enllac_ext(url_pendents(pend, k, f"l10-{e['isin'].lower()}-{a}"), str(a)) if a in amb_ancora else str(a)
+                             for a in anys)
+            items.append(f"<li>Dubte obert ({esc(nom)}) per als anys {enll}. {enllac_ext(url_pendents(pend, k), 'Secció al fitxer de dubtes')}</li>")
+        else:
+            items.append(f"<li>Dubte obert ({esc(nom)}) per als anys {esc(comprimeix_anys(anys))}. "
+                         f"{enllac_ext(url_pendents(pend, k), 'Secció al fitxer de dubtes')}</li>")
+    return f'<aside class="caixa-dubte" role="note"><span class="cd-icona" aria-hidden="true">?</span><ul>{"".join(items)}</ul></aside>'
+
+
+def historial_ia(e: dict) -> str:
+    files = "".join(
+        f'<tr><th scope="row">{f["any"]}</th><td>{esc(CERTIFICACIO.get(f["cert"], f["cert"]))}</td><td>{esc(f["nivell"]) or "—"}</td></tr>'
+        for f in e["files"]
+    )
+    return ('<details class="historial"><summary>Historial de l\'auditoria IA <span class="mini">(històric: no és l\'estat de la fila)</span></summary>'
+            '<p class="nota">Valors de l\'<span title="sim_estat_certificacio">estat de certificació</span> i del <span title="sim_nivell">nivell</span> de la base. És l\'estat de l\'auditoria anterior; '
+            'l\'estat actual de cada fila és el de la columna «Estat». <a href="../metodologia.html#historic">Què volen dir</a>.</p>'
+            '<div class="taula-wrap"><table class="taula-simple"><caption class="vh">Historial de l\'auditoria IA per any</caption>'
+            '<thead><tr><th scope="col">Any</th><th scope="col">Certificació</th><th scope="col">Nivell</th></tr></thead>'
+            f"<tbody>{files}</tbody></table></div></details>")
 
 
 def pagina_fitxa(ctx: Context, e: dict, anterior: dict | None, seguent: dict | None) -> str:
-    r = e["recompte"]
+    n = len(e["files"])
     anys_txt = comprimeix_anys(e["anys"])
-    chips = [
-        f'<span class="chip"><span class="chip-k">ISIN</span><code>{esc(e["isin"])}</code></span>',
-        f'<span class="chip" title="Derivat del prefix de l\'ISIN; no és la seu social ni un camp de la base">'
-        f'<span class="chip-k">País d\'emissió de l\'ISIN</span>{esc(e["pais"])} <small>(derivat)</small></span>',
-        f'<span class="chip"><span class="chip-k">Anys al panell</span>{esc(anys_txt)} · {len(e["anys"])}</span>',
-    ]
-    if MOSTRA_SECTOR:
-        sec = e["supersector"] or "sense sector"
-        estats = [s for s in e["estats_sector"] if s != "amb_sector"]
-        extra = f' <small>({esc(", ".join(estats))})</small>' if estats else ""
-        chips.append(f'<span class="chip"><span class="chip-k">Supersector</span>{esc(sec)}{extra}</span>')
-    resum_etq = "".join(
-        f'<span class="kp e-{l}-suau"><span class="cel cel-p e-{l}" aria-hidden="true">{l}</span><b>{r[l]}</b> {"any" if r[l] == 1 else "anys"}</span>'
-        for l in ORDRE_ETIQ if r[l]
-    )
+    nom_base = (f'<p class="altres-noms">Nom del valor a la base: {esc(e["nom_base"])}</p>'
+                if e["nom_base"] != e["nom"] else "")
     altres = ""
-    if e["altres_noms"]:
-        altres = f'<p class="altres-noms">Altres noms al panell: {"; ".join(esc(n) for n in e["altres_noms"])}</p>'
+    if e["altres_visibles"]:
+        altres = f'<p class="altres-noms">Altres noms al panell: {"; ".join(esc(x) for x in e["altres_visibles"])}</p>'
+    index_proves: dict[str, dict] = {}
+    for p in e["proves"]:
+        index_proves.setdefault(p["id"], p)
 
-    # Proves agrupades
     grups = {"ceo": [], "fundador": [], "altres": []}
     for p in e["proves"]:
         grups[p["grup"]].append(html_prova(p))
     for i, d in enumerate(e["cites_base"], start=1):
         grups["fundador"].append(html_cita_base(d, i))
     titols = {
-        "ceo": ("CEO", "Qui era el CEO a 31/10: nomenaments, informes anuals, intervals (ceo_interval)."),
-        "fundador": ("Fundador o classificació", "Proves de l'etiqueta FounderCEO (D37, a–e…) i cites dels camps de classificació de la base."),
-        "altres": ("Altres: context, datació i revisió", "Entrades de context, datació de mandats, revisió de fonts i dubtes metodològics."),
+        "ceo": ("CEO", "Qui era el CEO a 31/10: nomenaments, informes anuals i intervals de CEO."),
+        "fundador": ("Fundador", "Proves de l'etiqueta FounderCEO (D37, a–e…) i cites dels camps de classificació de la base."),
+        "altres": ("Altres", "Context, datació de mandats, revisió de fonts i dubtes metodològics."),
     }
     n_total = len(e["proves"]) + len(e["cites_base"])
     anys_amb = sorted({a for p in e["proves"] for a in p["anys"]} | {a for d in e["cites_base"] for a in d["anys"]})
@@ -1265,125 +2600,174 @@ def pagina_fitxa(ctx: Context, e: dict, anterior: dict | None, seguent: dict | N
                 continue
             t, desc = titols[clau]
             seccions.append(
-                f'<section class="grup-proves" id="g-{clau}"><h3>{esc(t)} <span class="n">{len(grups[clau])}</span></h3>'
-                f'<p class="nota">{esc(desc)}</p>{"".join(grups[clau])}</section>'
+                f'<details class="grup-proves" id="g-{clau}"><summary><span class="gp-t">{esc(t)}</span> <span class="n">{len(grups[clau])}</span></summary>'
+                f'<p class="nota">{esc(desc)}</p>{"".join(grups[clau])}</details>'
             )
-        n_reg = len(e["proves"])
-        n_base = len(e["cites_base"])
-        intro = (f'<p class="nota">{fmt_int(n_reg)} {"entrada" if n_reg == 1 else "entrades"} de <code>docs/REGISTRE_CANVIS.csv</code>'
-                 f'{" i " + fmt_int(n_base) + (" cita" if n_base == 1 else " cites") + " dels camps de la base" if n_base else ""}. '
-                 "Cada prova es mostra una vegada, amb els anys que cobreix. Les proves [NV] es mostren marcades.</p>")
+        intro = (f'<p class="nota">{fmt_int(len(e["proves"]))} entrades del <span title="docs/REGISTRE_CANVIS.csv">registre de canvis</span>'
+                 f'{" i " + fmt_int(len(e["cites_base"])) + " cites dels camps de la base" if e["cites_base"] else ""}. '
+                 "Cada prova es mostra una vegada, amb els anys que cobreix.</p>")
         proves_html = intro + filtre + "".join(seccions)
     else:
-        proves_html = ('<div class="sense-proves"><p><strong>No hi ha cita estructurada en aquests fitxers d\'origen</strong> '
-                       "(<code>docs/REGISTRE_CANVIS.csv</code> ni camps <code>font_classificacio_*</code> / <code>d37_*</code> de la base). "
-                       "L'etiqueta FounderCEO i el CEO de la base es mostren igualment al resum.</p></div>")
+        proves_html = ('<div class="sense-proves"><p><strong>No hi ha cap cita estructurada</strong> ni al '
+                       '<span title="docs/REGISTRE_CANVIS.csv">registre de canvis</span> ni als '
+                       '<span title="font_classificacio_* i d37_*">camps de cita de la base</span>.</p></div>')
         if e["rastre"]:
-            items = "".join(
-                f'<li>{enllac_ext(d["url"], d["url"], "url-llarga")} <span class="mini">({esc(comprimeix_anys(d["anys"]))})</span></li>'
-                for d in e["rastre"]
-            )
-            proves_html += (
-                '<details class="rastre"><summary>Rastre secundari: URL d\'arxiu heretades, sense cita literal estructurada '
-                f'<span class="mini">({len(e["rastre"])})</span></summary>'
-                "<p class=\"nota\">Columna <code>v75_urls_arxivades</code> de la base. No és una prova tancada: no hi ha cita literal "
-                "estructurada i no s'ha verificat aquí.</p>"
-                f'<ul class="llista-urls">{items}</ul></details>'
-            )
+            items = "".join(f'<li>{enllac_ext(d["url"], d["url"], "url-llarga")} <span class="mini">({esc(comprimeix_anys(d["anys"]))})</span></li>'
+                            for d in e["rastre"])
+            proves_html += ('<details class="rastre"><summary>Rastre secundari: URL d\'arxiu heretades, sense cita literal estructurada '
+                            f'<span class="mini">({len(e["rastre"])})</span></summary>'
+                            "<p class=\"nota\">Columna <code>v75_urls_arxivades</code> de la base. No és una prova tancada.</p>"
+                            f'<ul class="llista-urls">{items}</ul></details>')
 
-    navegacio = ['<nav class="nav-fitxes" aria-label="Altres empreses">']
-    if anterior:
-        navegacio.append(f'<a class="ant" href="{esc(anterior["isin"])}.html"><small>← Anterior</small>{esc(anterior["nom"])}</a>')
-    else:
-        navegacio.append("<span></span>")
+    nav = ['<nav class="nav-fitxes" aria-label="Altres empreses">']
+    nav.append(f'<a class="ant" href="{esc(anterior["isin"])}.html"><small>← Anterior</small>{esc(anterior["nom"])}</a>' if anterior else "<span></span>")
     if seguent:
-        navegacio.append(f'<a class="seg" href="{esc(seguent["isin"])}.html"><small>Següent →</small>{esc(seguent["nom"])}</a>')
-    navegacio.append("</nav>")
+        nav.append(f'<a class="seg" href="{esc(seguent["isin"])}.html"><small>Següent →</small>{esc(seguent["nom"])}</a>')
+    nav.append("</nav>")
 
-    llegenda_tl = "".join(
-        f'<span class="ll"><span class="cel cel-p e-{l}" aria-hidden="true">{l}</span>{esc(n)}</span>'
-        for l, n in (("F", "fundador-CEO"), ("P", "professional"), ("ND", "no determinat"), ("NA", "sense CEO"))
-    ) + '<span class="ll"><span class="cel cel-p cel-buida" aria-hidden="true"></span>no és al panell</span>'
+    # Etiqueta dominant: la més freqüent (en empat, l'ordre F, P, ND, NA) i el CEO d'aquells anys.
+    dom = max(ORDRE_ETIQ, key=lambda x: (e["recompte"][x], -ORDRE_ETIQ.index(x)))
+    ceos_dom = {f["ceos_text"] for f in e["files"] if f["lletra"] == dom}
+    noms_dom = sorted({c for f in e["files"] if f["lletra"] == dom for c in f["ceos"]}, key=clau_ordre)
+    if dom == "NA" or not noms_dom:
+        qui = ""
+    elif len(ceos_dom) == 1:
+        qui = " · " + esc(" · ".join(next(f["ceos"] for f in e["files"] if f["lletra"] == dom)))
+    else:
+        qui = f" · {len(noms_dom)} CEO diferents"
+    obert = e["files"][-1]["any"]  # per defecte, l'últim any amb dades
+    llegenda = ('<span class="ll-grup">' + "".join(f'<span class="ll"><span class="sw e-{l}" aria-hidden="true">{l}</span>{esc(NOM_ETIQ_MIN[l])}</span>' for l in ORDRE_ETIQ) + "</span>"
+                + '<span class="ll-grup">' + "".join(f'<span class="ll"><span class="sw s-{k}" aria-hidden="true">{ESTATS[k][0]}</span>{esc(ESTATS[k][1].lower())}</span>' for k in ORDRE_ESTATS) + "</span>"
+                + '<span class="ll-grup"><span class="ll"><span class="b b-v">[V]</span>cita trobada al document</span>'
+                + '<span class="ll"><span class="sw sw-buida" aria-hidden="true"></span>targeta buida: l\'empresa no era a l\'índex</span>'
+                + '<a class="ll-mes" href="../metodologia.html#llegenda">Llegenda completa</a></span>')
 
-    cos = f"""<p class="molla"><a href="../index.html">← Totes les empreses</a></p>
-{avis(ctx)}
+    cos = f"""<p class="molla"><a href="../empreses.html">← Empreses</a></p>
 <section class="fitxa-cap">
-<p class="eyebrow">Fitxa d'empresa</p>
+<div class="fc-nom">
 <h1>{esc(e["nom"])}</h1>
-<div class="chips">{''.join(chips)}</div>
-{altres}
-<div class="kp-fila">{resum_etq}<span class="kp kp-proves"><b>{fmt_int(n_total)}</b> {"prova" if n_total == 1 else "proves"}</span></div>
-<nav class="salts" aria-label="Seccions de la fitxa"><a href="#resum">Resum</a><a href="#proves">Proves</a></nav>
+<p class="fitxa-linia"><span class="isin"><code>{esc(e["isin"])}</code><button type="button" class="copia copia-isin" data-copia="{esc(e["isin"])}">Copia l'ISIN</button></span> <span>{esc(e["pais"])} <span class="mini">(prefix ISIN)</span></span> <span>{esc(anys_txt)} ({n} {"any" if n == 1 else "anys"})</span></p>
+{nom_base}{altres}
+</div>
+<div class="fc-resum">
+<p class="fc-etq">{badge_etiq(dom)} <span>{e["recompte"][dom]} de {n} {"any" if n == 1 else "anys"}{qui}</span></p>
+<p class="fitxa-estat">{minibarra_estat(e["st"], n, "mb mb-gran")}<span>{esc(text_estat_empresa(e))}</span></p>
+</div>
 </section>
-<section class="seccio" id="resum" aria-labelledby="h-resum">
-<h2 id="h-resum">Resum</h2>
-<h3 class="h-sub">CEO a 31 d'octubre de cada any</h3>
-{linia_temps(e)}
-<div class="llegenda">{llegenda_tl}</div>
-{taula_anys(e)}
-<p class="nota">CEO: columna <code>ceos</code> de la base. «Prova de CEO» i «Prova de classificació» indiquen si hi ha entrades al registre amb <code>funcio_cita</code> = <code>ceo</code> o <code>fundador</code> que cobreixen l'any; «Base» vol dir que la cita només és als camps de la base. Fes clic per veure les proves d'aquell any. Si <code>FounderCEO</code> = 1, el CEO d'aquell any està classificat com a fundador; això no és una llista dels fundadors de l'empresa.</p>
+{caixa_dubte(e, ctx.pend)}
+<section class="seccio seccio-anys" id="anys" aria-labelledby="h-anys">
+<h2 id="h-anys">Any per any</h2>
+<p class="nota">Tria un any per veure qui era el CEO el 31 d'octubre i per què és (o no és) fundador, amb la cita, la font original i la còpia arxivada. Els anys van del més recent al més antic.</p>
+<div class="com-llegir"><span class="cl-cap">Com es llegeix:</span>{llegenda}</div>
+<div class="rail-envol"><p class="rail-nom" aria-hidden="true"><b>{esc(e["nom"])}</b> <code>{esc(e["isin"])}</code></p>{franja_anys(e, obert)}</div>
+{trams_ceo(e)}
+{linia_vertical(e, index_proves, ctx.pend, ctx.anomena, obert)}
 </section>
 <section class="seccio" id="proves" aria-labelledby="h-proves">
-<h2 id="h-proves">Proves</h2>
+<h2 id="h-proves">Totes les proves</h2>
 {proves_html}
 </section>
-{''.join(navegacio)}"""
-    return pagina(ctx, titol=f"{e['nom']} · {e['isin']} · Dashboard Fundadors",
-                  descripcio=f"Fitxa de {e['nom']} ({e['isin']}): CEO per any, FounderCEO i proves amb cita i font.",
-                  cos=cos, prefix="../", actiu="", scripts=("fitxa.js",))
+{historial_ia(e)}
+{''.join(nav)}"""
+    return pagina(ctx, titol=f"{e['nom']} · {e['isin']} · Fundadors-CEO",
+                  descripcio=f"Fitxa de {e['nom']} ({e['isin']}): CEO per any, FounderCEO, estat de les files i proves amb cita i font.",
+                  cos=cos, prefix="../", actiu="empreses", scripts=("fitxa.js",), ample=True, cls_body="p-fitxa")
 
 
 # ---------------------------------------------------------------------------
-# Metodologia i llegenda
+# Mètode
 # ---------------------------------------------------------------------------
 
 
-def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
-    gh = f"{REPO_GITHUB}/blob/main"
+def pagina_metodologia(ctx: Context, model: dict, E: dict, stats: Counter) -> str:
     docs = [
-        ("docs/METODOLOGIA.md", "Porta d'entrada a la metodologia vigent (v0.10.10), amb el text complet."),
-        ("AGENTS.md", "Instruccions de treball i annex normatiu (regles 25 a 29, METODOLOGIA v0.10.10)."),
-        ("docs/LIMITACIONS.md", "Limitacions declarades de la base."),
-        ("docs/DICCIONARI_CAMPS.md", "Diccionari de camps de la base."),
+        ("docs/METODOLOGIA.md", "Porta d'entrada a la metodologia vigent (v0.10.10)."),
+        (METODOLOGIA_COMPLETA, "Text complet de la metodologia vigent."),
+        ("AGENTS.md", "Instruccions de treball i annex normatiu (regles 25 a 29)."),
+        ("estat/README.md", "Definició de les condicions C1-C4 i de l'estat de cada fila."),
     ]
-    docs_html = "".join(
-        f'<li>{enllac_ext(f"{gh}/{d}", d)} — {esc(t)}</li>' for d, t in docs
-    )
-    etiq = "".join(
-        f'<div class="def">{badge_etiq(l)}<p>{t}</p></div>'
-        for l, t in (
-            ("F", "Valor <code>1</code>. El CEO de l'empresa a 31/10 d'aquell any és fundador o cofundador de l'empresa cotitzada o d'una entitat rellevant (per exemple, una predecessora documentada), segons les regles de la metodologia (D37, cita directa, fundador transformador)."),
-            ("P", "Valor <code>0</code>. El CEO no és fundador. Cal una prova positiva amb cita (proves a–e); si no n'hi ha, no es posa 0."),
-            ("ND", "Valor <code>no_determinat</code>. Hi ha un CEO identificat però cap prova concloent de sí ni de no, o les proves es contradiuen."),
-            ("NA", "Valor <code>NA_sense_ceo</code>. Un cop aplicades les regles R1-R3, a 31/10 no hi ha cap CEO individual (R-SC)."),
-        )
+    docs_html = "".join(f'<li>{enllac_ext(f"{GH_BLOB}/{d}", d)} · {esc(t)}</li>' for d, t in docs)
+
+    def targeta(id_: str, cap: str, text: str) -> str:
+        return f'<div class="def" id="{id_}"><div class="def-cap">{cap}</div><p>{text}</p></div>'
+
+    et = E["etiq"]
+    etiq = "".join(targeta(l, badge_etiq(l), t + f' <span class="mini">({fmt_int(et[l])} {"fila" if et[l] == 1 else "files"})</span>') for l, t in (
+        ("F", "Valor <code>1</code>. El CEO a 31/10 d'aquell any és fundador o cofundador de l'empresa cotitzada o d'una entitat rellevant (per exemple, una predecessora documentada), segons les regles de la metodologia."),
+        ("P", "Valor <code>0</code>. El CEO no és fundador. Cal una prova positiva amb cita (proves a–e); si no n'hi ha, no es posa 0."),
+        ("ND", "Valor <code>no_determinat</code>. " + esc(DEF_ND)),
+        ("NA", "Valor <code>NA_sense_ceo</code>. Un cop aplicades les regles R1-R3, a 31/10 no hi ha cap CEO individual (R-SC)."),
+    ))
+    estats = "".join(targeta(k, insignia_estat(k), esc(ESTATS[k][3])) for k in ORDRE_ESTATS)
+    precedencia = ("<ol class='prec'><li>Si a la fila li falta la cita de CEO o la de fundador → <b>Falta evidència</b>.</li>"
+                   "<li>Si no, si té un dubte obert o no quadra amb la base → <b>Amb dubte o incoherència</b>.</li>"
+                   "<li>Si no, si li falta la cita verificada a la còpia de Wayback → <b>Només falta l'arxiu</b>.</li>"
+                   "<li>Si no → <b>Acabada</b>.</li></ol>")
+    marques = "".join([
+        targeta("V", '<span class="b b-v">[V]</span>', "Qui va fer l'entrada va obrir el document sencer i hi va trobar la cita literalment. "
+                "És provisional fins que el flux automàtic de Wayback verifica la cita per script a la còpia arxivada."),
+        targeta("NV", '<span class="b b-nv">[NV]</span>', "No s'ha pogut obrir el document sencer (bloqueig, descàrrega tallada…) o la cita no hi és. "
+                "Un error d'accés no vol dir que la font sigui dolenta."),
+        targeta("no-valida", '<span class="b b-mal">Font no vàlida</span>', "La nota de l'entrada la marca com a <span title=\"no_valida\">no vàlida</span>: la cita no és al document, és d'un altre any o la font és C."),
+        targeta("pendent-arxiu", '<span class="b b-nv">Pendent d\'arxiu</span>', "La nota diu <code>pendent_arxiu</code>, abans <code>pendent_DF</code>: el document no s'ha pogut obrir sencer i espera el flux d'arxiu."),
+        targeta("comprovada", '<span class="b b-v">Cita comprovada a la còpia</span>', "<span title=\"cita_verificada_a_captura = si\">La cita s'ha verificat per script a la captura de Wayback</span>."),
+        targeta("cita-base", '<span class="b b-gris">Cita de la base</span>', "Cita que només consta als <span title=\"font_classificacio_* o d37_*\">camps de cita</span> del CSV de la base, sense còpia arxivada."),
+    ])
+    fonts = "".join([
+        targeta("font-original", '<span class="boto boto-mostra">Font original ↗</span>', "L'URL del document on hi ha la cita."),
+        targeta("copia-wayback", '<span class="boto boto-wb boto-mostra">Còpia arxivada · dd/mm/aaaa ↗</span>', "La captura de Wayback Machine (archive.org) que consta al registre, amb la data de la captura. Si no n'hi ha, «Còpia arxivada: encara no»; si està pendent de verificació externa, «Còpia arxivada: pendent»; per a les cites que només són a la base, «no n'hi ha». El lloc no consulta ni completa cap captura."),
+        targeta("cita-comprovada", "Cita comprovada a la còpia", "«sí» si la cita s'ha verificat per script a la captura; «no» si s'ha intentat i no s'ha pogut comprovar; «pendent» si encara no s'ha intentat."),
+    ])
+    condicions = "".join(f"<li><b>{c}</b> {t}</li>" for c, t in (
+        ("C1 CEO.", "Hi ha una cita vàlida ([V], amb URL) amb funció CEO que anomena el CEO de la base."),
+        ("C2 Fundador.", "Hi ha una cita vàlida amb funció fundador, o la cita antiga de la base amb URL."),
+        ("C3 Arxiu.", "Almenys una cita de C1 i una de C2 s'han verificat per script a la còpia de Wayback."),
+        ("C4 Coherència.", "L'etiqueta quadra amb la regla registrada a la base i la fila no té cap dubte obert a PENDENTS.md."),
+    ))
+    nivells = "".join([
+        targeta("font-A", '<span class="b b-nivell">Font A</span>', "Documents de la mateixa empresa o registres oficials: informe anual, document de registre, comunicat, document presentat a un regulador."),
+        targeta("font-B", '<span class="b b-nivell">Font B</span>', "Premsa econòmica de qualitat, llibres i articles acadèmics."),
+        targeta("font-C", '<span class="b b-gris">Font C</span>', "Wikipedia, LinkedIn, Crunchbase, agregadors, biografies no corporatives, textos d'IA… Serveixen de pista, mai de prova."),
+    ])
+    pref = ("<p>Ordre de preferència: (1) informe anual o document de registre de l'emissor de l'exercici; (2) comunicat de l'emissor o canal "
+            "regulat; (3) regulador o registre; (4) font B.</p>")
+    def sense(codi: str) -> str:
+        url, text = ref_metodologia(codi)
+        return f"Codi de la base sense resum aprovat en aquest lloc. Vegeu la metodologia vigent, {enllac_ext(url, text)}."
+    F = REGLES_FRASE
+    regles = [
+        ("R1", "Per al CEO", esc(F["R1"])),
+        ("R2", "Per al CEO", esc(F["R2"])),
+        ("R2b", "Per al CEO", esc(F["R2b"])),
+        ("R3", "Per al CEO", esc(F["R3"])),
+        ("R-SC", "Per al CEO", esc(F["R-SC"])),
+        ("ceo_interval", "Per al CEO", esc(F["ceo_interval"])),
+        ("D37", "Porta a F", esc(F["D37"]) + " A la columna <code>regles</code> també surt com a <code>cita_fundador</code>."),
+        ("FT", "Porta a F", sense("FT")),
+        ("D10", "Porta a F", sense("D10")),
+        ("D10b_prelacio", "Porta a F", sense("D10b_prelacio")),
+        ("a", "Porta a P", esc(F["a"])),
+        ("b", "Porta a P", esc(F["b"])),
+        ("c", "Porta a P", esc(F["c"]) + " A la columna <code>regles</code>: <code>c_AAF64_reserva</code>."),
+        ("d", "Porta a P", esc(F["d"])),
+        ("e", "Porta a P", esc(F["e"])),
+        ("d_per_part", "Porta a P", sense("d_per_part")),
+        ("b_per_part", "Porta a P", sense("b_per_part")),
+        ("holding_interposada", "Altres", sense("holding_interposada")),
+    ]
+    regles_html = "".join(
+        f'<div class="def" id="regla-{slug(c)}"><div class="def-cap"><code class="b b-marca">{esc(c)}</code><span class="mini">{esc(g)}</span></div><p>{t}</p></div>'
+        for c, g, t in regles
     )
     cert = "".join(
-        f"<div class='def'><span class='cert cert-{c}'>{esc(CERTIFICACIO[c])}</span><p>{t}</p></div>"
+        f"<div class='def'><div class='def-cap'><span class='b b-gris'>{esc(CERTIFICACIO[c])}</span></div><p>{t}</p></div>"
         for c, t in (
-            ("certificada", "L'etiqueta està certificada dins de l'auditoria. El nivell diu com: <b>N1</b> (les dues revisions independents de l'auditoria coincideixen amb la base, amb cita A/B i sense incidències E2, E4 ni E6), <b>N2</b> (una revisió coincideix amb la base i l'altra ho deixa indeterminat, sense incidència greu) o <b>doctorat</b> (certificada per decisió de Doctorat)."),
-            ("certificada_ceo_pendent", "L'etiqueta és certificable, però la identitat del CEO encara no està verificada. Pot portar nivell N1 o N2."),
-            ("no_certificada", "La fila és dins de l'àmbit de l'auditoria però no s'ha pogut certificar."),
-            ("fora_mostra_auditoria", "La fila no formava part de la mostra de l'auditoria. Es revisa per lots; aquest estat no vol dir que l'etiqueta sigui dubtosa."),
+            ("certificada", "L'etiqueta es va certificar dins de l'auditoria. Nivell <b>N1</b>: les dues revisions independents coincidien amb la base, amb cita A/B i sense incidències greus; <b>N2</b>: una revisió coincidia i l'altra ho deixava indeterminat; <b>doctorat</b>: per decisió de Doctorat."),
+            ("certificada_ceo_pendent", "L'etiqueta era certificable, però la identitat del CEO no estava verificada."),
+            ("no_certificada", "La fila era dins de l'àmbit de l'auditoria però no es va poder certificar."),
+            ("fora_mostra_auditoria", "La fila no formava part de la mostra de l'auditoria i es revisa per lots."),
         )
     )
-    marques_ceo = [
-        ("R1", "Títol de CEO o càrrec legal equivalent (Vorstandsvorsitzender, consejero delegado, PDG, directeur général…)."),
-        ("R2", "CEO interí."),
-        ("R2b", "Direcció col·legiada transitòria."),
-        ("R3", "Persona descrita literalment com a primer executiu quan el càrrec de CEO és vacant (el president executiu, només per aquesta via)."),
-        ("ceo_interval", "Interval: un document de nomenament amb data igual o anterior al 31/10 i un altre que anomena la persona CEO en una data igual o posterior. A les notes, «inici» o «final»."),
-    ]
-    marques_f = [
-        ("D37", "Cita de l'emissor que anomena la persona fundadora o cofundadora de la cotitzada, del grup o d'una predecessora documentada."),
-        ("a", "Llista tancada de fundadors en què el CEO no hi és."),
-        ("b", "Edat: l'any de la fundació rellevant més recent, el CEO tenia menys de 18 anys."),
-        ("c", "64 anys o més entre la fundació rellevant i l'inici del mandat, només si no hi ha dada d'edat."),
-        ("d", "Incorporació tardana: el CEO entra 3 anys o més després de la fundació, amb cita de l'ocupador anterior."),
-        ("e", "Origen no personal: l'entitat la va crear l'Estat o una altra empresa, sense persona fundadora."),
-    ]
-    def taula_marques(llista):
-        return "".join(f"<div class='def'><code class='b b-marca'>{esc(k)}</code><p>{esc(t)}</p></div>" for k, t in llista)
     ocults = (
         f"<li>Proves del registre no mostrades perquè la cita o l'URL contenen un terme restringit: <b>{fmt_int(stats['proves_ocultes_terme_restringit'])}</b>.</li>"
         f"<li>Notes no mostrades per termes restringits o referències internes: <b>{fmt_int(stats['notes_ocultes_terme_restringit'])}</b>; per noms de models: <b>{fmt_int(stats['notes_ocultes_nom_model'])}</b>.</li>"
@@ -1391,78 +2775,85 @@ def pagina_metodologia(ctx: Context, resum: dict, stats: Counter) -> str:
         f"<li>Valors d'«origen de la cita» no mostrats: <b>{fmt_int(stats['origen_cita_ocult'])}</b>.</li>"
         f"<li>URL del rastre secundari no mostrades: <b>{fmt_int(stats['v75_urls_ocultes_terme_restringit'])}</b>.</li>"
     )
-    cos = f"""<p class="molla"><a href="index.html">← Totes les empreses</a></p>
-<section class="heroi heroi-petit">
-<p class="eyebrow">Metodologia i llegenda</p>
-<h1>Com es llegeix aquest dashboard</h1>
-<p class="entradeta">Explicació en llenguatge planer de les etiquetes que surten a les dades. La metodologia que mana és la del repositori; aquest resum no la substitueix.</p>
+    cos = f"""<section class="cap-pagina">
+<h1>Mètode</h1>
+<p class="entradeta">Com es llegeix aquest lloc i com es decideix cada fila, en llenguatge planer. La metodologia que mana és la del repositori; aquest resum no la substitueix.</p>
 </section>
-{avis(ctx)}
 <div class="text-llarg">
-<section class="seccio"><h2>La metodologia que mana</h2>
-<p>La metodologia vigent és la del repositori: les instruccions de treball del repositori (<code>AGENTS.md</code>, que incorpora les regles 25 a 29 i cita la METODOLOGIA v0.10.10) i els documents als quals remeten. El text complet de la metodologia vigent (v0.10.10) és a <code>docs/METODOLOGIA_3_Articles_v0.10.10.md</code>. Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
-<ul class="docs">{docs_html}</ul>
+<section class="seccio" id="pregunta"><h2>La pregunta</h2>
+<p>La unitat és l'empresa i l'any: cada ISIN de l'STOXX Europe 600 per a cada any del 2016 al 2025 ({fmt_int(model["n_files"])} files, {fmt_int(E["n_isin"])} empreses).</p>
+<p>Per a cada fila, qui era el CEO el <b>31 d'octubre</b> d'aquell any. Aquesta data no es canvia.</p>
+<p>I si aquell CEO era fundador de l'empresa (FounderCEO): F, P, ND o NA, sempre amb una cita literal d'una font A o B.</p>
 </section>
-<section class="seccio"><h2>La unitat: empresa i any</h2>
-<p>Cada fila de la base és un ISIN i un any (2016–2025). La base té {fmt_int(resum["n_files"])} files i {fmt_int(resum["n_isin"])} ISIN. Per a cada fila hi ha el CEO i l'etiqueta FounderCEO.</p>
-<p><b>Data de referència del CEO: el 31 d'octubre de cada any.</b> El CEO de l'any t és qui ocupava el càrrec el 31/10/t. Aquesta data no es canvia.</p>
+<section class="seccio" id="llegenda"><h2>Llegenda</h2>
+<h3>Etiquetes FounderCEO</h3>{etiq}
+<h3>Estat de cada fila</h3>{estats}
+<p>Cada fila té un sol estat, el primer pas de l'embut que no supera:</p>{precedencia}
+<h3>Marques d'una prova</h3>{marques}
+<h3>Fonts i còpies arxivades</h3>{fonts}
 </section>
-<section class="seccio"><h2>Etiqueta FounderCEO</h2>{etiq}
-<p class="nota">Recompte actual: F {fmt_int(resum["rec"]["F"])}, P {fmt_int(resum["rec"]["P"])}, ND {fmt_int(resum["rec"]["ND"])}, NA {fmt_int(resum["rec"]["NA"])}.</p></section>
-<section class="seccio"><h2>Estat de certificació i nivell</h2>{cert}</section>
-<section class="seccio"><h2>Nivells de font</h2>
-<div class="def"><span class="b b-nivell">Font A</span><p>Documents de la mateixa empresa o registres oficials: informe anual, fullet o document d'IPO, comunicat, pàgina oficial, document presentat a un regulador o a la borsa.</p></div>
-<div class="def"><span class="b b-nivell">Font B</span><p>Tercers fiables: premsa econòmica de qualitat, obres de referència, llibres, articles acadèmics.</p></div>
-<div class="def"><span class="b b-gris">Font C</span><p>Agregadors, blogs, enciclopèdies obertes, LinkedIn… Serveixen de pista, però una font C mai no verifica.</p></div>
-<p class="nota">El nivell no té columna pròpia al registre. Quan consta, és al camp «origen de la cita» (<code>Nivell A</code>, <code>Nivell B</code>) o al text de les notes; el dashboard el mostra tal com és.</p>
+<section class="seccio" id="acabada-def"><h2>Quan una fila està acabada</h2>
+<p>Quan compleix les quatre condicions i no té cap dubte obert:</p>
+<ul class="condicions">{condicions}</ul>
+<p class="nota">Definició completa: {enllac_ext(f"{GH_BLOB}/estat/README.md", "estat/README.md")}.</p>
 </section>
-<section class="seccio"><h2>Marques de prova</h2>
-<h3>Per al CEO</h3>{taula_marques(marques_ceo)}
-<h3>Per a l'etiqueta de fundador</h3>{taula_marques(marques_f)}
-<p class="nota">Algunes entrades d'auditoria porten marques més llargues (per exemple <code>2016=informe_exercici:confirmada</code>); es mostren tal com són al registre.</p>
+<section class="seccio" id="fonts"><h2>Fonts A, B i C</h2>{nivells}{pref}</section>
+<section class="seccio" id="marques"><h2>Marques de prova</h2>
+<p class="nota">Codis de les columnes <code>marca_prova</code> del registre i <code>regles</code> de la base. Quan un codi no té resum aprovat en aquest lloc, remet a la metodologia.</p>
+{regles_html}
 </section>
-<section class="seccio"><h2>Estat d'una prova</h2>
-<div class="def"><span class="b b-v">[V] Verificada</span><p>Qui va fer l'entrada va obrir el document sencer i hi va trobar la cita literalment. Fins que DF ho confirma per script, és provisional.</p></div>
-<div class="def"><span class="b b-nv">[NV] No verificada</span><p>No s'ha pogut obrir el document sencer (bloqueig, descàrrega tallada…: a les notes, <code>pendent_DF</code>) o la cita no hi és (<code>no_valida</code>). Un error d'accés no vol dir que la font sigui dolenta.</p></div>
-<div class="def"><span class="b b-mal">Font no vàlida</span><p>Distintiu que surt quan la nota de l'entrada diu <code>no_valida</code>: la cita no és al document, és d'un altre any o la font és C.</p></div>
-<div class="def"><span class="b b-base">Cita de la base</span><p>Cita que només consta als camps <code>font_classificacio_cita</code> / <code>font_classificacio_url</code> o <code>d37_*</code> del CSV de la base. Només cobreix els anys en què el camp té valor.</p></div>
+<section class="seccio" id="historic"><h2>Estat antic de l'auditoria (històric)</h2>
+<p>Abans de l'estat per fila, cada fila tenia un estat de certificació de l'auditoria amb IA (<code>sim_estat_certificacio</code>) i un nivell (<code>sim_nivell</code>). Es conserven a l'«Historial de l'auditoria IA» de cada fitxa, però <b>no són l'estat de la fila</b>: avui una fila està acabada només si compleix C1-C4 amb cites verificades per script.</p>
+{cert}
 </section>
-<section class="seccio"><h2>Fonts i còpies arxivades</h2>
-<p><b>Font original</b>: l'URL del document on hi ha la cita. <b>Còpia Wayback</b>: la captura d'archive.org que consta al registre. Si no n'hi ha, es diu «no consta» (sense còpia arxivada, el document es considera no durable); si està pendent, «pendent de verificació externa». El dashboard no consulta ni completa cap captura.</p>
-<p><b>Cita verificada a la captura</b>: <code>si</code> si DF ha comprovat la cita al document arxivat; <code>no</code> si no s'ha pogut comprovar.</p>
-<p><b>Allotjament</b>: on és el document segons el registre (<code>emissor</code>, <code>regulador</code>, <code>grup</code>, <code>successor</code>, <code>plataforma</code>, <code>mitja</code>…). Es mostra tal com consta.</p>
-</section>
-<section class="seccio"><h2>Què no hi ha (i no s'inventa)</h2>
+<section class="seccio" id="criteris"><h2>Criteris de la part pública</h2>
+<p>No es mostren les columnes de robustesa, les propostes brutes ni les notes de decisió de l'auditoria, ni referències a fitxers o informes interns. Quan una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota. Les cites es mostren tal com les publica l'emissor, incloses les dates de naixement que serveixen per a la prova b. Les cites llargues es retallen a un fragment, amb l'avís corresponent. Del fitxer de dubtes (<code>PENDENTS.md</code>) només es compten files: no se'n mostra el text.</p>
+<ul>{ocults}</ul>
+<h3>Què no hi ha (i no s'inventa)</h3>
 <ul>
 <li><b>Fundadors de l'empresa.</b> La base no té cap camp amb els noms dels fundadors. Si una fila és F, el CEO d'aquell any està classificat com a fundador; no és una llista completa de fundadors.</li>
 <li><b>Any de fundació.</b> No és un camp. Si apareix, és dins del text d'una cita o d'una nota.</li>
-<li><b>País.</b> La base no té país. El filtre «país d'emissió de l'ISIN» es deriva del prefix de l'ISIN i no és la seu social.</li>
+<li><b>País.</b> El filtre «país d'emissió de l'ISIN» es deriva del prefix de l'ISIN i no és la seu social.</li>
 <li><b>Sector.</b> No es mostra en aquesta versió, pendent d'aclarir la llicència de la classificació.</li>
-<li><b>Títol, data i pàgina del document.</b> No tenen columna pròpia; quan l'autor de l'entrada els va escriure, són a les notes.</li>
 </ul>
 </section>
-<section class="seccio"><h2>Criteris de la part pública</h2>
-<p>No es mostren les columnes de robustesa, les propostes brutes ni les notes de decisió de l'auditoria, ni referències a fitxers o informes interns. Quan una nota del registre conté noms de models o referències internes, es mostra un avís en lloc de la nota. Les cites es mostren tal com les publica l'emissor, incloses les dates de naixement que serveixen per a la prova b. Les cites llargues es retallen a un fragment, amb l'avís corresponent.</p>
-<ul>{ocults}</ul>
-</section>
-<section class="seccio"><h2>Fitxers llegits</h2>
-<div class="taula-wrap"><table class="taula-simple">
-<thead><tr><th>Fitxer</th><th>SHA-256</th></tr></thead>
-<tbody>
-<tr><td><code>dades/base_isin_any_v8r3.csv</code></td><td><code class="sha">{esc(ctx.sha_base)}</code></td></tr>
-<tr><td><code>docs/REGISTRE_CANVIS.csv</code></td><td><code class="sha">{esc(ctx.sha_registre)}</code></td></tr>
-</tbody></table></div>
-<p class="nota">Commit de referència de <code>main</code>: <code>{esc(ctx.commit)}</code>. Els SHA es comproven contra <code>MANIFEST_SHA256.csv</code> cada vegada que es genera el lloc.</p>
+<section class="seccio" id="documents"><h2>Documents que manen</h2>
+<ul class="docs">{docs_html}</ul>
+<p>Si aquesta pàgina i aquests documents diuen coses diferents, manen els documents.</p>
 </section>
 </div>"""
-    return pagina(ctx, titol="Metodologia i llegenda · Dashboard Fundadors",
-                  descripcio="Com es llegeixen les etiquetes F, P, ND, NA, la certificació i les proves del dashboard.",
-                  cos=cos, prefix="", actiu="metodologia")
+    return pagina(ctx, titol="Mètode · Fundadors-CEO STOXX Europe 600",
+                  descripcio="Com es llegeixen les etiquetes F, P, ND i NA, l'estat de cada fila, les fonts i les marques de prova.",
+                  cos=cos, prefix="", actiu="metode", cls_body="p-metode")
 
 
 # ---------------------------------------------------------------------------
 # Escriptura
 # ---------------------------------------------------------------------------
+
+
+CODI_ETIQ = {"F": "F", "P": "P", "ND": "D", "NA": "N"}
+
+
+def index_cerca(model: dict) -> str:
+    """Índex compacte del cercador amb suggeriments, compartit per totes les pàgines
+    (un fitxer JS, perquè funcioni també amb file://). Per empresa: ISIN, nom
+    visible, altres noms de la base (normalitzats), CEO de la base, CEO de
+    l'últim any i la sèrie de 10 anys (etiqueta F/P/D/N i estat a/r/d/f; «--» = fora
+    de l'índex). Només dades que ja són a empreses.html."""
+    files = []
+    for e in sorted(model["empreses"].values(), key=lambda e: (clau_ordre(e["nom"]), e["isin"])):
+        per_any = {f["any"]: f for f in e["files"]}
+        serie = "".join(CODI_ETIQ[per_any[a]["lletra"]] + LLETRA_ESTAT[per_any[a]["cat"]] if a in per_any else "--"
+                        for a in ANYS_PANELL)
+        noms = norm_cerca(" ".join([e["nom_base"], *e["altres_noms"]]))
+        files.append([e["isin"], e["nom"], noms, "|".join(e["ceos_noms"]), e["files"][-1]["ceos_text"], serie])
+    dades = json.dumps(files, ensure_ascii=False, separators=(",", ":"))
+    for camp in dades.split('","'):
+        if te_restringit(camp):
+            atura("l'índex de cerca conté un terme de la llista restringida")
+    return ("/* Índex del cercador. Generat per dashboard/genera_dashboard.py; no l'editis a mà. */\n"
+            f"window.CERCA_IDX={dades};\n")
 
 
 def escriu(path: Path, text: str) -> None:
@@ -1480,17 +2871,26 @@ def main() -> int:
     args = ap.parse_args()
 
     shas = comprova_integritat(args.sha_esperat)
+    resum_text = comprova_resum_estat(shas)
     commit, data_commit = commit_referencia(args.commit)
     ctx = Context(commit, data_commit, shas)
     stats: Counter = Counter()
     model = carrega_model(stats)
-    resum = calcula_resum(model)
+    carrega_estat(model)
+    E = calcula_estat(model, resum_text)
 
     escriu(SORTIDA / "assets" / "style.css", CSS)
     escriu(SORTIDA / "assets" / "cerca.js", JS_CERCA)
     escriu(SORTIDA / "assets" / "fitxa.js", JS_FITXA)
-    escriu(SORTIDA / "index.html", pagina_inici(ctx, model, resum))
-    escriu(SORTIDA / "metodologia.html", pagina_metodologia(ctx, resum, stats))
+    escriu(SORTIDA / "assets" / "comu.js", JS_COMU)
+    escriu(SORTIDA / "assets" / "index_cerca.js", index_cerca(model))
+    for isin in ISIN_EXEMPLES:
+        if isin not in model["empreses"]:
+            atura(f"l'exemple del cercador {isin} no és a la base")
+    escriu(SORTIDA / "index.html", pagina_estat(ctx, E))
+    # L'apòstrof no cal escapar-lo (els atributs van entre cometes dobles): la pàgina pesa menys.
+    escriu(SORTIDA / "empreses.html", pagina_empreses(ctx, model, E).replace("&#x27;", "'"))
+    escriu(SORTIDA / "metodologia.html", pagina_metodologia(ctx, model, E, stats))
 
     ordenades = sorted(model["empreses"].values(), key=lambda e: (clau_ordre(e["nom"]), e["isin"]))
     dir_emp = SORTIDA / "empreses"
@@ -1504,16 +2904,30 @@ def main() -> int:
             f.unlink()
             stats["fitxes_antigues_esborrades"] += 1
 
-    rec = resum["rec"]
+    tot = E["tot"]
+    if E["urls_cua_fitxer"] is not None and E["urls_cua_fitxer"] != E["urls_cua"]:
+        print(f"AVÍS: estat/urls_per_arxivar.csv té {E['urls_cua_fitxer']} URL, però el registre actual en dona "
+              f"{E['urls_cua']} (es mostra aquesta). Cal regenerar-lo amb python3 estat/llista_urls_arxiu.py en un PR de dades.")
     print(f"Commit de referència: {commit} {data_commit}")
     for rel, h in shas.items():
         print(f"SHA-256 {rel}: {h} (coincideix amb el manifest)")
-    print(f"ISIN: {resum['n_isin']} · files: {resum['n_files']} · F {rec['F']} · P {rec['P']} · ND {rec['ND']} · NA {rec['NA']}")
-    print(f"Empreses amb almenys una entrada al registre: {resum['amb_registre']}")
-    print(f"Empreses sense cita estructurada (avís a la fitxa): {resum['sense_cita']}")
-    print(f"Files amb prova de CEO al registre: {resum['files_ceo']} · amb prova de classificació: {resum['files_fund']} · sense cap cita estructurada: {resum['files_sense_cita']}")
+    print("estat/RESUM_ESTAT.md correspon a les dades actuals")
+    print(f"ISIN: {E['n_isin']} · files: {tot} · " + " · ".join(f"{l} {E['etiq'][l]}" for l in ORDRE_ETIQ))
+    print("Estats: " + " · ".join(f"{ESTATS[k][1]} {E['cat'][k]}" for k in ORDRE_ESTATS))
+    print("Embut: " + " → ".join(str(x) for x in E["embut"]))
+    print("Mancances: " + " · ".join(f"{k} {E['mancances'][k]}" for k in MANCANCES))
     for k in sorted(stats):
         print(f"{k}: {stats[k]}")
+    if DESQUADRES:
+        # Files P/F on cap cita vàlida de c2_ids no és de la prova de `regles`: la
+        # fitxa ho diu; aquí es llisten per revisar les dades (per ISIN).
+        per_isin: dict[str, list[str]] = defaultdict(list)
+        for isin, a, rf, rc in sorted(DESQUADRES):
+            per_isin[isin].append(f"{a} ({rf}≠{rc})")
+        print(f"REVISIÓ DE DADES: {len(DESQUADRES)} files (en {len(per_isin)} empreses) on la cita de fundador que es mostra "
+              "és d'una altra prova que la de la columna regles (fila: regles ≠ cita: marca_prova):")
+        for isin in sorted(per_isin):
+            print(f"  {isin}: {', '.join(per_isin[isin])}")
     print(f"Fitxes escrites: {len(ordenades)}")
     return 0
 
@@ -1522,416 +2936,961 @@ def main() -> int:
 # Actius estàtics (CSS i JS), sense dependències externes
 # ---------------------------------------------------------------------------
 
-CSS = r"""/* Dashboard Fundadors. Generat per dashboard/genera_dashboard.py; no l'editis a mà. */
+CSS = r"""/* Fundadors-CEO. Generat per dashboard/genera_dashboard.py; no l'editis a mà.
+   Estil editorial (paper càlid, tinta, xifres i cites en serif), fitxa amb franja
+   d'anys i línia del temps, cercador amb suggeriments i mode clar/fosc. */
 :root {
   color-scheme: light;
-  --fons: #f5f4f0;
-  --sup: #ffffff;
-  --sup-2: #f0efea;
-  --sup-3: #e7e5df;
-  --tinta: #1a1a19;
-  --tinta-2: #4b4a46;
-  --tinta-3: #6e6d68;
-  --linia: #e0ded7;
-  --linia-forta: #c9c7bf;
-  --enllac: #1c5cab;
-  --enllac-hover: #104281;
-  --focus: #2a78d6;
-  --e-F: #eb6834;
-  --e-P: #2a78d6;
-  --e-ND: #1baf7a;
-  --e-NA: #8a8983;
-  --e-F-txt: #ffffff;
-  --e-P-txt: #ffffff;
-  --e-ND-txt: #0b2a1f;
-  --e-NA-txt: #ffffff;
-  --e-F-suau: #fdeee6;
-  --e-P-suau: #e8f1fc;
-  --e-ND-suau: #e3f6ee;
-  --e-NA-suau: #efeeeb;
+  --fons: #f7f4ec;
+  --sup: #fffdf8;
+  --sup-2: #f1ede2;
+  --sup-3: #e7e1d3;
+  --tinta: #1d1b16;
+  --tinta-2: #4a463d;
+  --tinta-3: #635e52;
+  --linia: #e2dccd;
+  --linia-forta: #c4bba7;
+  --vora-camp: #8a826f;
+  --enllac: #1f4f8f;
+  --enllac-hover: #123766;
+  --focus: #2456a6;
+  /* Etiquetes FounderCEO (text blanc >= 4,5:1) */
+  --e-F: #c2521f;
+  --e-P: #1f66c1;
+  --e-ND: #9b2f8f;
+  --e-NA: #6e6d68;
+  --e-txt: #ffffff;
+  --e-F-suau: #f8e4d9;
+  --e-P-suau: #e2eaf5;
+  --e-ND-suau: #f3e2ef;
+  --e-NA-suau: #ebe8e1;
+  /* Insígnies d'estat amb text (to suau) */
+  --st-acabada: #1f7a3d;
+  --st-acabada-txt: #ffffff;
+  --st-arxiu: #cfe8d6;
+  --st-arxiu-txt: #1d1b16;
+  --st-dubte: #e9a93a;
+  --st-dubte-txt: #1d1b16;
+  --st-falta: #e7e1d3;
+  --st-falta-ratlla: #c9c0ac;
+  --st-falta-txt: #1d1b16;
+  /* Marques d'estat (barres, franges, minibarres, punts). Validades amb
+     validate_palette.js --pairs all sobre #fffdf8 i #f7f4ec. */
+  --mk-acabada: #1f7a3d;
+  --mk-acabada-txt: #ffffff;
+  --mk-arxiu: #86c9a0;
+  --mk-arxiu-txt: #1d1b16;
+  --mk-dubte: #e9a93a;
+  --mk-dubte-txt: #1d1b16;
+  --mk-falta: #8a8882;
+  --mk-falta-ratlla: #a9a7a0;
+  --mk-falta-txt: #1d1b16;
+  /* Vora d'1 px de les marques clares, del mateix to, amb >= 3:1 contra el paper
+     (#fffdf8 i #f7f4ec); validades amb validate_palette.js. */
+  --mk-acabada-vora: #1f7a3d;
+  --mk-arxiu-vora: #3d8c5c;
+  --mk-dubte-vora: #9a6a12;
+  --mk-falta-vora: #8a8882;
+  --barra: #4a463d;
+  /* Proves */
   --v: #12692c;
-  --v-fons: #e5f3e8;
+  --v-fons: #e3f1e5;
   --nv: #8a5300;
-  --nv-fons: #fdf1d8;
+  --nv-fons: #fbefd5;
   --mal: #b42318;
-  --mal-fons: #fde8e6;
-  --base: #5b4bc4;
-  --base-fons: #eeecfb;
-  --avis: #7a4b00;
-  --avis-fons: #fff6e0;
-  --avis-vora: #f1c75b;
-  --cita-fons: #fbfaf7;
-  --ombra: 0 1px 2px rgba(20, 20, 18, .05), 0 2px 8px rgba(20, 20, 18, .05);
-  --radi: 12px;
-  --radi-petit: 8px;
+  --mal-fons: #fbe6e2;
+  --cita-fons: #faf7f0;
+  --ombra: 0 12px 32px rgba(29, 27, 22, .14);
+  --radi: 6px;
+  --radi-petit: 4px;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Charter, "Bitstream Charter", Cambria, Georgia, serif;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --font-cita: Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Georgia, Cambria, "Times New Roman", serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-cita: var(--serif);
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Mode fosc: el del sistema (si no s'ha triat res) o el triat amb el botó. Només a la pantalla. */
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --fons: #121211;
-    --sup: #1a1a19;
-    --sup-2: #22221f;
-    --sup-3: #2c2c29;
-    --tinta: #f0efec;
-    --tinta-2: #c9c8c0;
-    --tinta-3: #9c9b93;
-    --linia: #33332f;
-    --linia-forta: #4a4a45;
-    --enllac: #86b6ef;
-    --enllac-hover: #b7d3f6;
-    --focus: #6da7ec;
-    --e-F: #d95926;
-    --e-P: #3987e5;
-    --e-ND: #199e70;
-    --e-NA: #6f6e68;
-    --e-ND-txt: #ffffff;
-    --e-F-suau: #3a2116;
-    --e-P-suau: #172a42;
-    --e-ND-suau: #12302a;
-    --e-NA-suau: #2a2a27;
-    --v: #7fd99a;
-    --v-fons: #143220;
-    --nv: #f2c14e;
-    --nv-fons: #382a0c;
-    --mal: #ff9a8f;
-    --mal-fons: #3f1814;
-    --base: #b3a9f2;
-    --base-fons: #262145;
-    --avis: #f6d58a;
-    --avis-fons: #2f2510;
-    --avis-vora: #7a5b16;
-    --cita-fons: #20201d;
-    --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 10px rgba(0, 0, 0, .25);
+    --fons: #151411; --sup: #1c1a17; --sup-2: #25231f; --sup-3: #2f2c27;
+    --tinta: #efebe1; --tinta-2: #cbc5b8; --tinta-3: #a7a194;
+    --linia: #34312b; --linia-forta: #4d4940; --vora-camp: #8a8476;
+    --enllac: #93b8ec; --enllac-hover: #bfd5f5; --focus: #7aa7ec;
+    --e-ND: #a8399c;
+    --e-F-suau: #3b2419; --e-P-suau: #1b2a3e; --e-ND-suau: #35192f; --e-NA-suau: #2a2824;
+    --st-acabada: #5fcf8a; --st-acabada-txt: #121211;
+    --st-arxiu: #2e6b47; --st-arxiu-txt: #f0efec;
+    --st-dubte: #d9a93a; --st-dubte-txt: #121211;
+    --st-falta: #3a3730; --st-falta-ratlla: #57524a; --st-falta-txt: #efebe1;
+    --mk-acabada: #9be3b5; --mk-acabada-txt: #121211;
+    --mk-arxiu: #3b9a6b; --mk-arxiu-txt: #121211;
+    --mk-dubte: #d9a93a; --mk-dubte-txt: #121211;
+    --mk-falta: #5a5954; --mk-falta-ratlla: #6e6d67; --mk-falta-txt: #efebe1;
+    --mk-acabada-vora: #9be3b5; --mk-arxiu-vora: #3b9a6b; --mk-dubte-vora: #d9a93a; --mk-falta-vora: #8e8c86;
+    --barra: #b9b2a3;
+    --v: #7fd99a; --v-fons: #143220; --nv: #f2c14e; --nv-fons: #382a0c; --mal: #ff9a8f; --mal-fons: #3f1814;
+    --cita-fons: #211f1b; --ombra: 0 12px 32px rgba(0, 0, 0, .5);
   }
 }
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --fons: #151411; --sup: #1c1a17; --sup-2: #25231f; --sup-3: #2f2c27;
+    --tinta: #efebe1; --tinta-2: #cbc5b8; --tinta-3: #a7a194;
+    --linia: #34312b; --linia-forta: #4d4940; --vora-camp: #8a8476;
+    --enllac: #93b8ec; --enllac-hover: #bfd5f5; --focus: #7aa7ec;
+    --e-ND: #a8399c;
+    --e-F-suau: #3b2419; --e-P-suau: #1b2a3e; --e-ND-suau: #35192f; --e-NA-suau: #2a2824;
+    --st-acabada: #5fcf8a; --st-acabada-txt: #121211;
+    --st-arxiu: #2e6b47; --st-arxiu-txt: #f0efec;
+    --st-dubte: #d9a93a; --st-dubte-txt: #121211;
+    --st-falta: #3a3730; --st-falta-ratlla: #57524a; --st-falta-txt: #efebe1;
+    --mk-acabada: #9be3b5; --mk-acabada-txt: #121211;
+    --mk-arxiu: #3b9a6b; --mk-arxiu-txt: #121211;
+    --mk-dubte: #d9a93a; --mk-dubte-txt: #121211;
+    --mk-falta: #5a5954; --mk-falta-ratlla: #6e6d67; --mk-falta-txt: #efebe1;
+    --mk-acabada-vora: #9be3b5; --mk-arxiu-vora: #3b9a6b; --mk-dubte-vora: #d9a93a; --mk-falta-vora: #8e8c86;
+    --barra: #b9b2a3;
+    --v: #7fd99a; --v-fons: #143220; --nv: #f2c14e; --nv-fons: #382a0c; --mal: #ff9a8f; --mal-fons: #3f1814;
+    --cita-fons: #211f1b; --ombra: 0 12px 32px rgba(0, 0, 0, .5);
+  }
+}
+
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; }
-body { margin: 0; background: var(--fons); color: var(--tinta); font: 16px/1.55 var(--font); }
-a { color: var(--enllac); text-underline-offset: 2px; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
+/* Fitxa: el focus i els anys no queden sota la franja enganxada (WCAG 2.4.11). */
+html:has(body.p-fitxa) { scroll-padding-top: 150px; }
+body { margin: 0; background: var(--fons); color: var(--tinta); font: 400 16px/1.55 var(--font); font-variant-numeric: tabular-nums; }
+a { color: var(--enllac); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { color: var(--enllac-hover); }
-:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
-code { font-family: var(--font-mono); font-size: .86em; background: var(--sup-2); padding: .08em .35em; border-radius: 5px; overflow-wrap: anywhere; }
-h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; letter-spacing: -.01em; }
-h1 { font-size: clamp(1.7rem, 1.2rem + 2.2vw, 2.6rem); letter-spacing: -.02em; }
-h2 { font-size: 1.45rem; }
-h3 { font-size: 1.12rem; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+code { font-family: var(--font-mono); font-size: .86em; background: var(--sup-2); padding: .08em .35em; border-radius: 3px; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; font-weight: 600; }
+h1 { font: 600 clamp(32px, 4.4vw, 48px)/1.06 var(--serif); letter-spacing: -.015em; }
+h2 { font: 600 26px/1.15 var(--serif); letter-spacing: -.01em; }
+h3, .h3 { font-size: 17px; font-weight: 600; }
 p { margin: 0 0 .8em; }
-small { font-size: .82em; }
+small { font-size: 13px; }
+abbr[title] { text-decoration: none; }
 .vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.salta { position: absolute; left: -999px; top: 8px; background: var(--sup); padding: 8px 12px; border-radius: 8px; z-index: 50; }
-.salta:focus { left: 8px; }
-.nota { color: var(--tinta-3); font-size: .9rem; }
-.mini { color: var(--tinta-3); font-size: .8rem; font-weight: 400; }
+.salta { position: absolute; left: 16px; top: -80px; background: var(--tinta); color: var(--fons); padding: 8px 12px; z-index: 60; border-radius: 3px; }
+.salta:focus { top: 8px; color: var(--fons); }
+.nota { color: var(--tinta-3); font-size: 13px; max-width: 72ch; }
+.mini { color: var(--tinta-3); font-size: 13px; font-weight: 400; }
+.nota-clara { color: var(--tinta-2); font-size: 15px; max-width: 72ch; }
 .buit { color: var(--tinta-3); }
+.ok { color: var(--v); font-weight: 600; }
+.num { text-align: right; }
 
-/* Barra superior */
-.barra { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--sup) 88%, transparent); backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--linia); }
-.barra-in { max-width: 1240px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.marca { display: flex; align-items: center; gap: 10px; color: var(--tinta); text-decoration: none; font-weight: 700; }
+/* ---------- Capçalera ---------- */
+.barra { background: var(--sup); border-bottom: 1px solid var(--linia); position: relative; z-index: 25; }
+.barra-in { max-width: 1240px; margin: 0 auto; padding: 14px 24px 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "marca cerca pindola tema" "nav nav nav nav"; gap: 8px 20px; align-items: center; }
+.marca { grid-area: marca; display: flex; flex-direction: column; text-decoration: none; color: var(--tinta); padding-bottom: 4px; }
 .marca:hover { color: var(--tinta); }
-.marca-text { display: flex; flex-direction: column; line-height: 1.15; }
-.marca-text small { font-weight: 500; color: var(--tinta-3); font-size: .74rem; letter-spacing: .02em; }
-.marca-logo { display: grid; grid-template-columns: repeat(3, 8px); gap: 3px; }
-.marca-logo i { display: block; width: 8px; height: 22px; border-radius: 3px; background: var(--e-P); }
-.marca-logo i:nth-child(2) { background: var(--e-F); height: 22px; }
-.marca-logo i:nth-child(3) { background: var(--e-P); opacity: .55; }
-.nav { display: flex; gap: 4px; flex-wrap: wrap; }
-.nav a { padding: 7px 12px; border-radius: 999px; text-decoration: none; color: var(--tinta-2); font-weight: 550; font-size: .95rem; }
-.nav a:hover { background: var(--sup-2); color: var(--tinta); }
-.nav a[aria-current="page"] { background: var(--tinta); color: var(--sup); }
+.marca b { font: 600 22px/1.15 var(--serif); letter-spacing: -.01em; }
+.marca small { font-size: 13px; color: var(--tinta-3); margin-top: 2px; }
+.cb-cap { grid-area: cerca; justify-self: end; width: min(100%, 400px); }
+.pindola { grid-area: pindola; display: inline-flex; align-items: center; gap: 7px; font-size: 13px; padding: 4px 11px; border: 1px solid var(--linia-forta); border-radius: 999px; color: var(--tinta-2); text-decoration: none; white-space: nowrap; min-height: 32px; }
+.pindola::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--mk-dubte); flex: none; }
+.pindola:hover { color: var(--tinta); border-color: var(--tinta-3); }
+.tema { grid-area: tema; display: none; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta-2); cursor: pointer; padding: 0; }
+.js .tema { display: inline-grid; }
+.tema:hover { color: var(--tinta); border-color: var(--tinta-3); }
+.tema svg { width: 19px; height: 19px; display: block; }
+.nav { grid-area: nav; display: flex; gap: 28px; border-top: 1px solid var(--linia); margin-top: 6px; }
+.nav a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 0 9px; min-height: 44px; font-size: 15px; font-weight: 600; text-decoration: none; color: var(--tinta-3); border-bottom: 3px solid transparent; }
+.nav a:hover { color: var(--tinta); }
+.nav a[aria-current="page"] { color: var(--tinta); border-bottom-color: var(--tinta); }
+.nav svg { display: none; width: 20px; height: 20px; }
 
-.pagina { max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; }
-.molla { margin: 0 0 14px; font-size: .95rem; }
-.molla a { text-decoration: none; font-weight: 550; }
+/* ---------- Cercador amb suggeriments ---------- */
+.cb { position: relative; }
+.cb-camp { position: relative; display: flex; align-items: center; gap: 8px; }
+.cb-lupa { position: absolute; left: 12px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--tinta-3); pointer-events: none; }
+.cb input { flex: 1; min-width: 0; width: 100%; height: 42px; padding: 0 40px 0 38px; font: 400 16px var(--font); color: var(--tinta); background: var(--fons); border: 1px solid var(--vora-camp); border-radius: 999px; }
+.cb input::placeholder { color: var(--tinta-3); opacity: 1; }
+.cb input::-webkit-search-cancel-button { cursor: pointer; }
+.sense-drecera .cb-kbd { display: none; }
+.cb-kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font: 12px var(--font-mono); border: 1px solid var(--linia-forta); border-radius: 4px; padding: 1px 6px; color: var(--tinta-3); background: var(--sup); pointer-events: none; }
+.cb input:focus ~ .cb-kbd, .cb input:not(:placeholder-shown) ~ .cb-kbd { display: none; }
+.cb-et { display: block; font: 600 17px/1.3 var(--serif); margin-bottom: 8px; }
+.cb-pop { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40; background: var(--sup); border: 1px solid var(--linia-forta); border-radius: var(--radi); box-shadow: var(--ombra); padding: 6px; min-width: min(560px, calc(100vw - 32px)); }
+.cb-cap .cb-pop { left: auto; right: 0; }
+.cb-pop[hidden] { display: none; }
+.cb-llista { list-style: none; margin: 0; padding: 0; max-height: min(430px, 60vh); overflow: auto; }
+.cb-llista[hidden] { display: none; }
+.sug { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: center; padding: 9px 10px; border-radius: var(--radi-petit); cursor: pointer; }
+.sug[aria-selected="true"], .sug:hover { background: var(--sup-2); box-shadow: inset 3px 0 0 var(--tinta); }
+@media (forced-colors: active) {
+  .sug[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+}
+.sug-nom { font: 600 17px/1.3 var(--serif); overflow-wrap: anywhere; }
+.sug-sub { grid-column: 1; font-size: 13px; color: var(--tinta-3); overflow-wrap: anywhere; }
+.sug-sub code { background: transparent; padding: 0; color: var(--tinta-2); }
+.sug .sr { grid-row: 1 / span 2; grid-column: 2; }
+.sug mark, .cb mark { background: color-mix(in srgb, var(--mk-dubte) 45%, transparent); color: var(--tinta); border-radius: 2px; padding: 0 1px; }
+.cb-peu { margin: 4px 0 0; padding: 8px 10px 4px; border-top: 1px solid var(--linia); font-size: 14px; display: flex; flex-direction: column; gap: 6px; }
+.cb-peu[hidden] { display: none; }
+.cb-peu a { font-weight: 600; display: inline-flex; align-items: center; gap: .3em; min-height: 32px; }
+.cb-buit { color: var(--tinta-2); }
 
-/* Capçalera de pàgina */
-.heroi { padding: 14px 0 18px; }
-.heroi h1 { margin-bottom: .3em; }
-.heroi-petit h1 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); }
-.eyebrow { text-transform: uppercase; letter-spacing: .09em; font-size: .76rem; font-weight: 700; color: var(--tinta-3); margin-bottom: .5em; }
-.entradeta { font-size: 1.12rem; color: var(--tinta-2); max-width: 62ch; }
+/* ---------- Estructura ---------- */
+.pagina { max-width: 1240px; margin: 0 auto; padding: 0 24px 64px; }
+.pagina.ample { max-width: 1240px; }
+.molla { padding-top: 24px; margin: 0; font-size: 14px; }
+.molla a { font-weight: 600; text-decoration: none; display: inline-flex; min-height: 40px; align-items: center; }
+.entradeta { font: 400 19px/1.5 var(--serif); color: var(--tinta-2); max-width: 36em; }
+.cap-pagina { padding: 40px 0 20px; }
+.resposta { font: 400 20px/1.45 var(--serif); margin: 0 0 20px; max-width: 36em; }
+.resposta b { font-weight: 600; }
 
-/* Avís */
-.avis { display: flex; gap: 12px; align-items: flex-start; background: var(--avis-fons); color: var(--avis); border: 1px solid var(--avis-vora); border-radius: var(--radi); padding: 12px 16px; margin: 0 0 22px; }
-.avis p { margin: 0; font-size: .93rem; }
-.avis code { background: transparent; padding: 0; }
-.avis-icona { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--avis-vora); color: #3d2600; display: grid; place-items: center; font-weight: 800; font-size: .85rem; margin-top: 1px; }
+/* Línia de versió */
+.versio-linia { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--tinta-3); margin: 16px 0 0; max-width: 64em; }
+.pv-icona { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--mk-dubte); color: var(--tinta-2); display: grid; place-items: center; font-weight: 700; font-size: 11px; margin-top: 1px; }
+.versio-linia code { background: transparent; padding: 0; }
 
-/* KPI */
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
-.kpi { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 14px 16px; box-shadow: var(--ombra); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.k-etq { display: flex; align-items: center; gap: 7px; font-size: .84rem; font-weight: 600; color: var(--tinta-2); }
-.k-val { font-size: 1.9rem; font-weight: 750; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.15; }
-.k-sub { font-size: .8rem; color: var(--tinta-3); }
-.kpi.k-F { border-top: 4px solid var(--e-F); }
-.kpi.k-P { border-top: 4px solid var(--e-P); }
-.kpi.k-ND { border-top: 4px solid var(--e-ND); }
-.kpi.k-NA { border-top: 4px solid var(--e-NA); }
-.punt { width: 10px; height: 10px; border-radius: 3px; display: inline-block; background: var(--e-P); }
-.punt.e-F { background: var(--e-F); } .punt.e-ND { background: var(--e-ND); } .punt.e-NA { background: var(--e-NA); }
+/* ---------- Estat: obertura ---------- */
+.obertura { padding: 52px 0 40px; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; align-items: end; border-bottom: 1px solid var(--linia-forta); }
+.obertura h1 { margin-bottom: 16px; }
+.obertura .entradeta { margin: 0; }
+.cerca-rapida { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 20px; }
+.cb-gran input { border-radius: 3px; height: 46px; padding-right: 12px; }
+.cb-boto { min-height: 46px; }
+.cr-ajuda { margin: 10px 0 0; font-size: 13px; color: var(--tinta-3); }
+.exemples { margin: 8px 0 0; font-size: 13px; color: var(--tinta-3); display: flex; flex-wrap: wrap; gap: 0 12px; align-items: center; }
+.exemples a { color: var(--tinta-2); display: inline-flex; align-items: center; min-height: 32px; }
 
-/* Panells */
-.dos-panells { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 14px; margin-bottom: 30px; align-items: start; }
-.panell { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 18px 18px 14px; box-shadow: var(--ombra); margin: 0; min-width: 0; }
-.h-panell { font-size: 1.05rem; margin-bottom: .25em; }
-.grafic figcaption p { margin-bottom: 10px; }
-.barres { position: relative; height: 190px; margin: 6px 0 4px 30px; }
-.eix { position: absolute; inset: 0 0 24px 0; pointer-events: none; }
+/* ---------- Estat: seccions (pregunta a l'esquerra) ---------- */
+.bloc { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; padding: 48px 0; border-bottom: 1px solid var(--linia); }
+.bloc:last-child { border-bottom: 0; }
+.bloc-cap h2 { margin: 0; }
+.bloc-n { display: block; font: italic 400 15px/1 var(--serif); color: var(--tinta-3); margin-bottom: 10px; }
+.bloc-cos { min-width: 0; }
+.heroi-xifra { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 24px; }
+.heroi-xifra b { font: 500 112px/.9 var(--serif); letter-spacing: -.03em; }
+.heroi-xifra span { font: 400 22px/1.3 var(--serif); color: var(--tinta-2); }
+
+/* Dreceres amb recompte */
+.dreceres { list-style: none; margin: 0 0 8px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.drec { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 14px 14px 12px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); text-decoration: none; color: var(--tinta); }
+.drec:hover { border-color: var(--tinta-3); color: var(--tinta); }
+.drec:hover .drec-emp { text-decoration: underline; }
+.drec-cap { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; line-height: 1.25; }
+.drec-n { font-size: 14px; color: var(--tinta-2); }
+.drec-n b { font: 500 30px/1 var(--serif); color: var(--tinta); letter-spacing: -.01em; margin-right: 2px; }
+.drec-emp { margin-top: auto; font-size: 13px; color: var(--enllac); line-height: 1.35; }
+.drec-emp b { font-weight: 700; }
+.dreceres + .nota { margin: 0 0 24px; }
+
+/* Barra apilada al 100 % */
+.sb { display: flex; gap: 2px; height: 24px; padding: 2px; background: var(--sup); border: 1px solid var(--linia-forta); border-radius: 3px; margin: 0 0 4px; }
+.sb-s { min-width: 3px; flex-basis: 0; border-radius: 1px; }
+.s-acabada { background: var(--mk-acabada); color: var(--mk-acabada-txt); --mkv: var(--mk-acabada-vora); }
+.s-arxiu { background: var(--mk-arxiu); color: var(--mk-arxiu-txt); --mkv: var(--mk-arxiu-vora); }
+.s-dubte { background: var(--mk-dubte); color: var(--mk-dubte-txt); --mkv: var(--mk-dubte-vora); }
+.s-falta { background: repeating-linear-gradient(135deg, var(--mk-falta) 0 5px, var(--mk-falta-ratlla) 5px 7px); color: var(--mk-falta-txt); --mkv: var(--mk-falta-vora); }
+/* Vora interior d'1 px (>= 3:1 contra el paper) a totes les marques d'estat. */
+.sb-s, .mb i, .sw-ratlla, .sw.s-acabada, .sw.s-arxiu, .sw.s-dubte { box-shadow: inset 0 0 0 1px var(--mkv, transparent); }
+.mm.mk-acabada { --mkv: var(--mk-acabada-vora); } .mm.mk-arxiu { --mkv: var(--mk-arxiu-vora); }
+.mm.mk-dubte { --mkv: var(--mk-dubte-vora); } .mm.mk-falta { --mkv: var(--mk-falta-vora); }
+.mm i { box-shadow: inset 0 0 0 1px var(--mkv, transparent); }
+.e-F { background: var(--e-F); color: var(--e-txt); }
+.e-P { background: var(--e-P); color: var(--e-txt); }
+.e-ND { background: var(--e-ND); color: var(--e-txt); }
+.e-NA { background: var(--e-NA); color: var(--e-txt); }
+.sw { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 3px; font: 700 12px/1 var(--font); font-style: normal; }
+.sw.s-falta, .st-falta { border: 1px solid var(--linia-forta); }
+.sw.s-falta { background: repeating-linear-gradient(135deg, var(--st-falta) 0 5px, var(--st-falta-ratlla) 5px 7px); color: var(--st-falta-txt); }
+.sw-buida { background: transparent; border: 1px dashed var(--linia-forta); }
+.ll-estats { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--linia); }
+.ll-estats li { display: flex; flex-direction: column; padding: 16px 20px 0 0; min-width: 0; }
+.ll-estats li + li { padding-left: 20px; border-left: 1px solid var(--linia); }
+.ll-cap { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.3; }
+.ll-xifra { font: 500 40px/1.1 var(--serif); letter-spacing: -.01em; }
+.ll-n { margin: 8px 0 2px; }
+.ll-pc { font-size: 14px; color: var(--tinta-2); }
+.ll-def { font-size: 13px; color: var(--tinta-3); margin-top: 6px; line-height: 1.45; }
+@media screen { .ll-n-imp { display: none; } }
+.drec-pc { color: var(--tinta-3); font-size: 13px; }
+.ll-etiq { list-style: none; margin: 12px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.ll-etiq li { display: inline-flex; align-items: center; gap: 8px; }
+.ll-etiq .ll-n { margin: 0; color: var(--tinta-2); }
+
+/* Embut */
+.embut { list-style: none; margin: 8px 0; padding: 0; max-width: 860px; }
+.eb-pas { margin: 0; }
+.eb-nom { display: block; font-size: 14px; color: var(--tinta-2); margin-bottom: 4px; }
+.eb-fila { display: flex; align-items: center; gap: 14px; }
+.eb-barra { display: block; height: 26px; min-width: 3px; background: var(--barra); border-radius: 2px; }
+.eb-final .eb-barra { background: var(--mk-acabada); }
+.eb-val { white-space: nowrap; font: 500 21px/1 var(--serif); }
+.eb-salt { display: flex; align-items: center; gap: 8px; margin: 6px 0 10px 8px; padding: 6px 0 6px 16px; border-left: 1px dashed var(--linia-forta); color: var(--tinta-3); font-size: 13px; }
+.eb-salt .sw { width: 18px; height: 18px; font-size: 11px; }
+
+/* Taules */
+.taula-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--linia); }
+th:first-child, td:first-child { padding-left: 0; }
+thead th { font-size: 12px; color: var(--tinta-3); font-weight: 600; white-space: nowrap; border-bottom: 1px solid var(--tinta); vertical-align: bottom; }
+tbody tr:last-child > * { border-bottom: 0; }
+.taula-etiq td, .taula-etiq th { vertical-align: middle; }
+.taula-etiq td { min-width: 92px; }
+.tc-v { display: block; font: 500 18px/1.2 var(--serif); }
+.tc-n { display: block; font-size: 13px; color: var(--tinta-3); }
+.tc-files { display: none; }
+.mm { display: block; height: 4px; background: var(--sup-3); margin-top: 6px; overflow: hidden; }
+.mm i { display: block; height: 100%; background: var(--barra); }
+.etq { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 3px 11px 3px 3px; border-radius: 999px; background: var(--e-P-suau); color: var(--tinta); }
+.etq b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 4px; border-radius: 999px; font-size: 11px; background: var(--e-P); color: var(--e-txt); }
+.etq.e-F { background: var(--e-F-suau); color: var(--tinta); } .etq.e-F b { background: var(--e-F); }
+.etq.e-P { color: var(--tinta); }
+.etq.e-ND { background: var(--e-ND-suau); color: var(--tinta); } .etq.e-ND b { background: var(--e-ND); }
+.etq.e-NA { background: var(--e-NA-suau); color: var(--tinta); } .etq.e-NA b { background: var(--e-NA); }
+.taula-anys { table-layout: fixed; }
+.taula-anys th:first-child { width: 64px; }
+.taula-anys th:last-child { width: 72px; }
+.taula-anys tbody th { font: 600 16px var(--serif); }
+.taula-anys td.ta { text-align: right; }
+.taula-anys td.ta b { font-weight: 600; }
+.taula-anys td.ta small { color: var(--tinta-2); }
+.mm.mk-acabada i { background: var(--mk-acabada); }
+.mm.mk-arxiu i { background: var(--mk-arxiu); }
+.mm.mk-dubte i { background: var(--mk-dubte); }
+.mm.mk-falta i { background: var(--mk-falta); }
+.curt { display: none; }
+
+/* Barres d'una sola sèrie (mancances, dubtes) */
+.bs { list-style: none; margin: 8px 0; padding: 0; max-width: 860px; }
+.bs li { margin: 0; padding: 16px 0; border-top: 1px solid var(--linia); }
+.bs li:first-child { border-top: 0; padding-top: 4px; }
+.bs-nom { display: block; font-weight: 600; }
+.bs-fila { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+.bs-barra { display: block; height: 10px; min-width: 3px; background: var(--barra); border-radius: 1px; }
+.bs-val { font: 500 22px/1 var(--serif); white-space: nowrap; }
+.bs-det, .bs-que { display: block; font-size: 13px; color: var(--tinta-2); }
+.bs-link { display: inline-flex; align-items: center; min-height: 32px; font-size: 14px; font-weight: 600; }
+/* Dubtes: una línia per origen (nom, barra i enllaç). */
+#dubtes .bs li { display: grid; grid-template-columns: 190px minmax(0, 1fr) auto; gap: 0 16px; align-items: center; padding: 6px 0; }
+#dubtes .bs li:first-child { padding-top: 0; }
+#dubtes .bs-fila { margin: 0; }
+
+/* Passos de qualitat */
+.passos { list-style: none; margin: 8px 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--tinta); }
+.passos li { display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 0 0; min-width: 0; }
+.passos li + li { padding-left: 16px; border-left: 1px solid var(--linia); }
+.pq-n { font: italic 400 30px/1 var(--serif); color: var(--tinta-3); }
+.pq-t { display: flex; flex-direction: column; gap: 6px; overflow-wrap: anywhere; }
+.pq-nom { font-size: 15px; }
+.pq-t > span { font-size: 13px; color: var(--tinta-2); }
+.pq-t > span b { font: 500 20px/1.2 var(--serif); color: var(--tinta); }
+
+/* Gràfic de files F per any */
+.grafic { margin: 28px 0 0; }
+.grafic figcaption { margin-bottom: 12px; font-family: var(--serif); }
+.barres { position: relative; height: 200px; margin: 8px 0 4px 30px; }
+.eix { position: absolute; inset: 0 0 40px 0; pointer-events: none; }
 .tick { position: absolute; left: 0; right: 0; border-top: 1px solid var(--linia); }
-.tick span { position: absolute; left: -30px; top: -.6em; width: 24px; text-align: right; font-size: .72rem; color: var(--tinta-3); font-variant-numeric: tabular-nums; }
+.tick span { position: absolute; left: -30px; top: -.6em; width: 24px; text-align: right; font-size: 12px; color: var(--tinta-3); }
 .bcols { position: absolute; inset: 0; display: flex; gap: 6px; }
-.bcol { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; outline: none; }
+.bcol { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .barea { flex: 1; display: flex; align-items: flex-end; justify-content: center; }
-.bar { display: block; width: min(30px, 70%); background: var(--e-F); border-radius: 4px 4px 0 0; min-height: 2px; transition: filter .15s; }
-.bany { height: 24px; display: flex; align-items: center; justify-content: center; font-size: .74rem; color: var(--tinta-3); font-variant-numeric: tabular-nums; }
-.tip { position: absolute; bottom: calc(100% - 18px); left: 50%; transform: translateX(-50%); background: var(--tinta); color: var(--sup); font-size: .78rem; padding: 6px 9px; border-radius: 7px; white-space: nowrap; pointer-events: none; display: none; z-index: 5; }
+.bar { position: relative; display: block; width: min(32px, 70%); background: var(--e-F); border-radius: 2px 2px 0 0; min-height: 2px; }
+.bval { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font: 500 13px var(--serif); color: var(--tinta-2); padding-bottom: 2px; }
+.bany { height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: var(--tinta-2); line-height: 1.2; border-top: 1px solid var(--tinta); }
+.bany small { font-size: 11px; color: var(--tinta-3); }
+.tip { position: absolute; bottom: calc(100% - 30px); left: 50%; transform: translateX(-50%); background: var(--tinta); color: var(--fons); font-size: 13px; padding: 6px 9px; border-radius: 4px; white-space: nowrap; pointer-events: none; display: none; z-index: 5; }
 .bcol:hover .tip, .bcol:focus .tip { display: block; }
-.bcol:hover .bar, .bcol:focus .bar { filter: brightness(1.12); }
 .bcol:first-child .tip { left: 0; transform: none; }
 .bcol:last-child .tip { left: auto; right: 0; transform: none; }
-details.dades { margin-top: 8px; font-size: .88rem; }
-details.dades summary { cursor: pointer; color: var(--enllac); }
-.mesura { margin: 14px 0; }
-.m-cap { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: .9rem; margin-bottom: 6px; }
-.m-etq { font-weight: 600; color: var(--tinta-2); }
-.m-val { color: var(--tinta-3); font-variant-numeric: tabular-nums; }
-.m-val b { color: var(--tinta); }
-.m-pista { height: 10px; border-radius: 999px; background: var(--sup-3); overflow: hidden; }
-.m-pista span { display: block; height: 100%; background: var(--e-P); border-radius: 999px; }
-.m-nota { display: block; font-size: .76rem; color: var(--tinta-3); margin-top: 4px; font-family: var(--font-mono); }
+details.dades { margin-top: 12px; font-size: 14px; }
+details.dades summary { cursor: pointer; color: var(--tinta-2); font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+.taula-simple th, .taula-simple td { padding: 6px 12px; font-size: 13px; }
+.etiqueta-prov { display: inline-block; font: 600 13px var(--font); border: 1px solid var(--mk-dubte); padding: 2px 10px; border-radius: 2px; }
 
-/* Cercador i taula */
-.cap-seccio { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.recompte { color: var(--tinta-2); margin: 0; }
-.recompte b { font-variant-numeric: tabular-nums; color: var(--tinta); }
-.filtres { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 12px; align-items: end; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 14px; margin: 12px 0 10px; box-shadow: var(--ombra); }
-.camp { display: flex; flex-direction: column; gap: 4px; font-size: .82rem; font-weight: 600; color: var(--tinta-2); min-width: 0; }
-.camp small { font-weight: 400; color: var(--tinta-3); }
-.camp-cerca { grid-column: 1 / -1; }
-.camp input, .camp select { font: inherit; font-size: 1rem; font-weight: 400; color: var(--tinta); background: var(--fons); border: 1px solid var(--linia-forta); border-radius: var(--radi-petit); padding: 9px 11px; width: 100%; min-width: 0; }
-.camp input[type="search"] { padding-left: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238a8983' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 11px center; }
-.boto-sec { font: inherit; font-size: .92rem; font-weight: 600; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta-2); border-radius: var(--radi-petit); padding: 9px 12px; cursor: pointer; }
-.boto-sec:hover { background: var(--sup-2); color: var(--tinta); }
-.llegenda { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .84rem; color: var(--tinta-2); margin: 10px 0 12px; }
+/* Sobre aquestes dades */
+.versio .versio-linia { margin: 0 0 16px; }
+.versio-dl { display: grid; gap: 8px; margin: 0 0 12px; font-size: 14px; }
+.versio-dl div { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 4px 16px; }
+.versio-dl dt { color: var(--tinta-3); }
+.versio-dl dd { margin: 0; min-width: 0; }
+.sha { font-size: 12px; }
+.docs { padding-left: 20px; }
+.docs li { margin-bottom: 4px; }
+.docs a, .text-llarg a, .versio-linia, .entradeta { overflow-wrap: anywhere; }
+
+/* ---------- Botons ---------- */
+.boto { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 40px; max-width: 100%; white-space: normal; overflow-wrap: anywhere; font: 600 14px/1.25 var(--font); padding: 6px 14px; border: 1px solid var(--tinta); border-radius: 3px; background: var(--tinta); color: var(--fons); text-decoration: none; cursor: pointer; }
+.boto:hover { color: var(--fons); background: var(--tinta-2); border-color: var(--tinta-2); }
+.boto small { font-weight: 400; font-size: 12px; opacity: .8; overflow-wrap: anywhere; }
+.bt { white-space: nowrap; }
+.boto-wb { background: transparent; color: var(--tinta); border-color: var(--tinta); }
+.boto-wb:hover { background: var(--sup-2); color: var(--tinta); border-color: var(--tinta); }
+.boto-off { background: transparent; color: var(--tinta-3); border: 1px dashed var(--linia-forta); font-weight: 500; cursor: default; }
+.boto-off:hover { background: transparent; color: var(--tinta-3); border-color: var(--linia-forta); }
+.boto-mostra { min-height: 0; padding: 3px 10px; font-size: 13px; }
+.boto-sec { font: 600 14px var(--font); min-height: 40px; border: 1px solid var(--vora-camp); background: transparent; color: var(--tinta); border-radius: 3px; padding: 6px 14px; cursor: pointer; }
+.boto-sec:hover { background: var(--sup-2); }
+.ext { font-size: .85em; margin-left: 2px; }
+.copia { display: none; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; font: 500 13px var(--font); color: var(--tinta-2); background: transparent; border: 1px solid var(--linia-forta); border-radius: 3px; cursor: pointer; }
+.js .copia { display: inline-flex; }
+.copia:hover { color: var(--tinta); border-color: var(--tinta-3); }
+
+/* ---------- Empreses ---------- */
+.p-empreses .cap-pagina { padding-bottom: 8px; }
+.cb-llista-emp { margin: 8px 0 20px; }
+.cb-llista-emp .cb-et { font: 600 12px var(--font); color: var(--tinta-3); margin-bottom: 8px; }
+.cb-llista-emp .cb-lupa { left: 4px; width: 22px; height: 22px; margin-top: -11px; color: var(--tinta-2); }
+.cb-llista-emp input { height: 60px; padding: 0 4px 0 38px; font: 400 26px var(--serif); background: transparent; border: 0; border-bottom: 2px solid var(--tinta); border-radius: 0; }
+.cb-llista-emp input:focus-visible { outline-offset: 2px; }
+.filtres { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; padding-bottom: 8px; margin: 0 0 4px; }
+.filtres select { max-width: 320px; }
+.camp { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color: var(--tinta-3); min-width: 0; max-width: 100%; }
+.camp small { font-weight: 400; }
+.camp[hidden] { display: none; }
+select { font: 400 14px var(--font); color: var(--tinta); background: var(--sup); border: 1px solid var(--vora-camp); border-radius: 3px; padding: 0 10px; min-height: 40px; max-width: 100%; }
+.filtres .boto-sec { border: 0; text-decoration: underline; text-underline-offset: 3px; padding: 0 4px; color: var(--tinta-2); }
+.recompte { padding: 18px 0 6px; margin: 12px 0 0; border-top: 1px solid var(--tinta); font: 400 18px var(--serif); color: var(--tinta-2); }
+.recompte b { color: var(--tinta); font-weight: 600; }
+.llegenda { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; font-size: 12px; color: var(--tinta-3); margin: 6px 0 12px; }
 .ll { display: inline-flex; align-items: center; gap: 6px; }
-.taula-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); box-shadow: var(--ombra); }
-table { border-collapse: collapse; width: 100%; }
-th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--linia); }
-thead th { position: sticky; top: 0; background: var(--sup-2); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--tinta-2); font-weight: 700; white-space: nowrap; z-index: 1; }
-tbody tr:last-child > * { border-bottom: 0; }
-.num { text-align: right; font-variant-numeric: tabular-nums; }
-.taula-emp thead button { font: inherit; text-transform: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
-.taula-emp thead button::after { content: "↕"; opacity: .35; font-size: .9em; }
-.taula-emp thead button[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
-.taula-emp thead button[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
-.taula-emp tbody tr:hover { background: var(--sup-2); }
-.taula-emp td { vertical-align: middle; }
-.c-nom { min-width: 220px; }
-.c-nom a { font-weight: 650; text-decoration: none; color: var(--tinta); }
-.c-nom a:hover { color: var(--enllac); text-decoration: underline; }
-.sub { display: block; font-size: .78rem; color: var(--tinta-3); margin-top: 2px; }
-.c-isin code { background: transparent; padding: 0; font-size: .82rem; white-space: nowrap; }
-td.c-pais, td.c-anys { white-space: nowrap; font-size: .9rem; }
-.c-proves .buit { font-weight: 400; }
-.sense-resultat { text-align: center; padding: 30px; color: var(--tinta-3); background: var(--sup); border: 1px dashed var(--linia-forta); border-radius: var(--radi); margin-top: 12px; }
+.llegenda .ll-cap { font-weight: 600; color: var(--tinta-2); }
+.llegenda .sw { width: 16px; height: 16px; font-size: 9px; }
+.ll-ajuda { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--linia-forta); text-decoration: none; font-weight: 700; }
+.taula-emp { border-top: 0; }
+.taula-emp td { vertical-align: middle; padding-top: 16px; padding-bottom: 16px; }
+.taula-emp thead th { border-bottom: 1px solid var(--linia-forta); }
+.taula-emp thead button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; min-height: 32px; }
+.taula-emp thead .ord::after { content: "↕"; opacity: .45; }
+.taula-emp thead th[aria-sort="ascending"] .ord::after { content: "↑"; opacity: 1; }
+.taula-emp thead th[aria-sort="descending"] .ord::after { content: "↓"; opacity: 1; }
+.taula-emp tbody tr:hover { background: color-mix(in srgb, var(--sup-2) 70%, transparent); }
+.taula-emp td:first-child a { font: 600 19px/1.25 var(--serif); text-decoration: none; color: var(--tinta); }
+.taula-emp td:first-child a:hover { text-decoration: underline; }
+.col-serie { width: 360px; }
+.serie-anys { display: grid; grid-template-columns: repeat(10, 30px); gap: 4px; text-align: center; }
+.sub { display: block; font-size: 13px; color: var(--tinta-3); margin-top: 3px; }
+.sub code { background: transparent; padding: 0; font-size: 12px; }
+.sr { display: inline-grid; grid-template-columns: repeat(10, 30px); gap: 4px; padding-bottom: 7px; }
+.sr i { position: relative; display: grid; place-items: center; height: 34px; border-radius: 3px; font: 700 12px/1 var(--font); font-style: normal; color: var(--e-txt); background: transparent; border: 1px dashed var(--linia-forta); }
+.sr i.F { background: var(--e-F); border: 0; } .sr i.P { background: var(--e-P); border: 0; }
+.sr i.ND { background: var(--e-ND); border: 0; font-size: 10px; } .sr i.NA { background: var(--e-NA); border: 0; font-size: 10px; }
+/* Línia d'estat de 4 px sota la casella, separada per 3 px. */
+.sr i::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 4px; border-radius: 1px; box-shadow: inset 0 0 0 1px var(--mkv, transparent); }
+.sr i.a::after { background: var(--mk-acabada); --mkv: var(--mk-acabada-vora); }
+.sr i.r::after { background: var(--mk-arxiu); --mkv: var(--mk-arxiu-vora); }
+.sr i.d::after { background: var(--mk-dubte); --mkv: var(--mk-dubte-vora); }
+.sr i.f::after { background: repeating-linear-gradient(135deg, var(--mk-falta) 0 3px, var(--mk-falta-ratlla) 3px 5px); --mkv: var(--mk-falta-vora); }
+/* Cada casella obre l'evidència d'aquell any (cerca.js); al mòbil, tota la targeta obre la fitxa. */
+@media (min-width: 761px) {
+  .taula-emp .sr i[class] { cursor: pointer; }
+  .taula-emp .sr i[class]:hover { outline: 2px solid var(--tinta); outline-offset: 1px; }
+}
+.sug .sr { grid-template-columns: repeat(10, 22px); gap: 3px; }
+.sug .sr i { height: 24px; font-size: 10px; }
+.sug .sr i.ND, .sug .sr i.NA { font-size: 8px; }
+.sw-ratlla { display: inline-block; width: 18px; height: 4px; border-radius: 1px; }
+.sw-ratlla.s-falta { background: var(--mk-falta); border: 0; box-shadow: inset 0 0 0 1px var(--mk-falta-vora); }
+.sw-fora { display: inline-block; width: 14px; height: 18px; border-radius: 3px; border: 1px dashed var(--linia-forta); }
+.mb { display: flex; gap: 1px; width: 140px; height: 8px; border-radius: 1px; overflow: hidden; background: var(--sup-3); }
+.mb i { flex-basis: 0; min-width: 2px; }
+.mb .s-falta { background: var(--mk-falta); border: 0; box-shadow: inset 0 0 0 1px var(--mk-falta-vora); }
+.mb-gran { width: 240px; height: 10px; }
+.sense-resultat { text-align: center; padding: 40px 16px; font: 400 20px var(--serif); color: var(--tinta-2); }
+.sense-resultat p { margin-bottom: 12px; }
 
-/* Cel·les d'etiqueta */
-.serie { display: inline-flex; gap: 2px; }
-.cel { display: inline-grid; place-items: center; width: 100%; min-width: 34px; height: 34px; border-radius: 6px; font-weight: 750; font-size: .8rem; letter-spacing: .01em; background: var(--e-P); color: var(--e-P-txt); }
-.cel-p { width: 19px; min-width: 19px; height: 22px; border-radius: 4px; font-size: .62rem; }
-.cel.e-F { background: var(--e-F); color: var(--e-F-txt); }
-.cel.e-P { background: var(--e-P); color: var(--e-P-txt); }
-.cel.e-ND { background: var(--e-ND); color: var(--e-ND-txt); }
-.cel.e-NA { background: var(--e-NA); color: var(--e-NA-txt); }
-.cel-buida { background: repeating-linear-gradient(135deg, var(--sup-2) 0 4px, var(--sup-3) 4px 7px); color: var(--tinta-3); border: 1px solid var(--linia); }
-.etq { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: .86rem; font-weight: 600; padding: 3px 9px 3px 3px; border-radius: 999px; background: var(--e-P-suau); color: var(--tinta); }
-.etq b { display: inline-grid; place-items: center; min-width: 26px; height: 22px; padding: 0 4px; border-radius: 999px; font-size: .74rem; background: var(--e-P); color: var(--e-P-txt); }
-.etq.e-F { background: var(--e-F-suau); } .etq.e-F b { background: var(--e-F); color: var(--e-F-txt); }
-.etq.e-ND { background: var(--e-ND-suau); } .etq.e-ND b { background: var(--e-ND); color: var(--e-ND-txt); }
-.etq.e-NA { background: var(--e-NA-suau); } .etq.e-NA b { background: var(--e-NA); color: var(--e-NA-txt); }
-
-/* Fitxa */
-.fitxa-cap { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 22px 22px 16px; box-shadow: var(--ombra); margin-bottom: 26px; }
-.fitxa-cap h1 { overflow-wrap: anywhere; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
-.chip { display: inline-flex; align-items: center; gap: 8px; background: var(--sup-2); border: 1px solid var(--linia); border-radius: 999px; padding: 5px 12px; font-size: .88rem; }
-.chip code { background: transparent; padding: 0; font-size: .9rem; font-weight: 600; }
-.chip-k { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--tinta-3); font-weight: 700; }
-.altres-noms { font-size: .86rem; color: var(--tinta-3); }
-.kp-fila { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 12px; }
-.kp { display: inline-flex; align-items: center; gap: 7px; font-size: .9rem; padding: 4px 12px 4px 5px; border-radius: 999px; background: var(--sup-2); }
-.kp b { font-variant-numeric: tabular-nums; }
-.e-F-suau { background: var(--e-F-suau); } .e-P-suau { background: var(--e-P-suau); } .e-ND-suau { background: var(--e-ND-suau); } .e-NA-suau { background: var(--e-NA-suau); }
-.kp-proves { padding-left: 12px; border: 1px solid var(--linia); background: transparent; }
-.salts { display: flex; gap: 6px; border-top: 1px solid var(--linia); padding-top: 12px; }
-.salts a { text-decoration: none; font-weight: 600; font-size: .92rem; padding: 6px 12px; border-radius: 999px; background: var(--sup-2); color: var(--tinta-2); }
-.salts a:hover { color: var(--tinta); background: var(--sup-3); }
-.seccio { margin-bottom: 34px; }
-.seccio > h2 { padding-bottom: 8px; border-bottom: 2px solid var(--tinta); display: inline-block; margin-bottom: 14px; }
-.h-sub { color: var(--tinta-2); font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; margin: 4px 0 10px; }
-
-/* Línia de temps */
-.tl-wrap { overflow-x: auto; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 14px; box-shadow: var(--ombra); }
-.tl { min-width: 640px; display: flex; flex-direction: column; gap: 6px; }
-.tl-fila { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
-.tl-any { text-align: center; font-size: .78rem; font-weight: 650; color: var(--tinta-3); font-variant-numeric: tabular-nums; }
-.tl-cel .cel { height: 36px; font-size: .86rem; }
-.tl-fila-ceo { grid-auto-rows: minmax(52px, auto); }
-.tl-ceo { background: var(--sup-2); border: 1px solid var(--linia); border-left: 4px solid var(--tinta-2); border-radius: 8px; padding: 6px 9px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.tl-ceo b { font-size: .88rem; line-height: 1.25; overflow-wrap: anywhere; }
-.tl-ceo small { color: var(--tinta-3); font-variant-numeric: tabular-nums; }
-.tl-ceo-buit { font-style: italic; }
-.trams { display: none; list-style: none; margin: 0; padding: 0; }
-.tram { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: center; background: var(--sup); border: 1px solid var(--linia); border-left: 5px solid var(--tinta-2); border-radius: var(--radi-petit); padding: 10px 12px; margin-bottom: 8px; }
-.tram-anys { font-weight: 750; font-variant-numeric: tabular-nums; font-size: .9rem; color: var(--tinta-2); }
-.tram-nom { font-size: 1rem; overflow-wrap: anywhere; }
-.tram .serie { grid-column: 1 / -1; margin-top: 4px; flex-wrap: wrap; }
-.v-F { border-left-color: var(--e-F); background: var(--e-F-suau); }
-.v-P { border-left-color: var(--e-P); background: var(--e-P-suau); }
-.v-ND { border-left-color: var(--e-ND); background: var(--e-ND-suau); }
-.v-NA { border-left-color: var(--e-NA); background: var(--e-NA-suau); }
-
-/* Taula d'anys */
-.taula-anys { margin-top: 14px; }
-.taula-wrap + .nota, .llegenda + .taula-wrap { margin-top: 12px; }
-.taula-anys th[scope="row"] { font-variant-numeric: tabular-nums; font-weight: 750; }
-.taula-anys td, .taula-anys th { vertical-align: middle; }
-.t-ceo { font-weight: 600; min-width: 180px; }
-.aplicat { display: block; font-weight: 400; font-size: .8rem; color: var(--nv); background: var(--nv-fons); border-radius: 6px; padding: 4px 7px; margin-top: 5px; }
-.cert { display: inline-block; font-size: .82rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; background: var(--sup-2); color: var(--tinta-2); border: 1px solid var(--linia); }
-.cert-certificada { background: var(--v-fons); color: var(--v); border-color: transparent; }
-.cert-certificada_ceo_pendent { background: var(--nv-fons); color: var(--nv); border-color: transparent; }
-.cert-no_certificada { background: var(--mal-fons); color: var(--mal); border-color: transparent; }
-.pv { display: inline-flex; align-items: center; gap: 4px; font-size: .84rem; font-weight: 650; padding: 3px 9px; border-radius: 999px; text-decoration: none; white-space: nowrap; }
-.pv-v { background: var(--v-fons); color: var(--v); }
-.pv-nv { background: var(--nv-fons); color: var(--nv); }
-.pv-base { background: var(--base-fons); color: var(--base); }
-.pv-no { color: var(--tinta-3); font-weight: 500; }
-a.pv:hover { text-decoration: underline; }
-
-/* Proves */
-.filtre-anys { display: none; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
-.js .filtre-anys { display: flex; }
-.xip { font: inherit; font-size: .85rem; font-weight: 600; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta-2); border-radius: 999px; padding: 5px 12px; cursor: pointer; font-variant-numeric: tabular-nums; }
-.xip:hover { background: var(--sup-2); }
-.xip[aria-pressed="true"] { background: var(--tinta); color: var(--sup); border-color: var(--tinta); }
-.recompte-proves { font-size: .88rem; color: var(--tinta-3); min-height: 1.3em; }
-.grup-proves { margin: 22px 0 8px; }
-.grup-proves > h3 { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; }
-.grup-proves > h3 .n { font-size: .78rem; background: var(--sup-3); color: var(--tinta-2); padding: 2px 9px; border-radius: 999px; font-variant-numeric: tabular-nums; }
-.prova { background: var(--sup); border: 1px solid var(--linia); border-left: 5px solid var(--v); border-radius: var(--radi); padding: 16px 18px; margin: 12px 0; box-shadow: var(--ombra); }
-.prova-nv { border-left-color: var(--nv); }
-.prova-mal { border-left-color: var(--mal); }
-.prova-base { border-left-color: var(--base); }
-.prova-oculta { border-left-color: var(--tinta-3); background: var(--sup-2); box-shadow: none; }
-.prova-oculta { padding: 10px 14px; }
-.prova-oculta .p-cap { margin-bottom: 4px; }
-.prova-oculta p { margin: 0; color: var(--tinta-3); font-size: .84rem; }
-.prova:target { outline: 3px solid var(--focus); outline-offset: 2px; }
-.p-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
-.p-anys { margin-left: auto; font-size: .86rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tinta-2); background: var(--sup-2); padding: 3px 10px; border-radius: 999px; }
-.b { display: inline-flex; align-items: center; font-size: .78rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; line-height: 1.3; font-family: var(--font); }
+/* ---------- Insígnies ---------- */
+.st { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; font-weight: 600; padding: 3px 11px; border-radius: 999px; }
+.st-acabada { background: var(--st-acabada); color: var(--st-acabada-txt); }
+.st-arxiu { background: var(--st-arxiu); color: var(--st-arxiu-txt); }
+.st-dubte { background: var(--st-dubte); color: var(--st-dubte-txt); }
+.st-falta { background: repeating-linear-gradient(135deg, var(--st-falta) 0 5px, var(--st-falta-ratlla) 5px 7px); color: var(--st-falta-txt); }
+.b { display: inline-flex; align-items: center; font: 700 12px/1.4 var(--font); padding: 2px 9px; border-radius: 3px; white-space: nowrap; }
 .b-v { background: var(--v-fons); color: var(--v); }
 .b-nv { background: var(--nv-fons); color: var(--nv); }
 .b-mal { background: var(--mal-fons); color: var(--mal); }
-.b-base { background: var(--base-fons); color: var(--base); }
 .b-gris { background: var(--sup-3); color: var(--tinta-2); }
-.b-marca { background: transparent; border: 1px solid var(--linia-forta); color: var(--tinta-2); font-family: var(--font-mono); font-size: .76rem; }
+.b-marca { background: transparent; border: 1px solid var(--linia-forta); color: var(--tinta-2); font-family: var(--font-mono); font-weight: 400; }
 .b-nivell { background: var(--e-P-suau); color: var(--tinta); }
-.cita { margin: 0 0 12px; padding: 14px 18px 14px 44px; background: var(--cita-fons); border-radius: var(--radi-petit); position: relative; border: 1px solid var(--linia); }
-.cita::before { content: "“"; position: absolute; left: 12px; top: 2px; font-family: var(--font-cita); font-size: 2.6rem; line-height: 1; color: var(--tinta-3); opacity: .6; }
-.cita p { margin: 0; font-family: var(--font-cita); font-size: 1.14rem; line-height: 1.55; color: var(--tinta); overflow-wrap: anywhere; }
-.sense-cita { font-style: italic; color: var(--tinta-3); background: var(--sup-2); border-radius: var(--radi-petit); padding: 10px 14px; }
-.p-fonts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
-.domini { font-size: .86rem; font-weight: 650; color: var(--tinta-2); margin-right: 4px; overflow-wrap: anywhere; }
-.boto { display: inline-flex; align-items: center; gap: 5px; font-size: .88rem; font-weight: 650; padding: 6px 12px; border-radius: var(--radi-petit); background: var(--enllac); color: #fff; text-decoration: none; }
-.boto:hover { color: #fff; filter: brightness(1.1); }
-@media (prefers-color-scheme: dark) { .boto, .boto:hover { color: #0d1b2e; } }
-.boto-wb { background: transparent; color: var(--enllac); border: 1px solid var(--enllac); }
-.boto-wb:hover { color: var(--enllac-hover); background: var(--sup-2); filter: none; }
-@media (prefers-color-scheme: dark) { .boto-wb, .boto-wb:hover { color: var(--enllac); } }
-.boto-off { background: var(--sup-2); color: var(--tinta-3); border: 1px dashed var(--linia-forta); font-weight: 550; }
-.ext { font-size: .85em; }
-.p-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 18px; margin: 0; padding: 12px 0 0; border-top: 1px solid var(--linia); }
+
+/* ---------- Fitxa ---------- */
+.fitxa-cap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 40px; align-items: end; padding: 16px 0 28px; border-bottom: 1px solid var(--linia-forta); }
+.fitxa-cap h1 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 10px; overflow-wrap: anywhere; }
+.fitxa-linia { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; color: var(--tinta-2); font-size: 14px; margin-bottom: 6px; }
+.isin { display: inline-flex; align-items: center; gap: 8px; }
+.isin code { font-size: 14px; font-weight: 600; color: var(--tinta); background: var(--sup); border: 1px solid var(--linia); padding: 3px 8px; }
+.altres-noms { font-size: 13px; color: var(--tinta-3); margin: 0 0 4px; }
+.fc-resum { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; text-align: right; }
+.fc-etq { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px 10px; margin: 0; font-size: 14px; color: var(--tinta-2); }
+.fitxa-estat { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin: 0; font-size: 14px; color: var(--tinta-2); }
+.caixa-dubte { display: flex; gap: 12px; align-items: flex-start; background: var(--nv-fons); color: var(--tinta); border: 1px solid var(--mk-dubte); border-radius: var(--radi); padding: 12px 16px; margin: 24px 0 0; }
+.caixa-dubte ul { margin: 0; padding: 0; list-style: none; }
+.cd-icona { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--st-dubte); color: var(--st-dubte-txt); display: grid; place-items: center; font-weight: 700; }
+.seccio { padding: 36px 0 0; }
+.seccio > h2 { margin-bottom: 6px; }
+.seccio > .nota { margin-bottom: 14px; }
+.com-llegir { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 13px; color: var(--tinta-2); padding: 10px 14px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); }
+.cl-cap { font-weight: 700; color: var(--tinta); }
+.com-llegir .sw { width: 20px; height: 20px; font-size: 10px; }
+/* Grups de la llegenda separats per l'espai (sense separadors que quedin orfes en saltar de línia). */
+.com-llegir { column-gap: 32px; }
+.ll-grup { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.ll-mes { font-weight: 600; display: inline-flex; align-items: center; min-height: 32px; }
+
+/* Franja d'anys */
+.rail-envol { position: sticky; top: 0; z-index: 15; background: var(--fons); padding: 10px 0 12px; margin-top: 8px; border-bottom: 1px solid transparent; }
+.rail-envol.fixa { border-bottom-color: var(--linia); }
+/* Nom i ISIN de l'empresa a la franja enganxada (visibles quan el títol ja no es veu). */
+.rail-nom { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; min-height: 20px; white-space: nowrap; overflow: hidden; }
+.rail-nom b { font: 600 16px/1.25 var(--serif); overflow: hidden; text-overflow: ellipsis; }
+.rail-nom code { flex: none; font-size: 12px; background: transparent; padding: 0; color: var(--tinta-3); }
+.js .rail-nom { visibility: hidden; }
+.js .rail-envol.fixa .rail-nom { visibility: visible; }
+.franja { position: relative; }
+.franja-ajuda { display: none; position: absolute; right: 0; top: 100%; z-index: 2; margin: 6px 0 0; font-size: 12px; padding: 4px 9px; border-radius: 3px; background: var(--tinta); color: var(--fons); }
+.js .franja:focus-within .franja-ajuda { display: block; }
+.rail { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; list-style: none; margin: 0; padding: 0; }
+.rl { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; padding: 9px 4px 11px; border-radius: var(--radi); background: var(--sup); border: 1px solid var(--linia); text-decoration: none; color: var(--tinta); overflow: hidden; }
+a.rl:hover { border-color: var(--tinta-3); color: var(--tinta); }
+.rl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; }
+.rl::after { box-shadow: inset 0 0 0 1px var(--mkv, transparent); }
+.rl.b-acabada::after { background: var(--mk-acabada); --mkv: var(--mk-acabada-vora); }
+.rl.b-arxiu::after { background: var(--mk-arxiu); --mkv: var(--mk-arxiu-vora); }
+.rl.b-dubte::after { background: var(--mk-dubte); --mkv: var(--mk-dubte-vora); }
+.rl.b-falta::after { background: repeating-linear-gradient(135deg, var(--mk-falta) 0 3px, var(--mk-falta-ratlla) 3px 5px); --mkv: var(--mk-falta-vora); }
+.rl-a { font: 600 16px/1 var(--serif); }
+.rl-e { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 3px; border-radius: 3px; font: 700 12px/1 var(--font); }
+.rl-s { font-size: 12px; font-weight: 700; color: var(--tinta-3); line-height: 1; }
+.rl[aria-current="true"] { border: 2px solid var(--tinta); padding: 8px 3px 10px; }
+.rl-buit { background: transparent; border-style: dashed; border-color: var(--linia-forta); color: var(--tinta-3); justify-content: flex-start; }
+.trams-ceo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; font-size: 14px; color: var(--tinta-2); margin: 2px 0 8px; }
+.tc-cap { font: 600 13px var(--font); color: var(--tinta-3); margin: 0; }
+.trams-ceo ol { display: flex; flex-wrap: wrap; gap: 4px 18px; list-style: none; margin: 0; padding: 0; }
+.tc-anys { color: var(--tinta-3); }
+.trams-ceo b { color: var(--tinta); }
+
+/* Línia del temps vertical */
+.tl { list-style: none; margin: 20px 0 0; padding: 0; position: relative; }
+.tl::before { content: ""; position: absolute; left: 47px; top: 10px; bottom: 10px; width: 2px; background: var(--linia-forta); }
+.tl-any { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 0 20px; margin-bottom: 18px; }
+.tl-marca { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 14px; position: relative; z-index: 1; }
+.tl-a { font: 600 24px/1 var(--serif); margin: 0; background: var(--fons); padding: 2px 4px; }
+.tl-punt { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font-size: 13px; font-weight: 700; box-shadow: 0 0 0 3px var(--fons), inset 0 0 0 1px var(--mkv, transparent); }
+.tl-cos { background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); min-width: 0; }
+.tl-any:target .tl-cos { border-color: var(--tinta); box-shadow: 0 0 0 1px var(--tinta); }
+.tl-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 14px 20px; }
+.tl-ceo { flex: 1 1 240px; min-width: 0; margin: 0; }
+.tl-ceo small { display: block; font-size: 12px; color: var(--tinta-3); }
+.tl-ceo b { font: 600 22px/1.2 var(--serif); overflow-wrap: anywhere; }
+.tl-prova { font-size: 13px; color: var(--tinta-2); }
+.tl-prova a { font-weight: 600; }
+.tl-evid > summary { list-style: none; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; padding: 10px 20px; min-height: 48px; border-top: 1px solid var(--linia); background: var(--sup-2); cursor: pointer; font-size: 14px; }
+.tl-evid > summary::-webkit-details-marker { display: none; }
+.tl-evid > summary .b { white-space: normal; }
+.tl-evid > summary:hover .ev-titol { text-decoration: underline; }
+.fletxa { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--enllac); transition: transform .15s; }
+.tl-evid[open] > summary .fletxa { transform: rotate(90deg); }
+.ev-titol { font-weight: 700; color: var(--enllac); margin-right: 4px; }
+.previ { margin-left: auto; font: italic 400 14px var(--serif); color: var(--tinta-3); max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--linia); }
+.ev { padding: 20px 22px; min-width: 0; }
+.ev + .ev { border-left: 1px solid var(--linia); }
+.ev-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-bottom: 10px; }
+.ev-t { font: 700 14px/1.3 var(--font); margin: 0 6px 0 0; color: var(--tinta); }
+.ev-sub { font-size: 13px; color: var(--tinta-2); margin: -2px 0 12px; }
+.ev-sub-nd { font-size: 13px; color: var(--tinta-2); margin: 0 0 10px; }
+.ev-sub-t { font-size: 13px; font-weight: 600; color: var(--tinta-2); margin: 0 0 8px; }
+.ev-nota { font-size: 13px; color: var(--tinta); background: var(--nv-fons); border-left: 3px solid var(--mk-dubte-vora); padding: 6px 10px; margin: -4px 0 12px; max-width: 68ch; }
+.ev-parts { margin: 14px 0 0; padding: 12px 0 0; border-top: 1px dashed var(--linia-forta); font-size: 13px; color: var(--tinta-2); }
+.ev-parts-t { font-weight: 600; margin: 0 0 6px; }
+.ev-parts ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.part-cita { font: 400 15px/1.45 var(--serif); color: var(--tinta); quotes: "«" "»"; }
+.part-meta { white-space: nowrap; }
+.part-meta a { display: inline-flex; align-items: center; min-height: 32px; }
+.part-mes { color: var(--tinta-3); }
+.regla-item { display: block; }
+.regla-item + .regla-item { margin-top: 4px; }
+.regla { font-weight: 600; margin-right: 6px; }
+.tl-prova .regla { margin-right: 0; }
+.regla-sep { margin-right: 4px; }
+.regla-frase { display: block; font-size: 13px; color: var(--tinta-2); max-width: 68ch; }
+.ev-cita .cita { margin: 0; padding: 14px 18px 14px 34px; background: var(--cita-fons); border: 0; border-left: 3px solid var(--tinta); border-radius: 0 var(--radi-petit) var(--radi-petit) 0; }
+.ev + .ev .cita { border-left-color: var(--tinta-3); }
+.l-F .ev + .ev .cita { border-left-color: var(--e-F); }
+.l-P .ev + .ev .cita { border-left-color: var(--e-P); }
+.ev-cita .cita::before { left: 10px; top: 8px; }
+.ev-cita .cita p { font-size: 19px; line-height: 1.5; }
+.doc { font-size: 13px; color: var(--tinta-2); margin: 12px 0 0; line-height: 1.5; overflow-wrap: anywhere; }
+.doc-et { font-weight: 600; }
+.botons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.verif { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; margin: 12px 0 0; font-size: 13px; color: var(--tinta-2); }
+.verif code { font-size: 11px; color: var(--tinta-3); background: transparent; padding: 0; }
+.verif a { display: inline-flex; align-items: center; min-height: 32px; }
+.vf { display: inline-block; padding: 0 8px; border-radius: 3px; font-weight: 700; }
+.vf-si { background: var(--v-fons); color: var(--v); }
+.vf-no { background: var(--sup-3); color: var(--tinta-2); }
+.vf-pendent { background: var(--nv-fons); color: var(--nv); }
+.ev-ext + .ev-ext { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--linia-forta); }
+.ev-ext-t { font-size: 13px; font-weight: 600; color: var(--tinta-2); margin-right: 4px; }
+.ev-limit { margin: 14px 0 0; }
+.ev-falta { background: color-mix(in srgb, var(--mal-fons) 45%, transparent); }
+.ev-avisos { padding: 12px 22px; border-top: 1px solid var(--linia); display: grid; gap: 6px; }
+.ev-avisos p { margin: 0; }
+.falta-txt { margin: 0; font-weight: 600; color: var(--mal); }
+.tl-peu { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; align-items: center; padding: 12px 22px; border-top: 1px solid var(--linia); font-size: 14px; }
+.tl-peu a { font-weight: 600; display: inline-flex; align-items: center; gap: .3em; min-height: 32px; }
+.tl-peu-st { color: var(--tinta-3); font-size: 13px; max-width: 70ch; }
+
+/* Cites i proves */
+.cita { margin: 0 0 12px; padding: 12px 16px 12px 40px; background: var(--cita-fons); border-radius: var(--radi-petit); position: relative; border: 1px solid var(--linia); }
+.cita::before { content: "“"; position: absolute; left: 12px; top: 4px; font-family: var(--serif); font-size: 2.2rem; line-height: 1; color: var(--tinta-3); }
+.cita p { margin: 0; font-family: var(--serif); font-size: 17px; line-height: 1.5; overflow-wrap: anywhere; max-width: 70ch; }
+.sense-cita { font-style: italic; color: var(--tinta-3); background: var(--sup-2); border-radius: var(--radi-petit); padding: 8px 12px; }
+.filtre-anys { display: none; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
+.js .filtre-anys { display: flex; }
+.xip { display: inline-flex; align-items: center; font: 500 13px var(--font); min-height: 36px; border: 1px solid var(--linia-forta); background: var(--sup); color: var(--tinta); border-radius: 999px; padding: 0 12px; cursor: pointer; }
+.xip:hover { border-color: var(--tinta-3); }
+.xip[aria-pressed="true"] { background: var(--tinta); color: var(--fons); border-color: var(--tinta); }
+.recompte-proves { font-size: 13px; color: var(--tinta-3); min-height: 1.3em; }
+.grup-proves { border-top: 1px solid var(--linia); margin: 0; }
+.grup-proves:last-of-type { border-bottom: 1px solid var(--linia); }
+.grup-proves > summary { cursor: pointer; min-height: 52px; display: flex; align-items: center; gap: 8px; font: 600 19px var(--serif); }
+.grup-proves > summary .n { font: 600 12px var(--font); background: var(--sup-3); color: var(--tinta-2); padding: 2px 9px; border-radius: 999px; }
+.grup-proves[open] { padding-bottom: 12px; }
+.prova { background: var(--sup); border: 1px solid var(--linia); border-left: 3px solid var(--v); border-radius: var(--radi); padding: 16px 18px; margin: 12px 0; scroll-margin-top: 16px; }
+.prova-nv { border-left-color: var(--nv); }
+.prova-mal { border-left-color: var(--mal); }
+.prova-base { border-left-color: var(--linia-forta); }
+.prova-oculta { border-left-color: var(--tinta-3); background: var(--sup-2); padding: 10px 14px; }
+.prova-oculta p { margin: 0; color: var(--tinta-3); font-size: 13px; }
+.prova:target { outline: 3px solid var(--focus); outline-offset: 2px; }
+.p-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
+.p-anys { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--tinta-2); background: var(--sup-2); padding: 2px 10px; border-radius: 999px; }
+.p-fonts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.domini { font-size: 13px; color: var(--tinta-2); overflow-wrap: anywhere; }
+details.tecnic > summary { cursor: pointer; font-size: 13px; color: var(--enllac); min-height: 32px; display: flex; align-items: center; }
+.p-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px 16px; margin: 8px 0 0; padding: 12px 0 0; border-top: 1px solid var(--linia); }
 .p-meta div { min-width: 0; }
-.p-meta dt { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--tinta-3); font-weight: 700; }
-.p-meta dd { margin: 2px 0 0; font-size: .88rem; overflow-wrap: anywhere; }
+.p-meta dt { font-size: 12px; color: var(--tinta-3); font-weight: 600; }
+.p-meta dd { margin: 2px 0 0; font-size: 13px; overflow-wrap: anywhere; }
 .llista-codi { margin: 4px 0 0; padding-left: 18px; }
-.p-notes { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--linia); }
-.p-notes h4 { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--tinta-3); margin-bottom: 4px; }
-.p-notes p { font-size: .9rem; color: var(--tinta-2); margin-bottom: .5em; overflow-wrap: anywhere; }
+.p-notes { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--linia); }
+.p-notes .pn-h { font-size: 12px; font-weight: 700; color: var(--tinta-3); margin-bottom: 4px; }
+.p-notes p { font-size: 13px; color: var(--tinta-2); margin-bottom: .5em; overflow-wrap: anywhere; }
 .nota-oculta { font-style: italic; color: var(--tinta-3) !important; }
-.nota-llarga summary { cursor: pointer; font-size: .9rem; color: var(--tinta-2); }
-.sense-proves { background: var(--sup); border: 1px dashed var(--linia-forta); border-radius: var(--radi); padding: 18px; }
+.sense-proves { background: var(--sup); border: 1px dashed var(--linia-forta); border-radius: var(--radi); padding: 16px; }
 .sense-proves p { margin: 0; }
-.rastre { margin-top: 14px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 12px 16px; }
+.rastre { margin-top: 12px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 12px 16px; }
 .rastre summary { cursor: pointer; font-weight: 600; }
-.llista-urls { padding-left: 18px; font-size: .86rem; }
+.llista-urls { padding-left: 18px; font-size: 13px; }
 .url-llarga { overflow-wrap: anywhere; }
-.nav-fitxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 30px; }
-.nav-fitxes a { display: flex; flex-direction: column; gap: 2px; background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi); padding: 12px 16px; text-decoration: none; font-weight: 650; color: var(--tinta); box-shadow: var(--ombra); min-width: 0; overflow-wrap: anywhere; }
-.nav-fitxes a small { color: var(--tinta-3); font-weight: 600; }
-.nav-fitxes a:hover { border-color: var(--enllac); }
+.historial { border-top: 1px solid var(--linia); margin: 32px 0 0; font-size: 14px; }
+.historial > summary { cursor: pointer; min-height: 52px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-weight: 600; color: var(--tinta-2); }
+.historial[open] { padding-bottom: 16px; }
+.nav-fitxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--linia); }
+.nav-fitxes a { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; text-decoration: none; font: 600 17px var(--serif); color: var(--tinta); min-width: 0; overflow-wrap: anywhere; border: 1px solid var(--linia); border-radius: var(--radi); background: var(--sup); }
+.nav-fitxes a small { font: 400 13px var(--font); color: var(--tinta-3); }
+.nav-fitxes a:hover { border-color: var(--tinta-3); }
 .nav-fitxes .seg { text-align: right; }
 
-/* Metodologia */
+/* ---------- Mètode ---------- */
 .text-llarg { max-width: 860px; }
-.text-llarg .seccio > h2 { font-size: 1.3rem; }
-.def { display: grid; grid-template-columns: minmax(150px, max-content) 1fr; gap: 6px 16px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--linia); }
+.text-llarg p, .text-llarg li { max-width: 70ch; }
+.text-llarg .seccio { padding: 32px 0; border-top: 1px solid var(--linia); }
+.text-llarg h3 { margin-top: 24px; font: 600 19px var(--serif); }
+.def { display: grid; grid-template-columns: minmax(170px, max-content) 1fr; gap: 6px 16px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--linia); }
 .def p { margin: 0; }
-.def > :first-child { justify-self: start; }
-.docs li { margin-bottom: 6px; }
-.taula-simple th, .taula-simple td { padding: 8px 12px; font-size: .9rem; }
-.sha { font-size: .78rem; }
+.def-cap { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.def:target { background: var(--nv-fons); }
+.prec, .condicions { padding-left: 20px; }
 
 /* Peu */
-.peu { border-top: 1px solid var(--linia); background: var(--sup); }
-.peu-in { max-width: 1240px; margin: 0 auto; padding: 18px 16px 26px; font-size: .8rem; color: var(--tinta-3); }
-.peu-in p { margin: 0 0 6px; overflow-wrap: anywhere; }
+.peu { border-top: 1px solid var(--linia); }
+.peu-in { max-width: 1240px; margin: 0 auto; padding: 20px 24px 40px; font-size: 13px; color: var(--tinta-3); overflow-wrap: anywhere; }
+.peu-in code { background: transparent; padding: 0; }
+.drecera { display: none; margin-left: 8px; font: 500 13px var(--font); color: var(--tinta-2); background: transparent; border: 1px solid var(--linia-forta); border-radius: 3px; padding: 2px 8px; min-height: 32px; cursor: pointer; }
+.js .drecera { display: inline-flex; align-items: center; }
+.drecera:hover { color: var(--tinta); border-color: var(--tinta-3); }
 
-@media (max-width: 760px) {
-  .barra { position: static; }
-  html { scroll-padding-top: 12px; }
-  .c-pais, .c-p, .c-nd, .c-na, .c-isin { display: none; }
-  .tl-wrap { display: none; }
-  .trams { display: block; }
-  .taula-anys thead { display: none; }
-  .taula-anys, .taula-anys tbody { display: block; }
-  .taula-anys tr { display: grid; grid-template-columns: 56px 1fr; gap: 6px 10px; padding: 12px; border-bottom: 1px solid var(--linia); }
-  .taula-anys tbody tr:last-child { border-bottom: 0; }
-  .taula-anys th[scope="row"] { grid-row: 1 / span 6; border: 0; padding: 0; font-size: 1.15rem; }
-  .taula-anys td { border: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
-  .taula-anys td::before { content: attr(data-l); font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--tinta-3); font-weight: 700; min-width: 96px; }
-  .taula-anys td.t-ceo { display: block; font-size: 1.02rem; }
-  .taula-anys td.t-ceo::before { display: none; }
-  .bcols { gap: 3px; }
-  .bany { font-size: .62rem; }
-  .tip { white-space: normal; width: 150px; }
-  .c-nom { min-width: 160px; }
-  th, td { padding: 9px 10px; }
-  .def { grid-template-columns: 1fr; }
-  .p-anys { margin-left: 0; }
-  .fitxa-cap { padding: 16px; }
-  .prova { padding: 14px; }
-  .cita { padding: 12px 14px 12px 36px; }
-  .cita p { font-size: 1.05rem; }
-  .nav-fitxes { grid-template-columns: 1fr; }
-  .nav-fitxes .seg { text-align: left; }
+/* ---------- Responsiu ---------- */
+@media (max-width: 1100px) {
+  .dreceres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-@media (max-width: 480px) {
-  .c-anys { display: none; }
-  .k-val { font-size: 1.55rem; }
+/* Tauleta, mòbil horitzontal o zoom: el cercador va en una fila pròpia, a tota l'amplada. */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .barra-in { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "marca pindola tema" "cerca cerca cerca" "nav nav nav"; }
+  .cb-cap { width: 100%; justify-self: stretch; }
+  .cb-cap .cb-pop { left: 0; right: 0; min-width: 0; }
+}
+@media (max-width: 1000px) {
+  .obertura { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .bloc { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .passos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 16px; }
+  .passos li + li { border-left: 0; padding-left: 0; }
+  .passos li:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--linia); }
+  .col-serie { width: auto; }
+  .evid { grid-template-columns: minmax(0, 1fr); }
+  .ev + .ev { border-left: 0; border-top: 1px solid var(--linia); }
+  .previ { display: none; }
+}
+@media (max-width: 760px) {
+  body { padding-bottom: 76px; }
+  /* Les pestanyes inferiors no tapen el focus (WCAG 2.4.11). */
+  html { scroll-padding-bottom: 84px; }
+  html:has(body.p-fitxa) { scroll-padding-top: 136px; }
+  /* Un sol cercador per pantalla: a Empreses, el de la llista; a l'Estat, el de la capçalera. */
+  .p-empreses .cb-cap, .p-estat .cerca-rapida .cb, .p-estat .cr-ajuda { display: none; }
+  .p-estat .cerca-rapida { padding: 8px 14px; }
+  .p-estat .exemples { margin: 0; }
+  .barra-in { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "marca tema" "pindola pindola" "cerca cerca"; padding: 12px 16px; gap: 8px 12px; }
+  .marca b { font-size: 19px; }
+  .marca small { font-size: 12px; }
+  .pindola { justify-self: start; font-size: 12px; min-height: 28px; padding: 2px 9px; }
+  .cb-cap { width: 100%; justify-self: stretch; }
+  .cb-kbd { display: none; }
+  .cb-pop, .cb-cap .cb-pop { left: 0; right: 0; min-width: 0; }
+  .sug { grid-template-columns: minmax(0, 1fr); }
+  .sug .sr { grid-row: auto; grid-column: 1; grid-template-columns: repeat(10, minmax(0, 1fr)); width: 100%; }
+  /* Pestanyes inferiors fixes */
+  .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--linia-forta); background: var(--sup); padding: 0 8px env(safe-area-inset-bottom); box-shadow: 0 -4px 16px rgba(0, 0, 0, .06); }
+  .nav a { flex-direction: column; justify-content: center; gap: 2px; min-height: 60px; padding: 6px 4px; font-size: 12px; border-bottom: 0; border-top: 3px solid transparent; }
+  .nav a[aria-current="page"] { border-top-color: var(--tinta); border-bottom: 0; }
+  .nav svg { display: block; }
+  .pagina { padding: 0 16px 40px; }
+  h1 { font-size: 32px; }
+  .obertura { padding: 28px 0 28px; }
+  .entradeta { font-size: 17px; }
+  .bloc { padding: 32px 0; }
+  .heroi-xifra b { font-size: 76px; }
+  .heroi-xifra span { font-size: 18px; }
+  .dreceres { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .drec { padding: 12px; }
+  .drec-n b { font-size: 26px; }
+  .ll-estats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ll-estats li { padding: 14px 12px 14px 0; border-bottom: 1px solid var(--linia); }
+  .ll-estats li + li { padding-left: 0; border-left: 0; }
+  .ll-estats li:nth-child(even) { padding-left: 12px; border-left: 1px solid var(--linia); }
+  .ll-xifra { font-size: 32px; }
+  .passos { grid-template-columns: minmax(0, 1fr); }
+  .passos li:nth-child(even) { padding-left: 0; border-left: 0; }
+  .passos li { flex-direction: row; align-items: flex-start; gap: 12px; padding: 14px 0 0; }
+  .passos li + li { border-top: 1px solid var(--linia); }
+  .pq-n { flex: none; width: 28px; }
+  .llarg { display: none; }
+  .curt { display: inline; }
+  .taula-anys th, .taula-anys td { padding: 6px 5px; }
+  .taula-anys { font-size: 13px; }
+  .taula-anys th:first-child { width: 46px; }
+  .taula-anys th:last-child { width: 46px; }
+  .taula-anys td.ta small { display: block; }
+  .taula-etiq th, .taula-etiq td { padding: 6px 4px; }
+  .taula-etiq td { min-width: 0; }
+  .taula-etiq .tc-n, .taula-etiq .col-files { display: none; }
+  .taula-etiq { table-layout: fixed; }
+  .taula-etiq thead th { white-space: normal; }
+  .taula-etiq th:first-child { width: 86px; }
+  .taula-etiq .etq { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; background: transparent; padding: 0; font-size: 12px; white-space: normal; }
+  .taula-etiq .tc-files { display: block; font-size: 12px; font-weight: 400; color: var(--tinta-3); }
+  .taula-etiq .tc-v { font-size: 15px; white-space: nowrap; }
+  .a2, .bany small { display: none; }
+  .versio-dl div { grid-template-columns: minmax(0, 1fr); }
+  #dubtes .bs li { grid-template-columns: minmax(0, 1fr); padding: 10px 0; }
+  /* Empreses */
+  .cb-llista-emp input { font-size: 21px; height: 54px; }
+  .p-empreses .cap-pagina { padding: 24px 0 4px; }
+  .filtres { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+  .filtres .camp { min-width: 0; }
+  .filtres .camp:nth-child(3), .filtres .camp-m, .filtres .boto-sec { grid-column: 1 / -1; }
+  .filtres .boto-sec { justify-self: start; }
+  .filtres select { width: 100%; max-width: none; }
+  .taula-emp, .taula-emp tbody, .taula-emp thead { display: block; }
+  .taula-emp thead tr { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 4px 0; }
+  .taula-emp thead th { padding: 0; border: 0; }
+  .taula-emp thead th.col-serie { display: none; }
+  .taula-emp tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 16px 0; border-bottom: 1px solid var(--linia); position: relative; }
+  .taula-emp tbody tr[hidden] { display: none; }
+  .taula-emp td { padding: 0; border: 0; }
+  /* Tota la targeta és l'enllaç a la fitxa (objectiu tàctil gran). */
+  .taula-emp td:first-child a.emp-nom::after { content: ""; position: absolute; inset: 0; }
+  .taula-emp td:first-child a.emp-nom { display: inline-flex; align-items: center; min-height: 40px; }
+  .taula-emp td:nth-child(3) { display: flex; align-items: center; gap: 10px; }
+  .taula-emp td:nth-child(3) .sub { margin: 0; }
+  .taula-emp td:nth-child(4) { display: none; }
+  .sr { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; width: 100%; }
+  .sr i { height: 34px; }
+  /* Fitxa */
+  .fitxa-cap { grid-template-columns: minmax(0, 1fr); }
+  .fc-resum, .fc-etq, .fitxa-estat { align-items: flex-start; justify-content: flex-start; text-align: left; }
+  .mb-gran { width: 100%; max-width: 320px; }
+  /* Franja compacta i enganxada: any i lletra en una línia, dues files de 40 px. */
+  .rail-envol { padding: 8px 0; }
+  .rail-nom { margin-bottom: 6px; min-height: 18px; }
+  .rail-nom b { font-size: 14px; }
+  .rail { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .rl { flex-direction: row; justify-content: center; gap: 5px; min-height: 40px; padding: 5px 2px 9px; }
+  .rl[aria-current="true"] { padding: 4px 1px 8px; }
+  .rl-a { font-size: 14px; }
+  .rl-e { min-width: 20px; height: 20px; font-size: 11px; }
+  .rl-s { display: none; }
+  .rl-buit { justify-content: center; }
+  .com-llegir { column-gap: 16px; }
+  .tl::before { left: 21px; }
+  .tl-any { grid-template-columns: 44px minmax(0, 1fr); gap: 0 10px; }
+  .tl-a { font-size: 15px; }
+  .tl-punt { width: 26px; height: 26px; font-size: 12px; }
+  .tl-fila { padding: 12px 14px; gap: 8px 10px; }
+  .tl-ceo { flex-basis: 100%; }
+  .tl-ceo b { font-size: 19px; }
+  .tl-evid > summary { padding: 10px 14px; }
+  .ev { padding: 16px 14px; }
+  .ev-cita .cita { padding: 12px 12px 12px 28px; }
+  .ev-cita .cita::before { left: 6px; }
+  .ev-cita .cita p { font-size: 17px; }
+  .ev-avisos, .tl-peu { padding: 12px 14px; }
+  .botons .boto { width: 100%; justify-content: flex-start; }
+  .def { grid-template-columns: minmax(0, 1fr); }
+  .p-anys { margin-left: 0; }
+  .prova { padding: 12px; }
+  .cita { padding: 10px 12px 10px 32px; }
+  .nav-fitxes { grid-template-columns: minmax(0, 1fr); }
+  .nav-fitxes .seg { text-align: left; }
+  /* Objectius tàctils de 40 px com a mínim. */
+  .bs-link, .verif a, .tl-peu a, a.regla, .regla-frase a, .caixa-dubte a, .falta-txt a, .exemples a, .ll-mes, .cb-peu a,
+  .taula-emp thead button, .xip, .pindola, .docs a, .salta, .tl-prova a, .js .copia, .molla a, .part-meta a, .js .drecera { min-height: 40px; display: inline-flex; align-items: center; gap: .3em; }
+  a.regla { min-width: 40px; }
+  details.dades > summary, details.tecnic > summary { min-height: 40px; }
+  .ll-ajuda { width: 40px; height: 40px; }
+}
+@media (max-width: 360px) {
+  .heroi-xifra b { font-size: 64px; }
+  .dreceres { grid-template-columns: minmax(0, 1fr); }
+  .rl { gap: 3px; padding-left: 0; padding-right: 0; }
+  .rl-a { font-size: 12px; }
+  .rl-e { min-width: 18px; height: 18px; }
+}
+@media (forced-colors: active) {
+  .sb-s, .mb i, .eb-barra, .bs-barra, .bar, .mm i, .sw, .sw-ratlla, .sr i, .sr i::after, .rl::after, .rl-e, .tl-punt, .etq b, .cel { forced-color-adjust: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 @media print {
-  .barra, .filtres, .filtre-anys, .nav-fitxes, .salts { display: none !important; }
-  .prova { break-inside: avoid; box-shadow: none; }
+  @page { size: A4; margin: 10mm 12mm; }
+  html { font-size: 8.5pt; }
+  body { background: #fff; font-size: 8.5pt; line-height: 1.35; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .barra, .cerca-rapida, .filtres, .filtre-anys, .nav-fitxes, .salta, .peu, details.dades, .bs-link { display: none !important; }
+  .pagina { max-width: none; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  .ext { display: none; }
+  h1 { font-size: 16pt; margin-bottom: 2pt; }
+  h2 { font-size: 11pt; margin-bottom: 2pt; }
+  .entradeta, .resposta { font-size: 9pt; margin-bottom: 3pt; max-width: none; }
+  .nota, .nota-clara, .mini, small, .ll-def, .bs-det, .bs-que, .tc-n { font-size: 7pt; }
+  .nota-clara { margin-bottom: 3pt; }
+  .taula-etiq, .taula-anys { font-size: 7.5pt; }
+  .taula-etiq th, .taula-etiq td { padding: 1pt 3pt; }
+  .taula-etiq thead th, .taula-anys thead th { font-size: 7pt; }
+  .taula-anys td.ta b, .taula-anys td.ta small { display: inline; }
+  .taula-anys .mm { margin-top: 0; }
+  .versio-linia { padding: 4pt 6pt; font-size: 7.5pt; margin: 4pt 0; }
+  .bloc { margin: 0 0 9pt; break-inside: avoid; }
+  .bloc, .passos li, .embut, .taula-wrap, .prova { break-inside: avoid; }
+  .heroi-xifra { font-size: 11pt; margin: 0 0 4pt; }
+  .heroi-xifra b { font-size: 20pt; }
+  .sb { height: 18pt; margin-bottom: 4pt; }
+  .sb-n { font-size: 7pt; }
+  .ll-estats, .ll-etiq { grid-template-columns: repeat(4, 1fr); gap: 4pt 10pt; margin-bottom: 3pt; }
+  .sw { width: 13pt; height: 13pt; font-size: 7pt; }
+  .embut { margin: 4pt 0; columns: 2; column-gap: 18pt; }
+  .eb-pas, .eb-salt { break-inside: avoid; }
+  .eb-barra { height: 8pt; }
+  .eb-salt { margin: 2pt 0 3pt 6pt; font-size: 7pt; }
+  .eb-salt .sw { width: 11pt; height: 11pt; }
+  th, td { padding: 1.5pt 5pt; }
+  .taula-etiq td { min-width: 0; }
+  .tc-v, .tc-n { display: inline; margin-right: 3pt; }
+  .mm { height: 3pt; margin-top: 1pt; }
+  .etq b { height: 13pt; min-width: 16pt; }
+  .taula-anys td.ta { padding: 1pt 5pt; }
+  .taula-anys .mm { height: 2.5pt; }
+  .bs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4pt 18pt; margin: 4pt 0; max-width: none; }
+  #dubtes .bs { grid-template-columns: repeat(4, 1fr); }
+  .bs li { margin: 0; break-inside: avoid; }
+  .bs-barra { height: 7pt; }
+  .bs-fila { margin: 1pt 0; }
+  .passos { grid-template-columns: repeat(5, 1fr); gap: 4pt; margin: 4pt 0; }
+  .passos li { flex-direction: column; padding: 4pt 6pt; gap: 2pt; }
+  .pq-n { width: 13pt; height: 13pt; font-size: 7pt; }
+  .pq-nom { font-size: 8pt; }
+  .pq-t > span { font-size: 7pt; }
+  .grafic { margin-top: 4pt; padding: 4pt 6pt; }
+  .barres { height: 80pt; }
+  .eix { bottom: 22pt; }
+  .bany { height: 22pt; font-size: 7pt; }
+  .bval { font-size: 7pt; }
+  .versio-dl { gap: 1pt; }
+  .versio-dl div { grid-template-columns: 150pt 1fr; }
+  .sha { font-size: 6.5pt; }
+  .docs li { margin: 0; }
+  .s-dubte, .st-dubte { background: repeating-radial-gradient(circle at 2px 2px, #8a6a20 0 1px, var(--st-dubte) 1px 4px); }
+  .versio .versio-linia { display: none; }
+  .bloc.versio { break-inside: auto; }
+  .taula-anys .llarg { display: none; }
+  .taula-anys .curt { display: inline; }
+  .tick-menor span { display: none; }
+  .sb .e-F, .ll-etiq .sw.e-F { background: repeating-linear-gradient(45deg, var(--e-F) 0 3px, #f3c8b4 3px 5px); }
+  .grafic .barres { height: 56pt; }
+  .versio > .nota, #anys .nota { display: none; }
+  .passos li { padding: 2pt 4pt; }
+  .versio .docs { display: none; }
+  .versio-dl div { grid-template-columns: 120pt 1fr; }
+  .bloc > h2 { margin-top: 0; }
+  .bloc { margin-bottom: 6pt; break-inside: auto; }
+  .bloc > h2 { break-after: avoid; }
+  .versio-dl div { display: block; }
+  .versio-dl dt, .versio-dl dd { display: inline; margin-right: 6pt; }
+  .versio > .nota { margin: 2pt 0; }
+  .grafic figcaption { margin-bottom: 2pt; font-size: 8pt; }
+  .passos .pq-t > span { line-height: 1.2; }
+  .bs-det { display: inline; }
+  .ll-def { line-height: 1.2; }
+  .passos li { padding: 3pt 5pt; }
+  /* Marc editorial: una sola columna, sense elements interactius. */
+  body { padding-bottom: 0; }
+  .tema, .nav, .cb, .cerca-rapida, .dreceres, .dreceres + .nota, .exemples, .copia, .drecera { display: none !important; }
+  .obertura { display: block; padding: 0 0 4pt; border: 0; }
+  .obertura .entradeta { font-size: 9pt; }
+  .bloc { display: block; padding: 0; border: 0; }
+  .bloc-n { display: none; }
+  .bloc-cap h2 { margin-bottom: 2pt; }
+  .heroi-xifra { margin: 0 0 4pt; gap: 0 6pt; }
+  .heroi-xifra b { font-size: 22pt; line-height: 1; }
+  .heroi-xifra span { font-size: 10pt; }
+  .ll-estats { margin-top: 3pt; border-top: 0; }
+  .ll-estats li, .ll-estats li + li { padding: 0 6pt 0 0; border: 0; }
+  .ll-cap { font-size: 8pt; }
+  .ll-n { margin: 1pt 0 0; }
+  .ll-xifra { font-size: 11pt; }
+  .ll-pc { font-size: 7.5pt; }
+  .resposta { font-family: var(--font); }
+  .eb-val, .bs-val { font-size: 9pt; }
+  .eb-nom { font-size: 8pt; margin-bottom: 1pt; }
+  .eb-salt { padding: 1pt 0 1pt 6pt; }
+  .bs li { padding: 0; border: 0; }
+  .tc-v { font-size: 8pt; }
+  .pq-n { font-size: 10pt; }
+  .pq-t > span b { font-size: 8pt; }
+  .passos li, .passos li + li { padding: 2pt 4pt; border-left: 0; }
+  .grafic { margin-top: 4pt; }
+  .bany { border-top-width: .5pt; }
+  .taula-anys tbody th { font-size: 7.5pt; }
+  .versio-linia { margin: 2pt 0; }
 }
+
 """
 
-JS_CERCA = r"""/* Cercador i filtres de l'inici. Generat per dashboard/genera_dashboard.py. Sense dependències. */
+JS_CERCA = r"""/* Cercador i filtres d'Empreses. Generat per dashboard/genera_dashboard.py. Sense dependències. */
 (function () {
   'use strict';
   var taula = document.getElementById('taula');
@@ -1939,36 +3898,47 @@ JS_CERCA = r"""/* Cercador i filtres de l'inici. Generat per dashboard/genera_da
   var tbody = taula.tBodies[0];
   var files = Array.prototype.slice.call(tbody.rows);
   var camps = {
-    q: document.getElementById('f-cerca'),
-    e: document.getElementById('f-etiq'),
-    c: document.getElementById('f-cert'),
-    p: document.getElementById('f-pais'),
-    s: document.getElementById('f-sector'),
-    v: document.getElementById('f-proves')
+    q: document.getElementById('f-q'),
+    e: document.getElementById('f-e'),
+    t: document.getElementById('f-t'),
+    p: document.getElementById('f-p'),
+    m: document.getElementById('f-m')
   };
+  var campM = document.getElementById('camp-m');
   var nVis = document.getElementById('n-visibles');
   var cap = document.getElementById('cap-resultat');
-  var ordre = { clau: 'nom', dir: 1 };
+  var ordre = { clau: 'n', dir: 1 };
+  var IDX = { acabada: 0, arxiu: 1, dubte: 2, falta: 3 };
 
   function norm(s) {
-    return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function conte(llista, valor) { return (' ' + (llista || '') + ' ').indexOf(' ' + valor + ' ') >= 0; }
+  function st(tr) { return (tr.dataset.st || '0 0 0 0').split(' ').map(Number); }
+  // Claus d'ordre: el nom normalitzat i el % de files acabades (no van a l'HTML).
+  files.forEach(function (tr) {
+    var a = tr.querySelector('.emp-nom'), s = st(tr), n = s[0] + s[1] + s[2] + s[3];
+    tr._ordre = { n: norm(a ? a.textContent : ''), pa: n ? Math.round(100 * s[0] / n) : 0 };
+  });
+  function clauOrdre(tr, clau) { return clau === 'f' ? +tr.dataset.f : tr._ordre[clau]; }
 
   function aplica() {
     var termes = norm(camps.q.value).split(' ').filter(Boolean);
-    var e = camps.e.value, c = camps.c.value, p = camps.p.value, v = camps.v.value;
-    var s = camps.s ? camps.s.value : '';
+    var e = camps.e.value, t = camps.t.value, p = camps.p.value, m = camps.m.value;
+    campM.hidden = !m;
     var n = 0;
     for (var i = 0; i < files.length; i++) {
       var tr = files[i], d = tr.dataset, ok = true;
-      for (var j = 0; j < termes.length && ok; j++) { if (d.cerca.indexOf(termes[j]) < 0) ok = false; }
-      if (ok && e && !conte(d.etiq, e)) ok = false;
-      if (ok && c && !conte(d.cert, c)) ok = false;
-      if (ok && p && d.pais !== p) ok = false;
-      if (ok && v && d.proves !== v) ok = false;
-      if (ok && s && d.sector !== s) ok = false;
+      for (var j = 0; j < termes.length && ok; j++) { if (d.c.indexOf(termes[j]) < 0) ok = false; }
+      if (ok && e && !conte(d.e, e)) ok = false;
+      if (ok && p && d.p !== p) ok = false;
+      if (ok && m && !conte(d.m, m)) ok = false;
+      if (ok && t) {
+        var s = st(tr);
+        if (t === 'totes') { ok = s[0] === s[0] + s[1] + s[2] + s[3]; }
+        else if (t in IDX) { ok = s[IDX[t]] > 0; }
+      }
       tr.hidden = !ok;
       if (ok) n++;
     }
@@ -1978,93 +3948,486 @@ JS_CERCA = r"""/* Cercador i filtres de l'inici. Generat per dashboard/genera_da
   }
 
   function ordena(clau) {
-    if (ordre.clau === clau) { ordre.dir = -ordre.dir; } else { ordre.clau = clau; ordre.dir = (clau === 'nom' || clau === 'isin') ? 1 : -1; }
-    var num = !(clau === 'nom' || clau === 'isin');
+    if (ordre.clau === clau) { ordre.dir = -ordre.dir; } else { ordre.clau = clau; ordre.dir = clau === 'n' ? 1 : -1; }
+    var num = clau !== 'n';
     files.sort(function (a, b) {
-      var x = a.dataset[clau], y = b.dataset[clau], r;
-      if (num) { r = (+x) - (+y); } else { r = x < y ? -1 : x > y ? 1 : 0; }
-      if (r === 0) { r = a.dataset.nom < b.dataset.nom ? -1 : a.dataset.nom > b.dataset.nom ? 1 : 0; return r; }
+      var x = clauOrdre(a, clau), y = clauOrdre(b, clau), r;
+      if (num) { r = x - y; } else { r = x < y ? -1 : x > y ? 1 : 0; }
+      if (r === 0) { return a._ordre.n < b._ordre.n ? -1 : a._ordre.n > b._ordre.n ? 1 : 0; }
       return r * ordre.dir;
     });
     var frag = document.createDocumentFragment();
     files.forEach(function (tr) { frag.appendChild(tr); });
     tbody.appendChild(frag);
     taula.querySelectorAll('thead button[data-ordre]').forEach(function (b) {
-      if (b.getAttribute('data-ordre') === ordre.clau) { b.setAttribute('aria-sort', ordre.dir > 0 ? 'ascending' : 'descending'); }
-      else { b.removeAttribute('aria-sort'); }
+      var th = b.parentElement;
+      if (b.getAttribute('data-ordre') === ordre.clau) { th.setAttribute('aria-sort', ordre.dir > 0 ? 'ascending' : 'descending'); }
+      else { th.removeAttribute('aria-sort'); }
     });
   }
 
   function desa() {
     var params = [];
-    ['q', 'e', 'c', 'p', 's', 'v'].forEach(function (k) {
+    ['q', 'e', 't', 'p', 'm'].forEach(function (k) {
       if (camps[k] && camps[k].value) params.push(k + '=' + encodeURIComponent(camps[k].value));
     });
     var hash = params.length ? '#' + params.join('&') : '';
-    if (location.hash !== hash) {
-      try { history.replaceState(null, '', hash || location.pathname + location.search); } catch (err) { /* res */ }
+    if (location.hash !== hash || location.search) {
+      try { history.replaceState(null, '', location.pathname + hash); } catch (err) { /* res */ }
     }
   }
-  function llegeix() {
-    var h = location.hash.replace(/^#/, '');
-    if (!h || h.indexOf('=') < 0) return;
+  function llegeix(text) {
+    var h = (text || '').replace(/^[#?]/, '');
+    if (!h || h.indexOf('=') < 0) return false;
+    var trobat = false;
     h.split('&').forEach(function (parell) {
-      var kv = parell.split('='), k = kv[0], val = decodeURIComponent(kv[1] || '');
-      if (camps[k]) camps[k].value = val;
+      var kv = parell.split('='), k = kv[0], val = '';
+      try { val = decodeURIComponent((kv[1] || '').replace(/\+/g, ' ')); } catch (err) { val = ''; }
+      if (camps[k]) { camps[k].value = val; trobat = true; }
     });
+    return trobat;
   }
-
-  camps.q.addEventListener('input', aplica);
-  ['e', 'c', 'p', 's', 'v'].forEach(function (k) { if (camps[k]) camps[k].addEventListener('change', aplica); });
-  document.getElementById('f-reset').addEventListener('click', function () {
-    ['q', 'e', 'c', 'p', 's', 'v'].forEach(function (k) { if (camps[k]) camps[k].value = ''; });
+  function esborra() {
+    ['q', 'e', 't', 'p', 'm'].forEach(function (k) { if (camps[k]) camps[k].value = ''; });
     aplica();
     camps.q.focus();
+  }
+
+  /* Cada casella de la sèrie obre l'evidència d'aquell any a la fitxa (per delegació:
+     no afegeix pes a la pàgina). Amb el teclat, l'enllaç del nom. */
+  function casella(ev) {
+    var i = ev.target;
+    if (!i || i.tagName !== 'I' || !i.className || !i.parentElement || !i.parentElement.classList.contains('sr')) return null;
+    var idx = Array.prototype.indexOf.call(i.parentElement.children, i);
+    var a = i.closest('tr') ? i.closest('tr').querySelector('.emp-nom') : null;
+    return a && idx >= 0 ? { any: 2016 + idx, a: a, i: i } : null;
+  }
+  tbody.addEventListener('click', function (ev) {
+    var c = casella(ev);
+    if (c) location.href = c.a.getAttribute('href') + '#any-' + c.any;
   });
+  tbody.addEventListener('mouseover', function (ev) {
+    var c = casella(ev);
+    if (c && !c.i.title) c.i.title = 'Obre ' + c.any;
+  });
+  camps.q.addEventListener('input', aplica);
+  ['e', 't', 'p', 'm'].forEach(function (k) { camps[k].addEventListener('change', aplica); });
+  document.getElementById('f-reset').addEventListener('click', esborra);
+  document.getElementById('f-reset-2').addEventListener('click', esborra);
   taula.querySelectorAll('thead button[data-ordre]').forEach(function (b) {
     b.addEventListener('click', function () { ordena(b.getAttribute('data-ordre')); });
   });
-  llegeix();
+  var deQ = llegeix(location.search);
+  llegeix(location.hash);
+  window.addEventListener('hashchange', function () {
+    ['q', 'e', 't', 'p', 'm'].forEach(function (k) { camps[k].value = ''; });
+    llegeix(location.hash); aplica();
+  });
   aplica();
+  if (deQ && camps.q.value) { camps.q.focus(); }
 })();
 """
 
-JS_FITXA = r"""/* Filtre de proves per any a la fitxa. Generat per dashboard/genera_dashboard.py. Sense dependències. */
+JS_FITXA = r"""/* Fitxa d'empresa: franja d'anys (fletxes ←/→), obertura de l'any i de les proves
+   segons el hash i filtre de proves per any. Generat per dashboard/genera_dashboard.py. Sense dependències. */
 (function () {
   'use strict';
   var cont = document.getElementById('proves');
-  if (!cont) return;
-  var proves = cont.querySelectorAll('.prova[data-anys]');
-  var grups = cont.querySelectorAll('.grup-proves');
-  var xips = cont.querySelectorAll('.xip[data-filtre-any]');
+  var proves = cont ? cont.querySelectorAll('.prova[data-anys]') : [];
+  var grups = cont ? cont.querySelectorAll('.grup-proves') : [];
+  var xips = cont ? cont.querySelectorAll('.xip[data-filtre-any]') : [];
   var estat = document.getElementById('estat-filtre');
-  if (!proves.length) return;
 
   function filtra(any) {
     var n = 0;
-    proves.forEach(function (p) {
+    Array.prototype.forEach.call(proves, function (p) {
       var ok = !any || (' ' + p.getAttribute('data-anys') + ' ').indexOf(' ' + any + ' ') >= 0;
       p.hidden = !ok;
       if (ok) n++;
     });
-    grups.forEach(function (g) {
+    Array.prototype.forEach.call(grups, function (g) {
       var vis = g.querySelectorAll('.prova:not([hidden])').length;
       g.hidden = vis === 0;
-      var comptador = g.querySelector('h3 .n');
+      if (any && vis) g.open = true;
+      var comptador = g.querySelector('summary .n');
       if (comptador) comptador.textContent = vis;
     });
-    xips.forEach(function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-filtre-any') === any ? 'true' : 'false'); });
+    Array.prototype.forEach.call(xips, function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-filtre-any') === any ? 'true' : 'false'); });
     if (estat) {
       estat.textContent = any ? ('Es mostren ' + n + (n === 1 ? ' prova' : ' proves') + ' que cobreixen el ' + any + '.') : '';
     }
   }
 
+  /* Franja d'anys: una sola parada de tabulació i fletxes per passar d'any. */
+  var rail = document.querySelector('.rail');
+  var anys = rail ? Array.prototype.slice.call(rail.querySelectorAll('a.rl')) : [];
+  function marcaAny(any) {
+    var actual = null;
+    anys.forEach(function (a) {
+      var on = a.getAttribute('href') === '#any-' + any;
+      if (on) { a.setAttribute('aria-current', 'true'); actual = a; } else { a.removeAttribute('aria-current'); }
+    });
+    anys.forEach(function (a) { a.tabIndex = a === (actual || anys[anys.length - 1]) ? 0 : -1; });
+  }
+  if (anys.length) {
+    var cur = rail.querySelector('a.rl[aria-current]');
+    anys.forEach(function (a) { a.tabIndex = a === (cur || anys[anys.length - 1]) ? 0 : -1; });
+    rail.addEventListener('keydown', function (ev) {
+      var i = anys.indexOf(document.activeElement);
+      if (i < 0) return;
+      var j = ev.key === 'ArrowRight' || ev.key === 'ArrowDown' ? i + 1 : ev.key === 'ArrowLeft' || ev.key === 'ArrowUp' ? i - 1 :
+        ev.key === 'Home' ? 0 : ev.key === 'End' ? anys.length - 1 : null;
+      if (j === null) return;
+      ev.preventDefault();
+      j = Math.max(0, Math.min(anys.length - 1, j));
+      anys.forEach(function (a, k) { a.tabIndex = k === j ? 0 : -1; });
+      anys[j].focus();
+    });
+  }
+
+  /* L'any obert a la franja segueix el desplaçament (el primer any visible sota la franja). */
+  var envol = document.querySelector('.rail-envol');
+  var blocs = Array.prototype.slice.call(document.querySelectorAll('li.tl-any'));
+  var pendent = false, triatFins = 0;
+  function segueix() {
+    pendent = false;
+    // Just després de triar un any (franja o hash), mana l'any triat, encara que no pugui pujar del tot.
+    if (!blocs.length || !envol || Date.now() < triatFins) return;
+    var sota = envol.getBoundingClientRect().bottom + 8, triat = null;
+    for (var i = 0; i < blocs.length; i++) {
+      if (blocs[i].getBoundingClientRect().bottom > sota) { triat = blocs[i]; break; }
+    }
+    if (triat) marcaAny(triat.id.slice(4));
+  }
+  window.addEventListener('scroll', function () {
+    if (!pendent) { pendent = true; window.requestAnimationFrame(segueix); }
+  }, { passive: true });
+  /* El nom de l'empresa surt a la franja enganxada quan el títol ja no es veu. */
+  var titol = document.querySelector('.fitxa-cap h1');
+  if (envol && titol && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (ents) {
+      ents.forEach(function (en) { envol.classList.toggle('fixa', !en.isIntersecting); });
+    }).observe(titol);
+  }
+  /* Obrir un any des del seu plegable també el remarca a la franja. */
+  Array.prototype.forEach.call(document.querySelectorAll('details.tl-evid'), function (d) {
+    d.addEventListener('toggle', function () { if (d.open && d.getAttribute('data-any')) marcaAny(d.getAttribute('data-any')); });
+  });
+
+  var inici = true;
+  function obre() {
+    var id = '';
+    try { id = decodeURIComponent(location.hash.replace(/^#/, '')); } catch (e) { id = ''; }
+    var el = id ? document.getElementById(id) : null;
+    if (!el) { inici = false; return; }
+    if (/^any-\d{4}$/.test(id)) {
+      var plegable = el.querySelector('details.tl-evid');
+      // Triar un any (a la franja o amb un enllaç) l'obre i tanca els altres (acordió).
+      Array.prototype.forEach.call(document.querySelectorAll('details.tl-evid[open]'), function (d) {
+        if (d !== plegable) d.open = false;
+      });
+      if (plegable) plegable.open = true;
+      marcaAny(id.slice(4));
+      triatFins = Date.now() + 600;
+    } else {
+      if (el.tagName === 'DETAILS') { el.open = true; }
+      var pare = el.parentElement;
+      while (pare) {
+        if (pare.tagName === 'DETAILS') { pare.open = true; }
+        if (pare.hidden && pare.classList.contains('grup-proves')) { filtra(''); }
+        pare = pare.parentElement;
+      }
+      if (el.hidden) { filtra(''); }
+    }
+    inici = false;
+    el.scrollIntoView();
+  }
+
   document.addEventListener('click', function (ev) {
     var el = ev.target.closest ? ev.target.closest('[data-filtre-any]') : null;
-    if (!el) return;
+    if (!el || !proves.length) return;
     var any = el.getAttribute('data-filtre-any') || '';
     if (el.tagName !== 'A') ev.preventDefault();
     filtra(any);
+  });
+  // Un enllaç al mateix hash no dispara «hashchange»: es torna a obrir a mà.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('a[href^="#any-"], a[href^="#p-"]') : null;
+    if (a && a.hash && a.hash === location.hash) { obre(); }
+  });
+  window.addEventListener('hashchange', obre);
+  obre();
+})();
+"""
+
+JS_COMU = r"""/* Comú a totes les pàgines: mode clar/fosc, cercador amb suggeriments (combobox)
+   i botons de copiar. Generat per dashboard/genera_dashboard.py. Sense dependències. */
+(function () {
+  'use strict';
+  var doc = document.documentElement;
+  var viuCopia = document.createElement('div');
+  viuCopia.className = 'vh';
+  viuCopia.setAttribute('aria-live', 'polite');
+  document.body.appendChild(viuCopia);
+
+  /* ---------- Mode clar / fosc ---------- */
+  var SOL = '<svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+  var LLUNA = '<svg viewBox="0 0 20 20" focusable="false"><path d="M15.5 12.6A6.5 6.5 0 0 1 7.4 4.5a6.5 6.5 0 1 0 8.1 8.1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+  var botoTema = document.querySelector('.tema');
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function esFosc() {
+    var t = doc.getAttribute('data-theme');
+    return t ? t === 'dark' : !!(mq && mq.matches);
+  }
+  function pintaTema() {
+    if (!botoTema) return;
+    var f = esFosc();
+    botoTema.setAttribute('aria-pressed', f ? 'true' : 'false');
+    botoTema.title = f ? 'Passa al mode clar' : 'Passa al mode fosc';
+    botoTema.querySelector('.tema-i').innerHTML = f ? SOL : LLUNA;
+  }
+  if (botoTema) {
+    botoTema.addEventListener('click', function () {
+      var nou = esFosc() ? 'light' : 'dark';
+      doc.setAttribute('data-theme', nou);
+      try { localStorage.setItem('fc-tema', nou); } catch (e) { /* sense emmagatzematge: només aquesta pàgina */ }
+      pintaTema();
+    });
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', pintaTema);
+      else if (mq.addListener) mq.addListener(pintaTema);
+    }
+    pintaTema();
+  }
+
+  /* ---------- Cercador amb suggeriments ---------- */
+  function norm(s) {
+    return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+  var NOM_ETQ = { F: 'F', P: 'P', D: 'ND', N: 'NA' };
+  var IDX = null, carregant = false, esperen = [];
+  function prepara(llista) {
+    return llista.map(function (r) {
+      var ceos = r[3] ? r[3].split('|') : [];
+      var darrer = 0;
+      for (var i = 0; i < 10; i++) { if (r[5].substr(2 * i, 2) !== '--') darrer = 2016 + i; }
+      return { isin: r[0], nom: r[1], nomN: norm(r[1]), ceos: ceos, ultim: (r[4] || '').split('|').join(' · '), serie: r[5], darrer: darrer,
+               tot: norm(r[1]) + ' ' + r[2] + ' ' + r[0].toLowerCase() + ' ' + norm(ceos.join(' ')) };
+    });
+  }
+  function ambIndex(prefix, fet) {
+    if (IDX) { fet(); return; }
+    if (window.CERCA_IDX) { IDX = prepara(window.CERCA_IDX); fet(); return; }
+    esperen.push(fet);
+    if (carregant) return;
+    carregant = true;
+    var s = document.createElement('script');
+    s.src = prefix + 'assets/index_cerca.js';
+    s.onload = function () { IDX = prepara(window.CERCA_IDX || []); var f = esperen; esperen = []; f.forEach(function (x) { x(); }); };
+    s.onerror = function () { carregant = false; esperen = []; };
+    document.head.appendChild(s);
+  }
+  /* Rang: 0 el nom comença així, 1 una paraula del nom, 2 dins del nom, 3 ISIN,
+     4 una paraula d'un CEO, 5 dins d'un nom de CEO, 6 altres noms de la base.
+     En empat: el CEO actual primer, després les empreses amb algun any F, i l'ordre alfabètic. */
+  function busca(q) {
+    var qn = norm(q), termes = qn.split(' ').filter(Boolean);
+    if (!termes.length || !IDX) return [];
+    var r = [];
+    IDX.forEach(function (e) {
+      for (var j = 0; j < termes.length; j++) { if (e.tot.indexOf(termes[j]) < 0) return; }
+      var ceoN = ' ' + norm(e.ceos.join(' ')), ultimN = ' ' + norm(e.ultim);
+      var p = e.nomN.indexOf(qn) === 0 ? 0 : (' ' + e.nomN).indexOf(' ' + qn) >= 0 ? 1 : e.nomN.indexOf(qn) >= 0 ? 2 :
+        e.isin.toLowerCase().indexOf(qn) === 0 ? 3 : ceoN.indexOf(' ' + termes[0]) >= 0 ? 4 : ceoN.indexOf(termes[0]) >= 0 ? 5 : 6;
+      var actual = ultimN.indexOf(' ' + termes[0]) >= 0 ? 0 : 1;
+      var f = e.serie.indexOf('F') >= 0 ? 0 : 1;
+      r.push([p, actual, f, e]);
+    });
+    r.sort(function (a, b) {
+      return a[0] - b[0] || a[1] - b[1] || a[2] - b[2] || (a[3].nomN < b[3].nomN ? -1 : a[3].nomN > b[3].nomN ? 1 : 0);
+    });
+    return r.slice(0, 7).map(function (x) { return x[3]; });
+  }
+  function resalta(text, termes) {
+    var n = norm(text), marques = [];
+    if (n.length !== text.length) return esc(text);
+    termes.forEach(function (t) { var i = n.indexOf(t); if (i >= 0) marques.push([i, i + t.length]); });
+    marques.sort(function (a, b) { return a[0] - b[0]; });
+    var out = '', pos = 0;
+    marques.forEach(function (m) {
+      if (m[0] < pos) return;
+      out += esc(text.slice(pos, m[0])) + '<mark>' + esc(text.slice(m[0], m[1])) + '</mark>';
+      pos = m[1];
+    });
+    return out + esc(text.slice(pos));
+  }
+  function serie(e) {
+    var h = '<span class="sr" aria-hidden="true">';
+    for (var i = 0; i < 10; i++) {
+      var c = e.serie.substr(2 * i, 2);
+      h += c === '--' ? '<i></i>' : '<i class="' + NOM_ETQ[c[0]] + ' ' + c[1] + '">' + NOM_ETQ[c[0]] + '</i>';
+    }
+    return h + '</span>';
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-combobox]'), function (form, nForm) {
+    var input = form.querySelector('input');
+    var llista = form.querySelector('[role="listbox"]');
+    var viu = form.querySelector('.cb-viu');
+    var local = form.hasAttribute('data-local');
+    var prefix = form.getAttribute('data-prefix') || '';
+    var pop = document.createElement('div');
+    pop.className = 'cb-pop';
+    pop.hidden = true;
+    llista.parentNode.insertBefore(pop, llista);
+    pop.appendChild(llista);
+    llista.hidden = false;
+    var peu = document.createElement('p');
+    peu.className = 'cb-peu';
+    pop.appendChild(peu);
+    // Un clic dins del desplegable (també el peu) no treu el focus del camp: així no es tanca abans del clic.
+    pop.addEventListener('mousedown', function (ev) { ev.preventDefault(); });
+    var opcions = [], actiu = -1;
+
+    function tanca() {
+      pop.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      actiu = -1;
+    }
+    function mou(i) {
+      opcions.forEach(function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+      actiu = i;
+      if (i >= 0) {
+        input.setAttribute('aria-activedescendant', opcions[i].id);
+        if (opcions[i].scrollIntoView) opcions[i].scrollIntoView({ block: 'nearest' });
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    }
+    function pinta() {
+      var q = input.value.trim();
+      if (!q) { tanca(); if (viu) viu.textContent = ''; return; }
+      ambIndex(prefix, function () {
+        if (input.value.trim() !== q) return;
+        var termes = norm(q).split(' ').filter(Boolean);
+        var r = busca(q), h = '';
+        r.forEach(function (e, k) {
+          var ceosQ = e.ceos.filter(function (c) { var n = norm(c); return termes.some(function (t) { return t.length > 1 && n.indexOf(t) >= 0; }); });
+          var sub = '<code>' + resalta(e.isin, termes) + '</code> · ' +
+            (ceosQ.length ? 'CEO: ' + ceosQ.map(function (c) { return resalta(c, termes); }).join(', ')
+              : 'CEO ' + e.darrer + ': ' + esc(e.ultim || 'sense CEO'));
+          h += '<li role="option" class="sug" id="' + llista.id + '-o' + k + '" aria-selected="false" data-href="' + prefix + 'empreses/' + e.isin + '.html">' +
+            '<span class="sug-nom">' + resalta(e.nom, termes) + '</span>' + serie(e) + '<span class="sug-sub">' + sub + '</span></li>';
+        });
+        llista.innerHTML = h;
+        llista.hidden = !r.length;
+        peu.innerHTML = (r.length ? '' : '<span class="cb-buit">Cap empresa no coincideix. Prova amb part del nom, l\'ISIN o el cognom del CEO.</span>') +
+          (local ? '' : '<a href="' + prefix + 'empreses.html?q=' + encodeURIComponent(q) + '">Veure tots els resultats a Empreses <span aria-hidden="true">→</span></a>');
+        peu.hidden = !peu.innerHTML;
+        opcions = Array.prototype.slice.call(llista.querySelectorAll('.sug'));
+        opcions.forEach(function (o, k) {
+          o.addEventListener('mousedown', function (ev) { ev.preventDefault(); location.href = o.getAttribute('data-href'); });
+          o.addEventListener('mousemove', function () { if (actiu !== k) mou(k); });
+        });
+        actiu = -1;
+        input.removeAttribute('aria-activedescendant');
+        pop.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        if (viu) viu.textContent = r.length ? (r.length === 1 ? '1 suggeriment' : r.length + ' suggeriments') + '. Fes servir les fletxes per triar-ne un.' : 'Cap suggeriment.';
+      });
+    }
+    input.addEventListener('input', pinta);
+    input.addEventListener('focus', function () { ambIndex(prefix, function () {}); if (input.value.trim() && input.getAttribute('aria-expanded') !== 'true' && !local) pinta(); });
+    input.addEventListener('blur', function () { setTimeout(tanca, 150); });
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        if (pop.hidden) { pinta(); return; }
+        if (!opcions.length) return;
+        if (ev.key === 'ArrowDown') mou(actiu + 1 >= opcions.length ? 0 : actiu + 1);
+        else mou(actiu <= 0 ? opcions.length - 1 : actiu - 1);
+      } else if (ev.key === 'Escape') {
+        if (!pop.hidden) { ev.preventDefault(); tanca(); }
+      } else if (ev.key === 'Enter') {
+        if (!pop.hidden && actiu >= 0) { ev.preventDefault(); location.href = opcions[actiu].getAttribute('data-href'); }
+        else if (local) { ev.preventDefault(); tanca(); }
+      } else if (ev.key === 'Tab') {
+        tanca();
+      }
+    });
+  });
+
+  /* Drecera «/» (es pot desactivar al peu, WCAG 2.1.4) i Ctrl+K / ⌘K: porten al
+     cercador (a Empreses, al de la llista). */
+  function dreceraActiva() { return (' ' + doc.className + ' ').indexOf(' sense-drecera ') < 0; }
+  var botoDrecera = document.querySelector('.drecera');
+  function pintaDrecera() {
+    if (botoDrecera) botoDrecera.textContent = dreceraActiva() ? 'Desactiva la drecera «/»' : 'Activa la drecera «/»';
+  }
+  if (botoDrecera) {
+    botoDrecera.addEventListener('click', function () {
+      var activa = !dreceraActiva();
+      doc.className = (' ' + doc.className + ' ').replace(' sense-drecera ', ' ').trim() + (activa ? '' : ' sense-drecera');
+      try { localStorage.setItem('fc-drecera', activa ? 'on' : 'off'); } catch (e) { /* sense emmagatzematge */ }
+      pintaDrecera();
+      if (viuCopia) viuCopia.textContent = activa ? 'Drecera «/» activada.' : 'Drecera «/» desactivada. Ctrl+K continua funcionant.';
+    });
+    pintaDrecera();
+  }
+  document.addEventListener('keydown', function (ev) {
+    var ctrlK = (ev.ctrlKey || ev.metaKey) && !ev.altKey && (ev.key === 'k' || ev.key === 'K');
+    var barra = ev.key === '/' && !ev.ctrlKey && !ev.metaKey && !ev.altKey && dreceraActiva();
+    if (!ctrlK && !barra) return;
+    var a = document.activeElement;
+    if (barra && a && (/^(input|textarea|select)$/i.test(a.tagName) || a.isContentEditable)) return;
+    var camps = Array.prototype.slice.call(document.querySelectorAll('[data-combobox][data-local] input'))
+      .concat(Array.prototype.slice.call(document.querySelectorAll('[data-combobox]:not([data-local]) input')));
+    for (var i = 0; i < camps.length; i++) {
+      if (camps[i].offsetParent !== null) { ev.preventDefault(); camps[i].focus(); return; }
+    }
+  });
+
+  /* ---------- Botons de copiar ---------- */
+  function copiaAntic(text) {
+    var t = document.createElement('textarea');
+    t.value = text;
+    t.setAttribute('readonly', '');
+    t.style.position = 'fixed';
+    t.style.opacity = '0';
+    document.body.appendChild(t);
+    t.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(t);
+    return ok;
+  }
+  function copia(text, boto, missatge) {
+    var original = boto.getAttribute('data-original') || boto.textContent;
+    boto.setAttribute('data-original', original);
+    function fet(ok) {
+      boto.textContent = ok ? 'Copiat ✓' : 'No s\'ha pogut copiar';
+      viuCopia.textContent = ok ? missatge : 'No s\'ha pogut copiar.';
+      setTimeout(function () { boto.textContent = original; }, 1600);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { fet(true); }, function () { fet(copiaAntic(text)); });
+    } else {
+      fet(copiaAntic(text));
+    }
+  }
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-copia], [data-copia-cita]') : null;
+    if (!b) return;
+    if (b.hasAttribute('data-copia')) { copia(b.getAttribute('data-copia'), b, 'ISIN copiat al porta-retalls.'); return; }
+    // La cita sencera (també quan a la pàgina se'n mostra un fragment).
+    if (b.hasAttribute('data-cita')) { copia(b.getAttribute('data-cita'), b, 'Cita sencera copiada al porta-retalls.'); return; }
+    var bloc = b.closest('.ev-ext') || b.closest('.ev');
+    var p = bloc ? bloc.querySelector('.cita p') : null;
+    if (p) copia(p.textContent.replace(/\s*\[…\]$/, ''), b, 'Cita copiada al porta-retalls.');
   });
 })();
 """

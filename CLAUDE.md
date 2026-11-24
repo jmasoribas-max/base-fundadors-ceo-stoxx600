@@ -208,6 +208,40 @@ Paraules de Jordi a la sessió de Claude del 24/11/2026, resumides (punt 1 de `d
 - **Empresa fundadora que compta.** Amb escissions, fusions, holdings noves o redomiciliacions, s'aplica la metodologia vigent per triar l'empresa (P1-P4, D1 estricta de la regla 26, D10/D10b, D36 i D37).
 - **Ordre de treball.** Primer, la fitxa de fundació de cada empresa: fundadors o origen corporatiu o estatal (prova e), i any de fundació, cadascun amb cita. Les dades de persona (naixement, ocupador anterior) només es busquen per a les files on la prova a o la e no es puguin tancar.
 
+## Decisions de Jordi del 24/11/2026 (tarda): criteris del paquet v2
+
+Paraules de Jordi a la sessió de Claude del 24/11/2026, resumides (preguntes Q2, Q8, Q9 i Q11 de `docs/PAQUET_CRITERIS_v2_20261124.md`). Complementen la regla 25 (P5 i P6) i, si discrepen, manen aquestes.
+
+- **Q2. «Founding member» i expressions semblants compten com a fundador (D37).** «One of the founding members», «one of the co-founding executives», «founding partner», «founding director» i «part of the founding group» (o les traduccions: «fa parte del gruppo fondatore»…) fan la persona fundadora quan l'emissor les diu d'ella i es refereixen a la cotitzada o a una predecessora D1/D10. Queden exclosos, com abans, «founder-led», «founding shareholder» i les cites de fundador d'una altra entitat.
+- **Q3. «CEO fundador» / «founding CEO» sol no compta com a fundador (es manté la P4 i la P6).** Decisió presa després de comprovar quatre casos: a Cellnex i a Metro Bank l'expressió designa el primer CEO (el mateix comunicat de Cellnex diu «founding CEO» en anglès, i el fullet de Metro Bank diu «founded by Vernon W. Hill, II»); a Ocado la persona és fundadora perquè l'emissor també diu «which he established» i «a founder of Ocado». Una persona anomenada «founding CEO» o «CEO fundador» només és fundadora si una altra expressió de la P6 o de la Q2 ho diu.
+- **Q8. President que també és consejero delegado = co-CEO (R1).** Si el document de l'exercici dona el càrrec legal de consejero delegado al president i a un altre conseller, tots dos són CEO per R1 i s'aplica la regla de co-CEO (marca `co_ceo`).
+- **Q9. Telefónica: només el president.** Si el president executiu té el títol de CEO al document de l'exercici i l'emissor qualifica el consejero delegado de COO, el CEO és el president per R1 (marca `ceo_president_exec`), sense co-CEO. La Q9b (títol de CEO només a la traducció anglesa) continua oberta.
+- **Q11. El Gérant d'una SCA és CEO (R1).** Equivalent legal de la P5. Un representant d'una societat Gérante compta si l'emissor l'anomena Gérant.
+
+Aquestes decisions no canvien `dades/` per si soles: s'apliquen en un lot de correcció, amb cita, registre i el flux vigent (secció 8).
+
+## Decisions de Jordi del 24/11/2026 (vespre): resta del paquet de criteris v2
+
+Paraules de Jordi a la sessió de Claude del 24/11/2026: «d'acord amb totes» les recomanacions de `docs/ANALISI_CRITERIS_v2_20261124.md`. L'anàlisi compara cada pregunta amb aquesta metodologia i amb la literatura (Adams, Almeida i Ferreira 2009; Fahlenbrach 2009; Villalonga i Amit 2006; Sraer i Thesmar 2007; Barontini i Caprio 2006; Andres 2008; Crespí i Pascual 2009; Stein i Gallego 2012; ExecuComp/SEC). Les cites literals són a `docs/literatura/`. Complementen la regla 25 i, si discrepen, manen aquestes.
+
+- **Q1. Fundador de la part absorbida.** En una «fusió» que és una adquisició (regla 26), la cita de fundador de la part absorbida no fa la persona fundadora de la cotitzada: 0, amb `dubte_D1` i robustesa D1 àmplia = 1.
+- **Q4 i Q5. Redacció i autoria.** «Prior to setting up X, [persona]» compta com a «set up» (P6). Una cita de fundador publicada pel grup successor després de la descotització compta com a font de l'emissor (`allotjament=successor`), amb la robustesa de la D37a.
+- **Q6. Font B sola.** Es manté la P6 (`si_font_B`, robustesa com a ND) i s'hi afegeix una robustesa de dues fonts (`n_A + n_B ≥ 2`).
+- **Q7. Criteri FT (fundador transformador).** És FT la persona que pren el control d'una empresa existent (n'és el primer accionista individual), n'és CEO o president executiu i en transforma el negoci de manera documentada en una font A/B (Andres 2008; Barontini i Caprio 2006). És 1 a l'anàlisi principal, amb la marca `ft`/`tipus_ft` i 0 a `founderceo_rob_sense_ft`. S'aplica igual a tots els casos (LVMH, CTS Eventim, ACS…). Abans d'aplicar-lo, es busca si l'emissor anomena la persona fundadora (D37).
+- **Q8b, Q9, Q9b i C1. President executiu i consejero delegado (regla única).**
+  1. Si dues persones tenen el càrrec legal de consejero delegado, són co-CEO (Q8).
+  2. Si hi ha un president executiu i un consejero delegado, el CEO és qui el document regulat **original** de l'emissor designa com a primer executiu («primer ejecutivo», «máximo responsable ejecutivo», CEO), amb `ceo_president_exec` si és el president. Si no en designa cap, mana el càrrec legal (R1).
+  3. La traducció de l'emissor només serveix de suport.
+  4. Robustesa amb l'altra persona.
+  5. A França, el CEO és el PDG o el DG, i el DGD no.
+  6. Conseqüència: la correcció C1 (BME 2017-2018) **no** s'aplica, perquè l'IAGC designa Zoido «primer ejecutivo».
+- **Q10, Q13 i Q15.** Un president que cobreix de manera informal una plaça de CEO no és co-CEO si hi ha un CEO amb títol (R1; robustesa R3). Un CEO impedit o de baixa continua sent el CEO mentre el càrrec no quedi vacant (robustesa R2 si hi ha nomenament formal en funcions). Un document de l'emissor de l'any *t* anterior al 31/10 compta com a document del mateix exercici si no consta cap canvi (D21).
+- **Q12 i Q12b. Gestió externa.** Cada any mana el document de l'emissor: R1 si designa un CEO de la cotitzada, R3 si atribueix literalment la direcció, R-SC si declara que no té direcció pròpia. Marca `gestio_externa` i robustesa que exclou aquestes empreses. Si l'emissor (A) declara que no té direcció pròpia, preval sobre la premsa (B).
+- **Q14. Títol funcional.** «Joint CEO» en documents de l'emissor del mateix exercici és co-CEO (R1), amb la marca `co_ceo_titol_funcional` i una robustesa sense aquesta persona.
+- **Correccions aprovades.** C2 (Sopra Steria 2025: ND → 0), C3 (Dassault Systèmes 2016-2020: 0 → 1) i C4 (Bridgepoint 2021-2022: 0 → 1), amb les marques i robusteses de l'anàlisi.
+
+Aquestes decisions no canvien `dades/` per si soles: s'apliquen en un lot de correcció, amb cita, registre i el flux vigent (secció 8). La metodologia v0.10.11 les incorporarà quan es congeli la base.
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. El text complet vigent és `docs/METODOLOGIA_3_Articles_v0.10.10.md` (SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`), afegit al repositori el 23/11/2026; `docs/METODOLOGIA.md` n'és la porta d'entrada. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
