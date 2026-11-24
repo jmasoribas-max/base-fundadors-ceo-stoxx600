@@ -2,7 +2,7 @@
 
 Lloc HTML estàtic per consultar la base Fundadors (STOXX Europe 600, 2016-2025): una pàgina d'inici amb cercador i taula filtrable, una fitxa per cada ISIN (CEO a 31/10 de cada any, etiqueta FounderCEO, certificació i proves amb cita literal, font original i còpia Wayback quan consta) i una pàgina de metodologia i llegenda.
 
-**Publicat a GitHub Pages** (https://jmasoribas-max.github.io/base-fundadors-ceo-stoxx600/), des de la branca `gh-pages`, pel compte de Jordi el 23/11/2026 a les 14:00 (commit `64ce9cc`, `main` `17b03df`). Cada nova publicació la fa Jordi.
+**Publicat a GitHub Pages** (https://jmasoribas-max.github.io/base-fundadors-ceo-stoxx600/), des de la branca `gh-pages`. La primera publicació la va fer el compte de Jordi el 23/11/2026 a les 14:00 (commit `64ce9cc`, `main` `17b03df`). Des del 24/11/2026, la publicació és automàtica: cada cop que un PR que canvia `dashboard/` es fusiona a `main`, el flux [`publica_dashboard`](../.github/workflows/publica_dashboard.yml) en copia el contingut a `gh-pages`. També es pot llançar a mà des de la pestanya Actions.
 
 ## Com es regenera
 
