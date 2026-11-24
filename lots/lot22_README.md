@@ -26,31 +26,37 @@ Tercer pas per a les files P (FounderCEO = 0) que, després dels lots 18 i 21, e
 | `[V]`: cita literal comprovada al document tornat a baixar | 1.743 |
 | `[NV]` `no_valida`: cita de taula que no surt literalment (11; 7 són taules de noms anteriors de Companies House) | 11 |
 
-## Control de literalitat de les parts (nou a `estat/estat_files.py`)
+## Dos controls nous a `estat/estat_files.py`
 
-La revisió de les etiquetes ha trobat cites en què el valor de l'etiqueta no surt a la cita mateixa. Per exemple, un any de fundació que només surt al títol de la secció, o un any de naixement deduït d'una taula. Des d'ara, una part només compta si la cita mateixa la documenta. El control s'aplica a tots els lots, no només al 22:
+S'apliquen a tots els lots, no només al 22.
 
-- **any de fundació, entrada i inici del mandat:** l'any ha de sortir a la cita (o la dècada, «1930s», si l'etiqueta en dona l'últim any);
-- **naixement:** l'any o una edat;
-- **ocupador anterior:** l'any d'entrada que porta només s'usa per a la prova d si surt a la cita.
+1. **Literalitat de les parts.** Una part només compta si la cita mateixa en dona el valor. Hi havia cites en què l'any de fundació només surt al títol de la secció, o l'any de naixement es dedueix d'una taula.
+   - **Any de fundació:** l'any ha de sortir a la cita. També val la dècada («1930s») si l'etiqueta en dona l'últim any.
+   - **Entrada i inici del mandat:** l'any surt a la cita o és el de la data del document. Per exemple, un comunicat que anuncia «today» un nomenament.
+   - **Naixement:** l'any surt a la cita, o la cita dona una edat que hi quadra. Per quadrar, l'any de l'etiqueta ha de ser l'any de referència menys l'edat, o menys l'edat i 1. L'any de referència és la data del document, un any de la cita o una data de la URL.
+   - **Ocupador anterior:** l'any d'entrada que porta només s'usa per a la prova d si compleix la mateixa condició.
+2. **P3 a la prova e.** La verificació per mostra (secció final) ha trobat que el script acceptava qualsevol origen corporatiu com a prova e completa, sense la comprovació de la P3 (regla 25), i que 6 etiquetes d'origen «persones» o «fusió» comptaven com a prova e.
+   - Ara un origen estatal (Estat, llei, ens públic, municipis) tanca la prova e per a tots els CEO.
+   - Un origen corporatiu només la tanca si, a més, es comprova que el CEO no pot ser fundador de la matriu: la matriu la va crear l'Estat, una llista tancada de fundadors de la matriu no l'inclou, o l'any de fundació de la matriu menys el naixement del CEO és menor de 18. Les parts de la matriu s'etiqueten amb `entitat=matriu`.
+   - Si la P3 no es tanca, la fila es prova per b, d o c sobre l'emissor.
 
-Efecte: 108 files P menys amb prova completa (del 97,3 % al 95,4 %). Als lots anteriors, 9 menys.
+Efecte dels dos controls sobre el resultat del lot: sense cap control, 5.479 files P amb prova completa (97,3 %); amb tots dos, **5.084 (90,3 %)**.
 
 ## Efecte a la C2 de les files P
 
-Mateix criteri (amb el control de literalitat) abans i després del lot:
+Mateix criteri (amb els dos controls) abans i després del lot:
 
 | | Abans del lot 22 | Després del lot 22 |
 |---|---:|---:|
 | Files P | 5.629 | 5.629 |
-| **Amb prova completa per parts** | 2.912 (51,7 %) | **5.371 (95,4 %)** |
-| … prova a | 1.621 | 1.882 |
-| … prova e | 593 | 886 |
-| … prova b | 481 | 1.848 |
-| … prova d | 114 | 649 |
-| … prova c | 103 | 106 |
-| Amb alguna part però sense prova completa | 2.521 | 248 (61 empreses) |
-| Sense cap part | 186 | 0 |
+| **Amb prova completa per parts** | 2.664 (47,3 %) | **5.084 (90,3 %)** |
+| … prova a | 1.631 | 1.892 |
+| … prova e | 326 | 494 |
+| … prova b | 484 | 1.868 |
+| … prova d | 119 | 713 |
+| … prova c | 104 | 117 |
+| Amb alguna part però sense prova completa | 2.768 (500 empreses) | 535 (121 empreses; 300 files de 61 empreses tenen un origen corporatiu sense la P3) |
+| Sense cap part | 187 | 0 |
 | Cita que diu que el CEO és fundador (a revisar, ja venia del lot 18: WPP, Steinhoff, CD Projekt) | 10 | 10 |
 
 Cap canvi de FounderCEO ni de `ceos`.
@@ -75,4 +81,24 @@ La pregunta de la tanda 24 sobre les fusions (Vopak, Glanbia, Vonovia, Sobi) no 
 
 ## Verificació per mostra
 
-Un verificador independent revisa una mostra aleatòria de 40 files tancades pel lot 22 (llavor 20261124). El resultat s'afegirà a aquest fitxer i al PR abans de fusionar.
+Un verificador independent ha revisat una mostra aleatòria de 40 files P tancades pel lot 22 (llavor 20261124). Ha tornat a baixar les 73 fonts amb curl pla (68 baixades; 5 donen 403 i s'han jutjat per la cita) i ha llegit el context de cada cita: la persona, l'any i l'entitat. Resultat a `lot22_verificacio_mostra.csv`.
+
+| Veredicte | Files |
+|---|---:|
+| Correcta | 23 |
+| Correcta amb reserva | 16 |
+| Incorrecta | 1 |
+
+- **Incorrecta:** Azimut 2016, prova e. L'origen corporatiu (Akros Finanziaria) no tenia la P3. Amb el control nou, la fila ja no compta com a tancada.
+- **Reserves:** sobretot proves que depenen d'un pas d'interpretació. Per exemple, la P1/P2 o la regla 21b en fusions (ASR, Travis Perkins, Holmen, Snam, Phoenix), una llista de fundadors d'una sola predecessora (JDE Peet's, TP ICAP, OCI) o fonts que no s'han pogut tornar a baixar. Syngenta i Natixis tenien la P3 només a les notes: amb el control nou, Syngenta es tanca per la d. Natixis 2018-2019 queda oberta, perquè el naixement de Riahi ve d'una cita de taula `no_valida`.
+- **Cap etiqueta 0 errònia en el fons:** el verificador no ha trobat cap CEO de la mostra que sigui fundador.
+- **Taxa d'error estimada:** 1 de 40 (2,5 %; IC 95 % aproximat 0,1-13 %) abans dels controls nous. L'únic error de la mostra queda corregit pel control de la P3.
+
+## Què queda
+
+Queden 535 files P (121 empreses) amb alguna part i sense prova completa:
+
+- **300 files (61 empreses):** l'empresa la va crear una altra empresa, però falta la P3 sobre la matriu. Sovint només cal l'any de fundació de la matriu amb cita, perquè el naixement del CEO ja hi és.
+- **La resta:** les 29 empreses parcials o no trobades de la cerca, i files en què el control de literalitat ha deixat una part sense cita que la documenti.
+
+Proposta: una última passada (lot 23), centrada en la P3 de les matrius i en aquestes parts.

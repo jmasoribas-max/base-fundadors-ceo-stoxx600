@@ -104,7 +104,7 @@ RE_CEO_FUNDADOR = re.compile(r"\[ceo_fundador=([^\]]+)\]")
 # Un any de fundació registrat que no és una fundació vàlida (p. ex. holding o vehicle d'una compra, P1) es pot
 # anul·lar amb una etiqueta a les notes d'una entrada vàlida de l'ISIN: [anula any_fundacio=1998; motiu=P1 …]
 RE_ANULA = re.compile(r"\[anula any_fundacio=(\d{4})")
-ENTITATS_OK = {"emissor", "predecessora"}
+ENTITATS_OK = {"emissor", "predecessora"}  # entitat=matriu: parts de la matriu, només per a la P3 de la prova e
 ORDRE_PERSONA = ("b", "d", "c")
 COLUMNES = [
     "isin", "any", "nom", "FounderCEO", "ceos", "regles", "estat_certificacio_antic",
@@ -167,18 +167,42 @@ def a_la_cita(any_: int | None, cita: str) -> bool:
     return bool(re.search(rf"(?<!\d){any_}(?!\d)", cita) or re.search(rf"(?<!\d){str(any_)[:3]}0\s?'?s\b", cita))
 
 
-def suportada(part: str, valor: str, cita: str) -> bool:
+RE_DATA_DOC = re.compile(r"(?:Data del document|data_document|document de|Document: [^,]*,)\s*:?\s*(\d{4})")
+
+
+def any_document(e: dict) -> int | None:
+    """Any de la data del document, si les notes la donen."""
+    m = RE_DATA_DOC.search(e.get("notes") or "")
+    return int(m.group(1)) if m else None
+
+
+def suportada(part: str, valor: str, e: dict) -> bool:
     """La cita mateixa documenta el valor de l'etiqueta (control de literalitat, 24/11/2026).
 
-    any_fundacio, entrada i inici_mandat: l'any ha de sortir a la cita. naixement_ceo: l'any, o una
-    edat (un nombre de 20 a 99) si l'any s'ha calculat a partir de l'edat i la data del document.
+    any_fundacio: l'any ha de sortir a la cita. entrada i inici_mandat: l'any surt a la cita o és el de la
+    data del document (un comunicat que anuncia «today» el nomenament). naixement_ceo: l'any surt a la cita,
+    o la cita dona una edat NN i, amb un any de referència D (data del document, un any de la cita o de la URL),
+    l'etiqueta és D-NN-1 o D-NN.
     ocupador_anterior: sempre (l'any d'entrada que porta es comprova a part a prova_P)."""
+    cita = e.get("cita_literal") or ""
     if part == "any_fundacio":
         return a_la_cita(any_de(valor), cita)
     if part in ("entrada", "inici_mandat"):
-        return a_la_cita(any_de(valor.split(":", 1)[-1]), cita)
+        y = any_de(valor.split(":", 1)[-1])
+        return a_la_cita(y, cita) or (y is not None and y == any_document(e))
     if part == "naixement_ceo":
-        return a_la_cita(any_de(valor.split(":", 1)[-1]), cita) or bool(RE_EDAT.search(cita))
+        y = any_de(valor.split(":", 1)[-1])
+        if not y:
+            return False
+        if a_la_cita(y, cita) or str(y) in re.sub(r"\s+", "", cita):  # també «19 59» de l'extracció del PDF
+            return True
+        # Edat: l'any de referència és el del document, un any de la cita o un any de la URL.
+        url = e.get("url_font") or ""
+        refs = {int(x) for x in RE_ANY_ETIQ.findall(cita + " " + url)}
+        refs |= {int(x) for x in re.findall(r"(?<!\d)(20[0-2]\d)[01]\d[0-3]\d(?!\d)", url)}  # p. ex. _20200320.pdf
+        if any_document(e):
+            refs.add(any_document(e))
+        return any(y in (r - int(nn) - 1, r - int(nn)) for r in refs for nn in RE_EDAT.findall(cita))
     return True
 
 
@@ -191,7 +215,7 @@ def etiquetes(e: dict) -> list[dict]:
             if "=" in kv:
                 k, v = kv.split("=", 1)
                 d[k.strip()] = v.strip()
-        if suportada(part, d["valor"], e.get("cita_literal") or ""):
+        if suportada(part, d["valor"], e):
             out.append(d)
     return out
 
@@ -214,13 +238,38 @@ def any_de(text: str) -> int | None:
     return int(m[-1]) if m else None
 
 
+# Prova e (regla 25, P3): un origen estatal (Estat, llei, ens públic, municipis) tanca la prova per a tots els CEO;
+# un origen corporatiu només si, a més, el CEO no pot ser fundador de la matriu. Aquí es comprova per la prova b
+# sobre la matriu: l'any de fundació de la matriu (escrit a l'etiqueta i a la cita) menys el naixement del CEO < 18.
+# Un origen de persones o d'una fusió no és prova e.
+RE_ORIGEN_ESTAT = re.compile(
+    r"(\bestat\b|\bestado\b|\bstate\b|\bstato\b|\bstaat|\bstat\b|government|gouvern|\bgovern\b|govern[oa]|ministr|"
+    r"treasury|skarb|d[ée]cre|\blaw\b|\bley\b|\bloi\b|\blegge\b|\bllei\b|\bgesetz|\bcrown\b|public authorit|"
+    r"empresa p[úu]blica|sector p[úu]blico|ente pubblico|[ée]tablissement public|ens p[úu]blic|ordre legal|municipal|"
+    r"\bcomuni\b|national property|nacionalitz|nationali[sz]|\brepubli|\brep[úu]blica|kingdom|parliament|parlament|"
+    r"istituito|\bbund\b|bundes|\bregione\b|city of|ville de|\bkommun|\bkanton|\bcanton\b|\bcant[oó]\b|"
+    r"instituto nacional|\bini\b|\binh\b|\bsepi\b|\biri\b|\bptt\b|staatlich|\bvaltio|\bstaten\b|\bstatens\b|"
+    r"\bstatlig|caisse des d[ée]p[ôo]ts|electricity generating board|marketing board)", re.I)
+RE_ORIGEN_NO_E = re.compile(r"^\s*(persones|persona|fusio_iguals|fusió|familia|família|fundadors?|no_trobat)\b", re.I)
+RE_ANY_ETIQ = re.compile(r"(?<!\d)(1[5-9]\d\d|20[0-2]\d)(?!\d)")
+
+
+def tipus_origen(valor: str) -> str:
+    """estat, corporatiu o no_e (persones, fusió, no trobat)."""
+    if RE_ORIGEN_NO_E.search(valor):
+        return "no_e"
+    return "estat" if RE_ORIGEN_ESTAT.search(valor) else "corporatiu"
+
+
 def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str, bool, str]:
     """Prova de no fundador d'una fila P a partir de les etiquetes de les entrades de l'ISIN.
 
     Les parts d'empresa (llista de fundadors, origen, any de fundació) valen per a tots els anys de l'ISIN;
-    les de persona, per a tots els anys del CEO. Cada CEO ha de tenir una prova completa: a o e (d'empresa)
-    o b, d o c (de persona, amb l'aritmètica de la regla 21). Retorna (prova, cites de suport, parts
-    presents, si cada part té una cita verificada a la captura, contradicció).
+    les de persona, per a tots els anys del CEO. Cada CEO ha de tenir una prova completa: a (llista tancada
+    sense el CEO), e (origen estatal, o corporatiu amb la P3), o b, d o c (aritmètica de la regla 21). Entre
+    les proves possibles d'un CEO es tria la primera amb totes les cites verificades a la captura, i si no
+    n'hi ha cap, la primera. Retorna (prova, cites de suport, parts presents, si cada part té una cita
+    verificada a la captura, contradicció).
     """
     tags = [t for e in es_isin for t in etiquetes(e)]
     contradiccio = sorted({m for e in es_isin for m in RE_CEO_FUNDADOR.findall(e.get("notes") or "")
@@ -229,6 +278,8 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
     llistes = [t for t in emp if t["part"] == "llista_fundadors" and t.get("tancada") == "si"
                and not any(mateixa_persona(f, n) for f in t["valor"].split("+") for n in noms)]
     origens = [t for t in emp if t["part"] == "origen_entitat"]
+    o_estat = [t for t in origens if tipus_origen(t["valor"]) == "estat"]
+    o_corp = [t for t in origens if tipus_origen(t["valor"]) == "corporatiu"]
     anulats = {int(y) for e in es_isin for y in RE_ANULA.findall(e.get("notes") or "")}
     fundacions = [(any_de(t["valor"]), t) for t in emp if t["part"] == "any_fundacio" and any_de(t["valor"])
                   and any_de(t["valor"]) not in anulats]
@@ -238,53 +289,72 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
     def persona(part: str, nom: str) -> list[dict]:
         return [t for t in tags if t["part"] == part and mateixa_persona(t["valor"].split(":")[0], nom)]
 
-    presents = sorted({t["part"] for t in tags})
-    millor: tuple = ("", [], False)
-
     def verif(grups: list[list[dict]]) -> bool:
         return all(any(t["_e"].get("cita_verificada_a_captura") == "si" for t in g) for g in grups)
 
-    for prova, grup in (("a", llistes), ("e", origens)):
-        if grup:
-            v = verif([grup])
-            if not millor[0] or (v and not millor[2]):
-                millor = (prova, [grup], v)
-    if not (millor[0] and millor[2]) and F is not None:
-        per_ceo, grups, ok = [], [], True
-        for n in noms or [""]:
-            naix = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("naixement_ceo", n)]
-            naix = [(y, t) for y, t in naix if y]
-            ocup = [t for t in persona("ocupador_anterior", n) if len(t["valor"].split(":")) >= 2
-                    and t["valor"].split(":")[1].strip()]
-            entr = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("entrada", n)]
-            entr += [(any_de(t["valor"].split(":")[2]) if len(t["valor"].split(":")) > 2 else None, t) for t in ocup
-                     if len(t["valor"].split(":")) > 2 and a_la_cita(any_de(t["valor"].split(":")[2]), t["_e"].get("cita_literal") or "")]
-            entr = [(y, t) for y, t in entr if y]
-            inici = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("inici_mandat", n)]
-            inici = [(y, t) for y, t in inici if y]
-            trobada = ""
-            if naix and F - min(y for y, _ in naix) < 18:
-                trobada, gs = "b", [t_F, [t for _, t in naix]]
-            elif ocup and entr and min(y for y, _ in entr) - F >= 3:
-                trobada, gs = "d", [t_F, ocup, [t for _, t in entr]]
-            elif not naix and (entr or inici) and max(y for y, _ in entr + inici) - F >= 64:
-                trobada, gs = "c", [t_F, [t for _, t in entr + inici]]
-            if not trobada:
-                ok = False
-                break
-            per_ceo.append(trobada)
-            grups += gs
-        if ok:
-            v = verif(grups)
-            if not millor[0] or (v and not millor[2]):
-                millor = ("|".join(per_ceo), grups, v)
+    def opcions(n: str) -> list[tuple[str, list[list[dict]]]]:
+        ops = []
+        if llistes:
+            ops.append(("a", [llistes]))
+        if o_estat:
+            ops.append(("e", [o_estat]))
+        naix = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("naixement_ceo", n)]
+        naix = [(y, t) for y, t in naix if y]
+        if o_corp:
+            # P3 sobre la matriu: creada per l'Estat, llista tancada de fundadors sense el CEO, o prova b
+            # (any de fundació de la matriu més recent menys el naixement del CEO < 18). Els anys de la matriu
+            # poden venir de l'etiqueta d'origen («Groupe X (1878)») o d'etiquetes amb entitat=matriu.
+            m_estat = [t for t in tags if t["part"] == "origen_entitat" and t.get("entitat") == "matriu"
+                       and tipus_origen(t["valor"]) == "estat"]
+            m_llistes = [t for t in tags if t["part"] == "llista_fundadors" and t.get("entitat") == "matriu"
+                         and t.get("tancada") == "si" and not any(mateixa_persona(f, n) for f in t["valor"].split("+"))]
+            if m_estat:
+                ops.append(("e", [o_corp, m_estat]))
+            if m_llistes:
+                ops.append(("e", [o_corp, m_llistes]))
+            if naix:
+                m_anys = [(int(y), t) for t in o_corp for y in RE_ANY_ETIQ.findall(t["valor"])
+                          if a_la_cita(int(y), t["_e"].get("cita_literal") or "")]
+                m_anys += [(any_de(t["valor"]), t) for t in tags if t["part"] == "any_fundacio"
+                           and t.get("entitat") == "matriu" and any_de(t["valor"])]
+                if m_anys and max(y for y, _ in m_anys) - min(y for y, _ in naix) < 18:
+                    ops.append(("e", [o_corp, [t for _, t in m_anys], [t for _, t in naix]]))
+        if F is None:
+            return ops
+        ocup = [t for t in persona("ocupador_anterior", n) if len(t["valor"].split(":")) >= 2
+                and t["valor"].split(":")[1].strip()]
+        entr = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("entrada", n)]
+        entr += [(any_de(t["valor"].split(":")[2]), t) for t in ocup
+                 if len(t["valor"].split(":")) > 2 and suportada("entrada", t["valor"].split(":", 1)[0] + ":" + t["valor"].split(":")[2], t["_e"])]
+        entr = [(y, t) for y, t in entr if y]
+        inici = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("inici_mandat", n)]
+        inici = [(y, t) for y, t in inici if y]
+        if naix and F - min(y for y, _ in naix) < 18:
+            ops.append(("b", [t_F, [t for _, t in naix]]))
+        if ocup and entr and min(y for y, _ in entr) - F >= 3:
+            ops.append(("d", [t_F, ocup, [t for _, t in entr]]))
+        if not naix and (entr or inici) and max(y for y, _ in entr + inici) - F >= 64:
+            ops.append(("c", [t_F, [t for _, t in entr + inici]]))
+        return ops
+
+    presents = ";".join(sorted({t["part"] for t in tags}))
+    per_ceo, grups = [], []
+    for n in noms or [""]:
+        ops = opcions(n)
+        if not ops:
+            return "", [], presents, False, ";".join(contradiccio)
+        tria = next((o for o in ops if verif(o[1])), ops[0])
+        per_ceo.append(tria[0])
+        grups += tria[1]
+    lletres = set(per_ceo)
+    prova = per_ceo[0] if len(lletres) == 1 and per_ceo[0] in ("a", "e") else "|".join(per_ceo)
     suport = []
-    for g in millor[1]:
+    for g in grups:
         es = sorted({id(t["_e"]): t["_e"] for t in g}.values(),
                     key=lambda e: (e.get("cita_verificada_a_captura") != "si", e.get("id_document_o_font") or ""))
         if es and es[0] not in suport:
             suport.append(es[0])
-    return millor[0], suport, ";".join(presents), millor[2], ";".join(contradiccio)
+    return prova, suport, presents, verif(grups), ";".join(contradiccio)
 
 
 def sha256(p: Path) -> str:
