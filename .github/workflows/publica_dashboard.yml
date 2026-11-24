@@ -1,0 +1,34 @@
+# Publica el dashboard a GitHub Pages (branca gh-pages) cada cop que canvia a main.
+# Copia el contingut de dashboard/ a l'arrel de gh-pages. No toca main.
+name: publica_dashboard
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dashboard/**"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publica-dashboard
+  cancel-in-progress: false
+jobs:
+  publica:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Copia dashboard/ a gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q origin gh-pages
+          git worktree add -q ../pages origin/gh-pages
+          cd ../pages && git checkout -q -B gh-pages && cd -
+          rsync -a --delete --exclude '.git' --exclude '.nojekyll' dashboard/ ../pages/
+          touch ../pages/.nojekyll
+          cd ../pages
+          git add -A
+          git commit -q -m "Publicació GitHub Pages del dashboard (main ${GITHUB_SHA::7})" || { echo "Sense canvis"; exit 0; }
+          git push -q origin gh-pages
