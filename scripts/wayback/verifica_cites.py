@@ -388,6 +388,27 @@ def carrega_parells() -> tuple[list[dict], dict]:
     return parells, extra
 
 
+def treu_errors_interns(path: Path) -> int:
+    """Adaptació de Claude (23/11/2026): treu del fitxer de resultats els parells que van fallar per
+    un error intern de l'script (p. ex. `excepció_interna:FeatureNotFound`, perquè faltava lxml al
+    flux de GitHub), perquè es tornin a verificar. Els altres resultats es conserven tal com són."""
+    if not path.is_file() or path.stat().st_size == 0:
+        return 0
+    with path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        camps = reader.fieldnames or []
+        files = list(reader)
+    bons = [r for r in files if not (r.get("estat") == "captura_no_llegible"
+                                     and (r.get("detall") or "").startswith("excepció_interna"))]
+    if len(bons) == len(files):
+        return 0
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=camps)
+        w.writeheader()
+        w.writerows(bons)
+    return len(files) - len(bons)
+
+
 def carrega_fets(path: Path) -> set[tuple[str, str, str, str, str]]:
     fets: set[tuple[str, str, str, str, str]] = set()
     if not path.is_file() or path.stat().st_size == 0:
@@ -1033,6 +1054,9 @@ def main() -> int:
         return 0
 
     args.cache.mkdir(parents=True, exist_ok=True)
+    tretes = treu_errors_interns(args.out)
+    if tretes:
+        log(f"Parells amb error intern retirats per tornar-los a verificar: {tretes}")
     fets = carrega_fets(args.out)
     pendents = [p for p in parells if (p["isin"], p["any"], p["camp"], p["url"], p["cita"]) not in fets]
     log(
