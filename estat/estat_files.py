@@ -8,10 +8,17 @@ Definició (docs/PLA_FINALITZACIO_20261123.md, secció 1):
                   cadascun dels CEO de la fila.
   C2 Fundador     F: cita [V] de fundador (funcio_cita=fundador) al registre, o la
                   cita antiga del CSV (font_classificacio_cita).
-                  P: el mateix, amb la prova a-e indicada a `regles`.
+                  P: una prova de no fundador COMPLETA, amb cada part documentada per una
+                  cita [V] (decisió de Jordi del 24/11/2026, opció b):
+                    a llista de fundadors (sense el CEO) · e origen estatal o corporatiu ·
+                    c any de fundació 64 anys o més abans · b any de fundació + naixement
+                    de cada CEO · d any de fundació + ocupador anterior de cada CEO.
+                  La part d'una cita es pren de les notes («Part de la prova …: part») o,
+                  si no hi és, del contingut de la cita.
                   NA / ND: alguna entrada [V] del registre que documenti la cerca.
   C3 Arxiu        alguna de les cites que compleixen C1 i alguna de les que
-                  compleixen C2 té cita_verificada_a_captura=si (Wayback, per DF).
+                  compleixen C2 té cita_verificada_a_captura=si (Wayback); a les P,
+                  cada part de la prova ha de tenir una cita verificada a la captura.
   C4 Coherència   el CSV és coherent (ceos = sim_ceo_aplicat; la regla de `regles`
                   correspon a l'etiqueta; motiu_nd només a ND; motiu_na a NA) i la
                   fila no té cap dubte obert a PENDENTS.md (seccions de dubtes dels
@@ -78,9 +85,43 @@ TRANSLIT = str.maketrans({"ø": "o", "Ø": "o", "æ": "ae", "Æ": "ae", "ß": "s
                           "Ł": "l", "đ": "d", "Đ": "d", "ı": "i", "œ": "oe", "Œ": "oe",
                           "’": "'", "‘": "'", "´": "'", "`": "'"})
 MAX_IDS = 5
+# Parts de cada prova de no fundador (decisió de Jordi del 24/11/2026, opció b).
+PROVES_PARTS = {
+    "a": ("llista_fundadors",),
+    "e": ("origen_entitat",),
+    "c": ("any_fundacio_64",),
+    "b": ("any_fundacio", "naixement_ceo"),
+    "d": ("any_fundacio", "ocupador_anterior"),
+}
+ORDRE_PROVES = ("a", "e", "c", "b", "d")
+PARTS_PERSONA = {"naixement_ceo", "ocupador_anterior"}
+RE_PART_EXPLICITA = re.compile(r"Part de la prova(?: [\w-]+)?: (llista_fundadors|origen_entitat|any_fundacio"
+                               r"|naixement_ceo|ocupador_anterior)\b")
+ANY_HIST = r"\b(1[5-9]\d\d|20[0-2]\d)\b"
+FUND_VERB = (r"(founded|founding|established|incorporated|was created|were created|formed|set up|dates? back|inception"
+             r"|gegrundet|grundung|fondee?|fondation|fundad[ao]|fundacion|fondata|fondato|costituit|constituid[ao]"
+             r"|opgericht|oprichting|grundad|grundlagt|stiftet|perustettu|zalozon)")
+CONTINGUT = {
+    "any_fundacio": re.compile(FUND_VERB + r".{0,80}" + ANY_HIST + "|" + ANY_HIST + r".{0,80}" + FUND_VERB),
+    "naixement_ceo": re.compile(r"(born|\bnee?\b|geboren|\bgeb\.|nacid|\bnato\b|\bnata\b|\bfodt|\bfodd|syntyn|urodz"
+                                r"|year of birth|date of birth|\baged? \d{2}|\d{2} years old|\(\d{2}\)|\bage:? \d{2})"),
+    "ocupador_anterior": re.compile(r"(joined|prior to|previously|before joining|before that|worked (at|for|as)"
+                                    r"|career (at|with|in)|spent \d+ years|served as|held (the )?(position|role|post)s?"
+                                    r"|was (the )?(ceo|cfo|coo|head|director|partner|president|managing|chief|vice|executive)"
+                                    r"|from \d{4} (to|until)|vorher|zuvor|davor|war .{0,60} bei|tatig|auparavant"
+                                    r"|precedemment|a rejoint|anteriormente|previamente|se incorporo|tidigare|tidligere"
+                                    r"|aiemmin|in precedenza|eerder|daarvoor)"),
+    "llista_fundadors": re.compile(r"(founded by|co-?founded|founders?\b|fondee? par|fondateurs?|gegrundet (von|durch)"
+                                   r"|grunder|fundad[ao] por|fundadores|opgericht door|oprichters?|grundades av|grundare"
+                                   r"|perustaja)"),
+    "origen_entitat": re.compile(r"(spin-? ?off|spun off|demerg|carve-? ?out|privatis|privatiz|state-owned|sole shareholder"
+                                 r"|created by|established by|formed by|set up by|subsidiary of|was part of|separation from"
+                                 r"|ausglieder|abspaltung|scission|escision|scissione|nationalised|nationalized"
+                                 r"|owned by the (state|government)|(state|government) (owned|holding))"),
+}
 COLUMNES = [
     "isin", "any", "nom", "FounderCEO", "ceos", "regles", "estat_certificacio_antic",
-    "c1_ceo", "c1_ids", "c1_tipus", "c2_fundador", "c2_ids", "c3_arxiu",
+    "c1_ceo", "c1_ids", "c1_tipus", "c2_fundador", "c2_ids", "c2_parts", "c3_arxiu",
     "c4_coherencia", "dubtes_oberts", "avisos", "estat",
 ]
 
@@ -127,6 +168,62 @@ def ids(entries: list[dict]) -> str:
     vals = sorted({(e.get("id_document_o_font") or "").strip() or "(sense id)" for e in entries})
     extra = f";(+{len(vals) - MAX_IDS})" if len(vals) > MAX_IDS else ""
     return ";".join(vals[:MAX_IDS]) + extra
+
+
+def parts_entrada(e: dict, noms: list[str], any_fila: int) -> set[tuple[str, str]]:
+    """Parts d'una prova de no fundador que documenta una cita: {(part, persona)}.
+
+    persona és el CEO per a les parts de persona (naixement, ocupador anterior) i '' per a les
+    parts d'empresa. La part es pren de les notes si hi és explícita; si no, del contingut.
+    """
+    t = e["_cita_norm"]
+    noms_cita = [n for n in noms if anomena(t, n)]
+    m = RE_PART_EXPLICITA.search(e.get("notes") or "")
+    candidates = [m.group(1)] if m else [p for p, rx in CONTINGUT.items() if rx.search(t)]
+    out: set[tuple[str, str]] = set()
+    for p in candidates:
+        if p in PARTS_PERSONA:
+            out.update((p, n) for n in noms_cita)
+        elif p == "llista_fundadors":
+            if not noms_cita:  # una llista de fundadors que anomena el CEO no prova que no ho sigui
+                out.add((p, ""))
+        else:
+            out.add((p, ""))
+        if p == "any_fundacio":
+            anys_cita = [int(y) for y in re.findall(ANY_HIST, t)]
+            if anys_cita and min(anys_cita) <= any_fila - 64:
+                out.add(("any_fundacio_64", ""))
+    return out
+
+
+def prova_P(cands: list[dict], noms: list[str], any_fila: int) -> tuple[str, list[dict], str, bool]:
+    """Avalua les proves de no fundador d'una fila P a partir de les cites candidates.
+
+    Retorna (prova completa o '', cites que la sostenen, parts presents, si cada part té una
+    cita verificada a la captura). Prefereix una prova amb totes les parts verificades.
+    """
+    per_part: dict[tuple[str, str], list[dict]] = collections.defaultdict(list)
+    for e in cands:
+        for pp in parts_entrada(e, noms, any_fila):
+            per_part[pp].append(e)
+    persones = noms or [""]
+    millor = ("", [], False)
+    for prova in ORDRE_PROVES:
+        claus = [(p, n) for p in PROVES_PARTS[prova] for n in (persones if p in PARTS_PERSONA else [""])]
+        if not all(per_part.get(k) for k in claus):
+            continue
+        verif = all(any(e.get("cita_verificada_a_captura") == "si" for e in per_part[k]) for k in claus)
+        suport = []
+        for k in claus:
+            es = sorted(per_part[k], key=lambda e: (e.get("cita_verificada_a_captura") != "si",
+                                                    e.get("id_document_o_font") or ""))
+            suport.append(es[0])
+        if not millor[0] or (verif and not millor[2]):
+            millor = (prova, suport, verif)
+        if verif:
+            break
+    presents = sorted({p + (f"({n})" if n else "") for p, n in per_part})
+    return millor[0], millor[1], ";".join(presents), millor[2]
 
 
 def sha256(p: Path) -> str:
@@ -236,22 +333,51 @@ def calcula() -> tuple[list[dict], dict]:
             out["c1_tipus"] = "+".join(sorted(tipus))
             if c1_suport and not any(CARRECS.search(e["_cita_norm"]) for e in c1_suport):
                 avisos.append("carrec_no_detectat_a_la_cita")
-            c2_suport = fun_es
-            if fun_es:
-                out["c2_fundador"] = "ok_registre"
-                c2_ok = True
-            elif (r.get("font_classificacio_cita") or "").strip() and \
-                    (r.get("font_classificacio_url") or "").strip():
-                out["c2_fundador"] = "ok_columna_antiga"
-                c2_ok = True
+            antiga = (r.get("font_classificacio_cita") or "").strip() and \
+                (r.get("font_classificacio_url") or "").strip()
+            out["_c2_antic"] = bool(fun_es) or bool(antiga)
+            if lab == "0":
+                # P: prova completa per parts (decisió de Jordi del 24/11/2026, opció b)
+                any_fila = int(r["any"])
+                prova, suport, presents, verif_p = prova_P(fun_es, noms, any_fila)
+                out["c2_parts"] = presents
+                if prova:
+                    out["c2_fundador"] = f"ok_prova_{prova}"
+                    c2_ok = True
+                    c2_suport = suport
+                else:
+                    antic = {"_cita_norm": norm(r.get("font_classificacio_cita") or ""), "notes": "",
+                             "id_document_o_font": "(columna antiga)"} if antiga else None
+                    prova2, suport2, presents2, _ = prova_P(fun_es + ([antic] if antic else []), noms, any_fila)
+                    if prova2:
+                        out["c2_fundador"] = "ok_columna_antiga"
+                        out["c2_parts"] = presents2
+                        c2_ok = True
+                        c2_suport = [e for e in suport2 if e is not antic]
+                    else:
+                        out["c2_fundador"] = "prova_incompleta" if presents else "falta"
+                        c2_suport = fun_es
             else:
-                out["c2_fundador"] = "falta"
+                verif_p = None
+                c2_suport = fun_es
+                if fun_es:
+                    out["c2_fundador"] = "ok_registre"
+                    c2_ok = True
+                elif antiga:
+                    out["c2_fundador"] = "ok_columna_antiga"
+                    c2_ok = True
+                else:
+                    out["c2_fundador"] = "falta"
         out["c1_ids"] = ids(c1_suport) if c1_suport else ""
         out["c2_ids"] = ids(c2_suport) if c2_suport else ""
+        out.setdefault("c2_parts", "")
 
-        # C3 arxiu
+        # C3 arxiu (a les P, cada part de la prova amb una cita verificada a la captura)
         a1 = any(e.get("cita_verificada_a_captura") == "si" for e in c1_suport)
-        a2 = any(e.get("cita_verificada_a_captura") == "si" for e in c2_suport)
+        if lab == "0" and out.get("c2_fundador", "").startswith("ok_prova_"):
+            a2 = bool(verif_p)
+        else:
+            a2 = any(e.get("cita_verificada_a_captura") == "si" for e in c2_suport)
         if not (c1_ok and c2_ok):
             out["c3_arxiu"] = "sense_evidencia"
         elif a1 and a2:
@@ -309,7 +435,7 @@ def calcula() -> tuple[list[dict], dict]:
 
 def csv_text(files: list[dict]) -> str:
     buf = io.StringIO()
-    w = csv.DictWriter(buf, fieldnames=COLUMNES, lineterminator="\n")
+    w = csv.DictWriter(buf, fieldnames=COLUMNES, lineterminator="\n", extrasaction="ignore")
     w.writeheader()
     for f in sorted(files, key=lambda x: (x["isin"], x["any"])):
         w.writerow(f)
@@ -385,6 +511,24 @@ def md_text(files: list[dict], info: dict) -> str:
     L.append("|---|---:|")
     for k, v in sorted(collections.Counter(f["c2_fundador"] for f in S).items(), key=lambda x: -x[1]):
         L.append(f"| `{k}` | {num(v)} |")
+    L.append("")
+    P = [f for f in S if f["FounderCEO"] == "0"]
+    L.append("### C2 de les files P: prova de no fundador completa per parts\n")
+    L.append("Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat si la prova té "
+             "totes les parts, cadascuna amb la seva cita A/B. Parts: a llista de fundadors; e origen estatal "
+             "o corporatiu; c any de fundació 64 anys o més abans; b any de fundació i naixement del CEO; "
+             "d any de fundació i ocupador anterior del CEO.\n")
+    antic = sum(1 for f in P if f.get("_c2_antic"))
+    nou = sum(1 for f in P if "falta_fundador" not in f["estat"])
+    L.append("| | Files P |")
+    L.append("|---|---:|")
+    L.append(f"| Amb alguna cita de fundador (criteri anterior al 24/11) | {pct(antic, len(P))} |")
+    L.append(f"| Amb una prova completa per parts (criteri vigent) | {pct(nou, len(P))} |")
+    for k in ("a", "e", "c", "b", "d"):
+        L.append(f"| … prova {k} | {num(sum(f['c2_fundador'] == 'ok_prova_' + k for f in P))} |")
+    L.append(f"| … només amb la cita de la columna antiga | {num(sum(f['c2_fundador'] == 'ok_columna_antiga' for f in P))} |")
+    L.append(f"| Amb alguna part però sense cap prova completa | {num(sum(f['c2_fundador'] == 'prova_incompleta' for f in P))} |")
+    L.append(f"| Sense cap part documentada | {num(sum(f['c2_fundador'] == 'falta' for f in P))} |")
     L.append("")
     L.append("| Valor de `c3_arxiu` | Files |")
     L.append("|---|---:|")
