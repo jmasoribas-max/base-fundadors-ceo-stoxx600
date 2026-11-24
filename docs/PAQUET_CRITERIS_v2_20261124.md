@@ -1,6 +1,6 @@
 # Paquet de criteris v2 (24/11/2026)
 
-> **Estat:** Q2, Q8, Q9 (Telefónica) i Q11 decidides per Jordi el 24/11/2026 (vegeu la secció «Decisions ja preses»). Q3 pendent d'una comprovació. La resta, oberta.
+> **Estat:** Q2, Q3, Q8, Q9 (Telefónica) i Q11 decidides per Jordi el 24/11/2026 (vegeu la secció «Decisions ja preses»). La resta, oberta.
 
 Preparat per Claude perquè Jordi decideixi. Substitueix els punts 2-10 de `docs/PAQUET_CRITERIS_20261123.md`. El punt 1 ja està decidit (24/11/2026, opció b) i aquí no es torna a obrir.
 
@@ -26,7 +26,7 @@ Aquesta versió incorpora les correccions de la verificació independent del 24/
 | Q | Decisió | Efecte |
 |---|---|---|
 | Q2 | **Compten com a fundador** (opció b, contra la recomanació). S'estén a «founding partner», «founding director» i «part of the founding group» | alstria 2019-2021 i Rightmove 2016 es mantenen a 1 per D37 (alstria, quan es registri la cita de l'emissor); Reply 2021-2025 té la cita «part of the founding group» / «one of the founding members» per a Rizzante; Aberdeen 2016 i SoftwareONE 2020 no canvien |
-| Q3 | **Pendent**: Jordi vol que es comprovi cas per cas (Cellnex, Ocado, B&M, Metro Bank) si «CEO fundador» / «founding CEO» designa el primer CEO o un fundador real | — |
+| Q3 | **No compta sola** (opció a), després de comprovar Cellnex, Ocado, B&M i Metro Bank | Cellnex 2016-2022: d'1 a ND, o a 0 si es documenta la prova (lot de correcció); Ocado i B&M no canvien; Metro Bank 2017-2018 es queda a 0 |
 | Q8 | **Co-CEO per R1** (opció a) | Ferrovial: s'afegeix Rafael del Pino y Calvo-Sotelo a `ceos` (9 files); FounderCEO no canvia |
 | Q9 | **Telefónica: només el president** per R1 amb `ceo_president_exec` (opció a); la Q9b continua oberta | `ceos` no canvia a Telefónica |
 | Q11 | **El Gérant és CEO per R1** (opció a): un representant d'una societat Gérante compta si l'emissor l'anomena Gérant | Rubis: `marca_prova` R3 → R1 i fora `de_facto`; FounderCEO no canvia |
@@ -179,7 +179,7 @@ Fets: Rightmove, AR 2016 (L16-GB00B2987V85-F01 [V]): «Nick is one of the co-fou
 
 ### Q3. «CEO fundador» (Cellnex)
 
-> **Pendent:** Jordi demana comprovar abans, cas per cas, si l'expressió designa el primer CEO o un fundador real.
+> **Decidit (Jordi, 24/11/2026), després de comprovar Cellnex, Ocado, B&M i Metro Bank: l'expressió sola no compta (opció a).** A Cellnex i Metro Bank designa el primer CEO; Ocado i B&M són fundadors per altres cites (D37, regla 27).
 
 
 **Pregunta.** «Tobias Martinez, CEO fundador de Cellnex» en un comunicat de l'emissor compta com a «fundador» (D37) o com a «founding CEO» (exclòs)?
