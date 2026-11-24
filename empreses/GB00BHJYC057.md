@@ -68,3 +68,7 @@ Entitat rellevant: Bass (cervesera de Burton-on-Trent, 1777), predecessora direc
 - **L18-GB00BHJYC057-F03** · [V] · `context`. «2001 Bass gets a new name: Six Continents plc» [Font original](https://www.ihgplc.com/en/about-us/our-history).
 - **L18-GB00BHJYC057-F04** · [V] · `context`. «Six Continents plc splits into two, creating a separate hotels and soft drinks company named InterContinental Hotels Group plc (IHG), and a retail business called Mitchells & Butlers plc. The split completes in April 2003 and IHG becomes a standalone company.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
 - **L18-GB00BHJYC057-F05** · [V] · `a`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BHJYC057-F01** · fundador · 2023 · [V] · `c`. «Elie Maalouf became Group CEO on 1 July 2023 which involved a relocation to the UK.» [Font original](https://www.ihgplc.com/~/media/Files/I/Ihg-Plc/investors/annual-report/2023/ihg-2023-annual-report-and-form-20-f.pdf).

@@ -71,3 +71,9 @@ Entitat rellevant: Beazley Furlonge & Hiscox Limited (agent gestor de Lloyd's, 1
 
 - **L18-GB00BYQ0JC66-F01** · [V] · `context`. «In 1993, Beazley Furlonge Holdings Limited, purchased the Hiscox Group’s stake. Following completion of the buy-out, the managing agent was renamed Beazley Furlonge Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/106608638.pdf).
 - **L18-GB00BYQ0JC66-F02** · [V] · `context`. «In 2009, following a review of the Group’s organisational, operating and capital structure, Beazley, a company incorporated and registered in Jersey, became the new holding company of the Group by way of a scheme of arrangement and Beazley Re was incorporated in Ireland to underwrite insurance business from Dublin.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/106608638.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BYQ0JC66-F01** · fundador · 2016-2020,2022-2025 · [V] · `b`. «Strong partnerships have underpinned Beazley’s success since the company was founded in 1986.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/266590506.pdf).
+- **L21-GB00BYQ0JC66-F02** · fundador · 2022 · [V] · `c`. «3 Adrian P Cox was appointed CEO on 1 April 2021.» [Font original](https://www.beazley.com/globalassets/ir-documents/annual-reports/annual-report-2022/annual_report_22_1.pdf).
+- **L21-GB00BYQ0JC66-F03** · fundador · 2022 · [V] · `c`. «1 Adrian Cox was appointed Chief Executive Officer on 1 April 2021.» [Font original](https://www.beazley.com/globalassets/ir-documents/annual-reports/annual-report-2022/annual_report_22_1.pdf).

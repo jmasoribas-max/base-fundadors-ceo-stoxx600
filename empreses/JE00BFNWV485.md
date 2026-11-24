@@ -49,3 +49,13 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Wolseley Sheep Shearing Machine Company (Sydney, 1887) · origen: persones · fundadors: Frederick York Wolseley · any: 1887.
+
+- **L21-JE00BFNWV485-F01** · [V] · `c_AAF64_reserva`. «The Wolseley Group commenced operations in Australia in 1887 before Old Wolseley was incorporated in the UK in 1889. Old Wolseley was first incorporated under the name Wolseley Sheep Shearing Machine Company Limited and it originally manufactured sheep shearing machines, automobiles, machine tools and agricultural equipment.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/18462663.pdf).
+- **L21-JE00BFNWV485-F02** · [V] · `context`. «Wolseley Group will have a new Group holding company, New Wolseley, incorporated in Jersey, with its tax residence in Switzerland.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/18462663.pdf).
+- **L21-JE00BFNWV485-F03** · [V] · `context`. «In 1958, the Wolseley Group acquired Geo H. Hughes Limited, a wheel manufacturer, and Wolseley’s name became Wolseley-Hughes Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/18462663.pdf).
+- **L21-JE00BFNWV485-F04** · [V] · `context`. «In 1958, the Group’s predecessor merged with Geo H Hughes and, in the 1960s, acquired a number of heating and oil burning companies in rapid succession in the UK.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
+- **L21-JE00BFNWV485-F05** · [V] · `a`. «The Group was founded in 1887, when Frederick York Wolseley launched the Wolseley Sheep Shearing Machine Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).

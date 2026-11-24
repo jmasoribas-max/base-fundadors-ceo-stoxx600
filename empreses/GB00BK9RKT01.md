@@ -52,3 +52,8 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BK9RKT01-F01** · fundador · 2021-2023 · [V] · `c`. «Nick Roberts was appointed as a Director of Travis Perkins and CEO designate on 1 July 2019 and appointed CEO on 5 August 2019.» [Font original](https://www.travisperkinsplc.co.uk/media/ixlp2qle/travisperkins-annual-report-19-1.pdf).
+- **L21-GB00BK9RKT01-F02** · fundador · 2021-2023 · [V] · `c`. «Buyout arrangements for Nick Roberts Nick Roberts joined the Board on 1 July 2019 and became CEO on 5 August 2019.» [Font original](https://www.travisperkinsplc.co.uk/media/ixlp2qle/travisperkins-annual-report-19-1.pdf).

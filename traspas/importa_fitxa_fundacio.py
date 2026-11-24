@@ -201,7 +201,7 @@ def main() -> int:
                 est, det = IL.verifica(url, cita)
                 if est == "trobada":
                     ver[clau] = ("[V]", "Claude (re-descàrrega del document original i cerca literal)", "")
-                elif IC.a_local(desc / r["_fitxer"].replace("_cites", "") if desc else None, url, cita):
+                elif IC.a_local(desc / ((r.get("grup") or "").strip() or r["_fitxer"].replace("_cites", "")) if desc else None, url, cita):
                     ver[clau] = ("[V]", "Claude (cita literal comprovada al fitxer baixat per la cerca)",
                                  f"La re-descàrrega no l'ha pogut confirmar ({est}: {det}); la cita és al fitxer baixat de la mateixa URL durant la cerca.")
                 elif est == "no_trobada":

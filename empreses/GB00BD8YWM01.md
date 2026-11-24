@@ -62,3 +62,7 @@ Entitat rellevant: Micro Focus (negoci de programari COBOL; societat original Mi
 - **L18-GB00BD8YWM01-F03** · [V] · `context`. «The Company is a public limited company, incorporated on 21 May 2004 in England and Wales under the Companies Act 1985 with its registered office situated in England and Wales.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/76109077.pdf).
 - **L18-GB00BD8YWM01-F04** · [V] · `context`. «On Completion, the Company will allot and issue to Wizard 86,595,711 Ordinary Shares, equal to approximately 40 per cent. of the Enlarged Share Capital if the Return of Value is implemented and approximately 38.2 per cent. of the Enlarged Share Capital if the Return of Value is not implemented. As the Merger is classified as a reverse takeover under the Listing Rules» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/76109077.pdf).
 - **L18-GB00BD8YWM01-F05** · [NV] · `context`. «MICRO FOCUS LIMITED 12 Aug 1976 - 15 Feb 1999» [Font original](https://find-and-update.company-information.service.gov.uk/company/01272886).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BD8YWM01-F01** · fundador · 2017-2018 · [V] · `b`. «Stephen Murdoch Chief Operating Officer, Age 47 As Chief Operating Officer, Stephen is responsible for the day to day execution of Micro Focus operations.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/76109077.pdf).

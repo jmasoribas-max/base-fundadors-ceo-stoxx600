@@ -67,3 +67,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 
 - **L15-GB00BH4HKS39-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Vittorio Colao Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/135435342.pdf).
 - **L15-GB00BH4HKS39-C02** · 2017 · [V] · `evidencia_ceo` (`R1`). «Vittorio Colao Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/173626345.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BH4HKS39-F01** · fundador · 2016-2025 · [V] · `b`. «The Company was incorporated under English law in 1984 as Racal Strategic Radio Limited (registered number 1833679).» [Font original](https://www.vodafone.com/~/media/Files/V/vodafone/corp/documents/performance/financial-results/2019/vodafone-full-annual-report-2019.pdf).

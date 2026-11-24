@@ -79,3 +79,7 @@ Entitat rellevant: Just Eat (Dinamarca, 2001); Just Eat plc es la holding consti
 Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
 
 - **CO2-632** · 2016 · `marques`: «» → «conflicte_fonts». P6: conflicte entre la prova d (fonts A) i la font X01; robustesa amb el valor alternatiu 1
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BKX5CN86-F01** · fundador · 2016 · [V] · `c`. «In 2006, JUST EAT launched in the UK under the leadership of David Buttress, who subsequently became Group CEO in 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).

@@ -54,3 +54,7 @@ Entitat rellevant: Negoci Dr. Martens de R. Griggs Group (empresa familiar de Wo
 - **L18-GB00BL6NGV24-F02** · [V] · `context`. «The Company “perfectly” invented and launched its first boot in 1960, the eight-holed 1460 boot, with a yellow welt stitch, grooved sole and black and yellow heel loop, which remains largely unchanged today.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
 - **L18-GB00BL6NGV24-F03** · [V] · `context`. «Dr. Maertens made a prototype shoe and showed it to a friend and engineer, Dr. Herbert Funck. The two went into partnership and by 1947 they began formal production of their unique shoe.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
 - **L18-GB00BL6NGV24-F04** · [V] · `context`. «The Company is a public limited company with registered number 12960219, incorporated in England and Wales on 19 October 2020 as Ampholdco Limited, a private company limited by shares in the United Kingdom, renamed Dr. Martens Limited on 22 December 2020 and re-registered as a public» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BL6NGV24-F01** · fundador · 2021 · [V] · `b`. «Key managing directors The Company’s Chief Executive Officer is Kenny Wilson, born in 1966 and its Chief Financial Officer is Jon Mortimore, born in 1967.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).

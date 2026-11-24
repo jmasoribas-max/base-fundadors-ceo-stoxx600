@@ -53,3 +53,15 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-GB00B1ZBKY84-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Peter Plumb Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/129121845.pdf).
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Negoci Mortgage 2000 / Moneysupermarket.com Financial Group Limited (1993); Moneysupermarket.com Group PLC (avui MONY Group PLC) es la holding del 2007 · origen: persones · fundadors: Simon Nixon · any: 1993.
+
+- **L21-GB00B1ZBKY84-F01** · [V] · `d`. «The Group is first established as Mortgage 2000 in Chester as an offline business providing mortgage listings» [Font original](https://www.monygroup.com/about-us/who-we-are/).
+- **L21-GB00B1ZBKY84-F02** · [V] · `context`. «As noted above, on 22 June 2007 the Company, at that time controlled by Simon Nixon, purchased the entire issued share capital of Moneysupermarket.com Financial Group Limited. This was funded partially by a cash payment of £162m to one of the founder shareholders, Duncan Cameron, and a share-for-share exchange.» [Font original](https://www.monygroup.com/application/files/4717/1386/9450/annual-report-2007.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00B1ZBKY84-F03** · fundador · 2017 · [V] · `c`. «Mark Lewis joined the Group as an Executive Director on 13 March 2017 and became Chief Executive Officer on 10 April 2017.» [Font original](https://www.monygroup.com/application/files/2417/1378/9087/annual-report-2017.pdf).
+- **L21-GB00B1ZBKY84-F04** · fundador · 2017 · [V] · `c`. «* Mark Lewis joined the Board on 13 March 2017 and, after a period of handover, was appointed Chief Executive Officer on 10 April 2017.» [Font original](https://www.monygroup.com/application/files/2417/1378/9087/annual-report-2017.pdf).

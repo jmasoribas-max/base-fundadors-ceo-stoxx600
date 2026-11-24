@@ -60,3 +60,17 @@ Cap entrada anterior al registre per als anys del lot.
 ## Lot 16 · Cerca nova de cites de fundador
 
 - **L16-GB00BVFD7Q58-F01** · 2017 · [V] · `D37`. «Martin Gilbert Co-Chief Executive Martin was appointed Director and Co-Chief Executive on 14 August 2017. He is co-founder (and former chief executive) of Aberdeen Asset Management PLC and has been a director since 1983.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166306782.pdf).
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: The Life Insurance Company of Scotland (Edimburg, 1825), rebatejada The Standard Life Assurance Company el 1832; mutua el 1925; demutualitzada el 2006 com a Standard Life plc · origen: no_trobat · fundadors: - · any: 1825.
+
+- **L21-GB00BVFD7Q58-F01** · [V] · `d`. «We were established in Edinburgh in 1825.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/129924752.pdf).
+- **L21-GB00BVFD7Q58-F02** · [V] · `d`. «The Life Insurance Company of Scotland was established in 1825. In 1832 its name was changed to the Standard Life Assurance Company. Standard Life was reincorporated as a mutual assurance company in 1925.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/133353803.pdf).
+- **L21-GB00BVFD7Q58-F03** · [V] · `context`. «On 10 July 2006, after a 98% “yes” vote from eligible voting members who voted, the Standard Life Assurance Company demutualised and Standard Life was floated on the London Stock Exchange and joined the FTSE 100 index.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/133353803.pdf).
+- **L21-GB00BVFD7Q58-F04** · [V] · `context`. «Existing Standard Life Shareholders and former Aberdeen Shareholders will, if the Merger completes, own approximately 66.7% and 33.3%, respectively of the Standard Life Shares.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/133353803.pdf).
+- **L21-GB00BVFD7Q58-F05** · [V] · `context`. «Shareholders will receive 9 New Ordinary Shares for every 11 Existing Ordinary Shares held at the Record Time.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/84324302.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BVFD7Q58-F06** · fundador · 2016-2017 · [V] · `b`. «We were established in Edinburgh in 1825.» [Font original](https://www.rns-pdf.londonstockexchange.com/rns/7418X_1-2017-2-23.pdf).

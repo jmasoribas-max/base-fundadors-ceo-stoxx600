@@ -53,3 +53,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BM8PJY71-F01** · fundador · 2023 · [V] · `c`. «Paul Thwaite was appointed as Group CEO in July 2023 for an initial period of 12 months.» [Font original](https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/16022024/nwg-annual-report-and-accounts-2023.pdf).
+- **L21-GB00BM8PJY71-F02** · fundador · 2023 · [V] · `c`. «Mr Thwaite was a member of NatWest Group’s defined benefit pension scheme prior to becoming an executive director, and when appointed as Group CEO in July 2023 he continued to participate on the same terms as applicable to him in his previous role based on the legacy provisions of the Policy, see page 141 and 142 for more information.» [Font original](https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/16022024/nwg-annual-report-and-accounts-2023.pdf).
+- **L21-GB00BM8PJY71-F03** · fundador · 2023 · [V] · `c`. «(1) Mr Thwaite was appointed as Group CEO on 25 July 2023.» [Font original](https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/16022024/nwg-annual-report-and-accounts-2023.pdf).
+- **L21-GB00BM8PJY71-F04** · fundador · 2023 · [V] · `c`. «(3) Paul Thwaite was appointed as Group CEO on 25 July 2023 and therefore the annual change comparison to 2022 is not applicable.» [Font original](https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/16022024/nwg-annual-report-and-accounts-2023.pdf).
+- **L21-GB00BM8PJY71-F05** · fundador · 2024 · [V] · `c`. «(3) Paul Thwaite was appointed as Group CEO on 25 July 2023, so there are no prior year comparisons.» [Font original](https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/14022025/nwg-annual-report-and-accounts-2024.pdf).
+- **L21-GB00BM8PJY71-F06** · fundador · 2025 · [V] · `c`. «(3) Mr Thwaite was appointed as Group CEO on 25 July 2023, so there are no prior year comparisons.» [Font original](https://investors.natwestgroup.com/~/media/Files/R/RBS-IR-V2/results-center/13022026/nwg-annual-report-and-accounts-2025.pdf).

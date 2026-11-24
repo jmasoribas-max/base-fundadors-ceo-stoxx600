@@ -70,3 +70,8 @@ Entitat rellevant: Chrysaor (Chrysaor Holdings Limited, 2007), adquirent comptab
 - **L18-GB00BMBVGQ36-F03** · [V] · `context`. «At Completion, the shares in Harbour Energy plc were owned approximately as follows: · EIG Global Energy Partners 36%; · Former EIG shareholders 33%; · Former Premier creditors 18%; · Chrysaor legacy investors 8%; and · Former Premier shareholders 5%.» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/3930143.html).
 - **L18-GB00BMBVGQ36-F04** · [V] · `context`. «Through a reverse takeover, Chrysaor merged with Premier Oil to create Harbour Energy plc.» [Font original](https://www.harbourenergy.com/who-we-are/our-history/).
 - **L18-GB00BMBVGQ36-F05** · [V] · `a`. «Chrysaor was founded in 2007 by Phil Kirk with a £96.5 million investment commitment from Barclays and a US private equity fund managed by NGP (“Natural Gas Partners'”). Phil Kirk, together with some of the CH4 Energy Limited management team, founded the new start-up to focus on UK oil and natural gas development opportunities.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BMBVGQ36-F01** · fundador · 2022-2023 · [V] · `b`. «History and development The Premier Group was founded in 1934 in Scotland to pursue oil and gas exploration and production activities in Trinidad.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000016286.pdf).
+- **L21-GB00BMBVGQ36-F02** · fundador · 2022-2023 · [V] · `b`. «2014 Harbour Energy was founded by private equity firm EIG Global Energy Partners with a goal to build a new global, independent oil and gas company by acquisition.» [Font original](https://www.harbourenergy.com/who-we-are/our-history/).

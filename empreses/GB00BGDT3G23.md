@@ -76,3 +76,7 @@ Entitat rellevant: Rightmove.co.uk, formada el 2000 per Countrywide, Connells, H
 
 - **L18-GB00BGDT3G23-F01** · [V] · `context`. «Rightmove plc floated on the London Stock Exchange in 2006» [Font original](https://plc.rightmove.co.uk/our-history/).
 - **L18-GB00BGDT3G23-F02** · [V] · `e`. «Rightmove.co.uk was formed in 2000 by the top four corporate estate agencies at the time: Countrywide, Connells, Halifax and Royal and Sun Alliance, and was initially free to list with charging introduced in 2002.» [Font original](https://plc.rightmove.co.uk/our-history/).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BGDT3G23-F01** · fundador · 2023 · [V] · `c`. «Peter Brooks-Johnson was appointed Chief Executive Officer on 9 May 2017.» [Font original](https://plc.rightmove.co.uk/content/uploads/2024/03/Rightmove-plc-Annual-Report-2023.pdf).

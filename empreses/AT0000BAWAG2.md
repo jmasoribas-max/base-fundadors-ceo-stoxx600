@@ -96,3 +96,7 @@ Entitat rellevant: Bank für Arbeit und Wirtschaft AG (Arbeiterbank, 1922), nego
 - **L18-AT0000BAWAG2-F04** · [V] · `context`. «BAWAG was first registered in the Companies Register on 16 November 2005 as Pa-Zweiundfünfzigste WTP Beteiligungsverwaltungs GmbH, a limited liability company under Austrian law. With effect as of 5 October 2007, BAWAG's name was changed to "BAWAG Holding GmbH".» [Font original](https://bawaggroup.com/resource/blob/97002/3c0fea3bfad716d1784f424a5f34c539/base-prospectus-2025-04-11-data.pdf).
 - **L18-AT0000BAWAG2-F05** · [V] · `a`. «Bank für Arbeit und Wirtschaft Aktiengesellschaft was founded in 1922 by Dr. Karl Renner, State Chancellor of the First Republic and Federal President of the Second Republic of Austria, as the trade unions' bank.» [Font original](https://bawaggroup.com/resource/blob/97002/3c0fea3bfad716d1784f424a5f34c539/base-prospectus-2025-04-11-data.pdf).
 - **L18-AT0000BAWAG2-F06** · [V] · `a`. «“Arbeiterbank” (workers’ bank) founded by Austrian politician Karl Renner» [Font original](https://share.bawaggroup.com/assets/bawag_group/timeline/2025.html).
+
+## Lot 21 · dades_persona
+
+- **L21-AT0000BAWAG2-F01** · fundador · 2020-2025 · [V] · `b`. «Corporate history and development Bank für Arbeit und Wirtschaft Aktiengesellschaft was founded in 1922 by Dr.» [Font original](https://bawaggroup.com/resource/blob/97002/3c0fea3bfad716d1784f424a5f34c539/base-prospectus-2025-04-11-data.pdf).
