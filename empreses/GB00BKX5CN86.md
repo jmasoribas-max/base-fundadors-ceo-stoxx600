@@ -54,3 +54,14 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 20 · cerca_dubtes
+
+- **L20-GB00BKX5CN86-X01** · context · 2016 · [V] · `context`. «In 2006, JUST EAT launched in the UK under the leadership of David Buttress, who subsequently became Group CEO in 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L20-GB00BKX5CN86-X02** · context · 2016 · [V] · `context`. «Since 2009, the original founders of JUST EAT have not been involved in its operations and, after 2011, have held no ownership interests in JUST EAT.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L20-GB00BKX5CN86-X03** · context · 2016 · [V] · `context`. «It has been a great privilege to work alongside, and then lead, the exceptional team at Just Eat, helping to build the business from the very first restaurant in the UK to the company it is today.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20170210070008_13123746.html).
+- **L20-GB00BKX5CN86-F01** · fundador · 2016 · [V] · `d`. «David joined Just Eat in March 2006 to launch its UK business, and was appointed Chief Executive Officer in January 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/129935706.pdf).
+- **L20-GB00BKX5CN86-F02** · fundador · 2016 · [V] · `d`. «David joined Just Eat UK in early 2006 and was appointed Chief Executive Officer of Just Eat in January 2013, a position he held until 31 March 2017.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166149259.pdf).
+- **L20-GB00BKX5CN86-F03** · fundador · 2016 · [V] · `d`. «The first JUST EAT website was launched in Denmark on 1 August 2001 and, by the end of 2002, the Company was processing on average more than 250 orders per day.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L20-GB00BKX5CN86-F04** · fundador · 2016 · [V] · `d`. «Appointed Group Chief Executive and a director of the Company in 2013, Mr. Buttress joined JUST EAT in March 2006 to launch its UK business.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
+- **L20-GB00BKX5CN86-F05** · fundador · 2016 · [V] · `d`. «Mr. Buttress started his career with Coca-Cola Enterprises at the start of 1998. During his time at Coca-Cola he had a variety of senior sales roles before moving into the internet world with JUST EAT.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64921358.pdf).
