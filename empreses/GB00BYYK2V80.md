@@ -46,3 +46,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Streamline, sistema de pagaments electronics de NatWest Bank (1989), despres RBS WorldPay; Worldpay Group plc es la holding de l IPO del 2015 · origen: corporatiu · fundadors: - · any: 1989.
+
+- **L21-GB00BYYK2V80-F01** · [V] · `context`. «Since separating from RBS at the end of 2010, and through and after its subsequent initial public offering in October 2015, Worldpay has pursued a consistent strategy which has created a platform for growth, initially focused on existing customers inherited at the time of the separation from RBS, and in time growing into new market segments and with entirely independent customer relationships.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/154265263.pdf).

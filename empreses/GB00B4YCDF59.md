@@ -50,3 +50,7 @@ Entitat rellevant: TalkTalk, negoci creat dins Carphone Warehouse (2002/2003) i 
 
 - **L18-GB00B4YCDF59-F01** · [V] · `context`. «In March 2010 we demerged from The Carphone Warehouse Group PLC and listed on the London Stock Exchange as TalkTalk Telecom Group PLC, and are now a constituent of the FTSE 250.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).
 - **L18-GB00B4YCDF59-F02** · [V] · `context`. «The Company was incorporated on 15 December 2009 and on 29 March 2010 the Group became a separately listed entity on the London Stock Exchange, under a court approved scheme of arrangement under part 26 of the Companies Act.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00B4YCDF59-F01** · fundador · 2016 · [V] · `b`. «Chairman: Charles Dunstone (46) Skills and experience: Charles founded the Carphone Warehouse, and created TalkTalk in 2002.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).

@@ -72,3 +72,16 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-GB00BDVZYZ77-C01** · 2019 · [V] · `R1`. «Rico Back, Group Chief Executive Officer, commented:» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20191121070015_14316895.html).
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Royal Mail (servei postal de la Corona des de 1516; servei postal public creat per la Post Office Act de 1660); holding Royal Mail plc de 2013, avui International Distributions Services plc · origen: estat · fundadors: Corona/Estat britanic (Henry VIII, 1516; Post Office Act 1660) · any: 1516.
+
+- **L21-GB00BDVZYZ77-F01** · [V] · `context`. «The Company was incorporated on 6 September 2013 with share capital of £150 divided into 100 ordinary shares of 150 pence each. In connection with Admission, the Group undertook a corporate reorganisation between 12 September 2013 and 19 September 2013 that included the Company becoming the holding company of the Group (the “Corporate Reorganisation”).» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/57670774.pdf).
+- **L21-GB00BDVZYZ77-F02** · [V] · `context`. «With origins dating back to 1516, Royal Mail is one of the oldest organisations in the world.» [Font original](https://www.internationaldistributionservices.com/en/about-us/our-history/).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BDVZYZ77-F03** · fundador · 2023 · [V] · `c`. «The plans now being executed under the leadership of Martin Seidenberg since he became Chief Executive Officer of IDS in August 2023 are delivering clear operational and financial improvements.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000099365/NI-000099365.pdf).
+- **L21-GB00BDVZYZ77-F04** · fundador · 2023 · [V] · `c`. «After a period of instability within Royal Mail and the departure of Simon Thompson as CEO Royal Mail, Martin Seidenberg, former CEO GLS and Executive Director, was appointed as Group CEO with effect from 1 August 2023.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000099365/NI-000099365.pdf).
+- **L21-GB00BDVZYZ77-F05** · fundador · 2023 · [V] · `c`. «Martin Seidenberg, formerly CEO of GLS, became Group CEO in August 2023.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000099365/NI-000099365.pdf).

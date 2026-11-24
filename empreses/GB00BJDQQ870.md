@@ -47,3 +47,14 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Goldsmiths (joieria de Newcastle, 1778), part adquirent de l agrupacio de 2005 amb Mappin & Webb i Watches of Switzerland; avui Watches of Switzerland Group PLC (holding de 2019) · origen: no_trobat · fundadors: - · any: 1778.
+
+- **L21-GB00BJDQQ870-F01** · [V] · `b`. «Goldsmiths was founded in Newcastle, United Kingdom as a jeweller in 1778, and became the first authorised retailer of Rolex watches in the United Kingdom in 1919.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L21-GB00BJDQQ870-F02** · [V] · `b`. «Watches of Switzerland was formed in the United Kingdom as a specialist watch retailer in 1924 and has been selling luxury watches ever since.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L21-GB00BJDQQ870-F03** · [V] · `context`. «In 2013, the Controlling Shareholder acquired the Group.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L21-GB00BJDQQ870-F04** · [V] · `context`. «The Company was incorporated on 20 February 2019 and became the parent of the Group on 24 May 2019 and, as at the date of this Prospectus, has no historical operations of its own.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L21-GB00BJDQQ870-F05** · [V] · `context`. «The Mappin & Webb, Goldsmiths and Watches of Switzerland brands were amalgamated within a single corporate group in 2005 following the acquisition of the Mappin & Webb and Watches of» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).
+- **L21-GB00BJDQQ870-F06** · [V] · `context`. «Switzerland brands by the former owners of the Goldsmiths brand.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223843438.pdf).

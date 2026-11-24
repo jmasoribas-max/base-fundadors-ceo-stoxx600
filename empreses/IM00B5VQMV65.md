@@ -76,3 +76,21 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-IM00B5VQMV65-C01** · 2021 · [V] · `R1`. «Our CEO, Jette Nygaard-Andersen and Deputy CEO and CFO, Rob Wood also attended the Employee Forum» [Font original](https://www.entaingroup.com/media/p4shehf1/2021-annual-report.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-IM00B5VQMV65-F01** · fundador · 2020 · [V] · `c`. «Shay Segev was appointed as CEO and joined the Board on 17 July 2020.» [Font original](https://www.entaingroup.com/media/je3fdzit/entain-2020-annual-report.pdf).
+- **L21-IM00B5VQMV65-F02** · fundador · 2020 · [V] · `c`. «As set out in the Chair’s statement on page 104, Shay Segev was appointed CEO on 17 July 2020 on an annual base salary of £675,000.» [Font original](https://www.entaingroup.com/media/je3fdzit/entain-2020-annual-report.pdf).
+- **L21-IM00B5VQMV65-F03** · fundador · 2020 · [V] · `c`. «Shay Segev was appointed CEO on 17 July 2020 and stepped down from the Board on 21 January 2021.» [Font original](https://www.entaingroup.com/media/je3fdzit/entain-2020-annual-report.pdf).
+- **L21-IM00B5VQMV65-F04** · fundador · 2020 · [V] · `c`. «Jette Nygaard-Andersen was appointed as CEO on 21 January 2021.» [Font original](https://www.entaingroup.com/media/je3fdzit/entain-2020-annual-report.pdf).
+- **L21-IM00B5VQMV65-F05** · fundador · 2021 · [V] · `c`. «Jette Nygaard-Andersen joined the Board in 2019 and was appointed CEO in 2021.» [Font original](https://www.entaingroup.com/media/p4shehf1/2021-annual-report.pdf).
+- **L21-IM00B5VQMV65-F06** · fundador · 2021 · [V] · `c`. «As set out in the Chair’s statement on page 116, Jette Nygaard-Andersen was appointed CEO on 21 January 2021 on a salary of £750,000.» [Font original](https://www.entaingroup.com/media/p4shehf1/2021-annual-report.pdf).
+- **L21-IM00B5VQMV65-F07** · fundador · 2021 · [V] · `c`. «Jette Nygaard-Andersen stepped down as a Non-Executive Director when she was appointed as CEO on 21 January 2021.» [Font original](https://www.entaingroup.com/media/p4shehf1/2021-annual-report.pdf).
+- **L21-IM00B5VQMV65-F08** · fundador · 2022 · [V] · `c`. «Jette Nygaard-Andersen was appointed CEO on 21 January 2021.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000070804/NI-000070804.pdf).
+- **L21-IM00B5VQMV65-F09** · fundador · 2022 · [V] · `c`. «Jette Nygaard-Andersen joined the Board in November 2019 and was appointed CEO on 21 January 2021.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000070804/NI-000070804.pdf).
+- **L21-IM00B5VQMV65-F10** · fundador · 2022 · [V] · `c`. «Jette Nygaard-Andersen was appointed CEO on 21 January 2021, having joined the Board as a Non-Executive Director in 2019.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000070804/NI-000070804.pdf).
+- **L21-IM00B5VQMV65-F11** · fundador · 2023 · [V] · `c`. «Jette Nygaard-Andersen joined the Board as a Non-Executive Director in November 2019, was appointed CEO on 21 January 2021 and stepped down from the Board on 13 December 2023.» [Font original](https://www.entaingroup.com/media/wxxf1k1s/2023-entain-annual-report-2023.pdf).
+- **L21-IM00B5VQMV65-F12** · fundador · 2024 · [V] · `c`. «Board changes Gavin Isaacs was appointed CEO with effect from 2 September 2024.» [Font original](https://www.entaingroup.com/media/0qwlcnr5/entain_annual_report_2024_final.pdf).
+- **L21-IM00B5VQMV65-F13** · fundador · 2024 · [V] · `c`. «Gavin Isaacs was appointed CEO on 2 September 2024.» [Font original](https://www.entaingroup.com/media/0qwlcnr5/entain_annual_report_2024_final.pdf).
+- **L21-IM00B5VQMV65-F14** · fundador · 2024 · [V] · `c`. «Jette Nygaard-Andersen was appointed CEO on 21 January 2021 and stepped down from the Board on 13 December 2023.» [Font original](https://www.entaingroup.com/media/0qwlcnr5/entain_annual_report_2024_final.pdf).
+- **L21-IM00B5VQMV65-F15** · fundador · 2025 · [V] · `c`. «Gavin Isaacs was appointed CEO on 2 September 2024 and stepped down as CEO on 11 February 2025.» [Font original](https://www.entaingroup.com/media/by4fdoyj/entain-annual-report-2025.pdf).

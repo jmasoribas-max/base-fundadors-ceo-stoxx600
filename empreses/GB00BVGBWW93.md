@@ -56,3 +56,7 @@ Entitat rellevant: The Medical Property Investment Fund Limited (Guernsey, const
 - **L18-GB00BVGBWW93-F01** · [V] · `d`. «Assura was incorporated and registered in Guernsey on 7 October 2003 under the Companies (Guernsey) Laws, 1994 to 1996 (as amended) as a limited company under the name “The Medical Property Investment Fund Limited” and was admitted to listing on the Official List on 21 November 2003 as a property investment undertaking.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
 - **L18-GB00BVGBWW93-F02** · [V] · `context`. «In October 2007, Assura changed its name to Assura Group Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
 - **L18-GB00BVGBWW93-F03** · [V] · `context`. «This document has been prepared in connection with a scheme of arrangement pursuant to Part VII of the Companies (Guernsey) Law, 2008, as amended to introduce a new English-incorporated holding company, Assura plc, to the Assura Group (the “Scheme”)» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BVGBWW93-F01** · fundador · 2020-2022 · [V] · `b`. «Spencer Kenyon has managed the Assura portfolio since Assura was incorporated in 2003.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).

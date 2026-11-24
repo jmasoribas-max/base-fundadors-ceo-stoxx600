@@ -55,3 +55,7 @@ Entitat rellevant: Countryside Properties (negoci de promocio residencial fundat
 - **L18-GB00BYPHNG03-F02** · [V] · `b`. «Since Countryside was founded in 1958, we have maintained a belief that placemaking is more than geography.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/123061519.pdf).
 - **L18-GB00BYPHNG03-F03** · [V] · `context`. «Countryside Properties plc was a listed company traded on the LSE from 1972 until 2005, when it was acquired by Copthorn Holdings Limited, at that time a 50/50 joint venture between the Cherry family and Bank of Scotland (part of Lloyds Banking Group plc). Countryside Properties underwent a restructuring of its balance sheet in 2010, and in 2013, the Principal Shareholder acquired control of the Group from a consortium of banks.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/104611490.pdf).
 - **L18-GB00BYPHNG03-F04** · [V] · `context`. «The insertion of the Company as a new holding company constitutes a group reorganisation and will be accounted for using merger accounting principles.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/104611490.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BYPHNG03-F01** · fundador · 2021 · [V] · `b`. «Since Countryside was founded in 1958, we have maintained a belief that placemaking is more than geography.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/123061519.pdf).

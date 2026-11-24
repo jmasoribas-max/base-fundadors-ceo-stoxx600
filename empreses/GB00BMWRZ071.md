@@ -45,3 +45,17 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Dowlais Group plc, creada per Melrose Industries PLC el 2023 per escindir GKN Automotive i GKN Powder Metallurgy (negocis de GKN, amb origen a la Dowlais Ironworks del 1759) · origen: corporatiu · fundadors: - · any: 2023.
+
+- **L21-GB00BMWRZ071-F01** · [V] · `context`. «These businesses have been under the ownership of the Melrose Group prior to the Demerger. Since Melrose’s acquisition of GKN plc in 2018, GKN Automotive and GKN Powder Metallurgy have undergone directed restructuring and have benefitted from substantial investments to promote growth and efficiency across the businesses.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000069751/NI-000069751.pdf).
+- **L21-GB00BMWRZ071-F02** · [V] · `context`. «He started his career at Lucas Industries as an apprentice toolmaker, before moving into marketing, sales and purchasing at FCI Automotive. Liam joined Delphi Automotive in 2012 and subsequently became CEO of Delphi Technologies in December 2017 leading its demerger and admission to the New York Stock Exchange. He subsequently joined GKN Automotive as CEO in 2018.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000069751/NI-000069751.pdf).
+- **L21-GB00BMWRZ071-F03** · [V] · `context`. «1759 Dowlais Ironworks founded The Ironworks is founded in Dowlais, South Wales, and quickly starts producing 1,000 tonnes of iron each year.» [Font original](https://filings.xbrl.org/213800XM8WOFLY6VPC92/2023-12-31/ESEF/GB/0/213800XM8WOFLY6VPC92-2023-12-31/reports/213800XM8WOFLY6VPC92-2023-12-31-T01.xhtml).
+- **L21-GB00BMWRZ071-F04** · [V] · `context`. «Our origins date back to 1759 and a pioneering ironworks in Dowlais, South Wales.» [Font original](https://filings.xbrl.org/213800XM8WOFLY6VPC92/2023-12-31/ESEF/GB/0/213800XM8WOFLY6VPC92-2023-12-31/reports/213800XM8WOFLY6VPC92-2023-12-31-T01.xhtml).
+- **L21-GB00BMWRZ071-F05** · [V] · `e`. «The Company was incorporated in anticipation of the Demerger and, as at 2 March 2023 (being the latest practicable date prior to publication of this Prospectus) (the “Latest Practicable Date”), is wholly owned by Melrose Industries PLC (“Melrose”).» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000069751/NI-000069751.pdf).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BMWRZ071-F06** · fundador · 2023 · [V] · `b`. «Our origins go back to 1759 when an ironworks was established in Dowlais village in South Wales.» [Font original](https://www.aam.com/docs/default-source/uk-listing-prospectus/financial-documents/dowlais-annual-report-and-accounts-2023.pdf).

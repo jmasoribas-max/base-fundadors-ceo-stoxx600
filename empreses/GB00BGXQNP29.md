@@ -132,3 +132,10 @@ Entitat rellevant: Pearl (Pearl Loan Company, 1857; Pearl Assurance), negoci ope
 - **L18-GB00BGXQNP29-F04** · [V] · `context`. «If the Scheme is approved and becomes effective, New Phoenix will become the new holding company of the Group.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/196002852.pdf).
 - **L18-GB00BGXQNP29-F05** · [V] · `context`. «1864 Pearl Life Assurance Loan and Investment Company Limited formed.» [Font original](https://www.phoenixlife.co.uk/about-phoenix-life/our-history).
 - **L18-GB00BGXQNP29-F06** · [V] · `context`. «2010 Pearl Group changes its name to Phoenix Group Holdings» [Font original](https://www.standardlifeplc.com/about/our-history).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BGXQNP29-F01** · fundador · 2019-2025 · [V] · `b`. «1786 Phoenix Assurance established.» [Font original](https://www.phoenixlife.co.uk/about-phoenix-life/our-history).
+- **L21-GB00BGXQNP29-F02** · fundador · 2019-2025 · [V] · `b`. «1857 Pearl Loan Company established.» [Font original](https://www.phoenixlife.co.uk/about-phoenix-life/our-history).
+- **L21-GB00BGXQNP29-F03** · fundador · 2020 · [V] · `c`. «1 Andy Briggs joined the Board of Phoenix Group Holdings plc on 10 February 2020 as Group CEO Designate and became CEO on 10 March 2020.» [Font original](https://library.standardlifeplc.com/fy-20-annual-report-and-accounts.pdf).
+- **L21-GB00BGXQNP29-F04** · fundador · 2021 · [V] · `c`. «Andy Briggs joined the Board of Phoenix Group Holdings plc on 10 February 2020 as Group CEO Designate and became CEO on 10 March 2020.» [Font original](https://library.standardlifeplc.com/phoenix-group-full-year-results-2021.pdf).

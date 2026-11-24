@@ -59,3 +59,17 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Mondi (negoci creat per Anglo American plc el 1967, molí de Merebank, Durban) · origen: corporatiu · fundadors: - · any: 1967.
+
+- **L21-GB00B1CRLC47-F01** · [V] · `context`. «On 3 July 2007, Mondi was demerged from Anglo American plc as an integrated corporate group established under a DLC structure with dual holding companies, Mondi plc, with a premium listing on the LSE and a secondary listing on the JSE, and Mondi Limited, with a primary listing on the JSE.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/shareholder-information/simplification-of-corporate-structure/mondi-plc-prospectus-2019.pdf).
+- **L21-GB00B1CRLC47-F02** · [V] · `a`. «In 1917, entrepreneur Ernest Oppenheimer established Anglo American.» [Font original](https://www.angloamerican.com/our-stories/trusted-corporate-leader/100-years-of-anglo-american).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00B1CRLC47-F03** · fundador · 2016-2023 · [V] · `b`. «Group history In 1967, Anglo American plc founded the Mondi business to build what became the Merebank mill near Durban in South Africa.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/shareholder-information/simplification-of-corporate-structure/mondi-plc-prospectus-2019.pdf).
+- **L21-GB00B1CRLC47-F04** · fundador · 2019 · [V] · `c`. «As announced on 18 February 2020, Andrew King will be appointed as Group CEO with effect from 1 April 2020.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/results-reports-and-presentations/2019/integrated-report-and-financial-statements-2019/mondi_ir_2019_web_complete.pdf).
+- **L21-GB00B1CRLC47-F05** · fundador · 2020 · [V] · `c`. «1 Andrew King became Group CEO in 2020, prior to that he was Group CFO.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/results-reports-and-presentations/2020/integrated-report-and-financial-statements-2020/mondi_integrated-report-2020.pdf).
+- **L21-GB00B1CRLC47-F06** · fundador · 2020 · [V] · `c`. «Dominique Reiniche received tax advice in the year to the value of €2,428 6 As disclosed in the 2019 remuneration report, Andrew King was appointed as Group CEO on 1 April 2020.» [Font original](https://www.mondigroup.com/globalassets/mondigroup.com/investors/results-reports-and-presentations/2020/integrated-report-and-financial-statements-2020/mondi_integrated-report-2020.pdf).

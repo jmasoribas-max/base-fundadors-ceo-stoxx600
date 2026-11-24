@@ -69,3 +69,8 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L15-GB00BYW0PQ60-C02** · 2021 · [V] · `evidencia_ceo` (`R1`). «Mark Allan Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000052729/NI-000052729.pdf).
 - **L15-GB00BYW0PQ60-C03** · 2022 · [V] · `evidencia_ceo` (`R1`). «Mark Allan Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000076547/NI-000076547.pdf).
 - **L15-GB00BYW0PQ60-C04** · 2025 · [V] · `evidencia_ceo` (`R1`). «MARK ALLAN CHIEF EXECUTIVE» [Font original](https://filings.xbrl.org/213800V8IAVKS37D6B88/2026-03-31/ESEF/GB/0/213800V8IAVKS37D6B88-2026-03-31/reports/213800V8IAVKS37D6B88-2026-03-31-T01.xhtml).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BYW0PQ60-F01** · fundador · 2020 · [V] · `c`. «Mark Allan was appointed CEO on 14 April 2020.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000027331/NI-000027331.pdf).
+- **L21-GB00BYW0PQ60-F02** · fundador · 2021 · [V] · `c`. «Mark Allan was appointed CEO in April 2020 and Vanessa Simms was appointed CFO in June 2021 and no increases have been applied since appointment.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000052729/NI-000052729.pdf).

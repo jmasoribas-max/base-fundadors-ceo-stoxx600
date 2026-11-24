@@ -57,3 +57,23 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: CGNU plc (fusio del 2000 de CGU plc i Norwich Union plc; CGU era la fusio del 1998 de Commercial Union i General Accident); reanomenada Aviva plc el 2002 · origen: fusio_iguals · fundadors: Thomas Bignold · any: 2000.
+
+- **L21-GB00BPQY8M80-F01** · [V] · `b`. «Established in Norwich in 1808 as a mutual life insurer. The company was originally known as the Norwich Union Society (or Union Office) for Insurances on Lives and Survivorships. In February 2000 its holding company, Norwich Union plc, announced that it was merging with CGU plc to form CGNU, which was rebranded as Aviva in July 2002.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).
+- **L21-GB00BPQY8M80-F02** · [V] · `b`. «Established in September 1861 as the Commercial Union Assurance Company. The company was formed in response to premium increases following the Great Fire of Tooley Street in June 1861.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).
+- **L21-GB00BPQY8M80-F03** · [V] · `b`. «Established in February 1891 to take over the business, assets, and liabilities of the General Accident and Employers' Liability Assurance Association Ltd, which had been founded in 1885.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).
+- **L21-GB00BPQY8M80-F04** · [V] · `b`. «The General Accident and Employers' Liability Assurance Association was established on 16 December 1885. It was founded by a group of businessmen and landowners from Perthshire, Scotland.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/timeline/1800s/).
+- **L21-GB00BPQY8M80-F05** · [V] · `context`. «Aviva plc Return of Capital Update Issue of B Shares, Share Consolidation and Admission of New Ordinary Shares» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4370359.html).
+- **L21-GB00BPQY8M80-F06** · [V] · `context`. «Incorporated on 9 February 1990» [Font original](https://find-and-update.company-information.service.gov.uk/company/02468686).
+- **L21-GB00BPQY8M80-F07** · [V] · `context`. «CGU plc was created on 2 June 1998 by the merger of Commercial Union and General Accident. The merger had been announced in February of that year.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/timeline/1900s/).
+- **L21-GB00BPQY8M80-F08** · [V] · `context`. «CGU and Norwich Union merged on 30 May 2000. The new company took the name of CGNU plc.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/timeline/2000s/).
+- **L21-GB00BPQY8M80-F09** · [V] · `context`. «CGNU plc changed its name to Aviva plc on 1 July 2002.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/timeline/2000s/).
+- **L21-GB00BPQY8M80-F10** · [V] · `a`. «The Norwich General Assurance Company was established by Thomas Bignold in November 1792 to insure against loss by fire. In 1797, Bignold left the company to establish a mutual fire insurer, the Norwich Union Fire Insurance Society.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).
+- **L21-GB00BPQY8M80-F11** · [V] · `a`. «A particularly severe winter resulting in loss of life prompted Thomas Bignold to establish the Norwich Union Life Insurance Society in 1808. Bignold had founded the Norwich Union Fire Insurance Office 11 years earlier.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/timeline/1800s/).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BPQY8M80-F12** · fundador · 2022 · [V] · `c`. «Amanda Blanc was appointed Group CEO on 6 July 2020 2.» [Font original](https://www.aviva.com/content/dam/aviva-corporate/documents/investors/pdfs/reports/2022/aviva-plc-annual-report-and-accounts-2022.pdf).

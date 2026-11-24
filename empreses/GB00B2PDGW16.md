@@ -71,3 +71,8 @@ Entitat rellevant: WHSmith (negoci obert el 1792 per Henry Walton Smith i la sev
 - **L18-GB00B2PDGW16-F01** · [V] · `context`. «Demerger of Retail and News Distribution businesses becomes effective with the creation of two separately listed entities - WH Smith PLC (formerly the Retail business) and Smiths News PLC (formerly WHSmith News).» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
 - **L18-GB00B2PDGW16-F02** · [V] · `a`. «Established in 1792, WHSmith’s first store was opened by Henry Walton Smith and his wife Anna in Little Grosvenor Street, London.» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
 - **L18-GB00B2PDGW16-F03** · [V] · `a`. «Henry Walton Smith and his wife Anna opened a small newsvendors in Little Grosvenor Street, London. Henry Smith dies a few months later leaving Anna to run the business.» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00B2PDGW16-F01** · fundador · 2016-2019,2021,2023 · [V] · `b`. «Where it all started Established in 1792, WHSmith&rsquo;s first store was opened by Henry Walton Smith and his wife Anna in Little Grosvenor Street, London.» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
+- **L21-GB00B2PDGW16-F02** · fundador · 2016-2019,2021,2023 · [V] · `b`. «This has been key since the Company was founded in 1792, and since we opened our first Travel store over 175 years ago.» [Font original](https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/2024/whsmith_ar24_web.pdf).

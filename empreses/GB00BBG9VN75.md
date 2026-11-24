@@ -56,3 +56,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BBG9VN75-F01** · fundador · 2021 · [V] · `c`. «Peter Herweck was appointed as CEO effective 1 May 2021 and resigned as a member of the Nomination and Governance Committee on 1 May 2021.» [Font original](https://www.aveva.com/content/dam/aveva/documents/about/investors/2022_aveva_integrated_annual_report.pdf.coredownload.pdf).
+- **L21-GB00BBG9VN75-F02** · fundador · 2021 · [V] · `c`. «Base salary Peter Herweck was appointed as CEO in May 2021 and his salary of £760,000 is pro-rated for the time in role.» [Font original](https://www.aveva.com/content/dam/aveva/documents/about/investors/2022_aveva_integrated_annual_report.pdf.coredownload.pdf).
+- **L21-GB00BBG9VN75-F03** · fundador · 2021 · [V] · `c`. «Peter Herweck waived his Non-Executive Director fee until he was appointed CEO on 1 May 2021.» [Font original](https://www.aveva.com/content/dam/aveva/documents/about/investors/2022_aveva_integrated_annual_report.pdf.coredownload.pdf).

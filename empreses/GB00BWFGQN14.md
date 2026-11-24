@@ -110,3 +110,7 @@ Entitat rellevant: Spirax-Sarco (negoci fundat el 1888; holding Spirax-Sarco Eng
 - **L18-GB00BWFGQN14-F02** · [V] · `b`. «Von unserer Gründung im Jahr 1888 bis hin zu unserer Schlüsselrolle bei der Unterstützung der britischen Regierung während des Zweiten Weltkriegs und der raschen Expansion nach dem Krieg in Übersee liegt eine faszinierende Erfolgsgeschichte hinter uns.» [Font original](https://www.spiraxsarco.com/global/de-DE/ueber-uns/geschichte).
 - **L18-GB00BWFGQN14-F03** · [V] · `context`. «The share consolidation will replace every 28 existing Ordinary shares of 25 25 / 26 pence each with 27 new Ordinary shares of 26 12 / 13 pence each.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20150611123701_012386013.html).
 - **L18-GB00BWFGQN14-F04** · [V] · `context`. «Incorporated on 1 January 1958» [Font original](https://find-and-update.company-information.service.gov.uk/company/00596337).
+
+## Lot 21 · dades_persona
+
+- **L21-GB00BWFGQN14-F01** · fundador · 2016-2025 · [V] · `b`. «Since being founded in 1888, we&rsquo;ve become a world-leading global thermal energy and fluid technology solutions Group.» [Font original](https://www.spiraxgroup.com/en/about-us/who-we-are).

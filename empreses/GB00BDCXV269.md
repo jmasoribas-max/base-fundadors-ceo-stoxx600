@@ -50,3 +50,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 21 · Fitxa de fundació
+
+Entitat rellevant: Old Mutual Wealth (Quilter): negoci de Skandia al Regne Unit (llançat per Skandia el 1979, comprat per Old Mutual el 2006) i holding filial d Old Mutual plc constituida el 2007, escindida el 2018 · origen: corporatiu · fundadors: Skandia (grup asseguradora suec) | Old Mutual plc (empreses) · any: 1979.
+
+- **L21-GB00BDCXV269-F01** · [V] · `b`. «Quilter Life Assurance was founded in 1979 to provide innovative retirement, investment and protection products.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/169026230.pdf).
+- **L21-GB00BDCXV269-F02** · [V] · `context`. «The Company is a wholly-owned subsidiary of Old Mutual plc, a FTSE 100 listed group. The Company forms part of the Old Mutual Wealth division of Old Mutual plc, for which it acts as holding company and delivers strategic and governance oversight.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/169026230.pdf).
+- **L21-GB00BDCXV269-F03** · [V] · `context`. «The Company was incorporated and registered as a private company limited by shares in England and Wales on 19 October 2007 with registered number 06404270 under the Companies Act 1985 and re-registered as a public limited company under the Companies Act 2006 on 27 March 2018.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/169026230.pdf).
+- **L21-GB00BDCXV269-F04** · [V] · `context`. «In September 2014, the Group merged all of the Skandia businesses, including its platform, into a single business under the “Old Mutual Wealth” brand. The Group announced in November 2017 that it will list under its new, unifying brand of “Quilter”.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/169026230.pdf).
