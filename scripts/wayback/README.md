@@ -6,7 +6,9 @@ Procés automàtic que arxiva a la Wayback Machine (Internet Archive) els docume
 
 | Fitxer | Origen | Què fa |
 |---|---|---|
-| [`wayback_arxiva.py`](wayback_arxiva.py) | Script de DF, **sense canvis** (SHA-256 `c26f0dd045d76cd4b36cc49c402fdaf505ea04d93798503fc2154f8a353bf55c`; branca `df/fitxers-per-claude`, commit `529f1d0`) | Per a cada URL, busca una captura existent (API `available` i CDX) i, si no n'hi ha, en demana una de nova amb Save Page Now. Les claus només es llegeixen de l'entorn i només s'envien a web.archive.org; no s'imprimeixen enlloc |
+| [`wayback_arxiva.py`](wayback_arxiva.py) | Script de DF (SHA-256 original `c26f0dd045d76cd4b36cc49c402fdaf505ea04d93798503fc2154f8a353bf55c`; branca `df/fitxers-per-claude`, commit `529f1d0`), **adaptat per Claude el 24/11/2026**: només accepta una captura existent si Wayback la va desar amb resposta 200, i amb `--refes` torna a buscar (primer de tot) les URL la captura de les quals no és el document, sense tornar a triar els timestamps dolents | Per a cada URL, busca una captura existent (API `available` i CDX) i, si no n'hi ha, en demana una de nova amb Save Page Now. Les claus només es llegeixen de l'entorn i només s'envien a web.archive.org; no s'imprimeixen enlloc |
+| [`refes_captures.py`](refes_captures.py) | Claude | Abans d'arxivar: treu dels resultats les URL la captura de les quals no és el document (`http_404`, `http_410`, `pdftotext_error`, `binari_no_llegible`, `html_sense_text`) i els seus parells de la verificació, perquè es tornin a buscar i a verificar. Com a molt dues vegades per URL; historial a `wayback/captures_refetes.csv` |
+| [`mostra_control.py`](mostra_control.py) | Claude | Mostra de control: torna a comprovar una mostra aleatòria de parells `cita_ok` amb un codi independent (baixada, extracció de text i normalització pròpies). S'activa amb l'entrada `mostra_control` del flux |
 | [`verifica_cites.py`](verifica_cites.py) | Script de DF (SHA-256 original `0f45779681bf30a3284efc7df3977fd012a5896298da8d0a6cdfc824d9db3d5a`), **adaptat per Claude**: camins com a opcions; no processa parells sense cita; no escriu els parells sense captura (queden pendents); torna a verificar els parells que havien fallat per un error intern de l'script | Baixa la captura `id_` de cada URL, n'extreu el text (`pdftotext` o HTML) i comprova si hi és la cita. No fa servir claus |
 | [`prepara_entrada.py`](prepara_entrada.py) | Claude | Llista les URL de les fonts amb cita (registre i base) en el format de `wayback_arxiva.py` |
 | [`resum.py`](resum.py) | Claude | Resum de l'estat (s'escriu a la branca de resultats) |
@@ -39,3 +41,15 @@ GitHub Actions és gratuït als repositoris públics. En un de privat, el pla gr
 - **Verificació:** 2.545 parells. 733 `cita_ok`, 140 `cita_no_trobada`, 10 `cita_parcial` i 1.662 `captura_no_llegible`.
 - **Error del flux:** 1.537 dels 1.662 `captura_no_llegible` eren `excepció_interna:FeatureNotFound`, perquè el flux no instal·lava `lxml`, l'analitzador HTML que fa servir l'script. Corregit: el flux instal·la `lxml==5.3.0`, i l'script retira aquests parells dels resultats perquè es tornin a verificar. Els altres 125 són PDF de captura malmesos (`pdftotext`) i es mantenen.
 
+
+## Captures que no eren el document (revisió del 24/11/2026)
+
+Revisió dels resultats fins a l'execució 45420730928 (6.880 parells; 5.009 `cita_ok`):
+
+- **166 URL (860 parells) amb captura `http_404`.** Quasi totes (157) són captures de Save Page Now en què el servidor de l'emissor va respondre a Internet Archive amb una pàgina d'error; la resta, captures existents triades per l'API `available`, que no mirava el codi de la captura.
+- **61 URL (unes 430 parells) amb un PDF arxivat que no s'obre** (`pdftotext_error`), sobretot captures indicades a la base antiga.
+- **6 URL** amb una captura binària o un HTML sense text.
+
+Correcció: `wayback_arxiva.py` només accepta captures desades amb resposta 200, i `refes_captures.py` fa que aquestes 233 URL es tornin a buscar a la propera execució (una altra captura bona o una de nova). Si després de dos intents no n'hi ha cap de bona, la URL queda pendent: la cita no es dona per verificada a la captura i cal una font alternativa.
+
+Mostra de control: llançar el flux a mà amb `mostra_control` = 60 (llavor 20261124). El resultat es desa a `wayback/mostra_control_<run>.csv` de la branca `wayback-dades`.
