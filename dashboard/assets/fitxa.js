@@ -51,6 +51,11 @@
     if (el.tagName !== 'A') ev.preventDefault();
     filtra(any);
   });
+  // Un enllaç al mateix hash no dispara «hashchange»: es torna a obrir a mà.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('a[href^="#any-"], a[href^="#p-"]') : null;
+    if (a && a.hash && a.hash === location.hash) { obre(); }
+  });
   window.addEventListener('hashchange', obre);
   obre();
 })();

@@ -62,8 +62,9 @@
     files.forEach(function (tr) { frag.appendChild(tr); });
     tbody.appendChild(frag);
     taula.querySelectorAll('thead button[data-ordre]').forEach(function (b) {
-      if (b.getAttribute('data-ordre') === ordre.clau) { b.setAttribute('aria-sort', ordre.dir > 0 ? 'ascending' : 'descending'); }
-      else { b.removeAttribute('aria-sort'); }
+      var th = b.parentElement;
+      if (b.getAttribute('data-ordre') === ordre.clau) { th.setAttribute('aria-sort', ordre.dir > 0 ? 'ascending' : 'descending'); }
+      else { th.removeAttribute('aria-sort'); }
     });
   }
 
