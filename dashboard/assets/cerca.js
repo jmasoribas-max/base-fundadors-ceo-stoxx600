@@ -101,6 +101,23 @@
     camps.q.focus();
   }
 
+  /* Cada casella de la sèrie obre l'evidència d'aquell any a la fitxa (per delegació:
+     no afegeix pes a la pàgina). Amb el teclat, l'enllaç del nom. */
+  function casella(ev) {
+    var i = ev.target;
+    if (!i || i.tagName !== 'I' || !i.className || !i.parentElement || !i.parentElement.classList.contains('sr')) return null;
+    var idx = Array.prototype.indexOf.call(i.parentElement.children, i);
+    var a = i.closest('tr') ? i.closest('tr').querySelector('.emp-nom') : null;
+    return a && idx >= 0 ? { any: 2016 + idx, a: a, i: i } : null;
+  }
+  tbody.addEventListener('click', function (ev) {
+    var c = casella(ev);
+    if (c) location.href = c.a.getAttribute('href') + '#any-' + c.any;
+  });
+  tbody.addEventListener('mouseover', function (ev) {
+    var c = casella(ev);
+    if (c && !c.i.title) c.i.title = 'Obre ' + c.any;
+  });
   camps.q.addEventListener('input', aplica);
   ['e', 't', 'p', 'm'].forEach(function (k) { camps[k].addEventListener('change', aplica); });
   document.getElementById('f-reset').addEventListener('click', esborra);

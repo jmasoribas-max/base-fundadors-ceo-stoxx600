@@ -3,6 +3,10 @@
 (function () {
   'use strict';
   var doc = document.documentElement;
+  var viuCopia = document.createElement('div');
+  viuCopia.className = 'vh';
+  viuCopia.setAttribute('aria-live', 'polite');
+  document.body.appendChild(viuCopia);
 
   /* ---------- Mode clar / fosc ---------- */
   var SOL = '<svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
@@ -64,18 +68,26 @@
     s.onerror = function () { carregant = false; esperen = []; };
     document.head.appendChild(s);
   }
+  /* Rang: 0 el nom comença així, 1 una paraula del nom, 2 dins del nom, 3 ISIN,
+     4 una paraula d'un CEO, 5 dins d'un nom de CEO, 6 altres noms de la base.
+     En empat: el CEO actual primer, després les empreses amb algun any F, i l'ordre alfabètic. */
   function busca(q) {
     var qn = norm(q), termes = qn.split(' ').filter(Boolean);
     if (!termes.length || !IDX) return [];
     var r = [];
     IDX.forEach(function (e) {
       for (var j = 0; j < termes.length; j++) { if (e.tot.indexOf(termes[j]) < 0) return; }
+      var ceoN = ' ' + norm(e.ceos.join(' ')), ultimN = ' ' + norm(e.ultim);
       var p = e.nomN.indexOf(qn) === 0 ? 0 : (' ' + e.nomN).indexOf(' ' + qn) >= 0 ? 1 : e.nomN.indexOf(qn) >= 0 ? 2 :
-        e.isin.toLowerCase().indexOf(qn) === 0 ? 3 : 4;
-      r.push([p, e]);
+        e.isin.toLowerCase().indexOf(qn) === 0 ? 3 : ceoN.indexOf(' ' + termes[0]) >= 0 ? 4 : ceoN.indexOf(termes[0]) >= 0 ? 5 : 6;
+      var actual = ultimN.indexOf(' ' + termes[0]) >= 0 ? 0 : 1;
+      var f = e.serie.indexOf('F') >= 0 ? 0 : 1;
+      r.push([p, actual, f, e]);
     });
-    r.sort(function (a, b) { return a[0] - b[0] || (a[1].nomN < b[1].nomN ? -1 : a[1].nomN > b[1].nomN ? 1 : 0); });
-    return r.slice(0, 7).map(function (x) { return x[1]; });
+    r.sort(function (a, b) {
+      return a[0] - b[0] || a[1] - b[1] || a[2] - b[2] || (a[3].nomN < b[3].nomN ? -1 : a[3].nomN > b[3].nomN ? 1 : 0);
+    });
+    return r.slice(0, 7).map(function (x) { return x[3]; });
   }
   function resalta(text, termes) {
     var n = norm(text), marques = [];
@@ -114,6 +126,8 @@
     var peu = document.createElement('p');
     peu.className = 'cb-peu';
     pop.appendChild(peu);
+    // Un clic dins del desplegable (també el peu) no treu el focus del camp: així no es tanca abans del clic.
+    pop.addEventListener('mousedown', function (ev) { ev.preventDefault(); });
     var opcions = [], actiu = -1;
 
     function tanca() {
@@ -185,11 +199,29 @@
     });
   });
 
-  /* Drecera «/»: porta al cercador (a Empreses, al de la llista). */
+  /* Drecera «/» (es pot desactivar al peu, WCAG 2.1.4) i Ctrl+K / ⌘K: porten al
+     cercador (a Empreses, al de la llista). */
+  function dreceraActiva() { return (' ' + doc.className + ' ').indexOf(' sense-drecera ') < 0; }
+  var botoDrecera = document.querySelector('.drecera');
+  function pintaDrecera() {
+    if (botoDrecera) botoDrecera.textContent = dreceraActiva() ? 'Desactiva la drecera «/»' : 'Activa la drecera «/»';
+  }
+  if (botoDrecera) {
+    botoDrecera.addEventListener('click', function () {
+      var activa = !dreceraActiva();
+      doc.className = (' ' + doc.className + ' ').replace(' sense-drecera ', ' ').trim() + (activa ? '' : ' sense-drecera');
+      try { localStorage.setItem('fc-drecera', activa ? 'on' : 'off'); } catch (e) { /* sense emmagatzematge */ }
+      pintaDrecera();
+      if (viuCopia) viuCopia.textContent = activa ? 'Drecera «/» activada.' : 'Drecera «/» desactivada. Ctrl+K continua funcionant.';
+    });
+    pintaDrecera();
+  }
   document.addEventListener('keydown', function (ev) {
-    if (ev.key !== '/' || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    var ctrlK = (ev.ctrlKey || ev.metaKey) && !ev.altKey && (ev.key === 'k' || ev.key === 'K');
+    var barra = ev.key === '/' && !ev.ctrlKey && !ev.metaKey && !ev.altKey && dreceraActiva();
+    if (!ctrlK && !barra) return;
     var a = document.activeElement;
-    if (a && (/^(input|textarea|select)$/i.test(a.tagName) || a.isContentEditable)) return;
+    if (barra && a && (/^(input|textarea|select)$/i.test(a.tagName) || a.isContentEditable)) return;
     var camps = Array.prototype.slice.call(document.querySelectorAll('[data-combobox][data-local] input'))
       .concat(Array.prototype.slice.call(document.querySelectorAll('[data-combobox]:not([data-local]) input')));
     for (var i = 0; i < camps.length; i++) {
@@ -198,10 +230,6 @@
   });
 
   /* ---------- Botons de copiar ---------- */
-  var viuCopia = document.createElement('div');
-  viuCopia.className = 'vh';
-  viuCopia.setAttribute('aria-live', 'polite');
-  document.body.appendChild(viuCopia);
   function copiaAntic(text) {
     var t = document.createElement('textarea');
     t.value = text;
@@ -215,12 +243,12 @@
     document.body.removeChild(t);
     return ok;
   }
-  function copia(text, boto, que) {
+  function copia(text, boto, missatge) {
     var original = boto.getAttribute('data-original') || boto.textContent;
     boto.setAttribute('data-original', original);
     function fet(ok) {
       boto.textContent = ok ? 'Copiat ✓' : 'No s\'ha pogut copiar';
-      viuCopia.textContent = ok ? que + ' copiat al porta-retalls.' : 'No s\'ha pogut copiar.';
+      viuCopia.textContent = ok ? missatge : 'No s\'ha pogut copiar.';
       setTimeout(function () { boto.textContent = original; }, 1600);
     }
     if (navigator.clipboard && window.isSecureContext) {
@@ -232,9 +260,11 @@
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest ? ev.target.closest('[data-copia], [data-copia-cita]') : null;
     if (!b) return;
-    if (b.hasAttribute('data-copia')) { copia(b.getAttribute('data-copia'), b, 'Text'); return; }
+    if (b.hasAttribute('data-copia')) { copia(b.getAttribute('data-copia'), b, 'ISIN copiat al porta-retalls.'); return; }
+    // La cita sencera (també quan a la pàgina se'n mostra un fragment).
+    if (b.hasAttribute('data-cita')) { copia(b.getAttribute('data-cita'), b, 'Cita sencera copiada al porta-retalls.'); return; }
     var bloc = b.closest('.ev-ext') || b.closest('.ev');
     var p = bloc ? bloc.querySelector('.cita p') : null;
-    if (p) copia(p.textContent.replace(/\s*\[…\]$/, ''), b, 'Cita');
+    if (p) copia(p.textContent.replace(/\s*\[…\]$/, ''), b, 'Cita copiada al porta-retalls.');
   });
 })();

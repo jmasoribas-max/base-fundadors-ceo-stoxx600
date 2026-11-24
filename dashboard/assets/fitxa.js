@@ -55,6 +55,35 @@
     });
   }
 
+  /* L'any obert a la franja segueix el desplaçament (el primer any visible sota la franja). */
+  var envol = document.querySelector('.rail-envol');
+  var blocs = Array.prototype.slice.call(document.querySelectorAll('li.tl-any'));
+  var pendent = false, triatFins = 0;
+  function segueix() {
+    pendent = false;
+    // Just després de triar un any (franja o hash), mana l'any triat, encara que no pugui pujar del tot.
+    if (!blocs.length || !envol || Date.now() < triatFins) return;
+    var sota = envol.getBoundingClientRect().bottom + 8, triat = null;
+    for (var i = 0; i < blocs.length; i++) {
+      if (blocs[i].getBoundingClientRect().bottom > sota) { triat = blocs[i]; break; }
+    }
+    if (triat) marcaAny(triat.id.slice(4));
+  }
+  window.addEventListener('scroll', function () {
+    if (!pendent) { pendent = true; window.requestAnimationFrame(segueix); }
+  }, { passive: true });
+  /* El nom de l'empresa surt a la franja enganxada quan el títol ja no es veu. */
+  var titol = document.querySelector('.fitxa-cap h1');
+  if (envol && titol && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (ents) {
+      ents.forEach(function (en) { envol.classList.toggle('fixa', !en.isIntersecting); });
+    }).observe(titol);
+  }
+  /* Obrir un any des del seu plegable també el remarca a la franja. */
+  Array.prototype.forEach.call(document.querySelectorAll('details.tl-evid'), function (d) {
+    d.addEventListener('toggle', function () { if (d.open && d.getAttribute('data-any')) marcaAny(d.getAttribute('data-any')); });
+  });
+
   var inici = true;
   function obre() {
     var id = '';
@@ -63,13 +92,13 @@
     if (!el) { inici = false; return; }
     if (/^any-\d{4}$/.test(id)) {
       var plegable = el.querySelector('details.tl-evid');
+      // Triar un any (a la franja o amb un enllaç) l'obre i tanca els altres (acordió).
+      Array.prototype.forEach.call(document.querySelectorAll('details.tl-evid[open]'), function (d) {
+        if (d !== plegable) d.open = false;
+      });
       if (plegable) plegable.open = true;
-      // En obrir la pàgina amb un any, es tanca l'any obert per defecte (l'últim).
-      if (inici) {
-        var def = document.querySelector('details.tl-evid[data-defecte]');
-        if (def && def !== plegable) def.open = false;
-      }
       marcaAny(id.slice(4));
+      triatFins = Date.now() + 600;
     } else {
       if (el.tagName === 'DETAILS') { el.open = true; }
       var pare = el.parentElement;
