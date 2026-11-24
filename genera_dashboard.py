@@ -2221,14 +2221,18 @@ def tipus_extrem(p: dict) -> str:
     return ""
 
 
-def candidats(e: dict, ids_txt: str, a: int, funcions: set[str], noms: list[str], anomena) -> list[dict]:
+def candidats(e: dict, ids_txt: str, a: int, funcions: set[str], noms: list[str], anomena,
+              qualsevol_any: bool = False) -> list[dict]:
     """Proves que sostenen la condició a l'any `a`, en l'ordre de `c1_ids`/`c2_ids`.
     Si la llista està truncada («(+n)»), s'hi afegeixen les proves de la fitxa que
-    compleixen la mateixa regla que estat/estat_files.py."""
+    compleixen la mateixa regla que estat/estat_files.py. Amb `qualsevol_any` (prova de
+    no fundador per parts, decisió del 24/11/2026), les cites de `c2_ids` valen encara que
+    no cobreixin l'any: les parts d'empresa valen per a tots els anys de l'ISIN."""
     ids = primer_id(ids_txt)
     out = []
     for i in ids:
-        out.extend(p for p in e["proves"] if p["id"] == i and a in p["anys"] and prova_valida(p) and set(p["funcio"]) & funcions)
+        out.extend(p for p in e["proves"] if p["id"] == i and (qualsevol_any or a in p["anys"])
+                   and prova_valida(p) and set(p["funcio"]) & funcions)
     if "(+" in (ids_txt or ""):
         for p in e["proves"]:
             if p["id"] in ids or a not in p["anys"] or not prova_valida(p) or not set(p["funcio"]) & funcions:
@@ -2422,8 +2426,10 @@ def linia_vertical(e: dict, index_proves: dict[str, dict], pend: dict, anomena, 
             else:
                 col2 = columna(t2, "", '<p class="sense-cita">Prova no mostrada (criteri de la part pública) · '
                                "<code>font_classificacio_cita</code></p>", sub2(regles2))
-        elif est["c2_fundador"] in ("ok_registre", "rsc_documentat", "cerca_documentada") and ids2:
-            cands2 = candidats(e, est["c2_ids"], a, f2, [], anomena)
+        elif (est["c2_fundador"] in ("ok_registre", "rsc_documentat", "cerca_documentada")
+              or est["c2_fundador"].startswith("ok_prova_")) and ids2:
+            cands2 = candidats(e, est["c2_ids"], a, f2, [], anomena,
+                               qualsevol_any=est["c2_fundador"].startswith("ok_prova_"))
             mostrada2 = tria(cands2, None if sense_etiq else regles_fila)
             codis2: list[str] = regles2
             avis = ""
@@ -2720,8 +2726,12 @@ def pagina_metodologia(ctx: Context, model: dict, E: dict, stats: Counter) -> st
     ])
     condicions = "".join(f"<li><b>{c}</b> {t}</li>" for c, t in (
         ("C1 CEO.", "Hi ha una cita vàlida ([V], amb URL) amb funció CEO que anomena el CEO de la base."),
-        ("C2 Fundador.", "Hi ha una cita vàlida amb funció fundador, o la cita antiga de la base amb URL."),
-        ("C3 Arxiu.", "Almenys una cita de C1 i una de C2 s'han verificat per script a la còpia de Wayback."),
+        ("C2 Fundador.", "Files F: hi ha una cita vàlida que diu que el CEO és fundador. Files P (decisió de Jordi del 24/11/2026): "
+                         "hi ha una prova de no fundador completa, amb una cita per a cada part — a) llista tancada de fundadors sense el CEO; "
+                         "e) origen estatal o corporatiu; b) any de fundació i naixement del CEO (menys de 18 anys); d) any de fundació, "
+                         "ocupador anterior i entrada 3 o més anys després; c) 64 anys o més fins a l'inici del mandat. Les parts les han "
+                         "etiquetat dos lectors independents."),
+        ("C3 Arxiu.", "Almenys una cita de C1 i una de C2 (a les P, una per cada part de la prova) s'han verificat per script a la còpia de Wayback."),
         ("C4 Coherència.", "L'etiqueta quadra amb la regla registrada a la base i la fila no té cap dubte obert a PENDENTS.md."),
     ))
     nivells = "".join([
