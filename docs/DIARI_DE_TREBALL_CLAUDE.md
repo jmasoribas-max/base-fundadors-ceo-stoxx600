@@ -10,7 +10,7 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
 | | Valor |
 |---|---|
 | Última actualització | 23/11/2026, sessió 14 |
-| `main` de referència | `0ad59fc` (PR #27) |
+| `main` de referència | `46dd024` (PR #29) |
 | Files acabades (4 condicions) | 278 de 6.012 (4,6 %): falta sobretot l'arxiu a Wayback (C3) |
 | Files amb evidència de CEO i de fundador (C1 i C2) | 4.941 de 6.012 (82,2 %), amb els lots 13-17 (C1: 5.995, 99,7 %) |
 | Files F | 349 de 349 amb cita de CEO; 329 amb cita de fundador i amb les dues |
@@ -299,4 +299,9 @@ Registre de tot el que fa Claude a la base de fundadors-CEO, perquè no es perdi
   - Verificació: 2.545 parells. 733 `cita_ok`, 140 `cita_no_trobada`, 10 `cita_parcial` i 1.662 `captura_no_llegible`, dels quals 1.537 per `FeatureNotFound`: faltava `lxml` al flux.
   - Corregit al [PR #31](https://github.com/jmasoribas-max/base-fundadors-ceo-stoxx600/pull/31), independent dels PR #29 i #30. Instal·la `lxml`, i l'script torna a verificar els parells amb error intern.
   - Prova en sec de `porta_al_registre.py`: 128 entrades del registre passarien a `cita_verificada_a_captura=si`. S'escriurà quan hi hagi més resultats.
+
+### 24/11/2026 · Sessió 15 · Fusions i Wayback amb la correcció
+
+- **Fusionats per Jordi:** #31 (correcció del Wayback: `lxml`) i #29 (lot 14). He incorporat `main` a la branca del #30 (lots 15-17 i paquet de criteris) i n'he canviat la base a `main`.
+- **Wayback:** la segona execució programada (run 45323146702, encara sense la correcció) va arxivar més URL: 4.603 de 7.599 tenen captura, i 1.511 parells són `cita_ok`. Però 2.579 parells van tornar a fallar per `FeatureNotFound`. Amb el #31 fusionat, he llançat a mà una execució nova, que torna a verificar aquests parells. Revisió programada a les 15:00 UTC.
 
