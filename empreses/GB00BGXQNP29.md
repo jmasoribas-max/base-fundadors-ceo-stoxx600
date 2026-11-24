@@ -121,3 +121,14 @@ Proposta posterior (lot 2, pendent del flux):
 | `L2\|GB00BGXQNP29\|C6` | [V] | PDF complet, pàgina 56 del PDF. |
 | `L2\|GB00BGXQNP29\|C7` | [V] | PDF complet, pàgina 40 del PDF. |
 | `L2\|GB00BGXQNP29\|C8` | [V] | PDF complet, pàgina 87 del PDF. |
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Pearl (Pearl Loan Company, 1857; Pearl Assurance), negoci operatiu del vehicle d LBO Pearl Group, de la SPAC Phoenix Group Holdings (Caiman) i de la holding britanica del 2018 · origen: no_trobat · fundadors: - · any: 1857.
+
+- **L18-GB00BGXQNP29-F01** · [V] · `d`. «1857 Pearl Loan Company established.» [Font original](https://www.phoenixlife.co.uk/about-phoenix-life/our-history).
+- **L18-GB00BGXQNP29-F02** · [V] · `context`. «PGH2 was established in April 2005 in connection with the £1.1 billion acquisition of HHG plc’s closed life companies by, amongst others, TDR Capital Nominees Limited and certain principals of Sun Capital Partners, and was further expanded in connection with the £5 billion acquisition of Resolution plc in May 2008 and the simultaneous sale of certain assets and companies held by Resolution plc to The Royal London Mutual Insurance Society Limited for £1.3 billion.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/118883720.pdf).
+- **L18-GB00BGXQNP29-F03** · [V] · `context`. «The Company was originally formed as a non-operating special purpose acquisition company by Berggruen Acquisition Holdings II Ltd and Marlin Equities IV, LLC to acquire one or more operating businesses with principal activities outside North America.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/118883720.pdf).
+- **L18-GB00BGXQNP29-F04** · [V] · `context`. «If the Scheme is approved and becomes effective, New Phoenix will become the new holding company of the Group.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/196002852.pdf).
+- **L18-GB00BGXQNP29-F05** · [V] · `context`. «1864 Pearl Life Assurance Loan and Investment Company Limited formed.» [Font original](https://www.phoenixlife.co.uk/about-phoenix-life/our-history).
+- **L18-GB00BGXQNP29-F06** · [V] · `context`. «2010 Pearl Group changes its name to Phoenix Group Holdings» [Font original](https://www.standardlifeplc.com/about/our-history).

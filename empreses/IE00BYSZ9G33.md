@@ -40,3 +40,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2017: sector `sense_sector` — ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV]
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Allied Irish Banks, p.l.c., constituida el 1966 per l amalgamacio de Munster and Leinster Bank, Provincial Bank of Ireland i Royal Bank of Ireland · origen: fusio_iguals · fundadors: - · any: 1966.
+
+- **L18-IE00BYSZ9G33-F01** · [V] · `c_AAF64_reserva`. «The Company was incorporated in Ireland on 21 September 1966 as a limited company under the former Companies Act 1963 under the name Allied Irish Banks Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).
+- **L18-IE00BYSZ9G33-F02** · [V] · `context`. «AIB’s origins date back to the amalgamation in 1966 of three long-established banks: the Munster and Leinster Bank Limited (established 1885), the Provincial Bank of Ireland Limited (established 1825) and the Royal Bank of Ireland Limited (established 1836). The Company was incorporated as a limited company on 21 September 1966 and was subsequently re-registered as a public limited company on 2 January 1985.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).

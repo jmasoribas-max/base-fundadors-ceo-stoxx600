@@ -39,3 +39,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2018: sector `sense_sector` — ISIN no trobat als PDF de components 2015-2023 (canvi d ISIN o nom no casat) [NV]
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Rolls-Royce (desenvolupada a partir de Royce Limited, establerta per Henry Royce el 1884; companyia Rolls-Royce formada el 1906), negoci operatiu de Rolls-Royce Holdings plc · origen: persones · fundadors: Henry Royce · any: 1884.
+
+- **L18-GB00BFCMW356-F01** · [V] · `b`. «The official formation of the Rolls-Royce company took place in 1906, following the huge success of its first range of cars.» [Font original](https://www.rolls-royce.com/about/our-history.aspx).
+- **L18-GB00BFCMW356-F02** · [V] · `context`. «Incorporated on 10 February 2011» [Font original](https://find-and-update.company-information.service.gov.uk/company/07524813).
+- **L18-GB00BFCMW356-F03** · [V] · `context`. «Early problems with the RB211 widebody engine led to the company being taken into state ownership in 1971, enabling the completion of the engine’s development and its establishment at the heart of Rolls-Royce’s world-class family of engines.» [Font original](https://www.rolls-royce.com/about/our-history.aspx).
+- **L18-GB00BFCMW356-F04** · [V] · `a`. «Rolls-Royce was developed from the electrical and mechanical business, Royce Limited, established by English engineer Henry Royce in 1884. After building his first motor car in 1904, Royce met Charles Rolls, whose company CS Rolls & Co sold quality cars in London.» [Font original](https://www.rolls-royce.com/about/our-history.aspx).

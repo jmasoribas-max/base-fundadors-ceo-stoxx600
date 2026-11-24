@@ -48,3 +48,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: The Medical Property Investment Fund Limited (Guernsey, constituida el 7/10/2003; Assura Group Limited des del 2007); Assura plc es la holding anglesa del 2015 · origen: no_trobat · fundadors: - · any: 2003.
+
+- **L18-GB00BVGBWW93-F01** · [V] · `d`. «Assura was incorporated and registered in Guernsey on 7 October 2003 under the Companies (Guernsey) Laws, 1994 to 1996 (as amended) as a limited company under the name “The Medical Property Investment Fund Limited” and was admitted to listing on the Official List on 21 November 2003 as a property investment undertaking.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
+- **L18-GB00BVGBWW93-F02** · [V] · `context`. «In October 2007, Assura changed its name to Assura Group Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).
+- **L18-GB00BVGBWW93-F03** · [V] · `context`. «This document has been prepared in connection with a scheme of arrangement pursuant to Part VII of the Companies (Guernsey) Law, 2008, as amended to introduce a new English-incorporated holding company, Assura plc, to the Assura Group (the “Scheme”)» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/82485439.pdf).

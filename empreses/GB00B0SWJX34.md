@@ -65,3 +65,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: London Stock Exchange (borsa regulada nascuda el 1801, constituida per deed of settlement el 1802); part absorbent de Borsa Italiana el 2007; LSEG plc es la holding des del 2006 · origen: no_trobat · fundadors: - · any: 1801.
+
+- **L18-GB00B0SWJX34-F01** · [V] · `context`. «In 2009 non-recurring items included a £484.0 million non-cash impairment, primarily in respect of goodwill recognised on the all share merger with Borsa Italiana.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/26545971.pdf).
+- **L18-GB00B0SWJX34-F02** · [V] · `context`. «On 15 May 2006, London Stock Exchange Group became the holding company of The London Stock Exchange pursuant to a scheme of arrangement made under section 425 of the Companies Act 1985 and replaced The London Stock Exchange as the listed entity. In 2007, LSEG became the holding company of Borsa Italiana.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/72939658.pdf).
+- **L18-GB00B0SWJX34-F03** · [V] · `context`. «LSEG was created in October 2007 (as the London Stock Exchange Group) when London Stock Exchange merged with Milan Stock Exchange, Borsa Italiana.» [Font original](https://www.lseg.com/en/about-us/history).

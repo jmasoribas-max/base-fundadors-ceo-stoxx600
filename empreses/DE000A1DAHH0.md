@@ -100,3 +100,11 @@ Fonts incorporades en aquesta revisió.
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-DE000A1DAHH0-C01** · 2025 · [V] · `R1`. «Jens Birgersson Chief Executive Officer and Chairman of the Board of Management» [Font original](https://brenntagprod-media.e-spirit.cloud/06432017-be1f-41ce-8d1d-564e2a66d213/documents/corporate/investor-relations/2025/annual-report-2025/brenntag_annual-report-2025_en.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: empresa de Philipp Mühsam (Berlin 1874; despres Philipp Mühsam AG i Brenntag), avui Brenntag SE · origen: persones · fundadors: Philipp Mühsam · any: 1874.
+
+- **L18-DE000A1DAHH0-F01** · [V] · `b`. «Since its founding in 1874, Brenntag has successfully expanded to become the global market leader in the distribution of specialty and industrial chemicals, chemical products and ingredients.» [Font original](https://corporate.brenntag.com/en/about/history/).
+- **L18-DE000A1DAHH0-F02** · [V] · `context`. «“Brenntag’s unusual history goes back to the 19th century. A company that traded in grain, eggs and butter developed into the chemicals trading company Philipp Mühsam AG,” explains Prof. Dr Christopher Kopper, author and expert in economic and corporate history. “It was not until the ‘Aryanization’ by the industrialist Stinnes family in 1937 that the name was changed to ‘Brennstoff-, Chemikalien- und Transport AG’, or Brenntag for short.”» [Font original](https://corporate.brenntag.com/en/media/news/brenntag-presents-historical-company-study-on-the-occasion-of-its-150th-anniversary.html).
+- **L18-DE000A1DAHH0-F03** · [V] · `a`. «The book offers a thoroughly researched overview of the history of the company, which was founded in 1874 by Jewish entrepreneur Philipp Mühsam as an egg wholesaler in Berlin, as well as the history of chemical distribution, which has rarely been illuminated in economic history literature to date.» [Font original](https://corporate.brenntag.com/en/media/news/brenntag-presents-historical-company-study-on-the-occasion-of-its-150th-anniversary.html).

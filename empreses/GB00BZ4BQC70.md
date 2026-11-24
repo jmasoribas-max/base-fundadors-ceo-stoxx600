@@ -68,3 +68,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Johnson Matthey (negoci fundat per Percival Norton Johnson a Londres l 1/1/1817; societat Johnson Matthey Plc constituida el 1891) · origen: persones · fundadors: Percival Norton Johnson · any: 1817.
+
+- **L18-GB00BZ4BQC70-F01** · [V] · `context`. «Incorporated on 11 April 1891» [Font original](https://find-and-update.company-information.service.gov.uk/company/00033774).
+- **L18-GB00BZ4BQC70-F02** · [V] · `a`. «On 1st January 1817, the day Percival Norton Johnson got married, he also founded a gold assaying business.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/136866492.pdf).
+- **L18-GB00BZ4BQC70-F03** · [V] · `a`. «On New Year's Day, Percival Norton Johnson founds a business built on his exceptional skill in assaying precious metals.» [Font original](https://matthey.com/about-us/our-heritage).

@@ -36,3 +36,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 ## Lot 14 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L14-GB00BF4HYT85-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Archil Gachechiladze CEO» [Font original](https://filings.xbrl.org/213800XKDG12NQG8VC53/2025-12-31/ESEF/GB/0/213800XKDG12NQG8VC53-2025-12-31/reports/213800XKDG12NQG8VC53-2025-12-31-T01.xhtml).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: JSC Bank of Georgia (constituida el 21/10/1994 per privatitzacio del banc estatal Binsotsbank; arrels que el grup situa el 1903), negoci operatiu de Lion Finance Group PLC · origen: estat · fundadors: - · any: 1994.
+
+- **L18-GB00BF4HYT85-F01** · [V] · `d`. «JSC Bank of Georgia was established on 21 October 1994 as a joint stock company (JSC) under the laws of Georgia.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000117838/NI-000117838.pdf).
+- **L18-GB00BF4HYT85-F02** · [V] · `context`. «On 6 February 2025 Bank of Georgia Group PLC changed its name to Lion Finance Group PLC.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000117838/NI-000117838.pdf).
+- **L18-GB00BF4HYT85-F03** · [V] · `context`. «As part of the Demerger, Bank of Georgia Group PLC was incorporated and on 18 May 2018 issued 39,384,712 ordinary shares in exchange for the entire issued capital of BGEO Group PLC and became the parent company of BGEO.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/216077248.pdf).
+- **L18-GB00BF4HYT85-F04** · [NV] · `e`. «JSC Bank of Georgia, a successor to the state-owned bank, was established through privatisation.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/216077248.pdf).

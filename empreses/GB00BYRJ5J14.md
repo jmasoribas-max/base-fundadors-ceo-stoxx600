@@ -60,6 +60,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - **L12-GB00BYRJ5J14-C02** · 2022 · [V] · `R3`. «In December 2022, Harry Hyman, Chief Executive Officer (“CEO”), expressed his intention to retire from his role at the Company’s Annual General Meeting (“AGM”) in 2024.» [Font original](https://www.phpgroup.co.uk/media/fxclk44o/primary_health_properties_plc_annual_report_2022.pdf).
 - **L12-GB00BYRJ5J14-C03** · 2020 · [V] · `R3`. «Harry Hyman was accountable to the Board, in his capacity as the Managing Director of the Adviser, for the day-to-day management of the Group» [Font original](https://www.phpgroup.co.uk/media/muypfnxj/primary-health-properties-plc-annual-report-2020.pdf).
 
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Primary Health Properties PLC (negoci fundat el 1994) · origen: persones · fundadors: Harry Hyman · any: 1994.
+
+- **L18-GB00BYRJ5J14-F01** · [V] · `a`. «The business of PHP was founded by Harry Hyman in 1994 and listed on AIM in 1996 and was admitted to the Official List and to trading on the London Stock Exchange’s main market for listed securities on 5 November 1998 as a premium equity commercial company under Chapter 6 of the Listing Rules.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000015971.pdf).
 ## Correcció de coherència (correccio2_claude)
 
 Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.

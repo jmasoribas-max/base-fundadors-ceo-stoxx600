@@ -49,3 +49,12 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-GB00BMSKPJ95-C01** · 2017 · [V] · `evidencia_ceo` (`R1`). «Simon Breakwell CEO» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/171400491.pdf).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: The Automobile Association (The AA, 1905) · origen: persones · fundadors: - · any: 1905.
+
+- **L18-GB00BMSKPJ95-F01** · [V] · `d`. «The AA was formed in 1905 by a group of motoring enthusiasts in London.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/68708071.pdf).
+- **L18-GB00BMSKPJ95-F02** · [V] · `d`. «The AA was formed in 1905 by a group of motorists who employed cycle scouts to patrol roads and warn motorists of police speed traps through the iconic AA salute.» [Font original](https://www.theaacorporate.com/about-us/company-history).
+- **L18-GB00BMSKPJ95-F03** · [V] · `context`. «In 1999, AA members voted to demutualise the AA and join the Centrica group. In October 2004, the AA was acquired from Centrica by the private equity groups CVC and the Permira Funds, and in 2007 it was brought under common ownership with Saga (which was owned by private equity group Charterhouse) through the Acromas Group.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/68708071.pdf).
+- **L18-GB00BMSKPJ95-F04** · [V] · `context`. «The Company was incorporated in England and Wales on 9 June 2004 with registered number 05149111 under the Companies Act 1985 as a private company limited by shares with the name Fizzbay Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/68708071.pdf).

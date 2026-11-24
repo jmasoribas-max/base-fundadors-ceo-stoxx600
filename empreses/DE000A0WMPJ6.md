@@ -77,3 +77,12 @@ Fonts incorporades en aquesta revisió.
 - [V] `QC2023` · 2023 · ceo · «Dr. Felix Grawert Chairman August 14, 2017 August 13, 2025». Informe anual 2023, composició del consell executiu. Les dates de la taula són de pertinença al consell. La presidència està documentada des del març de 2021 al perfil vigent. URL original https://www.aixtron.com/investoren/publikationen/2023/en/Annual-Report-2023.pdf. Wayback pendent_verificacio_externa (API availability HTTP 503.).
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: AIXTRON (Aachen, 1983); cotitzada: AIXTRON SE (mateixa empresa, canvi de forma juridica) · origen: persones · fundadors: Heinrich Schumann|Holger Jürgensen|Meino Heyen · any: 1983.
+
+- **L18-DE000A0WMPJ6-F01** · [V] · `b`. «1983 // Company founded by employees of the Institute for Semiconductor Technology at RWTH Aachen.» [Font original](https://www.aixtron.com/en/company/about-aixtron/history).
+- **L18-DE000A0WMPJ6-F02** · [V] · `context`. «2005 // Acquired Genus, Inc. (USA) in March and integrated into the portfolio another type of deposition technology (ALD) for the silicon and data storage industry; currently known as AIXTRON Inc., based in» [Font original](https://www.aixtron.com/en/company/about-aixtron/history).
+- **L18-DE000A0WMPJ6-F03** · [V] · `a`. «The company’s founders (from left to right): Heinrich Schumann, Dr. Holger Jürgensen and Dr. Meino Heyen.» [Font original](https://www.aixtron.com/en/company/about-aixtron/history).
+- **L18-DE000A0WMPJ6-F04** · [V] · `a`. «"The future belongs to optoelectronics." With these words, physicist Dr. Holger Jürgensen described his vision, which became a reality in 1983 with the founding of AIXTRON. Together with Dr. Meino Heyen, he developed the first MOCVD research system at RWTH Aachen for a market that did not even exist at the time.» [Font original](https://www.aixtron.com/en/company/about-aixtron/history).

@@ -44,3 +44,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Trainline (divisio de venda de bitllets de Virgin Rail Group creada el 1997); cotitzada: holding Trainline plc de 2019 · origen: corporatiu · fundadors: - · any: 1997.
+
+- **L18-GB00BKDTK925-F01** · [V] · `context`. «In 2006, Trainline was sold by the Virgin Group to Exponent, allowing Trainline to become independent of any particular rail carrier.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/227132935.pdf).
+- **L18-GB00BKDTK925-F02** · [V] · `context`. «The Group was acquired by KKR Victoria Aggregator in January 2015 following which, the Group acquired Capitaine Train S.A.S. (“Captain Train”), a Paris-based online ticket provider, in 2016, which gave the Group access to the technology underpinning Captain Train’s itinerary calculation system and access to the European market.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/227132935.pdf).
+- **L18-GB00BKDTK925-F03** · [V] · `context`. «The Company is a public limited company with registered number 11961132, incorporated on 24 April 2019 as Austin 2019 Limited, a private company limited by shares in the United Kingdom, and re-registered as a public company limited by shares and renamed Trainline plc on 4 June 2019, with its registered office situated in England and Wales.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/227132935.pdf).
+- **L18-GB00BKDTK925-F04** · [V] · `e`. «Trainline was created in 1997 as a wholly-owned ticket retailing division of Virgin Rail Group, selling tickets through a call centre and, beginning in 1999, through an online platform.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/227132935.pdf).

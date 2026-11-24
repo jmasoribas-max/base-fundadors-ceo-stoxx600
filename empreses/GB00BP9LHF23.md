@@ -52,3 +52,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Schroders (societat de J.H. Schröder a Londres, 1804); avui Schroders plc, holding del 2000 (Companies House 03909886) · origen: persones · fundadors: Johann Heinrich Schröder · any: 1804.
+
+- **L18-GB00BP9LHF23-F01** · [V] · `context`. «We are also proposing the sub-division of each Ordinary Share of £1 into 5 New Ordinary Shares with a nominal value of 20 pence each.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000055464/NI-000055464.pdf).
+- **L18-GB00BP9LHF23-F02** · [V] · `context`. «Incorporated on 14 January 2000» [Font original](https://find-and-update.company-information.service.gov.uk/company/03909886).
+- **L18-GB00BP9LHF23-F03** · [V] · `a`. «She is a descendant of John Henry Schroder, co-founder of the Schroders business in 1804.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046185/NI-000046185.pdf).
+- **L18-GB00BP9LHF23-F04** · [V] · `a`. «In 1804, the year of our foundation, a young Johann Heinrich Schröder went into partnership in London with his elder brother.» [Font original](https://www.schroders.com/en/global/individual/about-us/our-history/).

@@ -45,3 +45,11 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Metro Bank (banc fundat el 2010; societat Metro Bank PLC constituida el 2007 com a Metro Bank Limited) · origen: persones · fundadors: Vernon W. Hill, II|Anthony Thomson · any: 2010.
+
+- **L18-GB00BZ6STL67-F01** · [V] · `context`. «The Company was incorporated and registered in England and Wales under the Companies Act 1985 on 6 November 2007, with the registered number 6419578, as a private company limited by shares under the name Metro Bank Limited. It re-registered as a public limited company under the name Metro Bank PLC on 29 September 2009.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/107154991.pdf).
+- **L18-GB00BZ6STL67-F02** · [V] · `a`. «Metro Bank was founded by Vernon W. Hill, II in 2010.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/107154991.pdf).
+- **L18-GB00BZ6STL67-F03** · [V] · `a`. «Vernon Hill, the co-founder of Metro Bank along with chairman Anthony Thomson, hopes to replicate his success in the USA.» [Font original](https://www.bbc.co.uk/news/business-10790996).

@@ -58,3 +58,10 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-GB00BYZDVK82-C01** · 2021 · [V] · `R1`. «Graeme Watt, Softcat CEO, commented,» [Font original](https://data.fca.org.uk/artefacts/NSM/RNS/4554805.html).
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Softcat (negoci de revenda de software iniciat el 1993 per Peter Kelly; societat registrada el 1987 com a Wardswift Limited) · origen: persones · fundadors: Peter Kelly · any: 1993.
+
+- **L18-GB00BYZDVK82-F01** · [V] · `context`. «The Company was incorporated on 7 October 1987 under the name ‘‘Wardswift Limited’’ as a private limited company under the Companies Act 1985 with registered number 2174990. Wardswift Limited was re-registered as a public limited company and changed its name to ‘‘Wardswift Group Public Limited Company’’ on 22 October 1990 and again to ‘‘Softcat plc’’ on 22 September 2000 before being re-registered as a private limited company on 13 May 2005 with the name ‘‘Softcat Limited’’.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/100080469.pdf).
+- **L18-GB00BYZDVK82-F02** · [V] · `a`. «Softcat was founded by Peter Kelly and commenced operations of its software reseller business in 1993.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/100080469.pdf).

@@ -59,3 +59,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: BUWOG (Wohnungsgesellschaft für Bundesbedienstete / Bauen und Wohnen GmbH), creada per la Republica d Austria (1951) · origen: estat · fundadors: - · any: 1951.
+
+- **L18-AT00BUWOG001-F01** · [V] · `b`. «The BUWOG Group has been building rental apartments which it manages in the company’s own portfolio since its foundation in 1951.» [Font original](https://irpages2.eqs.com/Download/Companies/buwog/Annual%20Reports/AT00BUWOG001-JA-2016-EQ-E-00.pdf).
+- **L18-AT00BUWOG001-F02** · [V] · `context`. «The roots of BUWOG reach back to 1951, when it was entered in the commercial register as a not-for-profit housing association with the task of providing housing to federal employees.» [Font original](https://irpages2.eqs.com/Download/Companies/buwog/Annual%20Reports/AT00BUWOG001-JA-2016-EQ-E-00.pdf).
+- **L18-AT00BUWOG001-F03** · [V] · `context`. «Three years later, BUWOG was sold to IMMOFINANZ AG by the Republic of Austria as part of the privatisation process.» [Font original](https://irpages2.eqs.com/Download/Companies/buwog/Annual%20Reports/AT00BUWOG001-JA-2016-EQ-E-00.pdf).
+- **L18-AT00BUWOG001-F04** · [V] · `context`. «The BUWOG Group was established in its current structure at the end of April 2014. In connection with the spin-off from the IMMOFINANZ Group, the BUWOG Group was reorganised – with BUWOG AG serving as the parent company of the BUWOG Group.» [Font original](https://irpages2.eqs.com/Download/Companies/buwog/Annual%20Reports/AT00BUWOG001-JA-2016-EQ-E-00.pdf).

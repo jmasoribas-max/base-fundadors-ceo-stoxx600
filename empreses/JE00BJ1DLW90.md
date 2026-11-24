@@ -57,3 +57,13 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Man Group (negoci de corretatge i boteria de sucre de James Man, Londres, 1783) · origen: persones · fundadors: James Man · any: 1783.
+
+- **L18-JE00BJ1DLW90-F01** · [V] · `context`. «The former holding company of the Group, previously known as E D & F Man Group plc, was incorporated in England and Wales under the Companies Act 1985 (as amended) on 22 April 1994 as a company limited by shares under the name E D & F Man Group Limited, with registered number 02921462 (‘‘Former HoldCo’’).» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/218380543.pdf).
+- **L18-JE00BJ1DLW90-F02** · [V] · `context`. «On 29 September 2000, the name of Former HoldCo was changed to ‘‘Man Group plc’’ (now Man Strategic Holdings Limited).» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/218380543.pdf).
+- **L18-JE00BJ1DLW90-F03** · [V] · `context`. «New Man will be the new holding company of the Group;» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/218380543.pdf).
+- **L18-JE00BJ1DLW90-F04** · [V] · `context`. «Man Group demerges from the agricultural commodities business, known as ED&F Man» [Font original](https://www.man.com/about-us).
+- **L18-JE00BJ1DLW90-F05** · [V] · `a`. «1783 James Man founds the company as a sugar cooperage and brokerage in the City of London» [Font original](https://www.man.com/about-us).

@@ -47,3 +47,12 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Croda (Rawcliffe Bridge, Yorkshire, 1925); Croda International Plc es la mateixa societat (00206132, constituida el 22/5/1925) · origen: persones · fundadors: Mr Crowe|Mr Dawe · any: 1925.
+
+- **L18-GB00BYZWX769-F01** · [V] · `context`. «Incorporated on 22 May 1925» [Font original](https://find-and-update.company-information.service.gov.uk/company/00206132).
+- **L18-GB00BYZWX769-F02** · [V] · `a`. «Our business was founded in 1925 by an entrepreneur, Mr Crowe, and a chemist, Mr Dawe. Our name is taken from their surnames.» [Font original](https://www.croda.com/en-gb/about-us/our-heritage).
+- **L18-GB00BYZWX769-F03** · [V] · `a`. «Croda was founded in 1925 by Mr Crowe and Mr Dawe at a disused waterworks in Yorkshire, UK. They combined the first letters of their surnames to create our name.» [Font original](https://www.croda.com/en-gb/about-us/our-heritage/our-centenary).
+- **L18-GB00BYZWX769-F04** · [V] · `a`. «Founded by Mr Crowe and Mr Dawe at Rawcliffe Bridge, England to make lanolin, a unique wax obtained from refining sheep’s wool. ‘Croda’ comes from combining of the first few letters of our founders’ surnames.» [Font original](https://www.croda.com/en-gb/about-us/our-heritage/our-timeline).

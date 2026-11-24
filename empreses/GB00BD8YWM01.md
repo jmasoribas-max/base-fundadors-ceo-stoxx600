@@ -52,3 +52,13 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 18 · Fitxa de fundació
+
+Entitat rellevant: Micro Focus (negoci de programari COBOL; societat original Micro Focus Limited, constituida el 12/8/1976) · origen: no_trobat · fundadors: - · any: 1976.
+
+- **L18-GB00BD8YWM01-F01** · [V] · `d`. «Incorporated on 12 August 1976» [Font original](https://find-and-update.company-information.service.gov.uk/company/01272886).
+- **L18-GB00BD8YWM01-F02** · [V] · `context`. «On 1 September 2017, the Company completed the acquisition of HPE’s software business (“HPE Software”) by way of merger with a wholly owned subsidiary of HPE incorporated to hold the business of HPE Software in accordance with the terms of the previously announced merger agreement (“Completion”). Accordingly, on Admission, American Depositary Shares representing 222,166,897 Consideration Shares were issued to HPE Shareholders, representing 50.1% of the fully diluted share capital of the Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/265865467.pdf).
+- **L18-GB00BD8YWM01-F03** · [V] · `context`. «The Company is a public limited company, incorporated on 21 May 2004 in England and Wales under the Companies Act 1985 with its registered office situated in England and Wales.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/76109077.pdf).
+- **L18-GB00BD8YWM01-F04** · [V] · `context`. «On Completion, the Company will allot and issue to Wizard 86,595,711 Ordinary Shares, equal to approximately 40 per cent. of the Enlarged Share Capital if the Return of Value is implemented and approximately 38.2 per cent. of the Enlarged Share Capital if the Return of Value is not implemented. As the Merger is classified as a reverse takeover under the Listing Rules» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/76109077.pdf).
+- **L18-GB00BD8YWM01-F05** · [NV] · `context`. «MICRO FOCUS LIMITED 12 Aug 1976 - 15 Feb 1999» [Font original](https://find-and-update.company-information.service.gov.uk/company/01272886).
