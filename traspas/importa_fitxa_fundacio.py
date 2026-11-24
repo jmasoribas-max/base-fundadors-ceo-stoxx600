@@ -134,10 +134,18 @@ def main() -> int:
     ap.add_argument("--resum", nargs="+", required=True)
     ap.add_argument("--descarregues", default="")
     ap.add_argument("--cache", default=str(ROOT / ".cache" / "baixades"))
+    ap.add_argument("--verif", nargs="*", default=[],
+                    help="CSV de la verificació independent (isin,veredicte,motiu,cites_dolentes,correccio): només "
+                         "s'importen les empreses amb veredicte ok, sense les cites que el verificador treu")
     ap.add_argument("--escriu", action="store_true")
     args = ap.parse_args()
     IL.CACHE = Path(args.cache)
     desc = Path(args.descarregues) if args.descarregues else None
+    verif = {}
+    for p in args.verif:
+        with open(p, encoding="utf-8", newline="") as f:
+            for r in csv.DictReader(f):
+                verif[(r.get("isin") or "").strip()] = r
 
     with IL.BASE.open(encoding="utf-8", newline="") as f:
         base = list(csv.DictReader(f))
@@ -161,6 +169,15 @@ def main() -> int:
             rebutjades.append((isin, "", "sense files P"))
             continue
         rm = resum.get(isin, {})
+        if args.verif:
+            v = verif.get(isin)
+            if not v or (v.get("veredicte") or "").strip() != "ok":
+                dubtes.append({"isin": isin, "motiu": f"verificació: {(v or {}).get('veredicte') or 'sense verificar'}",
+                               "notes": ((v or {}).get("motiu") or "")[:400] + " | " + ((v or {}).get("correccio") or "")[:400]})
+                continue
+            dolentes = [x.strip() for x in (v.get("cites_dolentes") or "").split("||") if x.strip()]
+            rs = [r for r in rs if not any(re.sub(r"\s+", " ", r.get("cita_literal") or "").strip().startswith(d[:50])
+                                           for d in dolentes)]
         ceos = noms_ceo(P[isin])
         if (rm.get("ceo_entre_fundadors") or "").strip().lower() == "si":
             dubtes.append({"isin": isin, "motiu": "un CEO és entre els fundadors (contradiu el 0)", "notes": rm.get("notes", "")})
