@@ -208,6 +208,18 @@ Paraules de Jordi a la sessió de Claude del 24/11/2026, resumides (punt 1 de `d
 - **Empresa fundadora que compta.** Amb escissions, fusions, holdings noves o redomiciliacions, s'aplica la metodologia vigent per triar l'empresa (P1-P4, D1 estricta de la regla 26, D10/D10b, D36 i D37).
 - **Ordre de treball.** Primer, la fitxa de fundació de cada empresa: fundadors o origen corporatiu o estatal (prova e), i any de fundació, cadascun amb cita. Les dades de persona (naixement, ocupador anterior) només es busquen per a les files on la prova a o la e no es puguin tancar.
 
+## Decisions de Jordi del 24/11/2026 (tarda): criteris del paquet v2
+
+Paraules de Jordi a la sessió de Claude del 24/11/2026, resumides (preguntes Q2, Q8, Q9 i Q11 de `docs/PAQUET_CRITERIS_v2_20261124.md`). Complementen la regla 25 (P5 i P6) i, si discrepen, manen aquestes.
+
+- **Q2. «Founding member» i expressions semblants compten com a fundador (D37).** «One of the founding members», «one of the co-founding executives», «founding partner», «founding director» i «part of the founding group» (o les traduccions: «fa parte del gruppo fondatore»…) fan la persona fundadora quan l'emissor les diu d'ella i es refereixen a la cotitzada o a una predecessora D1/D10. Queden exclosos, com abans, «founder-led», «founding shareholder» i les cites de fundador d'una altra entitat.
+- **Q3. «CEO fundador» / «founding CEO» sol no compta com a fundador (es manté la P4 i la P6).** Decisió presa després de comprovar quatre casos: a Cellnex i a Metro Bank l'expressió designa el primer CEO (el mateix comunicat de Cellnex diu «founding CEO» en anglès, i el fullet de Metro Bank diu «founded by Vernon W. Hill, II»); a Ocado la persona és fundadora perquè l'emissor també diu «which he established» i «a founder of Ocado». Una persona anomenada «founding CEO» o «CEO fundador» només és fundadora si una altra expressió de la P6 o de la Q2 ho diu.
+- **Q8. President que també és consejero delegado = co-CEO (R1).** Si el document de l'exercici dona el càrrec legal de consejero delegado al president i a un altre conseller, tots dos són CEO per R1 i s'aplica la regla de co-CEO (marca `co_ceo`).
+- **Q9. Telefónica: només el president.** Si el president executiu té el títol de CEO al document de l'exercici i l'emissor qualifica el consejero delegado de COO, el CEO és el president per R1 (marca `ceo_president_exec`), sense co-CEO. La Q9b (títol de CEO només a la traducció anglesa) continua oberta.
+- **Q11. El Gérant d'una SCA és CEO (R1).** Equivalent legal de la P5. Un representant d'una societat Gérante compta si l'emissor l'anomena Gérant.
+
+Aquestes decisions no canvien `dades/` per si soles: s'apliquen en un lot de correcció, amb cita, registre i el flux vigent (secció 8).
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. El text complet vigent és `docs/METODOLOGIA_3_Articles_v0.10.10.md` (SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`), afegit al repositori el 23/11/2026; `docs/METODOLOGIA.md` n'és la porta d'entrada. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
