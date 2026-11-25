@@ -177,6 +177,9 @@ def fragments(t: str, nom: str, nom_panell: str) -> list[tuple[tuple, str]]:
             if cognoms and not any(re.search(r"(?<![\w])(" + re.escape(x) + "|" + re.escape(x.upper()) + r")(?![\w])", w)
                                    for x in cognoms):
                 continue
+            # capçaleres de taula amb anys (lot 27: «Chief Executive 2025 20 24 2023…») i fragments massa curts
+            if len(re.findall(r"(?<!\d)(?:19|20)\s?\d{2}(?!\d)", w)) >= 3 or len(w.split()) < 3:
+                continue
             if re.search(r"\b\d{1,3}[,.]\d{3}\b|\d\s?%", w):
                 continue  # taules (accions, percentatges)
             # entre el nom i el títol no hi pot haver el nom d'una altra persona
