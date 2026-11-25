@@ -57,3 +57,7 @@ Cap entrada anterior al registre per als anys del lot.
 
 - **L12-JE00BYVQYS01-C01** · 2017 · [V] · `R1`. «MARK DIXON Chief Executive Officer» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/reports-and-presentations/2017/annual-reports-2017.pdf).
 - **L12-JE00BYVQYS01-C02** · 2019 · [V] · `R1`. «MARK DIXON Chief Executive Officer The Chief Executive Officer is responsible» [Font original](https://investors.iwgplc.com/~/media/Files/I/IWG-IR/reports-and-presentations/2020/consolidated-report-and-accounts-2019-final.pdf).
+
+## Lot 26 · segona_font
+
+- **L26-JE00BYVQYS01-F01** · fundador · 2017,2019-2021 · [V] · `D37`. «Chief Executive Officer and founder, Mark is one of Europe’s best known entrepreneurs. Since founding the Regus Group in Brussels, Belgium in 1989, he has achieved a formidable reputation for leadership and innovation.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000000583.pdf).

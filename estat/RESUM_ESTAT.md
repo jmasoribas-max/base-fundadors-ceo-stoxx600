@@ -5,7 +5,7 @@ Fitxer generat per `estat/estat_files.py`. No l'editis a mà. Definicions a [`es
 Entrades llegides:
 
 - `dades/base_isin_any_v8r3.csv` SHA-256 `f64dd4120acf17d2eff4f7d0f581e910ef8ac09f6f3ca7dadb2e7b0e3a36d6e8`
-- `docs/REGISTRE_CANVIS.csv` SHA-256 `ff197829f68506dc2d30daaeb5c20f426e53c9c7a15d174096c74f4fea0f1426` (19.195 entrades)
+- `docs/REGISTRE_CANVIS.csv` SHA-256 `98a8c193cd1b95f76e9fce16305b14c989980ccd0fcfd16ff54345976ef312a3` (19.271 entrades)
 - `PENDENTS.md` SHA-256 `923f2d5261bb7eb1e63464a375488a6bed135b23921c1175594acfe6bc0cd684`
 - `estat/dubtes_tancats.csv` SHA-256 `93457f684d3ec3e9e3ae61b137102e3ddb699916ab11b01b31400430582675a3`
 
@@ -13,19 +13,19 @@ Entrades llegides:
 
 | Etiqueta | Files | C1 CEO | C2 fundador | C1 i C2 | C4 coherent i sense dubtes | C3 arxiu | **Acabades** |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| F (`1`) | 352 | 352 (100,0 %) | 344 (97,7 %) | 344 (97,7 %) | 287 (81,5 %) | 27 (7,7 %) | **22 (6,2 %)** |
+| F (`1`) | 352 | 352 (100,0 %) | 350 (99,4 %) | 350 (99,4 %) | 287 (81,5 %) | 27 (7,7 %) | **22 (6,2 %)** |
 | P (`0`) | 5.621 | 5.603 (99,7 %) | 5.586 (99,4 %) | 5.570 (99,1 %) | 5.549 (98,7 %) | 187 (3,3 %) | **187 (3,3 %)** |
 | NA | 31 | 30 (96,8 %) | 30 (96,8 %) | 30 (96,8 %) | 24 (77,4 %) | 16 (51,6 %) | **13 (41,9 %)** |
 | ND | 8 | 8 (100,0 %) | 8 (100,0 %) | 8 (100,0 %) | 0 (0,0 %) | 0 (0,0 %) | **0 (0,0 %)** |
-| **Total** | 6.012 | 5.993 (99,7 %) | 5.968 (99,3 %) | 5.952 (99,0 %) | 5.860 (97,5 %) | 230 (3,8 %) | **222 (3,7 %)** |
+| **Total** | 6.012 | 5.993 (99,7 %) | 5.974 (99,4 %) | 5.958 (99,1 %) | 5.860 (97,5 %) | 230 (3,8 %) | **222 (3,7 %)** |
 
 ## Embut
 
 | Pas | Files |
 |---|---:|
 | Panell | 6.012 |
-| Amb evidència de CEO i de fundador (C1 i C2) | 5.952 (99,0 %) |
-| … i coherents, sense dubtes oberts (C4) | 5.822 (96,8 %) |
+| Amb evidència de CEO i de fundador (C1 i C2) | 5.958 (99,1 %) |
+| … i coherents, sense dubtes oberts (C4) | 5.827 (96,9 %) |
 | … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 222 (3,7 %) |
 
 ## Què falta, per condició
@@ -35,7 +35,7 @@ Una fila pot tenir més d'una mancança.
 | Mancança | F | P | NA | ND | Total |
 |---|---:|---:|---:|---:|---:|
 | `falta_ceo` | 0 | 18 | 1 | 0 | 19 |
-| `falta_fundador` | 8 | 35 | 1 | 0 | 44 |
+| `falta_fundador` | 2 | 35 | 1 | 0 | 38 |
 | `incoherent` | 0 | 2 | 0 | 0 | 2 |
 | `dubte_obert` | 65 | 70 | 7 | 8 | 150 |
 | `falta_arxiu` | 325 | 5.434 | 15 | 8 | 5.782 |
@@ -56,15 +56,15 @@ Una fila pot tenir més d'una mancança.
 | `ok_prova_a` | 1.925 |
 | `ok_prova_d` | 784 |
 | `ok_prova_e` | 657 |
-| `ok_registre` | 280 |
+| `ok_registre` | 340 |
 | `ok_prova_c` | 120 |
-| `ok_columna_antiga` | 64 |
 | `prova_incompleta` | 35 |
 | `rsc_documentat` | 30 |
 | `ok_prova_b|b` | 24 |
+| `ok_columna_antiga` | 10 |
 | `cerca_documentada` | 8 |
-| `falta` | 8 |
 | `ok_prova_d|d` | 5 |
+| `falta` | 2 |
 | `ok_prova_b|b|b|d|b` | 2 |
 | `falta_rsc` | 1 |
 | `ok_prova_d|b` | 1 |
@@ -88,18 +88,18 @@ Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat
 
 | Valor de `c3_arxiu` | Files |
 |---|---:|
-| `falta_ceo+fundador` | 4.985 |
+| `falta_ceo+fundador` | 4.991 |
 | `falta_fundador` | 498 |
 | `falta_ceo` | 238 |
 | `ok` | 230 |
-| `sense_evidencia` | 60 |
+| `sense_evidencia` | 54 |
 | `falta_fundador_columna_antiga` | 1 |
 
 ## Segons l'estat de certificació antic (`sim_estat_certificacio`)
 
 | Estat antic | Files | C1 i C2 | Acabades |
 |---|---:|---:|---:|
-| `certificada` | 1.773 | 1.751 (98,8 %) | 3 (0,2 %) |
+| `certificada` | 1.773 | 1.757 (99,1 %) | 3 (0,2 %) |
 | `certificada_ceo_pendent` | 108 | 108 (100,0 %) | 7 (6,5 %) |
 | `no_certificada` | 241 | 241 (100,0 %) | 135 (56,0 %) |
 | `fora_mostra_auditoria` | 3.890 | 3.852 (99,0 %) | 77 (2,0 %) |
@@ -108,8 +108,8 @@ Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat
 
 | | Totes les files amb C1 i C2 | Totes les files acabades | Total |
 |---|---:|---:|---:|
-| Empreses amb almenys un any F | 87 | 4 | 90 |
-| Totes les empreses | 1.017 | 30 | 1.040 |
+| Empreses amb almenys un any F | 89 | 4 | 90 |
+| Totes les empreses | 1.019 | 30 | 1.040 |
 
 ## Incoherències del CSV (2 files)
 

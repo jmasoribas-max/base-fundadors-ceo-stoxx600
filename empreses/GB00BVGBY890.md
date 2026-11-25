@@ -38,3 +38,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 ## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L11-GB00BVGBY890-C01** · 2025 · [V] · `evidencia_ceo` (`R1`). «Eamonn O’Hare Chairman and Chief Executive Officer 16 June 2026» [Font original](https://www.annualreports.com/HostedData/AnnualReports/PDF/LSE_ZEG_2026.pdf).
+
+## Lot 26 · segona_font
+
+- **L26-GB00BVGBY890-F01** · fundador · 2025 · [V] · `D37`. «‘‘Founder Directors’’ or ‘‘Executive Directors’’ means Eamonn O’Hare and Robert Samuelson;» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/97667708.pdf).
