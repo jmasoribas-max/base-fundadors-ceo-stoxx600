@@ -72,3 +72,10 @@ Entitat rellevant: Bass (cervesera de Burton-on-Trent, 1777), predecessora direc
 ## Lot 21 · dades_persona
 
 - **L21-GB00BHJYC057-F01** · fundador · 2023 · [V] · `c`. «Elie Maalouf became Group CEO on 1 July 2023 which involved a relocation to the UK.» [Font original](https://www.ihgplc.com/~/media/Files/I/Ihg-Plc/investors/annual-report/2023/ihg-2023-annual-report-and-form-20-f.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BHJYC057-F01** · fundador · 2019-2022 · [V] · `b`. «Keith BARR Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 1 Date of birth July 1970 INTERCONTINENTAL HOTELS GROUP PLC (05134420)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/PBUadeL33AGouc3pvXjBX46VHuY/appointments).
+- **L22-GB00BHJYC057-F02** · fundador · 2019-2025 · [V] · `b`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+- **L22-GB00BHJYC057-F03** · fundador · 2019-2025 · [V] · `b`. «1952 Holiday Inn opens its doors in Memphis, Tennessee On a family trip to Washington DC, businessman Kemmons Wilson has the idea of providing travelling families with comfortable and affordable accommodation they could trust.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+- **L22-GB00BHJYC057-F04** · fundador · 2023-2025 · [V] · `b`. «Elie Wajih MAALOUF Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 1 Date of birth May 1964 INTERCONTINENTAL HOTELS GROUP PLC (05134420)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/dF9fOzCL_Y5VltOf-3SL2b6W3lI/appointments).

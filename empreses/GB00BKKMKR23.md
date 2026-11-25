@@ -52,3 +52,9 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BKKMKR23-F01** · fundador · 2016-2020 · [V] · `d`. «The Group was formed in 1996 through the merger of two of the then largest composite insurers in the United Kingdom, Royal Insurance Holdings plc and Sun Alliance Group plc.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64564599.pdf).
+- **L22-GB00BKKMKR23-F02** · fundador · 2016-2020 · [V] · `b`. «Stephen Hester, age 53 – Group Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64564599.pdf).
+- **L22-GB00BKKMKR23-F03** · fundador · 2016-2020 · [V] · `d`. «Stephen was appointed as Group Chief Executive and Director in February 2014. Previous roles include Chief Executive Officer, The Royal Bank of Scotland Group plc, 2008-2013, where he led the largest ever corporate restructuring and recovery programme.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/64564599.pdf).

@@ -76,3 +76,7 @@ Entitat rellevant: WHSmith (negoci obert el 1792 per Henry Walton Smith i la sev
 
 - **L21-GB00B2PDGW16-F01** · fundador · 2016-2019,2021,2023 · [V] · `b`. «Where it all started Established in 1792, WHSmith&rsquo;s first store was opened by Henry Walton Smith and his wife Anna in Little Grosvenor Street, London.» [Font original](https://www.whsmithplc.co.uk/our-business/who-we-are/history-and-heritage).
 - **L21-GB00B2PDGW16-F02** · fundador · 2016-2019,2021,2023 · [V] · `b`. «This has been key since the Company was founded in 1792, and since we opened our first Travel store over 175 years ago.» [Font original](https://www.whsmithplc.co.uk/~/media/Files/W/WH-Smith/documents/investors/result-report-presentation/annual-report/2024/whsmith_ar24_web.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00B2PDGW16-F01** · fundador · 2016-2019 · [V] · `b`. «CLARKE, Stephen Martin Correspondence address Greenbridge Road, Swindon, Wiltshire, SN3 3RX Role Resigned Director Date of birth September 1967 Appointed on 1 June 2012 Resigned on 31 October 2019» [Font original](https://find-and-update.company-information.service.gov.uk/company/05202036/officers).

@@ -60,3 +60,7 @@ Entitat rellevant: BBA (obrador de corretges industrials fundat a Escocia el 187
 
 - **L21-GB00BKDM7X41-F01** · fundador · 2020 · [V] · `b`. «Overview BBA Aviation can trace its origins to a small industrial belting works founded in Scotland in 1879.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/97422626.pdf).
 - **L21-GB00BKDM7X41-F02** · fundador · 2020 · [V] · `b`. «Introduction BBA Aviation can trace its origins to a small industrial belting works founded in Scotland in 1879.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/97422626.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BKDM7X41-F01** · fundador · 2020 · [V] · `b`. «JOHNSTONE, Mark Robin Correspondence address 105 Wigmore Street, London, W1U 1QY Role Resigned Director Date of birth September 1968» [Font original](https://find-and-update.company-information.service.gov.uk/company/00053688/officers).

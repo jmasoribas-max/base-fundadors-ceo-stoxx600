@@ -78,3 +78,7 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BGLP8L22-F01** · fundador · 2016-2025 · [V] · `b`. «Company type Public limited Company Incorporated on 2 February 1962» [Font original](https://find-and-update.company-information.service.gov.uk/company/00714275).

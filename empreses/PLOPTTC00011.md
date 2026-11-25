@@ -113,3 +113,9 @@ Entitat rellevant: CD Projekt (fundada el 1994 per Marcin Iwiński i Michał Kic
 ## Lot 21 · dades_persona
 
 - **L21-PLOPTTC00011-F01** · fundador · 2023 · [V] · `b`. «Adam Kiciński – Co-Chair of the Supervisory Board, Member of the Audit Committee Born in 1969, Polish citizenship Key competences and experience: ■ Knowledge of the gamedev industry ■ Management ■ Strategy ■ Marketing & distribution ■ Technology & IT ■ Human Resources Associated with CD PROJEKT RED since its founding in 1994.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
+
+## Lot 22 · pas3_cerca
+
+- **L22-PLOPTTC00011-F01** · fundador · 2023 · [V] · `a`. «In 1994, together with Michał Kiciński, Marcin Iwiński founded a company named CD Projekt, which eventually morphed into the CD PROJEKT RED Group.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
+- **L22-PLOPTTC00011-F02** · fundador · 2023 · [V] · `b`. «In 1994, together with Michał Kiciński, Marcin Iwiński founded a company named CD Projekt, which eventually morphed into the CD PROJEKT RED Group.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
+- **L22-PLOPTTC00011-F03** · fundador · 2023 · [V] · `a`. «In mid-1994, he joined CD PROJEKT RED as the first employee of the newly established company founded by his brother Michał and Marcin Iwiński.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).

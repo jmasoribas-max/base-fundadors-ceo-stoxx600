@@ -54,3 +54,8 @@ Entitat rellevant: TalkTalk, negoci creat dins Carphone Warehouse (2002/2003) i 
 ## Lot 21 · dades_persona
 
 - **L21-GB00B4YCDF59-F01** · fundador · 2016 · [V] · `b`. «Chairman: Charles Dunstone (46) Skills and experience: Charles founded the Carphone Warehouse, and created TalkTalk in 2002.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00B4YCDF59-F01** · fundador · 2016 · [V] · `d`. «Skills and experience: Dido joined TalkTalk in February 2010. Prior to that date Dido was Sainsbury’s convenience director, having been appointed to Sainsbury’s operating board in March 2008.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).
+- **L22-GB00B4YCDF59-F02** · fundador · 2016 · [V] · `b`. «HARDING, Diana Mary, Baroness Correspondence address 11 Evesham Street, London, W11 4AR Role Resigned Director Date of birth November 1967 Appointed on 24 February 2010 Resigned on 10 May 2017» [Font original](https://find-and-update.company-information.service.gov.uk/company/07105891/officers).

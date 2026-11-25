@@ -69,3 +69,9 @@ Fonts incorporades en aquesta revisió.
 - [V] `QC2017EQS` · 2017 · ceo · «Peter Terium Chief Executive Officer (04/2016–12/2017)». Informe anual original d’innogy 2017 distribuït oficialment per EQS. La taula del consell dona l’interval incloent el 31/10/2017. Localització Executive Board, pàg. 4. URL original https://www.eqs-news.com/media/document/b9a36ecf-8c4c-4a74-b5c4-f9f146ede1ac/assets/DE000A2AADD2-JA-2017-EQ-E-01.pdf. Wayback pendent_verificacio_externa (API availability HTTP 503.).
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-DE000A2AADD2-F01** · fundador · 2017-2018 · [V] · `e`. «At the end of 2015, we made the decision to pool the Renewables, Grid and Supply Divisions in a new subsidiary and to list this new company on the stock market. This decision was carried out in 2016. On 1 April 2016, the new company commenced its operations, initially as ‘RWE International SE’.» [Font original](https://www.rwe.com/-/media/RWE/documents/05-investor-relations/finanzkalendar-und-veroeffentlichungen/2016-Q4/RWE-annual-report-2016.pdf).
+- **L22-DE000A2AADD2-F02** · fundador · 2017-2018 · [V] · `e`. «At the end of 2015, we made the decision to pool the Renewables, Grid and Supply Divisions in a new subsidiary and to list this new company on the stock market. This decision was carried out in 2016. On 1 April 2016, the new company commenced its operations, initially as ‘RWE International SE’.» [Font original](https://www.rwe.com/-/media/RWE/documents/05-investor-relations/finanzkalendar-und-veroeffentlichungen/2016-Q4/RWE-annual-report-2016.pdf).
+- **L22-DE000A2AADD2-F03** · fundador · 2017-2018 · [V] · `e`. «It all began in April 1898 with the founding of the Rheinisch-Westfälische Elektrizitätswerk as a public company in Essen, Germany.» [Font original](https://www.rwe.com/en/the-group/history/).

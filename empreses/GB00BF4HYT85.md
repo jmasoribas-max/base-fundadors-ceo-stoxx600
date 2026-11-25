@@ -49,3 +49,7 @@ Entitat rellevant: JSC Bank of Georgia (constituida el 21/10/1994 per privatitza
 ## Lot 21 · dades_persona
 
 - **L21-GB00BF4HYT85-F01** · fundador · 2025 · [V] · `c`. «As detailed elsewhere in this report, Mr Gachechiladze was appointed as Chief Executive Officer of Bank of Georgia Group on 28 January 2019.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/216077248.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BF4HYT85-F01** · fundador · 2025 · [V] · `b`. «Date of birth June 1979» [Font original](https://find-and-update.company-information.service.gov.uk/officers/DG0XhPsc-dWZF603sIPLg4HgoVE/appointments).

@@ -51,3 +51,10 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 - 2025: sector `pendent_extensio_2024_2025` — No s'estén el sector de l'any de la font (any_font=2018) als anys 2024-2025; aquesta extensió la decideix Doctorat i queda com a pendència.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 22 · pas3_cerca
+
+- **L22-PTBCP0AM0015-F01** · fundador · 2018,2024-2025 · [V] · `d`. «O gestor que vai substituir Nuno Amado na presidência executiva do banco completa 54 anos em junho. E, desses, 22 foram passados no BCP. Foi em 1990, depois de se formar em organização e gestão de empresas pelo ISCTE, que Miguel Maya entrou no Banco Português do Atlântico (BPA), com funções na área comercial, segmento de empresas e responsável pela coordenação do gabinete central de análise económica e financeira.» [Font original](https://eco.sapo.pt/2018/03/18/quem-e-miguel-maya-o-novo-ceo-do-bcp-um-gestor-que-nao-foi-feito-a-pressa/).
+- **L22-PTBCP0AM0015-F02** · fundador · 2018,2024-2025 · [V] · `b`. «O gestor que vai substituir Nuno Amado na presidência executiva do banco completa 54 anos em junho.» [Font original](https://eco.sapo.pt/2018/03/18/quem-e-miguel-maya-o-novo-ceo-do-bcp-um-gestor-que-nao-foi-feito-a-pressa/).
+- **L22-PTBCP0AM0015-F03** · fundador · 2018,2024-2025 · [V] · `d`. «O Banco Comercial Português, S.A. (o "Banco") é um Banco de capitais privados, constituído em Portugal em 1985.» [Font original](https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/RelatorioContas/2025/RCBCP2025PT.pdf).
+- **L22-PTBCP0AM0015-F04** · fundador · 2018,2024-2025 · [V] · `d`. «Em 1996, entrou para os quadros do Grupo BCP, tendo sido quadro diretivo desde 1997, e membro da Alta Direção do Grupo desde 1999, altura em que exerceu funções de primeira linha no BCP e no BIM – Banco Internacional de Moçambique, S.A.» [Font original](https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/RelatorioContas/2025/RCBCP2025PT.pdf).

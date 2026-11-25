@@ -77,3 +77,9 @@ Entitat rellevant: CGNU plc (fusio del 2000 de CGU plc i Norwich Union plc; CGU 
 ## Lot 21 · dades_persona
 
 - **L21-GB00BPQY8M80-F12** · fundador · 2022 · [V] · `c`. «Amanda Blanc was appointed Group CEO on 6 July 2020 2.» [Font original](https://www.aviva.com/content/dam/aviva-corporate/documents/investors/pdfs/reports/2022/aviva-plc-annual-report-and-accounts-2022.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BPQY8M80-F01** · fundador · 2022-2025 · [V] · `b`. «Established in February 1891 to take over the business, assets, and liabilities of the General Accident and Employers' Liability Assurance Association Ltd, which had been founded in 1885.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).
+- **L22-GB00BPQY8M80-F02** · fundador · 2022-2025 · [V] · `b`. «Established in September 1861 as the Commercial Union Assurance Company.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).
+- **L22-GB00BPQY8M80-F03** · fundador · 2022-2025 · [V] · `b`. «Established in Norwich in 1808 as a mutual life insurer.» [Font original](https://www.aviva.com/about-us/our-customers-and-people-overview/our-heritage/legacy-companies/).

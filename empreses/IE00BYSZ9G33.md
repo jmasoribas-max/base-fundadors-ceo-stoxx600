@@ -55,3 +55,8 @@ Entitat rellevant: Allied Irish Banks, p.l.c., constituida el 1966 per l amalgam
 - **L21-IE00BYSZ9G33-F03** · fundador · 2017 · [V] · `c`. «Bernard Byrne—Chief Executive Officer, Executive Director Mr Byrne was appointed Chief Executive Officer in May 2015.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).
 - **L21-IE00BYSZ9G33-F04** · fundador · 2017 · [V] · `b`. «The Company was incorporated as a limited company on 21 September 1966 and was subsequently re-registered as a public limited company on 2 January 1985.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).
 - **L21-IE00BYSZ9G33-F05** · fundador · 2017 · [V] · `b`. «The Company was incorporated in Ireland on 21 September 1966 as a limited company under the former Companies Act 1963 under the name Allied Irish Banks Limited.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-IE00BYSZ9G33-F01** · fundador · 2017 · [V] · `d`. «He later became Group Finance Director and Commercial Director with ESB, until he left to join AIB.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).
+- **L22-IE00BYSZ9G33-F02** · fundador · 2017 · [V] · `d`. «Mr Byrne was appointed Chief Executive Officer in May 2015. He joined the Company in May 2010 as Group Chief Financial Officer and member of AIB’s Leadership Team and was co-opted to the Board on 24 June 2011.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137374878.pdf).

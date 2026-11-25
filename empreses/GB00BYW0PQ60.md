@@ -74,3 +74,9 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 
 - **L21-GB00BYW0PQ60-F01** · fundador · 2020 · [V] · `c`. «Mark Allan was appointed CEO on 14 April 2020.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000027331/NI-000027331.pdf).
 - **L21-GB00BYW0PQ60-F02** · fundador · 2021 · [V] · `c`. «Mark Allan was appointed CEO in April 2020 and Vanessa Simms was appointed CFO in June 2021 and no increases have been applied since appointment.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000052729/NI-000052729.pdf).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BYW0PQ60-F01** · fundador · 2017-2025 · [V] · `b`. «Company type Public limited Company Incorporated on 1 July 1955» [Font original](https://find-and-update.company-information.service.gov.uk/company/00551412).
+- **L22-GB00BYW0PQ60-F02** · fundador · 2017-2025 · [V] · `b`. «Our story began in 1944, when Harold Samuel set up Land Securities, carrying out vital work to rebuild communities after World War Two.» [Font original](https://www.landsec.com/en/about/about-landsec).
+- **L22-GB00BYW0PQ60-F03** · fundador · 2020-2025 · [V] · `b`. «ALLAN, Mark Christopher Correspondence address 100 Victoria Street, London, United Kingdom, SW1E 5JL Role Active Director Date of birth April 1972» [Font original](https://find-and-update.company-information.service.gov.uk/company/04369054/officers).

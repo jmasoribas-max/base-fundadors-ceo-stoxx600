@@ -55,3 +55,8 @@ Entitat rellevant: Bass (cervesera de Burton-on-Trent, 1777), predecessora direc
 - **L18-GB00BD8QVH41-F03** · [V] · `context`. «2001 Bass gets a new name: Six Continents plc» [Font original](https://www.ihgplc.com/en/about-us/our-history).
 - **L18-GB00BD8QVH41-F04** · [V] · `context`. «Six Continents plc splits into two, creating a separate hotels and soft drinks company named InterContinental Hotels Group plc (IHG), and a retail business called Mitchells & Butlers plc. The split completes in April 2003 and IHG becomes a standalone company.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
 - **L18-GB00BD8QVH41-F05** · [V] · `a`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+
+## Lot 22 · pas3_cerca
+
+- **L22-GB00BD8QVH41-F01** · fundador · 2017-2018 · [V] · `b`. «Date of birth July 1970 INTERCONTINENTAL HOTELS GROUP PLC (05134420)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/PBUadeL33AGouc3pvXjBX46VHuY/appointments).
+- **L22-GB00BD8QVH41-F02** · fundador · 2017-2018 · [V] · `b`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).
