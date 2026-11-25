@@ -5,7 +5,7 @@ Fitxer generat per `estat/estat_files.py`. No l'editis a mà. Definicions a [`es
 Entrades llegides:
 
 - `dades/base_isin_any_v8r3.csv` SHA-256 `4fdb26df2e687351c8ed1f75654a8848d32b9db92f6eae1937a6c6f2b588bbc5`
-- `docs/REGISTRE_CANVIS.csv` SHA-256 `fc7d62f1c4feb201652e2ad1382264ff996b33e89db3fc3c5e764e32027f76fd` (19.276 entrades)
+- `docs/REGISTRE_CANVIS.csv` SHA-256 `636d15993261e6eab5591ab2cc7af69a1490d84f01aedf11bede21b59c3c92c7` (19.475 entrades)
 - `PENDENTS.md` SHA-256 `923f2d5261bb7eb1e63464a375488a6bed135b23921c1175594acfe6bc0cd684`
 - `estat/dubtes_tancats.csv` SHA-256 `93af8c0a8e9b8131c959c5de7de99e74284e1fd5e2352c7aa3507a674c07dbff`
 
@@ -120,5 +120,5 @@ Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat
 
 ## Avisos (no bloquegen)
 
-- `carrec_no_detectat_a_la_cita`: 125 files
+- `carrec_no_detectat_a_la_cita`: 121 files
 - `prova_C2_diferent_de_regles`: 3250 files
