@@ -56,3 +56,8 @@ Cap entrada anterior al registre per als anys del lot.
 
 - **L12-GB00BNYK8G86-C01** · 2021 · [V] · `R1`. «Poppy Gustafsson OBE Chief Executive Officer 7th September 2022» [Font original](https://ir.darktrace.com/download/Darktrace_Annual_Report_FY2022_Web.pdf).
 - **L12-GB00BNYK8G86-C02** · 2022 · [V] · `R1`. «Poppy Gustafsson OBE Chief Executive Officer 5th September 2023» [Font original](https://ir.darktrace.com/download/Darktrace_Annual_Report_FY2023_Web.pdf).
+
+## Lot 26 · segona_font
+
+- **L26-GB00BNYK8G86-X01** · context · 2021-2022 · [V] · `context`. «Ms. Gustafsson joined the Group as an employee with effect from November 2014, was appointed as a Director of Darktrace Holdings Limited on 11 May 2020, and was appointed to the Board of the Company on 1 April 2021 and has served as the CEO of the Group since 2016.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000024950/NI-000024950.pdf).
+- **L26-GB00BNYK8G86-F01** · fundador · 2021-2022 · [V] · `cita_fundador`. «Gustafsson, who co-founded the firm in 2013 with backing from the late billionaire Mike Lynch, will be replaced by the company’s chief operating officer Jil Popelka , she said on LinkedIn.» [Font original](https://www.cityam.com/darktrace-boss-poppy-gustafsson-to-depart-after-private-equity-takeover/).

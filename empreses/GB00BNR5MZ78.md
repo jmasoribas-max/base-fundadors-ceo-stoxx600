@@ -47,3 +47,8 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 16 · Cerca nova de cites de fundador
 
 - **L16-GB00BNR5MZ78-F01** · 2021-2022 · [V] · `D37`. «Simon Peckham, Chief Executive, co-founder of Melrose, is standing for re-election as Director due to his deep understanding of the Melrose business model, having joined the Company initially in 2003 as Chief Operating Officer, and having been appointed as Chief Executive in 2012.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000046785/NI-000046785.pdf).
+
+## Lot 26 · segona_font
+
+- **L26-GB00BNR5MZ78-X01** · context · 2021-2022 · [V] · `context`. «Simon Peckham, Chief Executive, is standing for re-election as Director due to his deep understanding of the Melrose business model, having joined the Company initially in 2003 as Chief Operating Officer.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000022636/NI-000022636.pdf).
+- **L26-GB00BNR5MZ78-F01** · fundador · 2021-2022 · [V] · `D37`. «Simon Peckham, Chief Executive, co-founder of Melrose, is standing for re-election as Director due to his deep understanding of the Melrose business model, having joined the Company initially in 2003 as Chief Operating Officer, and having been appointed as Chief Executive in 2012.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000073592/NI-000073592.pdf).

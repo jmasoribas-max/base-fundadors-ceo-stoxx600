@@ -15,7 +15,7 @@ Mostra principal (`a_mostra_principal`=1): 5.961 files. 351 F (5.89 %).
 | `founderceo_rob_r25_p8` | 651 | 351 | 4959 | 651 | 0 | 6.61 % |
 | `founderceo_rob_sense_interval` | 38 | 343 | 5580 | 38 | 0 | 5.79 % |
 | `founderceo_rob_conflicte_fonts` | 7 | 358 | 5603 | 0 | 0 | 6.01 % |
-| `founderceo_rob_dues_fonts` | 220 | 132 | 5610 | 219 | 0 | 2.30 % |
+| `founderceo_rob_dues_fonts` | 14 | 337 | 5610 | 14 | 0 | 5.67 % |
 | `founderceo_rob_sense_gestio_externa` | 12 | 343 | 5609 | 0 | 9 | 5.76 % |
 | `founderceo_rob_sense_titol_funcional` | 11 | 347 | 5607 | 0 | 7 | 5.83 % |
 | `founderceo_rob_c_com_nd` | 125 | 345 | 5491 | 125 | 0 | 5.91 % |

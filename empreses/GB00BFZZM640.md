@@ -48,3 +48,7 @@ Cap entrada prèvia del registre per als anys d’aquest ISIN inclosos al lot.
 ## Lot 11 · Traspàs de l'auditoria IA i de l'inventari antic
 
 - **L11-GB00BFZZM640-C01** · 2021 · [V] · `evidencia_ceo` (`R3`). «the S4Capital Board and our Executive Chairman, Sir Martin Sorrell» [Font original](https://www.annualreports.com/HostedData/AnnualReportArchive/s/LSE_SFOR_2021.pdf).
+
+## Lot 26 · segona_font
+
+- **L26-GB00BFZZM640-F01** · fundador · 2021 · [V] · `D37`. «As the founder of the Group, Sir Martin Sorrell has been issued with a B Share which provides him with enhanced control rights.» [Font original](https://www.s4capital.com/annualreport21/pdf/s4capital-annual-report-and-accounts-2021.pdf).

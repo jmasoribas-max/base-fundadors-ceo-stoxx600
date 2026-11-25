@@ -88,3 +88,7 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 - **CO2-482** · 2017 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)
 - **CO2-488** · 2018 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)
 - **CO2-494** · 2019 · `regles`: «cita_fundador» → «D37». Cita de fundador del grup successor: D37 (Q5b)
+
+## Lot 26 · segona_font
+
+- **L26-GB00BDZT6P94-X01** · context · 2016-2019 · [V] · `context`. «With a background in marketing he led the management buy-out from Vardon Attractions to form Merlin in 1999, taking the Company through its successful 2013 Listing on the London Stock Exchange. He has overseen Merlin’s rapid expansion ever since as Chief Executive Officer.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/215069083.pdf).

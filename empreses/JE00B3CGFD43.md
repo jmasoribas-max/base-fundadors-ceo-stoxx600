@@ -52,3 +52,7 @@ Cap entrada anterior al registre per als anys del lot.
 ## Lot 12 · Cerca nova de cites de CEO
 
 - **L12-JE00B3CGFD43-C01** · 2016 · [V] · `R1`. «Overall, the trading outlook for 2017 remains in line with management’s expectations. Mark Dixon Chief Executive Officer 28 February 2017» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/131023445.pdf).
+
+## Lot 26 · segona_font
+
+- **L26-JE00B3CGFD43-F01** · fundador · 2016 · [V] · `D37`. «Chief Executive Officer and founder, Mark Dixon is one of Europe’s best known entrepreneurs. Since founding the Regus Group in Brussels, Belgium in 1989, he has achieved a formidable reputation for leadership and innovation.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/131023445.pdf).

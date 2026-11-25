@@ -18,7 +18,7 @@ Cada columna copia FounderCEO, llevat de les files que tenen el tret que tracta.
 - founderceo_rob_conflicte_fonts (regla 27): el valor alternatiu de la font en conflicte (0 ↔ 1). Inclou
   Steinhoff 2016-2017, que la regla 25 marca com a conflicte_fonts (robustesa a 1).
 - founderceo_rob_dues_fonts (Q6): les files F amb menys de dues fonts diferents (documents) amb una cita de
-  fundador vàlida que anomena el CEO (de qualsevol any de l'ISIN), com a ND. Reprodueix el criteri de
+  fundador vàlida que anomena el CEO (de qualsevol any de l'ISIN, més la cita antiga de la base), com a ND. Reprodueix el criteri de
   Villalonga i Amit (2006). Les files P no canvien.
 - founderceo_rob_sense_gestio_externa (Q12): les empreses amb la marca gestio_externa, fora (`exclosa`).
 - founderceo_rob_sense_titol_funcional (Q14): sense la persona amb el títol funcional de co-CEO. Si era l'únic
@@ -113,6 +113,10 @@ def main() -> int:
             docs = {(e.get("url_font") or "").strip() for e in fund_isin.get(r["isin"], [])
                     if any(cg and cg in EF.norm((e.get("cita_literal") or "") + " " + (e.get("notes") or "")) for cg in cognoms)}
             docs |= {(per_id[i].get("url_font") or "").strip() for i in (f.get("c2_ids") or "").split(";") if i in per_id}
+            # La cita de fundador de la columna antiga de la base (font_classificacio_*) també és un document
+            if (r.get("font_classificacio_cita") or "").strip() and (r.get("font_classificacio_url") or "").startswith("http"):
+                docs.add(r["font_classificacio_url"].strip())
+            docs.discard("")
             val["founderceo_rob_dues_fonts"] = fc if len(docs) >= 2 else ND
         else:
             val["founderceo_rob_dues_fonts"] = fc
