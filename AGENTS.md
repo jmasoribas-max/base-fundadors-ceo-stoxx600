@@ -251,6 +251,7 @@ Paraules de Jordi a la sessió de Claude del 25/11/2026, resumides (dubtes del l
 - **Covivio:** 0, amb la fundació del 1963 i la marca `data_fundacio_conflicte`, perquè una biografia de l'emissor diu «création en 2001». Kullmann no és fundador transformador (FT). Confirmat i aplicat al lot de correcció 3.
 - **Wirecard:** preval la prova A. 0 per la prova a, amb `conflicte_fonts` (l'RTÉ, font B, diu «founded by Markus Braun») i robustesa a 1. Braun no és FT. Confirmat i aplicat al lot de correcció 3.
 - **Robustesa `founderceo_rob_llista_predecessora_nd`:** les files P tancades només amb la llista de fundadors d'una predecessora es tracten com a ND, perquè en una fusió la llista pot no cobrir totes les parts.
+- **Investec, Bridgepoint, Petrofac i Paysafe:** es mantenen a 1 per la D37 encara que un document A situï l'entrada del CEO després de la fundació. Porten `fundador_transformador`=1 (D37b), com Dassault. Paysafe: la Q1 queda resolta per la D37 i la Q5. Aplicat al lot de correcció 4.
 - **Segona font per als fundadors-CEO:** per a la robustesa de dues fonts (Q6, `n_A + n_B ≥ 2`), es busca una segona font A/B per a les files F que només en tenen una.
 
 Les robusteses les calcula per script `estat/robusteses.py`. Es copien a `dades/` en congelar la base, amb el flux vigent (secció 8).

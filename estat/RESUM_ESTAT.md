@@ -4,8 +4,8 @@ Fitxer generat per `estat/estat_files.py`. No l'editis a mà. Definicions a [`es
 
 Entrades llegides:
 
-- `dades/base_isin_any_v8r3.csv` SHA-256 `f64dd4120acf17d2eff4f7d0f581e910ef8ac09f6f3ca7dadb2e7b0e3a36d6e8`
-- `docs/REGISTRE_CANVIS.csv` SHA-256 `98a8c193cd1b95f76e9fce16305b14c989980ccd0fcfd16ff54345976ef312a3` (19.271 entrades)
+- `dades/base_isin_any_v8r3.csv` SHA-256 `4fdb26df2e687351c8ed1f75654a8848d32b9db92f6eae1937a6c6f2b588bbc5`
+- `docs/REGISTRE_CANVIS.csv` SHA-256 `1bfa4dbb7d0a574e79c7a320675216c74f5f6450401912a810a28816027abc2b` (19.276 entrades)
 - `PENDENTS.md` SHA-256 `923f2d5261bb7eb1e63464a375488a6bed135b23921c1175594acfe6bc0cd684`
 - `estat/dubtes_tancats.csv` SHA-256 `93457f684d3ec3e9e3ae61b137102e3ddb699916ab11b01b31400430582675a3`
 
