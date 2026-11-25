@@ -6,6 +6,10 @@
 # com a secrets del repositori IA_S3_ACCESS i IA_S3_SECRET; si no hi són, aquest pas se
 # salta); (4) comprova si la cita literal és a la captura (id_); (5) desa els resultats a
 # la branca `wayback-dades`. És reprenible: cada execució continua on ho va deixar l'anterior.
+# Abans d'arxivar, les URL la captura de les quals no és el document (pàgina d'error o fitxer
+# que no s'obre) es tornen a buscar com a molt dues vegades (refes_captures.py). Amb
+# `mostra_control` > 0, una mostra de parells `cita_ok` es torna a comprovar amb un codi
+# independent (mostra_control.py).
 name: wayback
 on:
   workflow_dispatch:
@@ -16,6 +20,9 @@ on:
       limit_verifica:
         description: "Màxim d'URL a verificar en aquesta execució"
         default: "400"
+      mostra_control:
+        description: "Parells cita_ok a tornar a comprovar amb el codi independent (0 = cap)"
+        default: "0"
   schedule:
     - cron: "23 */6 * * *"
 permissions:
@@ -31,6 +38,7 @@ jobs:
       TE_CLAUS: ${{ secrets.IA_S3_ACCESS != '' && secrets.IA_S3_SECRET != '' }}
       LIMIT_ARXIU: ${{ github.event.inputs.limit_arxiu || '700' }}
       LIMIT_VERIFICA: ${{ github.event.inputs.limit_verifica || '400' }}
+      MOSTRA_CONTROL: ${{ github.event.inputs.mostra_control || '0' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -50,12 +58,20 @@ jobs:
             git fetch -q origin wayback-dades
             git show origin/wayback-dades:wayback/resultats_arxiu.csv > treball/resultats_arxiu.csv 2>/dev/null || true
             git show origin/wayback-dades:wayback/verificacio_cites.csv > treball/verificacio_cites.csv 2>/dev/null || true
+            git show origin/wayback-dades:wayback/captures_refetes.csv > treball/captures_refetes.csv 2>/dev/null || true
           fi
           if [ ! -s treball/resultats_arxiu.csv ]; then cp wayback/resultats_arxiu_inicial.csv treball/resultats_arxiu.csv; fi
           if [ ! -s treball/verificacio_cites.csv ] && [ -f wayback/verificacio_cites_inicial.csv ]; then
             cp wayback/verificacio_cites_inicial.csv treball/verificacio_cites.csv
           fi
           wc -l treball/*.csv
+      - name: Torna a buscar les captures que no són el document
+        run: >
+          python scripts/wayback/refes_captures.py
+          --resultats treball/resultats_arxiu.csv
+          --verificacio treball/verificacio_cites.csv
+          --historial treball/captures_refetes.csv
+          --sortida treball/refes.csv
       - name: Prepara la llista d'URL
         run: python scripts/wayback/prepara_entrada.py --sortida treball/entrada.csv
       - name: Arxiva a Wayback
@@ -65,7 +81,7 @@ jobs:
         env:
           IA_S3_ACCESS: ${{ secrets.IA_S3_ACCESS }}
           IA_S3_SECRET: ${{ secrets.IA_S3_SECRET }}
-        run: python scripts/wayback/wayback_arxiva.py --input treball/entrada.csv --output treball/resultats_arxiu.csv --limit "$LIMIT_ARXIU"
+        run: python scripts/wayback/wayback_arxiva.py --input treball/entrada.csv --output treball/resultats_arxiu.csv --limit "$LIMIT_ARXIU" --refes treball/refes.csv
       - name: Avís si no hi ha claus
         if: env.TE_CLAUS != 'true'
         run: echo "No hi ha els secrets IA_S3_ACCESS i IA_S3_SECRET; només es verifiquen les URL que ja tenen captura."
@@ -82,6 +98,15 @@ jobs:
           --cache treball/cache
           --log treball/verifica_cites.log
           --limit-urls "$LIMIT_VERIFICA"
+      - name: Mostra de control dels cita_ok
+        if: env.MOSTRA_CONTROL != '0'
+        continue-on-error: true
+        timeout-minutes: 60
+        run: >
+          python scripts/wayback/mostra_control.py
+          --verificacio treball/verificacio_cites.csv
+          --n "$MOSTRA_CONTROL"
+          --sortida treball/mostra_control.csv
       - name: Desa els resultats a la branca wayback-dades
         if: always()
         run: |
@@ -98,6 +123,8 @@ jobs:
           cp treball/resultats_arxiu.csv ../wd/wayback/resultats_arxiu.csv
           [ -f treball/verificacio_cites.csv ] && cp treball/verificacio_cites.csv ../wd/wayback/verificacio_cites.csv
           [ -f treball/INFORME_VERIFICACIO_CITES.md ] && cp treball/INFORME_VERIFICACIO_CITES.md ../wd/wayback/
+          [ -f treball/captures_refetes.csv ] && cp treball/captures_refetes.csv ../wd/wayback/
+          [ -f treball/mostra_control.csv ] && cp treball/mostra_control.csv ../wd/wayback/mostra_control_${GITHUB_RUN_ID}.csv
           python scripts/wayback/resum.py --resultats treball/resultats_arxiu.csv --verificacio treball/verificacio_cites.csv \
             --entrada treball/entrada.csv --commit "$GITHUB_SHA" --run "$GITHUB_RUN_ID" > ../wd/wayback/RESUM.md
           cd ../wd

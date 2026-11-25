@@ -5,6 +5,13 @@
 Claus nomes via variables d'entorn IA_S3_ACCESS i IA_S3_SECRET.
 Mai s'imprimeixen, ni s'escriuen a fitxers ni als logs (ni parcialment).
 Nomes llibreria estandard + requests. verify=True (sense -k).
+
+Adaptació de Claude (24/11/2026), sobre l'script de DF (SHA-256 original
+c26f0dd045d76cd4b36cc49c402fdaf505ea04d93798503fc2154f8a353bf55c):
+  - una captura existent només s'accepta si Wayback la va desar amb resposta HTTP 200
+    (l'API `available` tornava també captures d'una pàgina d'error);
+  - opció --refes: URL la captura de les quals no és el document (segons la verificació);
+    es tornen a buscar encara que tinguin captura indicada, i se n'exclouen els timestamps dolents.
 """
 
 from __future__ import annotations
@@ -140,6 +147,19 @@ def _carrega_fets(path: Path) -> set:
     return fets
 
 
+def _carrega_refes(path: Path) -> dict:
+    """URL a tornar a buscar -> timestamps de captures que no són el document (refes_captures.py)."""
+    refes = {}
+    if not path.is_file():
+        return refes
+    with path.open(newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            url = (row.get("url") or "").strip()
+            if url:
+                refes[url] = set((row.get("timestamps_exclosos") or "").split())
+    return refes
+
+
 def _obre_sortida(path: Path):
     nou = (not path.is_file()) or path.stat().st_size == 0
     f = path.open("a", newline="", encoding="utf-8")
@@ -192,12 +212,17 @@ def _consulta_cdx(sessio, url: str):
     return r
 
 
-def _extreu_available(data: dict):
+def _extreu_available(data: dict, exclou=frozenset()):
     try:
         closest = (data or {}).get("archived_snapshots", {}).get("closest") or {}
     except AttributeError:
         return "", ""
     if not closest or not closest.get("available"):
+        return "", ""
+    # Només una captura desada amb resposta 200 és el document (no una pàgina d'error).
+    if str(closest.get("status") or "").strip() != "200":
+        return "", ""
+    if str(closest.get("timestamp") or "").strip() in exclou:
         return "", ""
     ts = str(closest.get("timestamp") or "").strip()
     wb = str(closest.get("url") or "").strip()
@@ -209,14 +234,16 @@ def _extreu_available(data: dict):
     return ts, wb
 
 
-def _escull_cdx(files, anys_objectiu):
+def _escull_cdx(files, anys_objectiu, exclou=frozenset()):
     """files: llista de [timestamp, status, original] (sense capcalera)."""
     candidats = []
     for row in files:
         if not row or len(row) < 1:
             continue
         ts = str(row[0]).strip()
-        if not ts.isdigit():
+        if not ts.isdigit() or ts in exclou:
+            continue
+        if len(row) > 1 and str(row[1]).strip() not in ("200", ""):
             continue
         orig = str(row[2]).strip() if len(row) > 2 else ""
         candidats.append((ts, orig))
@@ -229,7 +256,7 @@ def _escull_cdx(files, anys_objectiu):
     return ts, _wayback_url(ts, orig) if orig else _wayback_url(ts, orig)
 
 
-def _busca_captura_existent(sessio, url: str, anys_objectiu, pausa: float, max_reintents: int):
+def _busca_captura_existent(sessio, url: str, anys_objectiu, pausa: float, max_reintents: int, exclou=frozenset()):
     """Retorna (timestamp, url_wayback, http_codi, nota) o error via excepcio/tupla."""
     anys = [a for a in anys_objectiu if a and a.isdigit()]
     ts_pref = (anys[0] + "1231") if anys else ""
@@ -271,7 +298,7 @@ def _busca_captura_existent(sessio, url: str, anys_objectiu, pausa: float, max_r
     nota = ""
     if r is not None and r.status_code == 200:
         try:
-            ts, wb = _extreu_available(r.json())
+            ts, wb = _extreu_available(r.json(), exclou)
         except ValueError:
             nota = "available: resposta no JSON"
     elif err:
@@ -291,7 +318,7 @@ def _busca_captura_existent(sessio, url: str, anys_objectiu, pausa: float, max_r
             if not nota:
                 nota = "cdx: resposta no JSON"
         if isinstance(data, list) and len(data) > 1:
-            ts2, wb2 = _escull_cdx(data[1:], anys)
+            ts2, wb2 = _escull_cdx(data[1:], anys, exclou)
             if ts2 and wb2:
                 any_c = _any_de_timestamp(ts2)
                 tag = "cdx (any objectiu)" if (anys and any_c in set(anys)) else "cdx (altra data)"
@@ -467,16 +494,19 @@ def processa(args) -> int:
 
     agrupat = _carrega_input(entrada)
     fets = _carrega_fets(sortida)
+    refes = _carrega_refes(Path(args.refes)) if args.refes else {}
     pendents = []
     indicades = []
     for url, info in agrupat.items():
         if url in fets:
             continue
-        if info["captura_indicada"] and not args.totes:
+        if info["captura_indicada"] and not args.totes and url not in refes:
             indicades.append((url, info))
         else:
             pendents.append((url, info))
 
+    # Primer les URL a refer (la captura anterior no era el document).
+    pendents.sort(key=lambda x: x[0] not in refes)
     if args.limit is not None:
         pendents = pendents[: max(0, args.limit)]
 
@@ -518,7 +548,8 @@ def processa(args) -> int:
             print("Consulta %d/%d" % (i, total_net))
             try:
                 ts, wb, codi, nota = _busca_captura_existent(
-                    sessio, url, info["anys"], args.pausa, args.max_reintents
+                    sessio, url, info["anys"], args.pausa, args.max_reintents,
+                    frozenset(refes.get(url, ())),
                 )
             except requests.RequestException:
                 ts, wb, codi, nota = "", "", "", "excepció de xarxa en la consulta"
@@ -547,6 +578,8 @@ def processa(args) -> int:
                 resultat["missatge"] = (
                     resultat.get("missatge") or ""
                 ) + ((" | consulta prèvia: " + nota) if nota else "")
+            if url in refes and resultat.get("estat") == "capturada":
+                resultat["missatge"] = (resultat.get("missatge") or "") + " (refeta: la captura anterior no era el document)"
             elif nota and resultat.get("estat") == "capturada":
                 resultat["missatge"] = (resultat.get("missatge") or "") + " (no n'hi havia cap d'existent)"
             _escriu(f, writer, resultat)
@@ -605,6 +638,11 @@ def main(argv=None) -> int:
         type=int,
         default=None,
         help="Processa com a molt N URL pendents (prova). No afecta les ja indicades.",
+    )
+    parser.add_argument(
+        "--refes",
+        default="",
+        help="CSV (url, timestamps_exclosos) de refes_captures.py: URL la captura de les quals no és el document",
     )
     args = parser.parse_args(argv)
     if args.pausa < 0:
