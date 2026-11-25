@@ -113,3 +113,7 @@ Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lo
 - **CO5-003** · 2017 · `marques`: «co_ceo» → «co_ceo;dubte_D1». Q1 i regla 26: dubte_D1, amb robustesa D1 àmplia = 1 (es calcula a estat/robusteses.py)
 - **CO5-002** · 2017 · `regles`: «cita_fundador|d» → «d». Regla que sosté el 0: prova d (Skeoch i Gilbert)
 - **CO5-018** · 2017 · `sense_fundador_transformador`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+
+## Lot 28 · dubtes_oberts
+
+- **L28-GB00BVFD7Q58-R01** · revisio_font · 2017 · [V] · `context`. «Martin Gilbert Co-Chief Executive Martin was appointed Director and Co-Chief Executive on 14 August 2017. He is co-founder (and former chief executive) of Aberdeen Asset Management PLC and has been a director since 1983.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166306782.pdf).

@@ -20,6 +20,6 @@ Mostra principal (`a_mostra_principal`=1): 5.961 files. 349 F (5.85 %).
 | `founderceo_rob_sense_titol_funcional` | 11 | 345 | 5609 | 0 | 7 | 5.79 % |
 | `founderceo_rob_c_com_nd` | 125 | 343 | 5493 | 125 | 0 | 5.88 % |
 | `founderceo_rob_llista_predecessora_nd` | 127 | 349 | 5485 | 127 | 0 | 5.98 % |
-| `founderceo_rob_0_documentat` | 37 | 349 | 5576 | 36 | 0 | 5.89 % |
+| `founderceo_rob_0_documentat` | 35 | 349 | 5578 | 34 | 0 | 5.89 % |
 
 `founderceo_rob_llista_predecessora_nd` i la cerca d'una segona font per a les files F amb una sola font: decisió de Jordi del 25/11/2026.
