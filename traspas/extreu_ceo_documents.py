@@ -215,6 +215,8 @@ def main() -> int:
     ap.add_argument("--escriu", action="store_true")
     ap.add_argument("--mostra", default="", help="CSV amb totes les cites proposades, per revisar-les")
     ap.add_argument("--max-docs", type=int, default=12, help="màxim de documents per fila")
+    ap.add_argument("--totes", action="store_true", help="també les files que ja compleixen C1 (p. ex. per substituir "
+                    "una cita d'un altre exercici per una de l'exercici; lot 27)")
     ap.add_argument("--docs", default="", help="CSV isin,any,url,nivell,font,exercici amb els documents de cada fila "
                     "(p. ex. informes ESEF de l'exercici trobats per traspas/troba_esef.py); si s'indica, només es fan servir aquests")
     args = ap.parse_args()
@@ -254,7 +256,7 @@ def main() -> int:
     mostra = []
     for k in lot:
         r, e = base[k], estat[k]
-        if "falta_ceo" not in e["estat"].split("+") or r["FounderCEO"] not in ("0", "1"):
+        if (not args.totes and "falta_ceo" not in e["estat"].split("+")) or r["FounderCEO"] not in ("0", "1"):
             res["fila_ja_coberta_o_fora"] += 1
             continue
         any_fila = int(k[1])
