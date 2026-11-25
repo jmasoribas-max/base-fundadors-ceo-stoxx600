@@ -25,6 +25,8 @@ Cada columna copia FounderCEO, llevat de les files que tenen el tret que tracta.
   CEO de la fila, NA_sense_ceo; a CD Projekt 2018-2021 l'1 és per Iwiński, el co-CEO funcional, i passa a 0
   (anàlisi de criteris, Q14: «4 files passen d'1 a 0»). La resta de files amb la marca són 0 i no canvien.
 - founderceo_rob_c_com_nd: recalcul de la columna existent amb la dependència de la prova c de `c2_depen`.
+- founderceo_rob_0_documentat (opció b del 24/11/2026 i A.4): les files P sense la prova completa per parts,
+  com a ND.
 - founderceo_rob_llista_predecessora_nd (decisió de Jordi del 25/11/2026): les files P tancades només amb
   la llista de fundadors d'una predecessora, com a ND (la llista pot no cobrir totes les parts d'una fusió).
 
@@ -53,7 +55,8 @@ TITOL_FUNCIONAL_FUNDADOR = {("PLOPTTC00011", y) for y in ("2018", "2019", "2020"
 COLS = ["founderceo_rob_regla25_nd", "founderceo_rob_r25_p1p2", "founderceo_rob_r25_p3", "founderceo_rob_r25_p4",
         "founderceo_rob_r25_p6", "founderceo_rob_r25_p7", "founderceo_rob_r25_p8", "founderceo_rob_sense_interval",
         "founderceo_rob_conflicte_fonts", "founderceo_rob_dues_fonts", "founderceo_rob_sense_gestio_externa",
-        "founderceo_rob_sense_titol_funcional", "founderceo_rob_c_com_nd", "founderceo_rob_llista_predecessora_nd"]
+        "founderceo_rob_sense_titol_funcional", "founderceo_rob_c_com_nd", "founderceo_rob_llista_predecessora_nd",
+        "founderceo_rob_0_documentat"]
 
 
 def main() -> int:
@@ -128,6 +131,8 @@ def main() -> int:
 
         val["founderceo_rob_c_com_nd"] = nd_si(("c" in dep) if es_p_parts else (r.get("founderceo_rob_c_com_nd") == ND))
         val["founderceo_rob_llista_predecessora_nd"] = nd_si(es_p_parts and "llista_predecessora" in dep)
+        # Opció b (24/11/2026): un 0 sense totes les parts de la prova no és un 0 documentat (A.4)
+        val["founderceo_rob_0_documentat"] = nd_si(fc == "0" and not es_p_parts)
 
         out.append({"isin": r["isin"], "any": r["any"], "FounderCEO": fc,
                     "a_mostra_principal": r.get("a_mostra_principal", ""), **val})

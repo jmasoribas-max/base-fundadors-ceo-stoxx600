@@ -63,3 +63,7 @@ Entitat rellevant: Fresnillo plc, creada per Industrias Peñoles (escissio parci
 ## Lot 23 · pas3b_cerca
 
 - **L23-GB00B2QPKJ12-F01** · fundador · 2016-2017,2020,2025 · [V] · `e`. «1887 Se constituye la Compañía Minera de Peñoles» [Font original](https://www.penoles.com.mx/nuestro-grupo/acerca-de-penoles/nuestra-historia.html).
+
+## Lot 25 · casos_oberts
+
+- **L25-GB00B2QPKJ12-F01** · fundador · 2016-2017,2020,2025 · [V] · `e`. «Current appointments Total number of appointments 1 Date of birth July 1965 FRESNILLO MANAGEMENT SERVICES LIMITED (06482947)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/fRO9n6koQVRW-_O4jZOqrTVh2rQ/appointments).
