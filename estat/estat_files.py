@@ -107,6 +107,8 @@ RE_CEO_FUNDADOR_REVISAT = re.compile(r"\[ceo_fundador_(?:descartat|resolt)=([^;\
 # Un any de fundació registrat que no és una fundació vàlida (p. ex. holding o vehicle d'una compra, P1) es pot
 # anul·lar amb una etiqueta a les notes d'una entrada vàlida de l'ISIN: [anula any_fundacio=1998; motiu=P1 …]
 RE_ANULA = re.compile(r"\[anula any_fundacio=(\d{4})")
+# Cita verificada a la captura de Wayback: estricta (si) o amb comparació flexible (si_flexible, 25/11/2026)
+VERIFICADA = {"si", "si_flexible"}
 ENTITATS_OK = {"emissor", "predecessora"}  # entitat=matriu: parts de la matriu, només per a la P3 de la prova e
 ORDRE_PERSONA = ("b", "d", "c")
 COLUMNES = [
@@ -329,7 +331,7 @@ def prova_P(es_isin: list[dict], noms: list[str], depen: list | None = None) -> 
         return [t for t in tags if t["part"] == part and mateixa_persona(t["valor"].split(":")[0], nom)]
 
     def verif(grups: list[list[dict]]) -> bool:
-        return all(any(t["_e"].get("cita_verificada_a_captura") == "si" for t in g) for g in grups)
+        return all(any(t["_e"].get("cita_verificada_a_captura") in VERIFICADA for t in g) for g in grups)
 
     def opcions(n: str) -> list[tuple[str, list[list[dict]]]]:
         ops = []
@@ -398,7 +400,7 @@ def prova_P(es_isin: list[dict], noms: list[str], depen: list | None = None) -> 
     suport = []
     for g in grups:
         es = sorted({id(t["_e"]): t["_e"] for t in g}.values(),
-                    key=lambda e: (e.get("cita_verificada_a_captura") != "si", e.get("id_document_o_font") or ""))
+                    key=lambda e: (e.get("cita_verificada_a_captura") not in VERIFICADA, e.get("id_document_o_font") or ""))
         if es and es[0] not in suport:
             suport.append(es[0])
     return prova, suport, presents, verif(grups), ";".join(contradiccio)
@@ -561,11 +563,11 @@ def calcula() -> tuple[list[dict], dict]:
         out.setdefault("c2_parts", "")
 
         # C3 arxiu (a les P, cada part de la prova amb una cita verificada a la captura)
-        a1 = any(e.get("cita_verificada_a_captura") == "si" for e in c1_suport)
+        a1 = any(e.get("cita_verificada_a_captura") in VERIFICADA for e in c1_suport)
         if lab == "0" and out.get("c2_fundador", "").startswith("ok_prova_"):
             a2 = bool(verif_p)
         else:
-            a2 = any(e.get("cita_verificada_a_captura") == "si" for e in c2_suport)
+            a2 = any(e.get("cita_verificada_a_captura") in VERIFICADA for e in c2_suport)
         if not (c1_ok and c2_ok):
             out["c3_arxiu"] = "sense_evidencia"
         elif a1 and a2:

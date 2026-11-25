@@ -14,6 +14,11 @@ Per a cada entrada del registre amb cita i URL (camps `cita_literal` i `url_font
     (la captura existeix però no s'hi ha trobat la cita literal; pot ser una captura d'una altra
     versió del document);
   - si la captura no s'ha pogut llegir: no es toca res (queda pendent).
+Amb `--flexible` (resultats de verifica_flexible.py, Claude, 25/11/2026), per a les entrades que no són `si`:
+  - `cita_ok_altra_captura`: la cita és, exacta, en una altra captura de la mateixa URL → `si`, amb la URL
+    d'aquesta captura;
+  - `cita_ok_flexible` o `cita_ok_flexible_altra_captura`: la cita hi és amb la comparació flexible (espais,
+    guions de final de línia o talls «[…]») → `si_flexible`, amb una nota.
 No sobreescriu un `si` que ja hi fos. No toca FounderCEO ni `dades/`. Per defecte és una prova
 en sec; amb --escriu modifica docs/REGISTRE_CANVIS.csv (mateix format, CRLF).
 
@@ -47,6 +52,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--arxiu", nargs="+", default=[])
     ap.add_argument("--verificacio", nargs="+", required=True)
+    ap.add_argument("--flexible", nargs="*", default=[])
     ap.add_argument("--escriu", action="store_true")
     args = ap.parse_args()
 
@@ -63,6 +69,17 @@ def main() -> int:
                 if (r.get("camp") or "").startswith("registre.url_font"):
                     ver[(r["url"], norm(r.get("cita")))].append(r)
 
+    flex = {}
+    for p in args.flexible:
+        with open(p, encoding="utf-8", newline="") as f:
+            for r in csv.DictReader(f):
+                if (r.get("camp") or "").startswith("registre.url_font") and r.get("estat_flexible", "").startswith("cita_ok"):
+                    k = (r["url"], norm(r.get("cita")))
+                    # preferència: estricta en una altra captura > flexible a la vigent > flexible en una altra
+                    ordre = {"cita_ok_altra_captura": 0, "cita_ok_flexible": 1, "cita_ok_flexible_altra_captura": 2}
+                    if k not in flex or ordre[r["estat_flexible"]] < ordre[flex[k]["estat_flexible"]]:
+                        flex[k] = r
+
     raw = REG.read_bytes().decode("utf-8")
     files = list(csv.reader(io.StringIO(raw, newline="")))
     cap = files[0]
@@ -78,6 +95,27 @@ def main() -> int:
             continue
         if r[c["cita_verificada_a_captura"]] == "si":
             res["ja_era_si"] += 1
+            continue
+        fx = flex.get((url, cita))
+        if fx and "cita_ok" not in {v["estat"] for v in vs}:
+            wbn = fx.get("url_wayback_nova") or fx.get("url_wayback") or ""
+            estricta = fx["estat_flexible"] == "cita_ok_altra_captura"
+            if r[c["cita_verificada_a_captura"]] == "si_flexible" and not estricta:
+                res["ja_era_si_flexible"] += 1
+                continue
+            a = arxiu.get(url) or {}
+            r[c["url_wayback"]] = wbn
+            r[c["wayback_v8r1_estat"]] = "existent"
+            r[c["wayback_v8r1_origen"]] = "github_actions"
+            r[c["wayback_v8r1_metode"]] = ("coincidencia_exacta_normalitzada (altra captura)" if estricta
+                                           else f"comparacio_flexible:{fx.get('detall') or ''}")
+            r[c["wayback_v8r1_timestamp"]] = timestamp(wbn)
+            r[c["cita_verificada_a_captura"]] = "si" if estricta else "si_flexible"
+            nota = (f"[Wayback, GitHub Actions] cita trobada a una altra captura ({timestamp(wbn)})." if estricta else
+                    f"[Wayback, GitHub Actions] cita trobada a la captura {timestamp(wbn)} amb comparació flexible ({fx.get('detall') or ''}).")
+            if nota not in r[c["wayback_v8r1_nota"]]:
+                r[c["wayback_v8r1_nota"]] = (r[c["wayback_v8r1_nota"]] + " " + nota).strip()
+            res["si_altra_captura" if estricta else "si_flexible"] += 1
             continue
         estats = {v["estat"] for v in vs}
         v = next((x for x in vs if x["estat"] == "cita_ok"), vs[0])
