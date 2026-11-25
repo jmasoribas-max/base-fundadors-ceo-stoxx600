@@ -242,6 +242,19 @@ Paraules de Jordi a la sessió de Claude del 24/11/2026: «d'acord amb totes» l
 
 Aquestes decisions no canvien `dades/` per si soles: s'apliquen en un lot de correcció, amb cita, registre i el flux vigent (secció 8). La metodologia v0.10.11 les incorporarà quan es congeli la base.
 
+## Decisions de Jordi del 25/11/2026
+
+Paraules de Jordi a la sessió de Claude del 25/11/2026, resumides (dubtes del lot 22 i robusteses).
+
+- **Dassault Systèmes:** Bernard Charlès és fundador (D37) tots els anys, 2016-2023. «L'empresa és la mateixa, no ha cambiat, l'única cosa que ha cambiat ha sigut l'ISIN.» Aplicat al lot de correcció 3 (PR #48).
+- **BillerudKorsnäs 2017:** cal la data exacta del canvi de CEO. El CEO a 31/10/2017 era Per Lindberg, i la base no canvia (lot 24).
+- **Covivio:** 0, amb la fundació del 1963 i la marca `data_fundacio_conflicte`, perquè una biografia de l'emissor diu «création en 2001». Kullmann no és fundador transformador (FT). Confirmat i aplicat al lot de correcció 3.
+- **Wirecard:** preval la prova A. 0 per la prova a, amb `conflicte_fonts` (l'RTÉ, font B, diu «founded by Markus Braun») i robustesa a 1. Braun no és FT. Confirmat i aplicat al lot de correcció 3.
+- **Robustesa `founderceo_rob_llista_predecessora_nd`:** les files P tancades només amb la llista de fundadors d'una predecessora es tracten com a ND, perquè en una fusió la llista pot no cobrir totes les parts.
+- **Segona font per als fundadors-CEO:** per a la robustesa de dues fonts (Q6, `n_A + n_B ≥ 2`), es busca una segona font A/B per a les files F que només en tenen una.
+
+Les robusteses les calcula per script `estat/robusteses.py`. Es copien a `dades/` en congelar la base, amb el flux vigent (secció 8).
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. El text complet vigent és `docs/METODOLOGIA_3_Articles_v0.10.10.md` (SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`), afegit al repositori el 23/11/2026; `docs/METODOLOGIA.md` n'és la porta d'entrada. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
@@ -259,3 +272,5 @@ No pots canviar la metodologia, ni tocar els fitxers protegits (llevat de l'exce
 El contingut normatiu d'aquest fitxer coincideix amb el de `CLAUDE.md` (aprovat per Jordi el 19/11/2026 i actualitzat el 20/11/2026 a les 11:56 Europe/Madrid amb la regla 25 de la METODOLOGIA v0.10.8, els 6 ND i la regla de Wayback amb `id_`, i el 20/11/2026 a les 13:10 Europe/Madrid amb la revisió de les fonts antigues del lot, i el 20/11/2026 a les 17:18 Europe/Madrid amb les regles 26 i 27 de la METODOLOGIA v0.10.9 i la norma de metodologia vigent), adaptat a qualsevol agent (Codex, Claude Code o un altre).
 
 Actualitzat el 23/11/2026 per Claude, amb l'OK de Jordi (PR #21 i PR #24): flux sense DF (Claude coordina, valida per script i obre els PR; Jordi aprova i fusiona), decisions de Jordi del 23/11/2026 i text complet de la metodologia v0.10.10 al repositori.
+
+Actualitzat el 25/11/2026 per Claude (PR #49), perquè Jordi el revisi i el fusioni: decisions de Jordi del 25/11/2026 (Dassault, BillerudKorsnäs, Covivio, Wirecard, robustesa de la llista d'una predecessora i segona font per als fundadors-CEO).

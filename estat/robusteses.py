@@ -25,8 +25,8 @@ Cada columna copia FounderCEO, llevat de les files que tenen el tret que tracta.
   CEO de la fila, NA_sense_ceo; a CD Projekt 2018-2021 l'1 és per Iwiński, el co-CEO funcional, i passa a 0
   (anàlisi de criteris, Q14: «4 files passen d'1 a 0»). La resta de files amb la marca són 0 i no canvien.
 - founderceo_rob_c_com_nd: recalcul de la columna existent amb la dependència de la prova c de `c2_depen`.
-- founderceo_rob_llista_predecessora_nd (PROPOSTA, pendent de Jordi): les files P tancades només amb la
-  llista de fundadors d'una predecessora, com a ND (la llista pot no cobrir totes les parts d'una fusió).
+- founderceo_rob_llista_predecessora_nd (decisió de Jordi del 25/11/2026): les files P tancades només amb
+  la llista de fundadors d'una predecessora, com a ND (la llista pot no cobrir totes les parts d'una fusió).
 
   python3 estat/robusteses.py
 """
@@ -154,7 +154,8 @@ def main() -> int:
         altres = len(mostra) - F - P - cnt.get(ND, 0)
         pct = f"{100 * F / (F + P):.2f} %" if F + P else "—"
         L.append(f"| `{c}` | {canvien} | {F} | {P} | {cnt.get(ND, 0)} | {altres} | {pct} |")
-    L += ["", "`founderceo_rob_llista_predecessora_nd` és una **proposta**: no s'aplicarà sense la decisió de Jordi."]
+    L += ["", "`founderceo_rob_llista_predecessora_nd` i la cerca d'una segona font per a les files F amb una sola "
+          "font: decisió de Jordi del 25/11/2026."]
     INFORME.write_text("\n".join(L) + "\n", encoding="utf-8")
     print(f"Escrit {SORTIDA.relative_to(ROOT)} ({len(out)} files) i {INFORME.relative_to(ROOT)}.")
     return 0
