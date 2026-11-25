@@ -83,3 +83,8 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L22-GB00BVYVFW23-F03** · fundador · 2016-2019 · [V] · `b`. «MATHER, Trevor Nigel, Mr. Correspondence address 1 Tony Wilson Place, Manchester, United Kingdom, M15 4FN Role Resigned Director Date of birth August 1967 Appointed on 13 February 2015 Resigned on 29 February 2020» [Font original](https://find-and-update.company-information.service.gov.uk/company/09439967/officers).
 - **L22-GB00BVYVFW23-F04** · fundador · 2020-2025 · [V] · `d`. «Before Auto Trader, Nathan was a Group Manager of Mergers and Acquisitions at Telstra, Australia’s largest telecommunication and media company, responsible for further developing the media and internet portfolio through acquisition, partnerships and joint ventures.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/85981276.pdf).
 - **L22-GB00BVYVFW23-F05** · fundador · 2020-2025 · [V] · `b`. «COE, Nathan James Correspondence address No.3, Circle Square, 3 Hawkshaw Street, Manchester, England, M1 7BL Role Active Director Date of birth September 1978 Appointed on 1 April 2017» [Font original](https://find-and-update.company-information.service.gov.uk/company/09439967/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BVYVFW23-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Trevor Mather Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/137477230.pdf).
+- **L27-GB00BVYVFW23-C02** · 2019 · [V] · `evidencia_ceo` (`R1`). «CEO Trevor Mather.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000007366.pdf).

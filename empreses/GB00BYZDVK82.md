@@ -65,3 +65,7 @@ Entitat rellevant: Softcat (negoci de revenda de software iniciat el 1993 per Pe
 
 - **L18-GB00BYZDVK82-F01** · [V] · `context`. «The Company was incorporated on 7 October 1987 under the name ‘‘Wardswift Limited’’ as a private limited company under the Companies Act 1985 with registered number 2174990. Wardswift Limited was re-registered as a public limited company and changed its name to ‘‘Wardswift Group Public Limited Company’’ on 22 October 1990 and again to ‘‘Softcat plc’’ on 22 September 2000 before being re-registered as a private limited company on 13 May 2005 with the name ‘‘Softcat Limited’’.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/100080469.pdf).
 - **L18-GB00BYZDVK82-F02** · [V] · `a`. «Softcat was founded by Peter Kelly and commenced operations of its software reseller business in 1993.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/100080469.pdf).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BYZDVK82-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «2 Graham Charlton Chief Executive» [Font original](https://filings.xbrl.org/213800N42YZLR9GLVC42/2024-07-31/ESEF/GB/0/213800N42YZLR9GLVC42-2024-07-31/reports/213800N42YZLR9GLVC42-2024-07-31-T01.xhtml).

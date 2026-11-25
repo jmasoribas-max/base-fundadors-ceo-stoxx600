@@ -73,3 +73,7 @@ Entitat rellevant: Micro Focus (negoci de programari COBOL; societat original Mi
 - **L22-GB00BD8YWM01-F02** · fundador · 2017-2018 · [NV] · `b`. «Previous company names Previous company names Name Period MERANT INTERNATIONAL LIMITED 15 Feb 1999 - 10 Aug 2004 MICRO FOCUS LIMITED 12 Aug 1976 - 15 Feb 1999» [Font original](https://find-and-update.company-information.service.gov.uk/company/01272886).
 - **L22-GB00BD8YWM01-F03** · fundador · 2017 · [V] · `b`. «HSU, Christopher Paul Correspondence address The Lawn, Old Bath Road, Newbury, Berkshire, RG14 1QN Role Resigned Director Date of birth May 1970 Appointed on 1 September 2017 Resigned on 19 March 2018» [Font original](https://find-and-update.company-information.service.gov.uk/company/05134647/officers).
 - **L22-GB00BD8YWM01-F04** · fundador · 2018 · [V] · `b`. «MURDOCH, Stephen Edward Correspondence address The Lawn, Old Bath Road, Newbury, Berkshire, RG14 1QN Role Resigned Director Date of birth November 1966 Appointed on 19 March 2018 Resigned on 31 January 2023» [Font original](https://find-and-update.company-information.service.gov.uk/company/05134647/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BD8YWM01-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Stephen Murdoch Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/212171265.pdf).

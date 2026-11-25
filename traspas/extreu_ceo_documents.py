@@ -177,6 +177,9 @@ def fragments(t: str, nom: str, nom_panell: str) -> list[tuple[tuple, str]]:
             if cognoms and not any(re.search(r"(?<![\w])(" + re.escape(x) + "|" + re.escape(x.upper()) + r")(?![\w])", w)
                                    for x in cognoms):
                 continue
+            # capçaleres de taula amb anys (lot 27: «Chief Executive 2025 20 24 2023…») i fragments massa curts
+            if len(re.findall(r"(?<!\d)(?:19|20)\s?\d{2}(?!\d)", w)) >= 3 or len(w.split()) < 3:
+                continue
             if re.search(r"\b\d{1,3}[,.]\d{3}\b|\d\s?%", w):
                 continue  # taules (accions, percentatges)
             # entre el nom i el títol no hi pot haver el nom d'una altra persona
@@ -215,6 +218,8 @@ def main() -> int:
     ap.add_argument("--escriu", action="store_true")
     ap.add_argument("--mostra", default="", help="CSV amb totes les cites proposades, per revisar-les")
     ap.add_argument("--max-docs", type=int, default=12, help="màxim de documents per fila")
+    ap.add_argument("--totes", action="store_true", help="també les files que ja compleixen C1 (p. ex. per substituir "
+                    "una cita d'un altre exercici per una de l'exercici; lot 27)")
     ap.add_argument("--docs", default="", help="CSV isin,any,url,nivell,font,exercici amb els documents de cada fila "
                     "(p. ex. informes ESEF de l'exercici trobats per traspas/troba_esef.py); si s'indica, només es fan servir aquests")
     args = ap.parse_args()
@@ -254,7 +259,7 @@ def main() -> int:
     mostra = []
     for k in lot:
         r, e = base[k], estat[k]
-        if "falta_ceo" not in e["estat"].split("+") or r["FounderCEO"] not in ("0", "1"):
+        if (not args.totes and "falta_ceo" not in e["estat"].split("+")) or r["FounderCEO"] not in ("0", "1"):
             res["fila_ja_coberta_o_fora"] += 1
             continue
         any_fila = int(k[1])

@@ -72,3 +72,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L22-GB00BBG9VN75-F05** · fundador · 2019-2022 · [V] · `e`. «The history of our expertise and unique portfolio begins almost two centuries ago, in 1836, when brothers Adolphe and Joseph-Eugène Schneider take over the Le Creusot foundry in Burgundy.» [Font original](https://www.se.com/ww/en/about-us/company-profile/history/schneider-electric-history/).
 - **L22-GB00BBG9VN75-F06** · fundador · 2021-2022 · [V] · `d`. «Emmanuel Babeau (Deputy Chief Executive Officer and Chief Financial Officer) and Peter Herweck (Executive Vice President – Industry) of Schneider Electric will be appointed as Non-Executive Directors of the Enlarged Group on Completion.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/145552444.pdf).
 - **L22-GB00BBG9VN75-F07** · fundador · 2021-2022 · [V] · `b`. «Peter Walter HERWECK Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 3 Date of birth August 1966» [Font original](https://find-and-update.company-information.service.gov.uk/officers/elcIG7aLTYhzvdFe5w5EKxuRiEk/appointments).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BBG9VN75-C01** · 2019 · [V] · `evidencia_ceo` (`R1`). «Craig Hayman Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000005969.pdf).

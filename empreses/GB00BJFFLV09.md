@@ -64,3 +64,9 @@ Entitat rellevant: Croda (Rawcliffe Bridge, Yorkshire, 1925; avui Croda Internat
 - **L18-GB00BJFFLV09-F02** · [V] · `context`. «Incorporated on 22 May 1925» [Font original](https://find-and-update.company-information.service.gov.uk/company/00206132).
 - **L18-GB00BJFFLV09-F03** · [V] · `a`. «Our business was founded in 1925 by an entrepreneur, Mr Crowe, and a chemist, Mr Dawe. Our name is taken from their surnames.» [Font original](https://www.croda.com/en-gb/about-us/our-heritage).
 - **L18-GB00BJFFLV09-F04** · [V] · `a`. «Croda was founded in 1925 by Mr Crowe and Mr Dawe at a disused waterworks in Yorkshire, UK. They combined the first letters of their surnames to create our name.» [Font original](https://www.croda.com/en-gb/about-us/our-heritage/our-centenary).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BJFFLV09-C01** · 2022 · [V] · `evidencia_ceo` (`R1`). «Steve Foots Group Chief» [Font original](https://filings.xbrl.org/2138004WCNBFJEEOXV26/2022-12-31/ESEF/GB/0/2138004WCNBFJEEOXV26-2022-12-31/reports/2138004WCNBFJEEOXV26-2022-12-31-T01.xhtml).
+- **L27-GB00BJFFLV09-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Steve Foots Group Chief» [Font original](https://filings.xbrl.org/2138004WCNBFJEEOXV26/2023-12-31/ESEF/GB/0/2138004WCNBFJEEOXV26-2023-12-31/reports/2138004WCNBFJEEOXV26-2023-12-31-T01.xhtml).
+- **L27-GB00BJFFLV09-C03** · 2025 · [V] · `evidencia_ceo` (`R1`). «Steve Foots Group Chief» [Font original](https://filings.xbrl.org/2138004WCNBFJEEOXV26/2025-12-31/ESEF/GB/0/2138004WCNBFJEEOXV26-2025-12-31/reports/2138004WCNBFJEEOXV26-2025-12-31-T01.xhtml).

@@ -80,3 +80,8 @@ Entitat rellevant: WHSmith (negoci obert el 1792 per Henry Walton Smith i la sev
 ## Lot 22 · pas3_cerca
 
 - **L22-GB00B2PDGW16-F01** · fundador · 2016-2019 · [V] · `b`. «CLARKE, Stephen Martin Correspondence address Greenbridge Road, Swindon, Wiltshire, SN3 3RX Role Resigned Director Date of birth September 1967 Appointed on 1 June 2012 Resigned on 31 October 2019» [Font original](https://find-and-update.company-information.service.gov.uk/company/05202036/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00B2PDGW16-C01** · 2021 · [V] · `evidencia_ceo` (`R1`). «CEOs. A ccor dingly , during the period under re view , Carl Cowling» [Font original](https://filings.xbrl.org/2138001KJNGUJ34G7X91/2022-08-31/ESEF/GB/0/2138001KJNGUJ34G7X91-2022-08-31/reports/2138001KJNGUJ34G7X91-2022-08-31-T01.xhtml).
+- **L27-GB00B2PDGW16-C02** · 2023 · [V] · `evidencia_ceo` (`R1`). «Carl Cowling Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000108931/NI-000108931.pdf).

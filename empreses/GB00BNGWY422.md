@@ -56,3 +56,7 @@ Entitat rellevant: SAS Catering (Suecia, 1961, part del grup aeri SAS), adquirid
 ## Lot 23 · pas3b_cerca
 
 - **L23-GB00BNGWY422-F01** · fundador · 2017 · [V] · `b`. «SWANN, Kathryn Elizabeth Correspondence address 169 Euston Road, London, United Kingdom, NW1 2AE Role Resigned Director Date of birth December 1964 Appointed on 16 June 2014 Resigned on 31 May 2019» [Font original](https://find-and-update.company-information.service.gov.uk/company/05735966/officers?page=1).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BNGWY422-C01** · 2017 · [V] · `evidencia_ceo` (`R1`). «Kate Swann Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/208280830.pdf).

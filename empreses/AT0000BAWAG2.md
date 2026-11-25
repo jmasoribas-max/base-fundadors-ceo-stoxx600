@@ -100,3 +100,10 @@ Entitat rellevant: Bank für Arbeit und Wirtschaft AG (Arbeiterbank, 1922), nego
 ## Lot 21 · dades_persona
 
 - **L21-AT0000BAWAG2-F01** · fundador · 2020-2025 · [V] · `b`. «Corporate history and development Bank für Arbeit und Wirtschaft Aktiengesellschaft was founded in 1922 by Dr.» [Font original](https://bawaggroup.com/resource/blob/97002/3c0fea3bfad716d1784f424a5f34c539/base-prospectus-2025-04-11-data.pdf).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-AT0000BAWAG2-C01** · 2020 · [V] · `evidencia_ceo` (`R1`). «Anas ABUZAAKOUK (CEO)» [Font original](https://filings.xbrl.org/529900S9YO2JHTIIDG38/2020-12-31/ESEF/AT/0/bawaggroup-2020-12-31/reports/bawaggroup-2020-12-31.xhtml).
+- **L27-AT0000BAWAG2-C02** · 2021 · [V] · `evidencia_ceo` (`R1`). «Februar 2022 Anas Abuzaakouk CEO» [Font original](https://filings.xbrl.org/529900S9YO2JHTIIDG38/2021-12-31/ESEF/AT/1/bawaggroup-2021-12-31-de/reports/bawaggroup-2021-12-31-de.xhtml).
+- **L27-AT0000BAWAG2-C03** · 2023 · [V] · `evidencia_ceo` (`R1`). «Februar 2024 Anas Abuzaakouk CEO» [Font original](https://filings.xbrl.org/529900S9YO2JHTIIDG38/2023-12-31/ESEF/AT/0/bawaggroupag-2023-12-31-de/reports/bawaggroupag-2023-12-31-de.xhtml).
+- **L27-AT0000BAWAG2-C04** · 2024 · [V] · `evidencia_ceo` (`R1`). «Februar 2025 Anas Abuzaakouk CEO» [Font original](https://filings.xbrl.org/529900S9YO2JHTIIDG38/2024-12-31/ESEF/AT/0/bawaggroupag-2024-12-31-0-de/reports/bawaggroupag-2024-12-31-0-de.xhtml).

@@ -59,3 +59,7 @@ Entitat rellevant: TalkTalk, negoci creat dins Carphone Warehouse (2002/2003) i 
 
 - **L22-GB00B4YCDF59-F01** · fundador · 2016 · [V] · `d`. «Skills and experience: Dido joined TalkTalk in February 2010. Prior to that date Dido was Sainsbury’s convenience director, having been appointed to Sainsbury’s operating board in March 2008.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/27484372.pdf).
 - **L22-GB00B4YCDF59-F02** · fundador · 2016 · [V] · `b`. «HARDING, Diana Mary, Baroness Correspondence address 11 Evesham Street, London, W11 4AR Role Resigned Director Date of birth November 1967 Appointed on 24 February 2010 Resigned on 10 May 2017» [Font original](https://find-and-update.company-information.service.gov.uk/company/07105891/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00B4YCDF59-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Dido Harding as Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/136308118.pdf).
