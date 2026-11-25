@@ -78,3 +78,38 @@ Entitat rellevant: The Life Insurance Company of Scotland (Edimburg, 1825), reba
 ## Lot 22 · pas3_cerca
 
 - **L22-GB00BVFD7Q58-F01** · fundador · 2016 · [V] · `b`. «Norman Keith SKEOCH Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 62 Date of birth November 1956» [Font original](https://find-and-update.company-information.service.gov.uk/officers/D7s7zEFwHnTwx_xRxgXyUvY5gbM/appointments).
+
+## Lot 28 · dubtes_oberts
+
+- **L28-GB00BVFD7Q58-X01** · context · 2017 · [V] · `context`. «Existing Standard Life Shareholders and former Aberdeen Shareholders will, if the Merger completes, own approximately 66.7% and 33.3%, respectively of the Standard Life Shares.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/133353803.pdf).
+- **L28-GB00BVFD7Q58-X02** · context · 2017 · [V] · `context`. «The merger of Standard Life plc and Aberdeen Asset Management PLC (Aberdeen) completed on 14 August 2017, with the merger accounted for as an acquisition of Aberdeen by Standard Life plc on that date.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166306782.pdf).
+- **L28-GB00BVFD7Q58-F01** · fundador · 2017 · [V] · `d`. «The Life Insurance Company of Scotland was established in 1825. In 1832 its name was changed to the Standard Life Assurance Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/133353803.pdf).
+- **L28-GB00BVFD7Q58-F02** · fundador · 2017 · [V] · `d`. «Keith Skeoch Co-Chief Executive Keith was appointed Co-Chief Executive on 14 August 2017. He was formerly Chief Executive of Standard Life plc, having been a Director since 2006 and Chief Executive of Standard Life Investments since 2004. He joined Standard Life Investments Limited in 1999 as Chief Investment Officer after nearly 20 years’ investment experience at James Capel & Company Limited in a number of roles, including chief economist and managing director international equities.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166306782.pdf).
+- **L28-GB00BVFD7Q58-F03** · fundador · 2017 · [V] · `d`. «Martin was appointed Director and Co-Chief Executive on 14 August 2017. He is co-founder (and former chief executive) of Aberdeen Asset Management PLC and has been a director since 1983.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166306782.pdf).
+
+## Correcció de coherència (correccio5_claude)
+
+Canvis aplicats a `dades/base_isin_any_v8r3.csv` amb l'OK de Jordi. Detall a `lots/` i a `docs/REGISTRE_CANVIS.csv`.
+
+- **CO5-001** · 2017 · `FounderCEO`: «1» → «0». Q1: la cita de fundador és d'Aberdeen, la part absorbida («merger accounted for as an acquisition of Aberdeen by Standard Life plc»); 0 per la prova d per als dos co-CEO
+- **CO5-021** · 2017 · `founderceo_rob_c_com_nd`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-016** · 2017 · `founderceo_rob_cita_contemporania`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-010** · 2017 · `founderceo_rob_ft_nomes_ab`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-007** · 2017 · `founderceo_rob_fundacio_corporativa_com_0`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-019** · 2017 · `founderceo_rob_fundador_escissio_com_0`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-004** · 2017 · `founderceo_rob_na_com_0`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-006** · 2017 · `founderceo_rob_na_i_nd_com_0`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-005** · 2017 · `founderceo_rob_nd_com_0`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-020** · 2017 · `founderceo_rob_nd_com_1`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-013** · 2017 · `founderceo_rob_pre_d37`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-012** · 2017 · `founderceo_rob_r2b_com_na`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-008** · 2017 · `founderceo_rob_r3_president_exec_com_1`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-022** · 2017 · `founderceo_rob_sense_decisions_doctorat`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-009** · 2017 · `founderceo_rob_sense_ft`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-017** · 2017 · `founderceo_rob_sense_fundador_transformador`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-014** · 2017 · `founderceo_rob_sense_origen_intern`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-015** · 2017 · `founderceo_rob_sense_r3`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-011** · 2017 · `founderceo_rob_spinoff_com_0`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
+- **CO5-003** · 2017 · `marques`: «co_ceo» → «co_ceo;dubte_D1». Q1 i regla 26: dubte_D1, amb robustesa D1 àmplia = 1 (es calcula a estat/robusteses.py)
+- **CO5-002** · 2017 · `regles`: «cita_fundador|d» → «d». Regla que sosté el 0: prova d (Skeoch i Gilbert)
+- **CO5-018** · 2017 · `sense_fundador_transformador`: «1» → «0». Robustesa que copia FounderCEO: la fila no té el tret de la columna
