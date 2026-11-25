@@ -9,7 +9,8 @@
 # Abans d'arxivar, les URL la captura de les quals no és el document (pàgina d'error o fitxer
 # que no s'obre) es tornen a buscar com a molt dues vegades (refes_captures.py). Amb
 # `mostra_control` > 0, una mostra de parells `cita_ok` es torna a comprovar amb un codi
-# independent (mostra_control.py).
+# independent (mostra_control.py). Els parells amb la cita no trobada passen per una segona
+# comprovació: altres captures de la mateixa URL i comparació flexible (verifica_flexible.py).
 name: wayback
 on:
   workflow_dispatch:
@@ -59,6 +60,7 @@ jobs:
             git show origin/wayback-dades:wayback/resultats_arxiu.csv > treball/resultats_arxiu.csv 2>/dev/null || true
             git show origin/wayback-dades:wayback/verificacio_cites.csv > treball/verificacio_cites.csv 2>/dev/null || true
             git show origin/wayback-dades:wayback/captures_refetes.csv > treball/captures_refetes.csv 2>/dev/null || true
+            git show origin/wayback-dades:wayback/verificacio_flexible.csv > treball/verificacio_flexible.csv 2>/dev/null || true
           fi
           if [ ! -s treball/resultats_arxiu.csv ]; then cp wayback/resultats_arxiu_inicial.csv treball/resultats_arxiu.csv; fi
           if [ ! -s treball/verificacio_cites.csv ] && [ -f wayback/verificacio_cites_inicial.csv ]; then
@@ -98,6 +100,14 @@ jobs:
           --cache treball/cache
           --log treball/verifica_cites.log
           --limit-urls "$LIMIT_VERIFICA"
+      - name: Segona comprovació (altres captures i comparació flexible)
+        continue-on-error: true
+        timeout-minutes: 90
+        run: >
+          python scripts/wayback/verifica_flexible.py
+          --verificacio treball/verificacio_cites.csv
+          --sortida treball/verificacio_flexible.csv
+          --limit-urls 250
       - name: Mostra de control dels cita_ok
         if: env.MOSTRA_CONTROL != '0'
         continue-on-error: true
@@ -124,6 +134,7 @@ jobs:
           [ -f treball/verificacio_cites.csv ] && cp treball/verificacio_cites.csv ../wd/wayback/verificacio_cites.csv
           [ -f treball/INFORME_VERIFICACIO_CITES.md ] && cp treball/INFORME_VERIFICACIO_CITES.md ../wd/wayback/
           [ -f treball/captures_refetes.csv ] && cp treball/captures_refetes.csv ../wd/wayback/
+          [ -f treball/verificacio_flexible.csv ] && cp treball/verificacio_flexible.csv ../wd/wayback/
           [ -f treball/mostra_control.csv ] && cp treball/mostra_control.csv ../wd/wayback/mostra_control_${GITHUB_RUN_ID}.csv
           python scripts/wayback/resum.py --resultats treball/resultats_arxiu.csv --verificacio treball/verificacio_cites.csv \
             --entrada treball/entrada.csv --commit "$GITHUB_SHA" --run "$GITHUB_RUN_ID" > ../wd/wayback/RESUM.md

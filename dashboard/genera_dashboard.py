@@ -601,7 +601,7 @@ def carrega_model(stats: Counter) -> dict:
             reg["wb_url"] += 1
         elif wb.lower() == "pendent_verificacio_externa":
             reg["wb_pendent"] += 1
-        if (r["cita_verificada_a_captura"] or "").strip() == "si":
+        if (r["cita_verificada_a_captura"] or "").strip() in ("si", "si_flexible"):
             reg["capt_si"] += 1
     # URL a la cua d'arxiu, calculades del registre actual amb la mateixa regla
     # que estat/llista_urls_arxiu.py (així no depèn que el CSV estigui al dia).
@@ -613,7 +613,7 @@ def carrega_model(stats: Counter) -> dict:
             continue
         if r.get("funcio_cita") not in FUNCIONS_CUA:
             continue
-        if r.get("cita_verificada_a_captura") == "si":
+        if r.get("cita_verificada_a_captura") in ("si", "si_flexible"):
             urls_verif.add(url)
         urls_info.add(url)
     reg["urls_cua"] = len(urls_info - urls_verif)
@@ -695,7 +695,8 @@ def prepara_prova(g: dict, wb_extra: dict, stats: Counter) -> None:
     g["no_valida"] = "no_valida" in joined
     # «Pendent d'arxiu»: pendent_arxiu (abans pendent_DF).
     g["pendent_arxiu"] = "pendent_DF" in joined or "pendent_arxiu" in joined
-    g["capt_si"] = "si" in g["capt"]
+    g["capt_si"] = "si" in g["capt"] or "si_flexible" in g["capt"]
+    g["capt_flex"] = "si_flexible" in g["capt"] and "si" not in g["capt"]
 
 
 def construeix_empresa(isin: str, files: list[dict], proves: list[dict], stats: Counter) -> dict:
@@ -1820,7 +1821,9 @@ def insignies_prova(p: dict) -> list[str]:
     if p["no_valida"]:
         b.append('<span class="b b-mal" title="La nota de l\'entrada diu no_valida">Font no vàlida</span>')
     elif p["capt_si"]:
-        b.append('<span class="b b-v" title="cita_verificada_a_captura = si">Cita comprovada a la còpia</span>')
+        b.append('<span class="b b-v" title="cita_verificada_a_captura = si_flexible: mateixes paraules, amb diferències d\'espais, guions de final de línia o talls […]">Cita comprovada a la còpia (flexible)</span>'
+                 if p.get("capt_flex") else
+                 '<span class="b b-v" title="cita_verificada_a_captura = si">Cita comprovada a la còpia</span>')
     elif p["pendent_arxiu"]:
         b.append('<span class="b b-nv" title="La nota diu pendent_arxiu (abans pendent_DF)">Pendent d\'arxiu</span>')
     for m in p["marca_prova"]:
@@ -1894,7 +1897,7 @@ def html_prova(p: dict) -> str:
     if ts:
         wb_txt += " · captura " + ", ".join(esc(t) for t in ts)
     m.append(meta("Estat Wayback", wb_txt))
-    capt = {"si": "sí", "no": "no"}
+    capt = {"si": "sí", "si_flexible": "sí (comparació flexible)", "no": "no"}
     m.append(meta("Cita verificada a la captura",
                   ", ".join(esc(capt.get(c, c)) for c in p["capt"]) if p["capt"] else '<span class="buit">pendent</span>'))
     notes = []
