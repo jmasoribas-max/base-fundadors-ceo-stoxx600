@@ -85,3 +85,12 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 23 · pas3b_cerca
 
 - **L23-GB00BH4HKS39-F01** · fundador · 2016-2025 · [V] · `e`. «Company type Private limited Company Incorporated on 30 June 1951» [Font original](https://find-and-update.company-information.service.gov.uk/company/00497098).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BH4HKS39-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Nick Read Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/223971847.pdf).
+- **L27-GB00BH4HKS39-C02** · 2021 · [V] · `evidencia_ceo` (`R1`). «Nick Read Chief Executive» [Font original](https://filings.xbrl.org/213800TB53ELEUKM7Q61/2022-03-31/ESEF/GB/0/213800TB53ELEUKM7Q61-2022-03-31/reports/213800TB53ELEUKM7Q61-2022-03-31-T01.html).
+- **L27-GB00BH4HKS39-C03** · 2022 · [V] · `evidencia_ceo` (`R1`). «Nick Read stood down as Group Chief Executive.» [Font original](https://filings.xbrl.org/213800TB53ELEUKM7Q61/2023-03-31/ESEF/GB/0/213800TB53ELEUKM7Q61-2023-03-31/reports/213800TB53ELEUKM7Q61-2023-03-31-T01.html).
+- **L27-GB00BH4HKS39-C04** · 2023 · [V] · `evidencia_ceo` (`R2`). «Margherita Della Valle Group Chief» [Font original](https://filings.xbrl.org/213800TB53ELEUKM7Q61/2024-03-31/ESEF/GB/0/213800TB53ELEUKM7Q61-2024-03-31/reports/213800TB53ELEUKM7Q61-2024-03-31-T01.html).
+- **L27-GB00BH4HKS39-C05** · 2024 · [V] · `evidencia_ceo` (`R2`). «Margherita Della Valle Group Chief» [Font original](https://filings.xbrl.org/213800TB53ELEUKM7Q61/2025-03-31/ESEF/GB/0/213800TB53ELEUKM7Q61-2025-03-31/reports/213800TB53ELEUKM7Q61-2025-03-31-T01.html).
+- **L27-GB00BH4HKS39-C06** · 2025 · [V] · `evidencia_ceo` (`R2`). «Margherita Della Valle Group Chief» [Font original](https://filings.xbrl.org/213800TB53ELEUKM7Q61/2026-03-31/ESEF/GB/0/213800TB53ELEUKM7Q61-2026-03-31/reports/213800TB53ELEUKM7Q61-2026-03-31-T01.html).

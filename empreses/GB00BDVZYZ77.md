@@ -94,3 +94,8 @@ Entitat rellevant: Royal Mail (servei postal de la Corona des de 1516; servei po
 - **L22-GB00BDVZYZ77-F04** · fundador · 2018-2019 · [V] · `b`. «BACK, Rico, Herr Correspondence address 100 Victoria Embankment, London, United Kingdom, EC4Y 0HQ Role Resigned Director Date of birth September 1954» [Font original](https://find-and-update.company-information.service.gov.uk/company/08680755/officers).
 - **L22-GB00BDVZYZ77-F05** · fundador · 2020 · [V] · `b`. «WILLIAMS, Keith Correspondence address 185 Farringdon Road, London, United Kingdom, EC1A 1AA Role Resigned Director Date of birth May 1956» [Font original](https://find-and-update.company-information.service.gov.uk/company/08680755/officers?page=2).
 - **L22-GB00BDVZYZ77-F06** · fundador · 2023-2024 · [V] · `b`. «SEIDENBERG, Martin Correspondence address 185 Farringdon Road, London, United Kingdom, EC1A 1AA Role Active Director Date of birth February 1973» [Font original](https://find-and-update.company-information.service.gov.uk/company/08680755/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BDVZYZ77-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Moya Greene Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/134930019.pdf).
+- **L27-GB00BDVZYZ77-C02** · 2017 · [V] · `evidencia_ceo` (`R1`). «Moya Greene Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/175109114.pdf).

@@ -79,3 +79,9 @@ Entitat rellevant: Bass (cervesera de Burton-on-Trent, 1777), predecessora direc
 - **L22-GB00BHJYC057-F02** · fundador · 2019-2025 · [V] · `b`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).
 - **L22-GB00BHJYC057-F03** · fundador · 2019-2025 · [V] · `b`. «1952 Holiday Inn opens its doors in Memphis, Tennessee On a family trip to Washington DC, businessman Kemmons Wilson has the idea of providing travelling families with comfortable and affordable accommodation they could trust.» [Font original](https://www.ihgplc.com/en/about-us/our-history).
 - **L22-GB00BHJYC057-F04** · fundador · 2023-2025 · [V] · `b`. «Elie Wajih MAALOUF Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 1 Date of birth May 1964 INTERCONTINENTAL HOTELS GROUP PLC (05134420)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/dF9fOzCL_Y5VltOf-3SL2b6W3lI/appointments).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BHJYC057-C01** · 2019 · [V] · `evidencia_ceo` (`R1`). «IHG CEO Keith Barr» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/267041666.pdf).
+- **L27-GB00BHJYC057-C02** · 2020 · [V] · `evidencia_ceo` (`R1`). «Keith Barr Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000020445/NI-000020445.pdf).
+- **L27-GB00BHJYC057-C03** · 2022 · [V] · `evidencia_ceo` (`R1`). «Keith Barr Chief Executive» [Font original](https://filings.xbrl.org/2138007ZFQYRUSLU3J98/2022-12-31/ESEF/GB/0/2138007ZFQYRUSLU3J98-2022-12-31/reports/2138007ZFQYRUSLU3J98-2022-12-31-T01.html).

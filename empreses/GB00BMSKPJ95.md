@@ -68,3 +68,7 @@ Entitat rellevant: The Automobile Association (The AA, 1905) · origen: persones
 - **L22-GB00BMSKPJ95-F01** · fundador · 2016-2017 · [V] · `b`. «The AA was formed in 1905 by a group of motoring enthusiasts in London.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/68708071.pdf).
 - **L22-GB00BMSKPJ95-F02** · fundador · 2016-2017 · [V] · `b`. «The AA was formed in 1905 by a group of motorists who employed cycle scouts to patrol roads and warn motorists of police speed traps through the iconic AA salute.» [Font original](https://www.theaacorporate.com/about-us/company-history).
 - **L22-GB00BMSKPJ95-F03** · fundador · 2017 · [V] · `b`. «BREAKWELL, Simon John Correspondence address Fanum House, Basing View, Basingstoke, England And Wales, United Kingdom, RG21 4EA Role Resigned Director Date of birth February 1965» [Font original](https://find-and-update.company-information.service.gov.uk/company/05149111/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BMSKPJ95-C01** · 2016 · [V] · `evidencia_ceo` (`R3`). «Bob Mackenzie Executive Chairman» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/132598545.pdf).

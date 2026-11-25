@@ -67,3 +67,10 @@ Entitat rellevant: Man Group (negoci de corretatge i boteria de sucre de James M
 - **L18-JE00BJ1DLW90-F03** · [V] · `context`. «New Man will be the new holding company of the Group;» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/218380543.pdf).
 - **L18-JE00BJ1DLW90-F04** · [V] · `context`. «Man Group demerges from the agricultural commodities business, known as ED&F Man» [Font original](https://www.man.com/about-us).
 - **L18-JE00BJ1DLW90-F05** · [V] · `a`. «1783 James Man founds the company as a sugar cooperage and brokerage in the City of London» [Font original](https://www.man.com/about-us).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-JE00BJ1DLW90-C01** · 2021 · [V] · `evidencia_ceo` (`R1`). «Luke Ellis Antoin e Forterre Chief Executive» [Font original](https://filings.xbrl.org/2549003YWC1DW6LALB09/2021-12-31/ESEF/GB/0/2549003YWC1DW6LALB09-2021-12-31/reports/2549003YWC1DW6LALB09-2021-12-31-T01.xhtml).
+- **L27-JE00BJ1DLW90-C02** · 2022 · [V] · `evidencia_ceo` (`R1`). «Luke Ellis CEO» [Font original](https://filings.xbrl.org/2549003YWC1DW6LALB09/2022-12-31/ESEF/GB/0/2549003YWC1DW6LALB09-2022-12-31/reports/2549003YWC1DW6LALB09-2022-12-31-T01.xhtml).
+- **L27-JE00BJ1DLW90-C03** · 2023 · [V] · `evidencia_ceo` (`R1`). «Robyn Grew CEO» [Font original](https://filings.xbrl.org/2549003YWC1DW6LALB09/2023-12-31/ESEF/GB/0/2549003YWC1DW6LALB09-2023-12-31/reports/2549003YWC1DW6LALB09-2023-12-31-T01.xhtml).
+- **L27-JE00BJ1DLW90-C04** · 2024 · [V] · `evidencia_ceo` (`R1`). «Robyn Grew CEO» [Font original](https://filings.xbrl.org/2549003YWC1DW6LALB09/2024-12-31/ESEF/GB/0/2549003YWC1DW6LALB09-2024-12-31/reports/2549003YWC1DW6LALB09-2024-12-31-T01.xhtml).

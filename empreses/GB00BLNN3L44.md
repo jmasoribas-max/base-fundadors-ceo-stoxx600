@@ -52,3 +52,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 
 - **L22-GB00BLNN3L44-F01** · fundador · 2016 · [V] · `b`. «The origins of Compass PLC' business activities can be traced back to Factory Canteens Limited, which was founded in the United Kingdom in 1941 to feed munitions workers.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/135351956.pdf).
 - **L22-GB00BLNN3L44-F02** · fundador · 2016 · [V] · `b`. «COUSINS, Richard John Correspondence address Compass House, Guildford Street, Chertsey, Surrey, KT16 9BQ Role Resigned Director Date of birth March 1959 Appointed on 2 May 2006 Resigned on 31 December 2017» [Font original](https://find-and-update.company-information.service.gov.uk/company/04083914/officers).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BLNN3L44-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «CEO Richard Cousins» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/155905197.pdf).

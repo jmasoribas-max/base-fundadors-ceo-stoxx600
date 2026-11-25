@@ -60,3 +60,8 @@ Entitat rellevant: Bass (cervesera de Burton-on-Trent, 1777), predecessora direc
 
 - **L22-GB00BD8QVH41-F01** · fundador · 2017-2018 · [V] · `b`. «Date of birth July 1970 INTERCONTINENTAL HOTELS GROUP PLC (05134420)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/PBUadeL33AGouc3pvXjBX46VHuY/appointments).
 - **L22-GB00BD8QVH41-F02** · fundador · 2017-2018 · [V] · `b`. «1777 William Bass opens a brewery in Burton-on-Trent, UK» [Font original](https://www.ihgplc.com/en/about-us/our-history).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BD8QVH41-C01** · 2017 · [V] · `evidencia_ceo` (`R1`). «Keith Barr Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/163854438.pdf).
+- **L27-GB00BD8QVH41-C02** · 2018 · [V] · `evidencia_ceo` (`R1`). «Keith Barr Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/212939237.pdf).

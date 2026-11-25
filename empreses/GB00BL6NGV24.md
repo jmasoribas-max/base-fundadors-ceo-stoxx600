@@ -62,3 +62,7 @@ Entitat rellevant: Negoci Dr. Martens de R. Griggs Group (empresa familiar de Wo
 ## Lot 22 · pas3_cerca
 
 - **L22-GB00BL6NGV24-F01** · fundador · 2021 · [V] · `b`. «In 1959, British shoe manufacturer R. Griggs Group, co-owned by Bill Griggs, bought rights to manufacture the shoes in the United Kingdom.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000018597/NI-000018597.pdf).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BL6NGV24-C01** · 2021 · [V] · `evidencia_ceo` (`R1`). «Our CEO , Kenn y Wilson» [Font original](https://filings.xbrl.org/213800QPT8YM6NQZPH28/2022-03-31/ESEF/GB/0/213800QPT8YM6NQZPH28-2022-03-31/reports/213800QPT8YM6NQZPH28-2022-03-31-T01.xhtml).

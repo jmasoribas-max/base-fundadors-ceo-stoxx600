@@ -82,3 +82,13 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 22 · pas3_cerca
 
 - **L22-GB00BGLP8L22-F01** · fundador · 2016-2025 · [V] · `b`. «Company type Public limited Company Incorporated on 2 February 1962» [Font original](https://find-and-update.company-information.service.gov.uk/company/00714275).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BGLP8L22-C01** · 2016 · [V] · `evidencia_ceo` (`R1`). «Mark Selway Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/130037080.pdf).
+- **L27-GB00BGLP8L22-C02** · 2017 · [V] · `evidencia_ceo` (`R1`). «Mark Selway Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/166308158.pdf).
+- **L27-GB00BGLP8L22-C03** · 2018 · [V] · `evidencia_ceo` (`R1`). «Mark Selway Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/216205092.pdf).
+- **L27-GB00BGLP8L22-C04** · 2019 · [V] · `evidencia_ceo` (`R1`). «Roy Twite Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/272205704.pdf).
+- **L27-GB00BGLP8L22-C05** · 2020 · [V] · `evidencia_ceo` (`R1`). «Roy Twite Chief Executive» [Font original](https://filings.xbrl.org/2138002W9Q21PF751R30/2020-12-31/ESEF/GB/0/2138002W9Q21PF751R30-2020-12-31/reports/2138002W9Q21PF751R30-2020-12-31-T01.html).
+- **L27-GB00BGLP8L22-C06** · 2021 · [V] · `evidencia_ceo` (`R1`). «Roy Twite Chief Executive» [Font original](https://filings.xbrl.org/2138002W9Q21PF751R30/2021-12-31/ESEF/GB/0/2138002W9Q21PF751R30-2021-12-31/reports/2138002W9Q21PF751R30-2021-12-31-T01.xhtml).
+- **L27-GB00BGLP8L22-C07** · 2022 · [V] · `evidencia_ceo` (`R1`). «Roy Twite Chief Executive» [Font original](https://filings.xbrl.org/2138002W9Q21PF751R30/2022-12-31/ESEF/GB/0/2138002W9Q21PF751R30-2022-12-31/reports/2138002W9Q21PF751R30-2022-12-31-T01.xhtml).

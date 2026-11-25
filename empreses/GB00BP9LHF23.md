@@ -66,3 +66,7 @@ Entitat rellevant: Schroders (societat de J.H. Schröder a Londres, 1804); avui 
 
 - **L22-GB00BP9LHF23-F01** · fundador · 2022-2025 · [V] · `b`. «In 1804, the year of our foundation, a young Johann Heinrich Schröder went into partnership in London with his elder brother.» [Font original](https://www.schroders.com/en/global/individual/about-us/our-history/).
 - **L22-GB00BP9LHF23-F02** · fundador · 2025 · [V] · `b`. «Date of birth June 1971» [Font original](https://find-and-update.company-information.service.gov.uk/officers/5VkNRdYulrD0upPqF7SGiK9Jy5g/appointments).
+
+## Lot 27 · Cites de CEO extretes dels documents de l'exercici
+
+- **L27-GB00BP9LHF23-C01** · 2023 · [V] · `evidencia_ceo` (`R1`). «Peter Harrison Group Chief» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000092603/NI-000092603.pdf).
