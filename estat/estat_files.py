@@ -171,8 +171,14 @@ RE_DATA_DOC = re.compile(r"(?:Data del document|data_document|document de|Docume
 
 
 def any_document(e: dict) -> int | None:
-    """Any de la data del document, si les notes la donen."""
-    m = RE_DATA_DOC.search(e.get("notes") or "")
+    """Any de la data del document, si les notes la donen («Document: tipus, AAAA-MM-DD, pàgina …» o similars)."""
+    notes = e.get("notes") or ""
+    m = re.search(r"Document: (.*?)(?:, pàgina|\. Nivell|$)", notes)
+    if m:
+        dates = re.findall(r"(?<!\d)((?:19|20)\d{2})(?:-\d{2}){1,2}(?!\d)", m.group(1))
+        if dates:
+            return int(dates[-1])
+    m = RE_DATA_DOC.search(notes)
     return int(m.group(1)) if m else None
 
 

@@ -81,3 +81,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 - **L22-GB00BH4HKS39-F05** · fundador · 2016-2017 · [V] · `b`. «Date of birth October 1961 VODAFONE GROUP PUBLIC LIMITED COMPANY (01833679)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/imR7nzh84SL9E1jjYKg-uDbH4VY/appointments).
 - **L22-GB00BH4HKS39-F06** · fundador · 2018-2022 · [V] · `b`. «Date of birth September 1964 VODAFONE GROUP PUBLIC LIMITED COMPANY (01833679)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/r1bJP9WjjjTkaJOx5qLGmfE24vY/appointments).
 - **L22-GB00BH4HKS39-F07** · fundador · 2023-2025 · [V] · `b`. «Date of birth April 1965 VODAFONE GROUP PUBLIC LIMITED COMPANY (01833679)» [Font original](https://find-and-update.company-information.service.gov.uk/officers/XiY7_RYKvaBWJmOORadwowG3xtY/appointments).
+
+## Lot 23 · pas3b_cerca
+
+- **L23-GB00BH4HKS39-F01** · fundador · 2016-2025 · [V] · `e`. «Company type Private limited Company Incorporated on 30 June 1951» [Font original](https://find-and-update.company-information.service.gov.uk/company/00497098).

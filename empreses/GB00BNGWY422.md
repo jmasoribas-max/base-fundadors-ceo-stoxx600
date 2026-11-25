@@ -52,3 +52,7 @@ Entitat rellevant: SAS Catering (Suecia, 1961, part del grup aeri SAS), adquirid
 - **L18-GB00BNGWY422-F01** · [V] · `context`. «The Company was incorporated and registered in England and Wales on 9 March 2006 as a private company limited by shares under the Companies Act 1985 with the name HACKREMCO (NO. 2347) LIMITED and with the registered number 5735966.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/69900573.pdf).
 - **L18-GB00BNGWY422-F02** · [V] · `context`. «2004 Further international acquisitions follow including Mitropa AG and Creative Host Services in the US. SSP is set up as a specialist division within Compass» [Font original](https://www.foodtravelexperts.com/who-we-are/our-evolution/).
 - **L18-GB00BNGWY422-F03** · [V] · `e`. «1961 SAS catering, part of the SAS airline group, is founded» [Font original](https://www.foodtravelexperts.com/who-we-are/our-evolution/).
+
+## Lot 23 · pas3b_cerca
+
+- **L23-GB00BNGWY422-F01** · fundador · 2017 · [V] · `b`. «SWANN, Kathryn Elizabeth Correspondence address 169 Euston Road, London, United Kingdom, NW1 2AE Role Resigned Director Date of birth December 1964 Appointed on 16 June 2014 Resigned on 31 May 2019» [Font original](https://find-and-update.company-information.service.gov.uk/company/05735966/officers?page=1).

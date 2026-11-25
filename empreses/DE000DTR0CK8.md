@@ -78,3 +78,10 @@ Anys contrastats en aquesta passada 2022–2023.
 ## Lot 17 · Cerca nova de cites de CEO
 
 - **L17-DE000DTR0CK8-C01** · 2024 · [V] · `R1`. «Karin Rådström Chairwoman of the Board of Management of Daimler Truck Holding AG» [Font original](https://ir-api.eqs.com/media/document/560e140c-d54f-424d-9315-496862d2c50f/assets/DE000DTR0CK8-JA-2024-EQ-E-00.pdf?disposition=inline).
+
+## Lot 23 · pas3b_cerca
+
+- **L23-DE000DTR0CK8-F01** · fundador · 2022-2025 · [V] · `e`. «In 1926, Daimler Motoren-Gesellschaft merged with Benz & Cie to form Daimler Benz AG in 1926 and the first trucks and buses bearing the new Mercedes-Benz brand were introduced.» [Font original](https://www.daimlertruck.com/fileadmin/user_upload/dokumente/investoren/berichte/prospekt/20211126-dt-ir-daimler-truck-prospectus-website.pdf).
+- **L23-DE000DTR0CK8-F02** · fundador · 2022-2023 · [V] · `e`. «Martin Daum was born in 1959 in Karlsruhe, Germany.» [Font original](https://www.daimlertruck.com/fileadmin/user_upload/dokumente/investoren/berichte/prospekt/20211126-dt-ir-daimler-truck-prospectus-website.pdf).
+- **L23-DE000DTR0CK8-F03** · fundador · 2024-2025 · [V] · `d`. «Karin Rådström will start her appointment as Member of the Board of Management, Daimler Truck AG, responsible for Mercedes-Benz Trucks, on 1 February 2021. Rådström most recently has been responsible for sales and marketing at Scania as a member of the Executive Board.» [Font original](https://www.daimlertruck.com/en/newsroom/pressrelease/karin-raadstroem-takes-over-management-of-mercedes-benz-trucks-on-1-february-2021-47854676).
+- **L23-DE000DTR0CK8-F04** · fundador · 2024-2025 · [V] · `e`. «Karin Rådström was born in 1979 in Södertälje, Sweden.» [Font original](https://www.daimlertruck.com/fileadmin/user_upload/dokumente/investoren/berichte/prospekt/20211126-dt-ir-daimler-truck-prospectus-website.pdf).

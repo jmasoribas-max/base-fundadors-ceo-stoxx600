@@ -68,3 +68,9 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 15 · Cites de CEO extretes dels documents de l'exercici
 
 - **L15-GB00BKFB1C65-C01** · 2024 · [V] · `evidencia_ceo` (`R1`). «Andrea Rossi Group Chief» [Font original](https://filings.xbrl.org/254900TWUJUQ44TQJY84/2024-12-31/ESEF/GB/0/254900TWUJUQ44TQJY84-2024-12-31/reports/254900TWUJUQ44TQJY84-2024-12-31-T01.html).
+
+## Lot 23 · pas3b_cerca
+
+- **L23-GB00BKFB1C65-F01** · fundador · 2019-2021 · [V] · `e`. «FOLEY, John William Correspondence address 10 Fenchurch Avenue, London, EC3M 5AG Role Resigned Director Date of birth December 1956 Appointed on 2 July 2018 Resigned on 10 October 2022» [Font original](https://find-and-update.company-information.service.gov.uk/company/11444019/officers).
+- **L23-GB00BKFB1C65-F02** · fundador · 2019-2025 · [V] · `e`. «Prudential was founded on 30 May 1848 in Hatton Garden, London.» [Font original](https://www.prudentialplc.com/en/about-us/our-history/timeline/).
+- **L23-GB00BKFB1C65-F03** · fundador · 2022-2025 · [V] · `e`. «ROSSI, Paolo Andrea Correspondence address 10 Fenchurch Avenue, London, United Kingdom, EC3M 5AG Role Active Director Date of birth September 1966 Appointed on 10 October 2022» [Font original](https://find-and-update.company-information.service.gov.uk/company/11444019/officers).
