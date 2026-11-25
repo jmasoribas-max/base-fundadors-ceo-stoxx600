@@ -88,3 +88,7 @@ Entitat rellevant: Rightmove.co.uk, formada el 2000 per Countrywide, Connells, H
 - **L22-GB00BGDT3G23-F03** · fundador · 2023-2025 · [V] · `d`. «A Swedish national based in the UK, Johan currently serves as a Partner, EQT Growth Advisory Team, which is part of EQT, the global investment organisation.» [Font original](https://data.fca.org.uk/artefacts/NSM/PRN/202210210200PR_NEWS_UKDISCLO_0013.html).
 - **L22-GB00BGDT3G23-F04** · fundador · 2023-2025 · [V] · `d`. «Johan will join Rightmove on 20 February 2023 as Executive Director and CEO designate» [Font original](https://data.fca.org.uk/artefacts/NSM/PRN/202210210200PR_NEWS_UKDISCLO_0013.html).
 - **L22-GB00BGDT3G23-F05** · fundador · 2023-2025 · [V] · `b`. «Date of birth November 1971» [Font original](https://find-and-update.company-information.service.gov.uk/officers/34i03i9uvyN4TodQqTMygFIpFIU/appointments).
+
+## Lot 23 · pas3b_cerca
+
+- **L23-GB00BGDT3G23-F01** · fundador · 2023-2025 · [V] · `d`. «Johan will join Rightmove on 20 February 2023 as Executive Director and CEO designate and will be appointed Chief Executive Officer on 6 March 2023» [Font original](https://data.fca.org.uk/artefacts/NSM/PRN/202210210200PR_NEWS_UKDISCLO_0013.html).

@@ -171,8 +171,14 @@ RE_DATA_DOC = re.compile(r"(?:Data del document|data_document|document de|Docume
 
 
 def any_document(e: dict) -> int | None:
-    """Any de la data del document, si les notes la donen."""
-    m = RE_DATA_DOC.search(e.get("notes") or "")
+    """Any de la data del document, si les notes la donen («Document: tipus, AAAA-MM-DD, pàgina …» o similars)."""
+    notes = e.get("notes") or ""
+    m = re.search(r"Document: (.*?)(?:, pàgina|\. Nivell|$)", notes)
+    if m:
+        dates = re.findall(r"(?<!\d)((?:19|20)\d{2})(?:-\d{2}){1,2}(?!\d)", m.group(1))
+        if dates:
+            return int(dates[-1])
+    m = RE_DATA_DOC.search(notes)
     return int(m.group(1)) if m else None
 
 
@@ -254,6 +260,17 @@ RE_ORIGEN_NO_E = re.compile(r"^\s*(persones|persona|fusio_iguals|fusió|familia|
 RE_ANY_ETIQ = re.compile(r"(?<!\d)(1[5-9]\d\d|20[0-2]\d)(?!\d)")
 
 
+RE_SOCIETAT = re.compile(r"\b(corporation|corp|ag|plc|oy|oyj|ab|asa|s\.?a\.?|spa|s\.p\.a\.?|n\.?v\.?|gmbh|ltd|limited|inc|"
+                         r"group|groupe|gruppo|bank|banque|banca|company|compagnie|holding|se|kgaa|sarl|finance)\b", re.I)
+
+
+def llista_de_persones(valor: str) -> bool:
+    """Una llista de fundadors compta per a la prova a (o la P3) si hi ha almenys una persona física.
+    Una llista només de societats (p. ex. «Valmet Corporation + Rauma Corporation») és un origen corporatiu
+    o una fusió, no una llista de fundadors persona física (verificació per mostra del lot 23)."""
+    return any(not RE_SOCIETAT.search(x) for x in valor.split("+") if x.strip())
+
+
 def tipus_origen(valor: str) -> str:
     """estat, corporatiu o no_e (persones, fusió, no trobat)."""
     if RE_ORIGEN_NO_E.search(valor):
@@ -275,7 +292,7 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
     contradiccio = sorted({m for e in es_isin for m in RE_CEO_FUNDADOR.findall(e.get("notes") or "")
                            if any(mateixa_persona(m, n) for n in noms)})
     emp = [t for t in tags if t.get("entitat", "emissor") in ENTITATS_OK]
-    llistes = [t for t in emp if t["part"] == "llista_fundadors" and t.get("tancada") == "si"
+    llistes = [t for t in emp if t["part"] == "llista_fundadors" and t.get("tancada") == "si" and llista_de_persones(t["valor"])
                and not any(mateixa_persona(f, n) for f in t["valor"].split("+") for n in noms)]
     origens = [t for t in emp if t["part"] == "origen_entitat"]
     o_estat = [t for t in origens if tipus_origen(t["valor"]) == "estat"]
@@ -307,7 +324,8 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
             m_estat = [t for t in tags if t["part"] == "origen_entitat" and t.get("entitat") == "matriu"
                        and tipus_origen(t["valor"]) == "estat"]
             m_llistes = [t for t in tags if t["part"] == "llista_fundadors" and t.get("entitat") == "matriu"
-                         and t.get("tancada") == "si" and not any(mateixa_persona(f, n) for f in t["valor"].split("+"))]
+                         and t.get("tancada") == "si" and llista_de_persones(t["valor"])
+                         and not any(mateixa_persona(f, n) for f in t["valor"].split("+"))]
             if m_estat:
                 ops.append(("e", [o_corp, m_estat]))
             if m_llistes:

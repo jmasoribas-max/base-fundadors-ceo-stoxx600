@@ -59,3 +59,7 @@ Entitat rellevant: Fresnillo plc, creada per Industrias Peñoles (escissio parci
 
 - **L18-GB00B2QPKJ12-F01** · [V] · `b`. «Incorporated on 15 August 2007» [Font original](https://find-and-update.company-information.service.gov.uk/company/06344120).
 - **L18-GB00B2QPKJ12-F02** · [V] · `context`. «Industrias Peñoles S.A.B. de C.V. (‘Peñoles’) currently owns 75% of the shares of the Company and the ultimate controlling party of the Company is the Baillères family, whose beneficial interest is held through Peñoles.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/169505149.pdf).
+
+## Lot 23 · pas3b_cerca
+
+- **L23-GB00B2QPKJ12-F01** · fundador · 2016-2017,2020,2025 · [V] · `e`. «1887 Se constituye la Compañía Minera de Peñoles» [Font original](https://www.penoles.com.mx/nuestro-grupo/acerca-de-penoles/nuestra-historia.html).
