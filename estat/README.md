@@ -8,6 +8,7 @@ Aquesta carpeta conté el comptador únic de progrés de la base. Respon, per a 
 | [`estat_files.csv`](estat_files.csv) | Una fila per ISIN-any amb l'estat de cada condició (generat) |
 | [`RESUM_ESTAT.md`](RESUM_ESTAT.md) | Resum per etiqueta, embut, mancances, empreses i llista d'incoherències (generat) |
 | [`dubtes_tancats.csv`](dubtes_tancats.csv) | Files amb un dubte de `PENDENTS.md` ja tancat (s'hi afegeixen línies quan un PR tanca un dubte) |
+| [`robusteses.py`](robusteses.py) | Calcula les columnes de robustesa noves (regla 25, interval, conflicte de fonts, dues fonts, gestió externa, títol funcional, c com a ND i la proposta de llista d'una predecessora) a [`robusteses.csv`](robusteses.csv), amb el resum a [`ROBUSTESES.md`](ROBUSTESES.md). No toca `dades/`: les columnes es copien a la base en congelar-la |
 | [`llista_urls_arxiu.py`](llista_urls_arxiu.py) | Genera [`urls_per_arxivar.csv`](urls_per_arxivar.csv): les URL del registre amb cita que encara no tenen la cita verificada a una captura Wayback. És l'entrada de la passada d'arxivament (`wayback_arxiva.py`, a l'ordinador amb les claus) |
 
 ## Com s'executa
@@ -31,11 +32,14 @@ Una cita és **vàlida** si l'entrada de `docs/REGISTRE_CANVIS.csv` té `cita_li
 | **C1 CEO** | `c1_ceo` | `ok`: hi ha cites vàlides amb `funcio_cita=ceo` que anomenen cadascun dels CEO de `ceos`. `co_ceo_parcial`: només n'anomenen algun. `cita_sense_nom`: hi ha cita de CEO però no anomena la persona. `falta`: no hi ha cita de CEO. Per a NA: `rsc_documentat` / `falta_rsc` |
 | | `c1_tipus` | `document` o `interval` (si `marca_prova` esmenta un interval) |
 | **C2 Fundador** | `c2_fundador` | `ok_registre`: cita vàlida amb `funcio_cita=fundador`. `ok_columna_antiga`: només hi ha la cita antiga del CSV (`font_classificacio_cita` amb URL). `falta`. Per a NA i ND: `rsc_documentat` / `cerca_documentada` si hi ha alguna entrada vàlida (CEO, fundador o context) |
+| | `c2_depen` | Per a les P amb la prova per parts: criteris dels quals depèn la prova (per a algun CEO, totes les proves possibles en depenen). `P8` (llista d'un sol fundador), `P3` (prova e amb origen corporatiu), `P1` (cal l'anul·lació d'un any de fundació), `llista_predecessora`, `c`, i `regla25` si la fila depèn d'algun criteri de la regla 25 (P1, P3 o P8). L'usa `robusteses.py` |
 | **C3 Arxiu** | `c3_arxiu` | `ok`: almenys una cita de C1 i una de C2 tenen `cita_verificada_a_captura=si`. Si no, `falta_ceo`, `falta_fundador`, `falta_ceo+fundador`, `falta_fundador_columna_antiga` o `sense_evidencia` |
 | **C4 Coherència** | `c4_coherencia` | `ok` o la llista de problemes: `ceos_diferent_de_sim_ceo_aplicat`, `F_sense_regla_de_si`, `P_sense_prova_de_no`, `P_amb_regla_de_si`, `motiu_nd_residual`, `NA_sense_motiu_na` |
 | | `dubtes_oberts` | Dubtes oberts a `PENDENTS.md` (seccions de dubtes de la regla 29 i dels lots 9 i 10) que no són a `dubtes_tancats.csv`. Un ND porta sempre `ND_obert` fins que no consti tancat |
 
 `estat` val `acabada` si es compleixen les quatre condicions i no hi ha dubtes oberts. Si no, enumera el que falta: `falta_ceo`, `falta_fundador`, `incoherent`, `dubte_obert`, `falta_arxiu`.
+
+Etiquetes `[ceo_fundador=…]` (una cita diu que el CEO va fundar l'empresa): fan `c2_fundador=contradiccio` en una fila P, llevat que una entrada vàlida de l'ISIN porti `[ceo_fundador_descartat=Nom; motiu=…]` (error de codificació) o `[ceo_fundador_resolt=Nom; motiu=…]` (decisió vigent).
 
 Regles que identifiquen una prova a `regles`: de «sí», `cita_fundador`, `D37`, `FT`, `D10b_prelacio`, `D10`; de «no», `a`, `b`, `c_AAF64_reserva`, `d`, `e`, `d_per_part`, `b_per_part`.
 

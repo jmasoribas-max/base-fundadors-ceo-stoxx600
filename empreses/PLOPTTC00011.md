@@ -119,3 +119,7 @@ Entitat rellevant: CD Projekt (fundada el 1994 per Marcin Iwiński i Michał Kic
 - **L22-PLOPTTC00011-F01** · fundador · 2023 · [V] · `a`. «In 1994, together with Michał Kiciński, Marcin Iwiński founded a company named CD Projekt, which eventually morphed into the CD PROJEKT RED Group.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
 - **L22-PLOPTTC00011-F02** · fundador · 2023 · [V] · `b`. «In 1994, together with Michał Kiciński, Marcin Iwiński founded a company named CD Projekt, which eventually morphed into the CD PROJEKT RED Group.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
 - **L22-PLOPTTC00011-F03** · fundador · 2023 · [V] · `a`. «In mid-1994, he joined CD PROJEKT RED as the first employee of the newly established company founded by his brother Michał and Marcin Iwiński.» [Font original](https://www.cdprojekt.com/en/capital-group/supervisory-board/).
+
+## Lot 25 · revisio_contradiccions
+
+- **L25-PLOPTTC00011-R01** · revisio_font · 2023 · [V] · `context`. «Back when Michał Kiciński and myself were establishing the company, I don’t think either of us would have been able to imagine this incredible journey, not even in our wildest dreams – summarizes Marcin Iwiński.» [Font original](https://www.cdprojekt.com/en/capital-group/history/).
