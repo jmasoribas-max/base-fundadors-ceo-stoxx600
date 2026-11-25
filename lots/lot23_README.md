@@ -41,6 +41,10 @@ No s'apliquen dues anul·lacions, perquè no tanquen cap prova i la J1 no es pod
 
 Hi havia files que no es tancaven perquè el script no llegia la data del document quan la descripció del document porta una coma (per exemple, «comunicat de l'emissor (EQS-News, Hannover Rück SE)»). Ara busca la data a tot el segment «Document: …».
 
+## Correcció de `estat/estat_files.py` (2): llistes de fundadors que són societats
+
+La verificació per mostra (secció final) ha trobat llistes de «fundadors» de la matriu que només anomenen societats: «Valmet Corporation + Rauma Corporation» (Metso, matriu de Valmet) i «Glaxo Wellcome plc + SmithKline Beecham plc» (GSK, matriu de Haleon). Una llista així descriu una fusió o un origen corporatiu, no uns fundadors persona física, i no tanca ni la prova a ni la P3. Ara una llista només compta si hi ha almenys una persona física. Afecta 5 llistes de tot el registre. Valmet, Haleon i Aedifica 2019-2025 queden obertes.
+
 ## Efecte a la C2 de les files P
 
 Mateix criteri abans i després del lot:
@@ -48,18 +52,18 @@ Mateix criteri abans i després del lot:
 | | Abans del lot 23 | Després del lot 23 |
 |---|---:|---:|
 | Files P | 5.629 | 5.629 |
-| **Amb prova completa per parts** | 5.089 (90,4 %) | **5.587 (99,3 %)** |
-| … prova a | 1.892 | 1.929 |
-| … prova e | 494 | 665 |
+| **Amb prova completa per parts** | 5.082 (90,3 %) | **5.568 (98,9 %)** |
+| … prova a | 1.885 | 1.916 |
+| … prova e | 494 | 653 |
 | … prova b | 1.885 | 2.087 |
-| … prova d | 704 | 793 |
-| … prova c | 114 | 116 |
-| Amb alguna part però sense prova completa | 530 (120 empreses) | 29 (12 empreses) |
+| … prova d | 704 | 795 |
+| … prova c | 114 | 120 |
+| Amb alguna part però sense prova completa | 537 (121 empreses) | 48 (15 empreses) |
 | Amb una cita que diu que el CEO és fundador | 10 | 13 (+ Dassault 2021-2023) |
 
 Cap canvi de FounderCEO ni de `ceos`. Dassault Systèmes 2021-2023 passa a «contradicció», perquè s'hi ha afegit la cita del Document d'enregistrement universel 2025 («cofondateur de Dassault Systèmes»). Jordi ja ha decidit que és 1 (25/11/2026), i s'aplicarà en un lot de correcció juntament amb la C3.
 
-## Què queda obert (29 files P, 12 empreses; `lot23_dubtes.csv`)
+## Què queda obert (48 files P, 15 empreses; `lot23_dubtes.csv`)
 
 | Empresa | Anys | Què falta |
 |---|---|---|
@@ -75,6 +79,9 @@ Cap canvi de FounderCEO ni de `ceos`. Dassault Systèmes 2021-2023 passa a «con
 | Scout24 | 2025 | Ocupador anterior de Weitz; P3 sobre Beisheim Holding |
 | Vidrala | 2023 | Naixement o ocupador anterior de Gorka Schmitt |
 | Millicom | 2024 | Naixement de Benítez (Tigo és la seva primera feina) |
+| Valmet | 2018-2025 | P3 sobre Metso: l'any de fundació de les parts de la fusió del 1999 (Valmet 1951, Rauma) o l'origen estatal de Valmet |
+| Haleon | 2022-2025 | P3 sobre GSK: l'any de fundació de les parts (Glaxo, SmithKline, Beecham) amb cita |
+| Aedifica | 2019-2025 | P3 sobre Banque Degroof i GVA Finance (fundadors o any de fundació) |
 
 Aquestes files van a la cerca sense límit d'intents (A.4). Si no s'hi troba cap font A/B, la fila queda com a 0 sense prova completa: es declara com a limitació i es fa la robustesa corresponent.
 
@@ -85,4 +92,23 @@ Aquestes files van a la cerca sense límit d'intents (A.4). Si no s'hi troba cap
 
 ## Verificació per mostra
 
-Un verificador independent revisa una mostra estratificada de 15 files tancades pel lot: 6 per la P3, 5 que depenen d'una anul·lació i 4 més. El resultat s'afegirà aquí i al PR.
+Un verificador independent ha revisat una mostra estratificada de 15 files tancades pel lot: 6 per la P3, 5 que depenen d'una anul·lació i 4 més. Ha tornat a baixar les 28 fonts amb curl pla (totes HTTP 200) i ha llegit el context de cada cita. El resultat és a `lot23_verificacio_mostra.csv`.
+
+| Veredicte | Files |
+|---|---:|
+| Correcta | 10 |
+| Correcta amb reserva | 5 |
+| Incorrecta | 0 |
+
+- **Cap etiqueta 0 errònia:** el verificador no ha trobat cap CEO de la mostra que sigui fundador.
+- **Totes les anul·lacions de la mostra són justificades:** BPER 1984, Aareal 2001, Glanbia 1997, Diageo 1997 i UBS 2014.
+- **Dues proves amb un defecte formal, tot i que l'etiqueta és correcta:**
+  - **Valmet 2018:** la P3 es tancava amb una llista de «fundadors» que són societats. Està corregit (secció anterior) i la fila queda oberta.
+  - **GSK 2018 (Walmsley):** es tancava per la prova a amb la llista de fundadors d'una sola de les parts de la fusió del 2000 (la línia Glaxo). Walmsley no era a cap de les parts, i la prova d tanca igualment amb parts ja registrades (entrada el 2010 des de L'Oréal). Limitació declarada del script: la prova a amb la llista d'una predecessora no comprova si hi ha una fusió D1 amb més parts. Hi ha 329 files P que es tanquen només així, i 11 d'aquestes porten `dubte_D1` (DKSH, Sopra Steria i Lagardère). Proposta: una robustesa que tracti com a ND les files tancades només per la llista d'una predecessora, i etiquetar la llista de cada part a les fusions D1.
+- **Reserves sense efecte:**
+  - **Tryg:** el 2002 (TrygVesta) es tracta com a P1, però no hi ha cap anul·lació registrada.
+  - **Natixis:** els anys 1878 i 1818 són dels moviments Banque Populaire i Caisse d'Epargne, no de les entitats matriu del 2006.
+  - **Sandoz:** el 1970 de Ciba-Geigy és l'any d'una fusió.
+- **Taxa d'error:**
+  - etiquetes errònies: 0 de 15 (cota superior del 95 %, aproximadament 20 %);
+  - proves mal atribuïdes amb l'etiqueta correcta: 2 de 15.
