@@ -101,6 +101,9 @@ MAX_IDS = 5
 #   [ceo_fundador=Nom Cognom]                            (la cita diu que el CEO va fundar l'empresa)
 RE_ETIQUETA = re.compile(r"\[part ([a-z_]+)=([^\];]*)((?:;[^\]]*)?)\]")
 RE_CEO_FUNDADOR = re.compile(r"\[ceo_fundador=([^\]]+)\]")
+# Revisió d'una etiqueta [ceo_fundador=…]: descartada (error de codificació, p. ex. un homònim) o resolta per
+# una decisió vigent (p. ex. conflicte_fonts). La persona ja no fa contradicció en aquell ISIN.
+RE_CEO_FUNDADOR_REVISAT = re.compile(r"\[ceo_fundador_(?:descartat|resolt)=([^;\]]+)")
 # Un any de fundació registrat que no és una fundació vàlida (p. ex. holding o vehicle d'una compra, P1) es pot
 # anul·lar amb una etiqueta a les notes d'una entrada vàlida de l'ISIN: [anula any_fundacio=1998; motiu=P1 …]
 RE_ANULA = re.compile(r"\[anula any_fundacio=(\d{4})")
@@ -108,7 +111,7 @@ ENTITATS_OK = {"emissor", "predecessora"}  # entitat=matriu: parts de la matriu,
 ORDRE_PERSONA = ("b", "d", "c")
 COLUMNES = [
     "isin", "any", "nom", "FounderCEO", "ceos", "regles", "estat_certificacio_antic",
-    "c1_ceo", "c1_ids", "c1_tipus", "c2_fundador", "c2_ids", "c2_parts", "c3_arxiu",
+    "c1_ceo", "c1_ids", "c1_tipus", "c2_fundador", "c2_ids", "c2_parts", "c2_depen", "c3_arxiu",
     "c4_coherencia", "dubtes_oberts", "avisos", "estat",
 ]
 
@@ -278,7 +281,10 @@ def tipus_origen(valor: str) -> str:
     return "estat" if RE_ORIGEN_ESTAT.search(valor) else "corporatiu"
 
 
-def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str, bool, str]:
+R25 = {"P1", "P3", "P8"}  # criteris de la regla 25 que es dedueixen de l'evidència (vegeu prova_P)
+
+
+def prova_P(es_isin: list[dict], noms: list[str], depen: list | None = None) -> tuple[str, list[dict], str, bool, str]:
     """Prova de no fundador d'una fila P a partir de les etiquetes de les entrades de l'ISIN.
 
     Les parts d'empresa (llista de fundadors, origen, any de fundació) valen per a tots els anys de l'ISIN;
@@ -287,10 +293,15 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
     les proves possibles d'un CEO es tria la primera amb totes les cites verificades a la captura, i si no
     n'hi ha cap, la primera. Retorna (prova, cites de suport, parts presents, si cada part té una cita
     verificada a la captura, contradicció).
+
+    Si es passa `depen` (una llista), s'hi afegeix, per a cada CEO, la llista de les dependències de cada
+    prova possible: P8 (llista d'un sol fundador), llista_predecessora (llista d'una predecessora), P3 (prova
+    e amb origen corporatiu), P1 (la prova només tanca perquè s'ha anul·lat un any de fundació) i c.
     """
     tags = [t for e in es_isin for t in etiquetes(e)]
+    revisats = {m.strip() for e in es_isin for m in RE_CEO_FUNDADOR_REVISAT.findall(e.get("notes") or "")}
     contradiccio = sorted({m for e in es_isin for m in RE_CEO_FUNDADOR.findall(e.get("notes") or "")
-                           if any(mateixa_persona(m, n) for n in noms)})
+                           if any(mateixa_persona(m, n) for n in noms) and m.strip() not in revisats})
     emp = [t for t in tags if t.get("entitat", "emissor") in ENTITATS_OK]
     llistes = [t for t in emp if t["part"] == "llista_fundadors" and t.get("tancada") == "si" and llista_de_persones(t["valor"])
                and not any(mateixa_persona(f, n) for f in t["valor"].split("+") for n in noms)]
@@ -302,6 +313,17 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
                   and any_de(t["valor"]) not in anulats]
     F = max((y for y, _ in fundacions), default=None)  # P7: la data plausible més recent
     t_F = [t for y, t in fundacions if y == F]
+    # Sense les anul·lacions (P1/P2, regla 21b): per saber si una prova b, c o d en depèn
+    F_sense_anul = max((any_de(t["valor"]) for t in emp if t["part"] == "any_fundacio" and any_de(t["valor"])),
+                       default=None)
+
+    def dep_llista(t: dict) -> set:
+        d = set()
+        if len([x for x in t["valor"].split("+") if x.strip()]) == 1:
+            d.add("P8")
+        if t.get("entitat") == "predecessora":
+            d.add("llista_predecessora")
+        return d
 
     def persona(part: str, nom: str) -> list[dict]:
         return [t for t in tags if t["part"] == part and mateixa_persona(t["valor"].split(":")[0], nom)]
@@ -312,9 +334,9 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
     def opcions(n: str) -> list[tuple[str, list[list[dict]]]]:
         ops = []
         if llistes:
-            ops.append(("a", [llistes]))
+            ops.append(("a", [llistes], set.intersection(*[dep_llista(t) for t in llistes])))
         if o_estat:
-            ops.append(("e", [o_estat]))
+            ops.append(("e", [o_estat], set()))
         naix = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("naixement_ceo", n)]
         naix = [(y, t) for y, t in naix if y]
         if o_corp:
@@ -327,16 +349,16 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
                          and t.get("tancada") == "si" and llista_de_persones(t["valor"])
                          and not any(mateixa_persona(f, n) for f in t["valor"].split("+"))]
             if m_estat:
-                ops.append(("e", [o_corp, m_estat]))
+                ops.append(("e", [o_corp, m_estat], {"P3"}))
             if m_llistes:
-                ops.append(("e", [o_corp, m_llistes]))
+                ops.append(("e", [o_corp, m_llistes], {"P3"}))
             if naix:
                 m_anys = [(int(y), t) for t in o_corp for y in RE_ANY_ETIQ.findall(t["valor"])
                           if a_la_cita(int(y), t["_e"].get("cita_literal") or "")]
                 m_anys += [(any_de(t["valor"]), t) for t in tags if t["part"] == "any_fundacio"
                            and t.get("entitat") == "matriu" and any_de(t["valor"])]
                 if m_anys and max(y for y, _ in m_anys) - min(y for y, _ in naix) < 18:
-                    ops.append(("e", [o_corp, [t for _, t in m_anys], [t for _, t in naix]]))
+                    ops.append(("e", [o_corp, [t for _, t in m_anys], [t for _, t in naix]], {"P3"}))
         if F is None:
             return ops
         ocup = [t for t in persona("ocupador_anterior", n) if len(t["valor"].split(":")) >= 2
@@ -347,18 +369,25 @@ def prova_P(es_isin: list[dict], noms: list[str]) -> tuple[str, list[dict], str,
         entr = [(y, t) for y, t in entr if y]
         inici = [(any_de(t["valor"].split(":", 1)[-1]), t) for t in persona("inici_mandat", n)]
         inici = [(y, t) for y, t in inici if y]
+        F0 = F_sense_anul if F_sense_anul is not None else F
+
+        def p1(ok_sense: bool) -> set:
+            return set() if ok_sense else {"P1"}
         if naix and F - min(y for y, _ in naix) < 18:
-            ops.append(("b", [t_F, [t for _, t in naix]]))
+            ops.append(("b", [t_F, [t for _, t in naix]], p1(F0 - min(y for y, _ in naix) < 18)))
         if ocup and entr and min(y for y, _ in entr) - F >= 3:
-            ops.append(("d", [t_F, ocup, [t for _, t in entr]]))
+            ops.append(("d", [t_F, ocup, [t for _, t in entr]], p1(min(y for y, _ in entr) - F0 >= 3)))
         if not naix and (entr or inici) and max(y for y, _ in entr + inici) - F >= 64:
-            ops.append(("c", [t_F, [t for _, t in entr + inici]]))
+            ops.append(("c", [t_F, [t for _, t in entr + inici]],
+                        {"c"} | p1(max(y for y, _ in entr + inici) - F0 >= 64)))
         return ops
 
     presents = ";".join(sorted({t["part"] for t in tags}))
     per_ceo, grups = [], []
     for n in noms or [""]:
         ops = opcions(n)
+        if depen is not None:
+            depen.append([o[2] for o in ops])
         if not ops:
             return "", [], presents, False, ";".join(contradiccio)
         tria = next((o for o in ops if verif(o[1])), ops[0])
@@ -490,8 +519,16 @@ def calcula() -> tuple[list[dict], dict]:
             if lab == "0":
                 # P: prova completa per parts (decisió de Jordi del 24/11/2026, opció b), a partir de les
                 # etiquetes [part …] de totes les entrades vàlides de l'ISIN
-                prova, suport, presents, verif_p, contra = prova_P(per_isin.get(r["isin"], []), noms)
+                depen: list = []
+                prova, suport, presents, verif_p, contra = prova_P(per_isin.get(r["isin"], []), noms, depen)
                 out["c2_parts"] = presents
+                if prova and depen:
+                    # La fila depèn d'un criteri si, per a algun CEO, totes les proves possibles en depenen
+                    claus = set().union(*[d for ceo in depen for d in ceo])
+                    dep = sorted(k for k in claus if any(ceo and all(k in d for d in ceo) for ceo in depen))
+                    if any(ceo and all(d & R25 for d in ceo) for ceo in depen):
+                        dep.append("regla25")
+                    out["c2_depen"] = ";".join(dep)
                 if contra:
                     out["c2_fundador"] = "contradiccio"
                     avisos.append("cita_que_fa_fundador_el_ceo")
