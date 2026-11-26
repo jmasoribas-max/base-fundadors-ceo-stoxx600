@@ -102,3 +102,7 @@ Entitat rellevant: empresa de Hugo Ferdinand Boss (Metzingen 1924), avui HUGO BO
 - **L18-DE000A1PHFF7-F01** · [V] · `b`. «Founded in 1924 in the town of Metzingen, Germany, HUGO BOSS has grown to include the two brands BOSS and HUGO with a range of high-quality women's and men's clothing, as well as shoes and accessories.» [Font original](https://group.hugoboss.com/en/company/history).
 - **L18-DE000A1PHFF7-F02** · [V] · `context`. «In 1985 essential changes take place regarding the company structure. HUGO BOSS is listed on the German Stock Exchange in Frankfurt.» [Font original](https://group.hugoboss.com/en/company/history).
 - **L18-DE000A1PHFF7-F03** · [V] · `a`. «Hugo Ferdinand Boss established his workshop in 1924, as a consequence of which his company operated during the Third Reich and the Second World War.» [Font original](https://group.hugoboss.com/en/company/history).
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-DE000A1PHFF7-C01** · ceo · 2017 · [V] · `R1`. «Sincerely yours, Mark Langer Chief Executive Officer» [Font original](https://group.hugoboss.com/fileadmin/media/pdf/investors/financial-reports/2017/EN/Annual_Report_2017.pdf).

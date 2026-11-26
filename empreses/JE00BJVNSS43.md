@@ -49,3 +49,8 @@ Aquesta empresa no té entrades al registre de canvis de la v8 r1 (el registre c
 No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aquest repositori.
 
 Índex: [INDEX.md](../INDEX.md) · Base: [dades/base_isin_any_v8r3.csv](../dades/base_isin_any_v8r3.csv)
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-JE00BJVNSS43-C01** · ceo · 2021 · [V] · `R1`. «Kevin Murphy, Chief Executive Officer and Executive Director. Mr. Murphy was appointed as an Executive Director in August 2017 and as Chief Executive Officer in November 2019.» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000062415/NI-000062415.pdf).
+- **L27-JE00BJVNSS43-C02** · ceo · 2022 · [V] · `R1`. «Kevin Murphy CEO» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000084232/NI-000084232.pdf).

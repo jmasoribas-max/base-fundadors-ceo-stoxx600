@@ -76,3 +76,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 ## Lot 27 · Cites de CEO extretes dels documents de l'exercici
 
 - **L27-GB00BBG9VN75-C01** · 2019 · [V] · `evidencia_ceo` (`R1`). «Craig Hayman Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000005969.pdf).
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-GB00BBG9VN75-C02** · ceo · 2022 · [V] · `R1`. «Peter Herweck, Chief Executive Officer of AVEVA, was a Schneider Electric nominee on the board of AVEVA, having been appointed in 2018 pursuant to the terms of the Relationship Agreement, until he was seconded from Schneider Electric, at the request of AVEVA, to fulfil the role of Chief Executive Officer of AVEVA, with effect from 1 May 2021;» [Font original](https://data.fca.org.uk/artefacts/NSM/Portal/NI-000061761/NI-000061761.pdf).

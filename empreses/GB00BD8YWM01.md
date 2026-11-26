@@ -77,3 +77,7 @@ Entitat rellevant: Micro Focus (negoci de programari COBOL; societat original Mi
 ## Lot 27 · Cites de CEO extretes dels documents de l'exercici
 
 - **L27-GB00BD8YWM01-C01** · 2018 · [V] · `evidencia_ceo` (`R1`). «Stephen Murdoch Chief Executive» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/212171265.pdf).
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-GB00BD8YWM01-C02** · ceo · 2017 · [V] · `R1`. «Chris Hsu’s period as Chief Executive Officer was from 1 September 2017 to 19 March 2018.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/265865467.pdf).
