@@ -256,6 +256,15 @@ Paraules de Jordi a la sessió de Claude del 25/11/2026, resumides (dubtes del l
 
 Les robusteses les calcula per script `estat/robusteses.py`. Es copien a `dades/` en congelar la base, amb el flux vigent (secció 8).
 
+## Decisions de Jordi del 26/11/2026
+
+Paraules de Jordi a la sessió de Claude del 26/11/2026: «estic d'acord amb totes les teves recomanacions», sobre les quatre decisions del lot 28. Aplicat al lot de correcció 6.
+
+- **EssilorLuxottica 2018-2020:** es manté a 1 (Del Vecchio) i s'hi afegeix la marca `dubte_D1`. L'operació del 2018 és un «rapprochement» en què cap part no passa del 60 %, però Luxottica n'és l'adquirent comptable i Essilor l'adquirent jurídic (regla 26). Per la J1, la part on era Del Vecchio és Luxottica, que ell va fundar. La Q1 no s'hi aplica.
+- **ACS 2016 i 2021:** Florentino Pérez és fundador transformador (Q7, tipus c): pren el control de Construcciones Padrós (1983), n'és el primer executiu des del 1984 i el president executiu d'ACS des del 1997, i l'emissor documenta la transformació. Queda anotat que cap font no diu literalment que fos el primer accionista individual de Padrós.
+- **Rubis 2024-2025:** Jacques Riou surt de `ceos` (Q11). L'emissor no l'anomena Gérant aquests anys; només «Président d'Agena, société co-Gérante».
+- **Tritax Big Box 2021:** R-SC per la Q12, com el 2018-2020. L'informe anual 2021 no designa cap CEO de la cotitzada i declara que no té consellers executius ni empleats.
+
 ## Metodologia vigent
 
 La metodologia vigent per a aquest treball és només la del repositori: aquestes instruccions (`AGENTS.md` / `CLAUDE.md`, amb el mateix contingut normatiu) i els documents del repositori als quals remeten. El text complet vigent és `docs/METODOLOGIA_3_Articles_v0.10.10.md` (SHA-256 `61112829dce1cbcebafc5ebcf9e04eb738566934369931cec597aeac2e14ec07`), afegit al repositori el 23/11/2026; `docs/METODOLOGIA.md` n'és la porta d'entrada. No la busquis a Google Drive, Gmail, Slack ni cap altra font. Si hi trobes versions antigues de la metodologia (per exemple, al Drive), no s'apliquen.
@@ -275,3 +284,5 @@ El contingut normatiu d'aquest fitxer coincideix amb el de `CLAUDE.md` (aprovat 
 Actualitzat el 23/11/2026 per Claude, amb l'OK de Jordi (PR #21 i PR #24): flux sense DF (Claude coordina, valida per script i obre els PR; Jordi aprova i fusiona), decisions de Jordi del 23/11/2026 i text complet de la metodologia v0.10.10 al repositori.
 
 Actualitzat el 25/11/2026 per Claude (PR #49), perquè Jordi el revisi i el fusioni: decisions de Jordi del 25/11/2026 (Dassault, BillerudKorsnäs, Covivio, Wirecard, robustesa de la llista d'una predecessora i segona font per als fundadors-CEO).
+
+Actualitzat el 26/11/2026 per Claude (lot de correcció 6), perquè Jordi el revisi i el fusioni: decisions de Jordi del 26/11/2026 (EssilorLuxottica, ACS, Rubis i Tritax Big Box).
