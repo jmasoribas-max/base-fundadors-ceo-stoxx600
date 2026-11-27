@@ -49,3 +49,7 @@ No consten pendències específiques d'aquesta empresa als fitxers d'origen d'aq
 
 - **L22-GB00BFWK4V16-F01** · fundador · 2018 · [V] · `b`. «The origins of SSP date back more than 50 years, with the founding of SAS Catering in Sweden in 1961. The business expanded organically and through acquisitions and was itself acquired by Compass in 1993 to be integrated with their contract catering operations.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/69900573.pdf).
 - **L22-GB00BFWK4V16-F02** · fundador · 2018 · [V] · `b`. «SWANN, Kathryn Elizabeth Correspondence address 169 Euston Road, London, United Kingdom, NW1 2AE Role Resigned Director Date of birth December 1964 Appointed on 16 June 2014» [Font original](https://find-and-update.company-information.service.gov.uk/company/05735966/officers).
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-GB00BFWK4V16-C01** · ceo · 2018 · [V] · `R1`. «The 2019 financial year has been a year of transition for the Group, with Kate Swann stepping down as Group CEO in May 2019 following a tremendously successful five years in the role.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/261930122.pdf).

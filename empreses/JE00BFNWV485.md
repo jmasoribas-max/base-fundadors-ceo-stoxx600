@@ -64,3 +64,8 @@ Entitat rellevant: Wolseley Sheep Shearing Machine Company (Sydney, 1887) · ori
 
 - **L22-JE00BFNWV485-F01** · fundador · 2016-2017 · [V] · `b`. «The Group was founded in 1887, when Frederick York Wolseley launched the Wolseley Sheep Shearing Machine Company.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/219747037.pdf).
 - **L22-JE00BFNWV485-F02** · fundador · 2016-2017 · [V] · `b`. «John Walley MARTIN Filter appointments Filter appointments, selecting an input will reload the page. Current appointments Total number of appointments 21 Date of birth April 1966» [Font original](https://find-and-update.company-information.service.gov.uk/officers/x4GIPh8NAIrqHdOCIizR3aAY0L0/appointments).
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-JE00BFNWV485-C01** · ceo · 2016 · [V] · `R1`. «Commenting on the results, John Martin, Chief Executive, said:» [Font original](https://www.investegate.co.uk/announcement/rns/ferguson--ferg/q1-interim-management-statement/4937626).
+- **L27-JE00BFNWV485-C02** · ceo · 2017 · [V] · `R1`. «John Martin, Chief Executive, commented:» [Font original](https://s201.q4cdn.com/465729859/files/doc_news/Interim-Management-Statement-for-the-3-months-to-31-October-2017-12-05-2017-2017.pdf).

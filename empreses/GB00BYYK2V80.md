@@ -60,3 +60,8 @@ Entitat rellevant: Streamline, sistema de pagaments electronics de NatWest Bank 
 - **L22-GB00BYYK2V80-F03** · fundador · 2016-2017 · [V] · `b`. «JANSEN, Philip Eric Rene Correspondence address The Walbrook Building, 25 Walbrook, London, EC4N 8AF Role Resigned Director Date of birth January 1967» [Font original](https://find-and-update.company-information.service.gov.uk/company/08762327/officers).
 - **L22-GB00BYYK2V80-F04** · fundador · 2016-2017 · [V] · `d`. «WorldPay first started in 1989 as electronic payments system Streamline.» [Font original](https://www.bbc.com/news/business-47609536).
 - **L22-GB00BYYK2V80-F05** · fundador · 2016-2017 · [V] · `d`. «Worldpay traces its history back to 1989, when it was an electronic payments firm known as Streamline.» [Font original](https://www.independent.co.uk/news/business/news/worldpay-value-hits-ps5bn-on-market-debut-a6693166.html).
+
+## Lot 27 · cerca_ceo_exercici_agents
+
+- **L27-GB00BYYK2V80-C01** · ceo · 2017 · [V] · `ceo_interval`. «Philip Jansen (Chief Executive Officer)» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/154265263.pdf).
+- **L27-GB00BYYK2V80-C02** · ceo · 2017 · [V] · `ceo_interval`. «Philip Jansen was appointed as chief executive officer of Legacy Worldpay in April 2013.» [Font original](https://data.fca.org.uk/artefacts/NSM/data-migration/LSE20180123070004_13505370.html).

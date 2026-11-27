@@ -107,6 +107,20 @@ RE_CEO_FUNDADOR_REVISAT = re.compile(r"\[ceo_fundador_(?:descartat|resolt)=([^;\
 # Un any de fundació registrat que no és una fundació vàlida (p. ex. holding o vehicle d'una compra, P1) es pot
 # anul·lar amb una etiqueta a les notes d'una entrada vàlida de l'ISIN: [anula any_fundacio=1998; motiu=P1 …]
 RE_ANULA = re.compile(r"\[anula any_fundacio=(\d{4})")
+# Cita de CEO que només és un extrem del mandat (nomenament o sortida) per als anys indicats (lot 27b, 26/11/2026):
+# [extrem_mandat anys=2016-2022]. Per a aquests anys compta com a extrem d'un interval (regla 28), no com a document.
+RE_EXTREM = re.compile(r"\[extrem_mandat anys=([0-9,\- ]+)\]")
+
+
+def es_extrem(e: dict, any_: str) -> bool:
+    for spec in RE_EXTREM.findall(e.get("notes") or ""):
+        for tros in spec.replace(" ", "").split(","):
+            a, _, b = tros.partition("-")
+            if a.isdigit() and int(a) <= int(any_) <= int(b or a):
+                return True
+    return False
+
+
 # Cita verificada a la captura de Wayback: estricta (si) o amb comparació flexible (si_flexible, 25/11/2026)
 VERIFICADA = {"si", "si_flexible"}
 ENTITATS_OK = {"emissor", "predecessora"}  # entitat=matriu: parts de la matriu, només per a la P3 de la prova e
@@ -510,8 +524,8 @@ def calcula() -> tuple[list[dict], dict]:
                 c1_suport = []
             else:
                 out["c1_ceo"] = "falta"
-            tipus = {"interval" if "interval" in (e.get("marca_prova") or "") else "document"
-                     for e in c1_suport}
+            tipus = {"interval" if ("interval" in (e.get("marca_prova") or "") or es_extrem(e, r["any"]))
+                     else "document" for e in c1_suport}
             out["c1_tipus"] = "+".join(sorted(tipus))
             if c1_suport and not any(CARRECS.search(e["_cita_norm"]) for e in c1_suport):
                 avisos.append("carrec_no_detectat_a_la_cita")

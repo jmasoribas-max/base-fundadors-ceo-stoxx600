@@ -13,7 +13,7 @@ Mostra principal (`a_mostra_principal`=1): 5.960 files. 350 F (5.87 %).
 | `founderceo_rob_r25_p6` | 3 | 347 | 5610 | 3 | 0 | 5.83 % |
 | `founderceo_rob_r25_p7` | 10 | 350 | 5600 | 10 | 0 | 5.88 % |
 | `founderceo_rob_r25_p8` | 651 | 350 | 4959 | 651 | 0 | 6.59 % |
-| `founderceo_rob_sense_interval` | 38 | 342 | 5580 | 38 | 0 | 5.78 % |
+| `founderceo_rob_sense_interval` | 53 | 342 | 5565 | 53 | 0 | 5.79 % |
 | `founderceo_rob_conflicte_fonts` | 7 | 357 | 5603 | 0 | 0 | 5.99 % |
 | `founderceo_rob_dues_fonts` | 13 | 337 | 5610 | 13 | 0 | 5.67 % |
 | `founderceo_rob_sense_gestio_externa` | 12 | 343 | 5609 | 0 | 8 | 5.76 % |
