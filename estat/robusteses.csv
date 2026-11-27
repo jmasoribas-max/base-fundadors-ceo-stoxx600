@@ -1924,12 +1924,12 @@ ES0148396007,2024,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0148396007,2025,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0152503035,2016,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0152503035,2017,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-ES0167050915,2016,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+ES0167050915,2016,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ES0167050915,2017,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0167050915,2018,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0167050915,2019,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0167050915,2020,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-ES0167050915,2021,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+ES0167050915,2021,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ES0167050915,2022,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0167050915,2023,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ES0167050915,2024,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -4016,7 +4016,7 @@ GB00BG12Y042,2023,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 GB00BG49KP99,2018,NA_sense_ceo,0,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,exclosa,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo
 GB00BG49KP99,2019,NA_sense_ceo,0,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,exclosa,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo
 GB00BG49KP99,2020,NA_sense_ceo,0,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,exclosa,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo
-GB00BG49KP99,2021,1,1,1,1,1,1,1,1,1,1,1,no_determinat,exclosa,1,1,1,1
+GB00BG49KP99,2021,NA_sense_ceo,0,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,exclosa,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo,NA_sense_ceo
 GB00BG49KP99,2022,1,1,1,1,1,1,1,1,1,1,1,no_determinat,exclosa,1,1,1,1
 GB00BG49KP99,2023,1,1,1,1,1,1,1,1,1,1,1,no_determinat,exclosa,1,1,1,1
 GB00BG49KP99,2024,1,1,1,1,1,1,1,1,1,1,1,no_determinat,exclosa,1,1,1,1
