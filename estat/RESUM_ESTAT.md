@@ -5,7 +5,7 @@ Fitxer generat per `estat/estat_files.py`. No l'editis a mà. Definicions a [`es
 Entrades llegides:
 
 - `dades/base_isin_any_v8r3.csv` SHA-256 `0b969dec106a31be4dbd4a55789aac38042e3f03c4d3690c48dab7c0ee1370d8`
-- `docs/REGISTRE_CANVIS.csv` SHA-256 `725bb556fd0029ede507233af5253ed25b1a63a0dd9e4849a43321d783fb7563` (19.653 entrades)
+- `docs/REGISTRE_CANVIS.csv` SHA-256 `88f5de7aac6bd703165e612d3b47d75ef1eaeaceb50d2a8f3d904d6f8f42e575` (19.653 entrades)
 - `PENDENTS.md` SHA-256 `923f2d5261bb7eb1e63464a375488a6bed135b23921c1175594acfe6bc0cd684`
 - `estat/dubtes_tancats.csv` SHA-256 `36daa60fefec9ffddefe88bd2932522a154d1a7019a9da3e916a1cb8beda2667`
 
@@ -14,10 +14,10 @@ Entrades llegides:
 | Etiqueta | Files | C1 CEO | C2 fundador | C1 i C2 | C4 coherent i sense dubtes | C3 arxiu | **Acabades** |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | F (`1`) | 351 | 351 (100,0 %) | 349 (99,4 %) | 349 (99,4 %) | 344 (98,0 %) | 31 (8,8 %) | **31 (8,8 %)** |
-| P (`0`) | 5.621 | 5.604 (99,7 %) | 5.586 (99,4 %) | 5.571 (99,1 %) | 5.619 (100,0 %) | 240 (4,3 %) | **240 (4,3 %)** |
+| P (`0`) | 5.621 | 5.604 (99,7 %) | 5.586 (99,4 %) | 5.571 (99,1 %) | 5.619 (100,0 %) | 627 (11,2 %) | **625 (11,1 %)** |
 | NA | 32 | 31 (96,9 %) | 31 (96,9 %) | 31 (96,9 %) | 29 (90,6 %) | 16 (50,0 %) | **16 (50,0 %)** |
 | ND | 8 | 8 (100,0 %) | 8 (100,0 %) | 8 (100,0 %) | 8 (100,0 %) | 0 (0,0 %) | **0 (0,0 %)** |
-| **Total** | 6.012 | 5.994 (99,7 %) | 5.974 (99,4 %) | 5.959 (99,1 %) | 6.000 (99,8 %) | 287 (4,8 %) | **287 (4,8 %)** |
+| **Total** | 6.012 | 5.994 (99,7 %) | 5.974 (99,4 %) | 5.959 (99,1 %) | 6.000 (99,8 %) | 674 (11,2 %) | **672 (11,2 %)** |
 
 ## Embut
 
@@ -26,7 +26,7 @@ Entrades llegides:
 | Panell | 6.012 |
 | Amb evidència de CEO i de fundador (C1 i C2) | 5.959 (99,1 %) |
 | … i coherents, sense dubtes oberts (C4) | 5.947 (98,9 %) |
-| … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 287 (4,8 %) |
+| … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 672 (11,2 %) |
 
 ## Què falta, per condició
 
@@ -38,7 +38,7 @@ Una fila pot tenir més d'una mancança.
 | `falta_fundador` | 2 | 35 | 1 | 0 | 38 |
 | `incoherent` | 0 | 2 | 0 | 0 | 2 |
 | `dubte_obert` | 7 | 0 | 3 | 0 | 10 |
-| `falta_arxiu` | 320 | 5.381 | 16 | 8 | 5.725 |
+| `falta_arxiu` | 320 | 4.994 | 16 | 8 | 5.338 |
 
 ## Detall de C1 (CEO) i C2 (fundador)
 
@@ -52,12 +52,12 @@ Una fila pot tenir més d'una mancança.
 
 | Valor de `c2_fundador` | Files |
 |---|---:|
-| `ok_prova_b` | 2.066 |
-| `ok_prova_a` | 1.919 |
-| `ok_prova_d` | 785 |
-| `ok_prova_e` | 657 |
+| `ok_prova_b` | 2.090 |
+| `ok_prova_a` | 1.899 |
+| `ok_prova_d` | 790 |
+| `ok_prova_e` | 653 |
 | `ok_registre` | 339 |
-| `ok_prova_c` | 125 |
+| `ok_prova_c` | 120 |
 | `prova_incompleta` | 35 |
 | `rsc_documentat` | 31 |
 | `ok_prova_b|b` | 24 |
@@ -78,21 +78,21 @@ Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat
 |---|---:|
 | Amb alguna cita de fundador (criteri anterior al 24/11) | 5.560 (98,9 %) |
 | Amb una prova completa per parts (criteri vigent) | 5.586 (99,4 %) |
-| … prova a (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 1.919 |
-| … prova e (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 657 |
-| … prova b (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 2.094 |
-| … prova d (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 795 |
-| … prova c (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 125 |
+| … prova a (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 1.899 |
+| … prova e (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 653 |
+| … prova b (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 2.118 |
+| … prova d (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 800 |
+| … prova c (per a tots els CEO de la fila o, amb co-CEO, per a algun) | 120 |
 | Cita que diu que el CEO és fundador (contradicció, a revisar) | 0 |
 | Amb alguna part però sense cap prova completa | 35 |
 | Sense cap part documentada | 0 |
 
 | Valor de `c3_arxiu` | Files |
 |---|---:|
-| `falta_ceo+fundador` | 4.926 |
-| `falta_fundador` | 512 |
-| `ok` | 287 |
-| `falta_ceo` | 233 |
+| `falta_ceo+fundador` | 4.460 |
+| `ok` | 674 |
+| `falta_fundador` | 564 |
+| `falta_ceo` | 260 |
 | `sense_evidencia` | 53 |
 | `falta_fundador_columna_antiga` | 1 |
 
@@ -102,15 +102,15 @@ Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat
 |---|---:|---:|---:|
 | `certificada` | 1.773 | 1.757 (99,1 %) | 3 (0,2 %) |
 | `certificada_ceo_pendent` | 108 | 108 (100,0 %) | 18 (16,7 %) |
-| `no_certificada` | 241 | 241 (100,0 %) | 173 (71,8 %) |
-| `fora_mostra_auditoria` | 3.890 | 3.853 (99,0 %) | 93 (2,4 %) |
+| `no_certificada` | 241 | 241 (100,0 %) | 192 (79,7 %) |
+| `fora_mostra_auditoria` | 3.890 | 3.853 (99,0 %) | 459 (11,8 %) |
 
 ## Per empresa (ISIN)
 
 | | Totes les files amb C1 i C2 | Totes les files acabades | Total |
 |---|---:|---:|---:|
 | Empreses amb almenys un any F | 88 | 5 | 89 |
-| Totes les empreses | 1.019 | 38 | 1.040 |
+| Totes les empreses | 1.019 | 80 | 1.040 |
 
 ## Incoherències del CSV (2 files)
 
@@ -122,4 +122,4 @@ Decisió de Jordi del 24/11/2026 (opció b): un 0 només compta com a documentat
 ## Avisos (no bloquegen)
 
 - `carrec_no_detectat_a_la_cita`: 121 files
-- `prova_C2_diferent_de_regles`: 3249 files
+- `prova_C2_diferent_de_regles`: 3225 files
