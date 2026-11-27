@@ -7,17 +7,17 @@ Entrades llegides:
 - `dades/base_isin_any_v8r3.csv` SHA-256 `0b969dec106a31be4dbd4a55789aac38042e3f03c4d3690c48dab7c0ee1370d8`
 - `docs/REGISTRE_CANVIS.csv` SHA-256 `03dc22a968ba962cba6796cd9597060f49a08f79e5c83945e4d39ff1e161ac1a` (19.798 entrades)
 - `PENDENTS.md` SHA-256 `923f2d5261bb7eb1e63464a375488a6bed135b23921c1175594acfe6bc0cd684`
-- `estat/dubtes_tancats.csv` SHA-256 `36daa60fefec9ffddefe88bd2932522a154d1a7019a9da3e916a1cb8beda2667`
+- `estat/dubtes_tancats.csv` SHA-256 `e008555e34a8de5f201564d6386a0e238e52e434227fd9cbc672872b9c366215`
 
 ## Resum per etiqueta
 
 | Etiqueta | Files | C1 CEO | C2 fundador | C1 i C2 | C4 coherent i sense dubtes | C3 arxiu | **Acabades** |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| F (`1`) | 351 | 351 (100,0 %) | 349 (99,4 %) | 349 (99,4 %) | 344 (98,0 %) | 31 (8,8 %) | **31 (8,8 %)** |
+| F (`1`) | 351 | 351 (100,0 %) | 349 (99,4 %) | 349 (99,4 %) | 351 (100,0 %) | 31 (8,8 %) | **31 (8,8 %)** |
 | P (`0`) | 5.621 | 5.604 (99,7 %) | 5.586 (99,4 %) | 5.571 (99,1 %) | 5.619 (100,0 %) | 240 (4,3 %) | **240 (4,3 %)** |
-| NA | 32 | 31 (96,9 %) | 31 (96,9 %) | 31 (96,9 %) | 29 (90,6 %) | 16 (50,0 %) | **16 (50,0 %)** |
+| NA | 32 | 31 (96,9 %) | 31 (96,9 %) | 31 (96,9 %) | 32 (100,0 %) | 16 (50,0 %) | **16 (50,0 %)** |
 | ND | 8 | 8 (100,0 %) | 8 (100,0 %) | 8 (100,0 %) | 8 (100,0 %) | 0 (0,0 %) | **0 (0,0 %)** |
-| **Total** | 6.012 | 5.994 (99,7 %) | 5.974 (99,4 %) | 5.959 (99,1 %) | 6.000 (99,8 %) | 287 (4,8 %) | **287 (4,8 %)** |
+| **Total** | 6.012 | 5.994 (99,7 %) | 5.974 (99,4 %) | 5.959 (99,1 %) | 6.010 (100,0 %) | 287 (4,8 %) | **287 (4,8 %)** |
 
 ## Embut
 
@@ -25,7 +25,7 @@ Entrades llegides:
 |---|---:|
 | Panell | 6.012 |
 | Amb evidència de CEO i de fundador (C1 i C2) | 5.959 (99,1 %) |
-| … i coherents, sense dubtes oberts (C4) | 5.947 (98,9 %) |
+| … i coherents, sense dubtes oberts (C4) | 5.957 (99,1 %) |
 | … i arxivades a Wayback amb la cita verificada (C3): **acabades** | 287 (4,8 %) |
 
 ## Què falta, per condició
@@ -37,7 +37,7 @@ Una fila pot tenir més d'una mancança.
 | `falta_ceo` | 0 | 17 | 1 | 0 | 18 |
 | `falta_fundador` | 2 | 35 | 1 | 0 | 38 |
 | `incoherent` | 0 | 2 | 0 | 0 | 2 |
-| `dubte_obert` | 7 | 0 | 3 | 0 | 10 |
+| `dubte_obert` | 0 | 0 | 0 | 0 | 0 |
 | `falta_arxiu` | 320 | 5.381 | 16 | 8 | 5.725 |
 
 ## Detall de C1 (CEO) i C2 (fundador)
